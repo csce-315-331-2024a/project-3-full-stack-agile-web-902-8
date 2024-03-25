@@ -15,7 +15,7 @@ export async function addOrder(o: Order): Promise<number> {
             }
             return id;
         }).then((id) => {R(id);})
-        .catch((e) => {F({msg: "SQL Error in addOrder:", cause: e});});
+        .catch((e) => {F(new Error("SQL Error in addOrder", e));});
     });
     return p;
 }
@@ -26,11 +26,11 @@ export async function addOrder(o: Order): Promise<number> {
  * @param id The id of the inventory item to check.
  * @return true if and only if the stock of that item is greater than amount.
  */
-export async function enoughInventory(amount: number, id: number): Promise<boolean> {
+export async function enoughInventory(amount: number, id: number, _psql = psql ): Promise<boolean> {
     const p = new Promise((R: (v: boolean) => void, F: (e: Error) => void) => {
-        psql`SELECT qty > ${amount} AS enough FROM inventory WHERE id = ${id}`
+        _psql`SELECT qty > ${amount} AS enough FROM inventory WHERE id = ${id}`
         .then(([{enough: b}]) => R(b))
-        .catch((e) => {F({msg: "SQL Error in enoughInventory:", cause: e});});
+        .catch((e) => {F(new Error("SQL Error in enoughInventory", e));});
     });
     return p;
 }
