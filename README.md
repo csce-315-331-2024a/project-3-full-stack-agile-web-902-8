@@ -9,6 +9,9 @@ Windows has an [article](https://learn.microsoft.com/en-us/windows/dev-environme
 sudo apt-get update
 sudo apt-get install curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash # install nvm
+```
+Restart the terminal or open a new terminal,
+```bash
 nvm install --lts # latest stable version
 ```
 Verify installation, you should see something like this about the versions
