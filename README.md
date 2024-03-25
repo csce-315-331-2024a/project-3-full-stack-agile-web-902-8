@@ -2,8 +2,9 @@
 
 # Project 3 Group 902-8
 ## Installing
+### Ubuntu/WSL
 Since Node.js version included in Ubuntu reached EOL in 2021, we need to install the latest version differently.
-Windows has a [article](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl) about installing Node.js, the commands summarized are
+Windows has an [article](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl) about installing Node.js, the commands summarized are
 ```bash
 sudo apt-get update
 sudo apt-get curl
