@@ -7,7 +7,7 @@ Since Node.js version included in Ubuntu reached EOL in 2021, we need to install
 Windows has an [article](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl) about installing Node.js, the commands summarized are
 ```bash
 sudo apt-get update
-sudo apt-get curl
+sudo apt-get install curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash # install nvm
 nvm install --lts # latest stable version
 ```
