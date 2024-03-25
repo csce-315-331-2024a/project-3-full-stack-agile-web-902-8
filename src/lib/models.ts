@@ -36,14 +36,14 @@ export class OrderItem {
 
 export class Order {
     id: number;
-    timestamp: Date;
+    timestamp: number;
     discount: number;
     total: number;
     items: OrderItem[];
     
     constructor (
         id: number,
-        timestamp: Date,
+        timestamp: number,
         discount: number,
         total: number,
         items: OrderItem[],
@@ -70,13 +70,13 @@ export class Ingredient {
 }
 
 export class Seasonal {
-    startDate: Date;
-    endDate: Date;
+    startDate: number;
+    endDate: number;
     recurring: boolean;
     
     constructor (
-        startDate: Date,
-        endDate: Date,
+        startDate: number,
+        endDate: number,
         recurring: boolean,
     ) {
         this.startDate = startDate;
