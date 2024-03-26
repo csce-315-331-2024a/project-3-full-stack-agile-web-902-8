@@ -9,5 +9,5 @@ export default function Cashier() {
   );
 }
 
-// pages/cashier.tsx
+
 
