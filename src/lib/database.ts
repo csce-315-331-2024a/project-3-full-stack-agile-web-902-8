@@ -19,9 +19,9 @@ export default psql
  * @param sql The sql object to execute func on.
  * @param func The function representing the queries to be run on sql.
  */
-export async function beginOrContinue<T>(sql: postgres.Sql | postgres.TransactionSql, func: (a: postgres.TransactionSql) => T | Promise<T>) {
+export async function beginOrContinue<TResult>(sql: postgres.Sql | postgres.TransactionSql, func: (a: postgres.TransactionSql) => TResult | Promise<TResult>) {
     if (sql === psql) {
-        return sql.begin<T>(func);
+        return sql.begin<TResult>(func);
     }
     return func(sql as postgres.TransactionSql);
 }
