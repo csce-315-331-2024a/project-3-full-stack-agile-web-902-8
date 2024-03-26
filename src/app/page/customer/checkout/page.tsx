@@ -1,17 +1,16 @@
-import styles from "@/app/page.module.css";
 import Link from "next/link";
 
 export default function CustomerCheckout() {
     return (
-      <main className={styles.main}>
-        <nav className={styles.nav}>
-          <Link href="/customer">
+      <main>
+        <nav>
+          <Link href="/page/customer">
             home
           </Link>
-          <Link href="/customer/order">
+          <Link href="/page/customer/order">
             order
           </Link>
-          <Link href="/customer/checkout">
+          <Link href="/page/customer/checkout">
             checkout
           </Link>
         </nav>
