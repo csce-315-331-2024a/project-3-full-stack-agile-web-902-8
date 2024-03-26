@@ -29,3 +29,25 @@ export async function enoughInventory(amount: number, id: number, tsql = psql): 
         return b;
     });
 }
+
+/**
+ * Removes all of the ingredients used in an order from the inventory.
+ * @param o The order to check ingredients for.
+ * @return true if there is enough inventory for the order, false otherwise.
+ */
+export async function removeFromInventory(o: Order, tsql = psql): Promise<boolean> {
+    return transact<boolean, postgres.Error, Order>(tsql, new Error("SQL Error in removeFromInventory", undefined, o), async (isql, abort) => {
+        for (const { item: item, quantity: qty } of o.items) {
+            for (const { inventory_id: inventoryId, amount: amount }
+                of await isql`SELECT item_id, inventory_id, amount FROM ingredients WHERE item_id = ${item.id}`
+            ) {
+                const removeAmount = amount * qty;
+                if (! await enoughInventory(removeAmount, inventoryId, isql)) {
+                    abort(false);
+                }
+                await isql`UPDATE inventory SET qty = qty - ${removeAmount} WHERE id = ${inventoryId}`;
+            }
+        }
+        return true;
+    });
+}
