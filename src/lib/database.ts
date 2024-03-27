@@ -53,11 +53,13 @@ type aborter<T> = {
  *     This function must not be called instead a try block, as it uses an exception internally.
  *
  * @param sql The sql object to perform the queries with.
+ * @param errorTemplate The error that will be returned if func throws, excluding the inner value cause, which will be set by transact.
  * @param func The function that should run all the queries and return the appropriate result.
  * @return The return of the inner function func.
  */
 export async function transact<TResult, EInner = any, EContext = any>(
-    sql: postgres.Sql, errorTemplate: Error<any, EContext>,
+    sql: postgres.Sql,
+    errorTemplate: Error<any, EContext>,
     func: (
         sql: postgres.TransactionSql,
         abort: (ret: TResult) => void
@@ -65,7 +67,7 @@ export async function transact<TResult, EInner = any, EContext = any>(
 ): Promise<TResult> {
     const p = new Promise((R: (v: TResult) => void, F: (e: Error<EInner, EContext> | aborter<TResult>) => void) => {
         const abort = (v: TResult) => {
-            throw {returnValue: v, [ABORT_SIGNAL]: true};
+            throw { returnValue: v, [ABORT_SIGNAL]: true };
         };
 
         beginOrContinue<TResult>(sql, (sql) => func(sql, abort))
