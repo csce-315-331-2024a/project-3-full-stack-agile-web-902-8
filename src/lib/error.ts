@@ -5,19 +5,22 @@
  * and cause represents the lower level error that caused
  * the failure.
  */
-export default class Error {
+export default class Error<T = any, K = any> {
     msg: string;
-    cause: any;
+    cause: T;
+    context?: K;
 
     constructor (
         msg: string,
-        cause: any,
+        cause: T,
+        context: K | undefined = undefined,
     ) {
         this.msg = msg;
         this.cause = cause;
+        this.context = context;
     }
 
     toString(): string {
-        return `${this.msg}: ${this.cause}`
+        return `${this.msg} {${this.context}}: ${this.cause}`
     }
 }

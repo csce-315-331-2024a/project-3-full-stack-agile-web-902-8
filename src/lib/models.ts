@@ -36,14 +36,14 @@ export class OrderItem {
 
 export class Order {
     id: number;
-    timestamp: number;
+    timestamp: Date;
     discount: number;
     total: number;
     items: OrderItem[];
     
     constructor (
         id: number,
-        timestamp: number,
+        timestamp: Date,
         discount: number,
         total: number,
         items: OrderItem[],
