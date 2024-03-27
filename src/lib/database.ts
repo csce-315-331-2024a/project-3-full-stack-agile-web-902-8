@@ -27,8 +27,10 @@ export async function beginOrContinue<TResult>(sql: postgres.Sql | postgres.Tran
     return func(sql as postgres.TransactionSql);
 }
 
+const ABORT_SIGNAL = Symbol("__blubywaff_abort_signal");
+
 type aborter<T> = {
-    __blubywaff_abort_signal: true,
+    [ABORT_SIGNAL]: true,
     returnValue: T,
 }
 
@@ -60,11 +62,14 @@ export async function transact<TResult, EInner = any, EContext = any>(
     ) => TResult | Promise<TResult>,
 ): Promise<TResult> {
     const p = new Promise((R: (v: TResult) => void, F: (e: Error<EInner, EContext> | aborter<TResult>) => void) => {
-        const abort = (v: TResult) => { throw { __blubywaff_abort_signal: true, returnValue: v }; };
+        const abort = (v: TResult) => {
+            throw {returnValue: v, [ABORT_SIGNAL]: true};
+        };
+
         beginOrContinue<TResult>(sql, (sql) => func(sql, abort))
             .then(v => R(v as TResult))
             .catch(e => {
-                if (typeof e === "object" && "__blubywaff_abort_signal" in e) {
+                if (typeof e === "object" && ABORT_SIGNAL in e) {
                     R(e.returnValue as TResult);
                 } else {
                     errorTemplate.cause = e;
