@@ -9,11 +9,11 @@
 
   /* Rev's Styling */
 
-  --text-rgb: 247, 231, 237;
-  --background-rgb: 61, 0, 21;
-  --primary-rgb: 248, 193, 13;
-  --secondary-rgb: 141, 26, 67;
-  --accent-rgb: 55, 132, 39;
+  --text-rgb: 247, 231, 237;    /* white */
+  --background-rgb: 61, 0, 21;  /* maroon */
+  --primary-rgb: 248, 193, 13;  /* gold */
+  --secondary-rgb: 141, 26, 67; /* crimson */
+  --accent-rgb: 255, 132, 39;   /* orange */
 
   --font: "Poppins", sans-serif;
 }
