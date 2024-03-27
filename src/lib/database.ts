@@ -14,17 +14,19 @@ const psql = postgres({
 export default psql
 
 /**
- * Starts a new transaction if sql is the root psql object, otherwise continues
- * that transaction, and then passes the sql transaction object to func for execution.
+ * Starts a new "transaction" at this level, such that any rollback inside func only rolls back the changes made inside func.
+ * This allows nested calls to not interefere with each other.
+ * If there was already a transaction, then it issues a savepoint and continues the transaction.
+ * If there was not yet a transaction, then it starts a transaction.
  *
  * @param sql The sql object to execute func on.
  * @param func The function representing the queries to be run on sql.
  */
 export async function beginOrContinue<TResult>(sql: postgres.Sql | postgres.TransactionSql, func: (a: postgres.TransactionSql) => TResult | Promise<TResult>) {
-    if (sql === psql) {
-        return sql.begin<TResult>(func);
+    if ("savepoint" in sql) {
+        return (sql as postgres.TransactionSql).savepoint(func);
     }
-    return func(sql as postgres.TransactionSql);
+    return sql.begin(func);
 }
 
 const ABORT_SIGNAL = Symbol("__blubywaff_abort_signal");
