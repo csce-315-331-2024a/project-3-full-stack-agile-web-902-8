@@ -15,7 +15,9 @@ export default function Customer() {
     menuItemsByCategory.set("Baskets", ["3 Tender Basket"]);
     
     // set default category
-    let [currCategory, changeCategory] = React.useState(categoryNames[0]);
+    let currCategory: string;
+    let changeCategory: Function;
+    [currCategory, changeCategory] = React.useState(categoryNames[0]);
 
     return (
       <main className={styles.main}>

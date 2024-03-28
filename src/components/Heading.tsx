@@ -11,7 +11,7 @@ function Heading({navList}: HeadingProp)
         <nav>
             <ul>
                 {navList.map((item) =>(
-                    <li>
+                    <li key={item}>
                         {item}
                     </li>
                 ))}
