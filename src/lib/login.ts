@@ -1,3 +1,44 @@
+import psql, { transact } from "@/lib/database";
+import postgres from "postgres";
+import Error from "@/lib/error";
+
+export const LOGIN_FAILED = Symbol("FAILED");
+export const LOGIN_MANAGER = Symbol("MANAGER");
+export const LOGIN_CASHIER = Symbol("CASHIER");
+export const LOGIN_CUSTOMER = Symbol("CUSTOMER");
+export type LoginResult
+    = typeof LOGIN_FAILED
+    | typeof LOGIN_MANAGER
+    | typeof LOGIN_CASHIER
+    | typeof LOGIN_CUSTOMER;
+
+/**
+ * Tries to login the user represented by username with password and returns their role or login failure.
+ * @param username, the user's unique username. Fails gracefully if this is not present in the database
+ * @param password, the inputted plaintext password that the user provided.
+ * @return LOGIN_FAILED if the username is not present or the password did not match, otherwise,
+ * returns the LoginResult representing the user's role.
+ */
+export async function attemptLogin(username: string, password: string, tsql = psql): Promise<LoginResult> {
+    return transact<LoginResult, postgres.Error, {username: string, hashedPassword: string}>(
+        tsql, new Error("SQL Error in attemptLogin", undefined, {username: username, hashedPassword: password}),
+        async (isql, _) => {
+            const rows = await isql`SELECT password, manager FROM users WHERE username = ${username};`;
+            if (rows.length === 0)
+                return LOGIN_FAILED
+
+            const [{password: hashed, manager: isManager}] = rows;
+
+            if (!verify(password, hashed))
+                return LOGIN_FAILED as LoginResult;
+
+            if (isManager)
+                return LOGIN_MANAGER as LoginResult;
+            else
+                return LOGIN_CASHIER as LoginResult;
+        },
+    );
+}
 
 /**
  * The database representation for a password, made up of the
