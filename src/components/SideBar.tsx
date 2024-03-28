@@ -2,16 +2,16 @@ import React from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 
-type HeadingProp = 
+type SideProp = 
 {
     names: string[];
     hrefs: string[];
 }
 
-function Heading({names, hrefs}: HeadingProp)
+function SideBar({names, hrefs}: SideProp)
 {
     return(
-        <nav className={styles.navbar}>
+        <nav className={styles.sidebar}>
             <ul>
                 {names.map((link, i) =>(
                     <li key={link}>
@@ -26,4 +26,4 @@ function Heading({names, hrefs}: HeadingProp)
     );
 }
 
-export default Heading;
+export default SideBar;
