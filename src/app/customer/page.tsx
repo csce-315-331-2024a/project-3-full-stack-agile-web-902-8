@@ -1,7 +1,8 @@
 'use client'
 import styles from "@/app/page.module.css";
-import customerStyles from "@/app/page/customer/page.module.css";
-import Link from "next/link";
+import customerStyles from "@/app/customer/page.module.css";
+import CustomerMenuItem from "@/components/CustomerMenuItem";
+import CustomerNav from "@/app/customer/customer-nav";
 import React from "react";
 
 export default function Customer() {
@@ -23,19 +24,7 @@ export default function Customer() {
       <main className={styles.main}>
         <h1>Customer</h1>
 
-        <nav id={customerStyles["customer-navbar"]}>
-          <ul>
-          <li><Link href="/page/customer">
-            home
-          </Link></li>
-          <li><Link href="/page/customer/order">
-            order
-          </Link></li>
-          <li><Link href="/page/customer/checkout">
-            checkout
-          </Link></li>
-          </ul>
-        </nav>
+        <CustomerNav/>
         
         <nav id={customerStyles["categories"]}>
           <ul>
@@ -48,7 +37,7 @@ export default function Customer() {
         {/* Menu items */}
         <div>
           {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
-            <p key={menuitem}>{menuitem}</p>
+            <CustomerMenuItem key={menuitem} name={menuitem}/>
           )}
         </div>
       </main>

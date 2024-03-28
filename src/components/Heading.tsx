@@ -1,18 +1,23 @@
-import React from "react"
+import React from "react";
+import Link from "next/link";
+import styles from "./page.module.css";
 
 type HeadingProp = 
 {
-    navList: string[];
+    names: string[];
+    hrefs: string[];
 }
 
-function Heading({navList}: HeadingProp)
+function Heading({names, hrefs}: HeadingProp)
 {
     return(
-        <nav>
+        <nav className={styles.navbar}>
             <ul>
-                {navList.map((item) =>(
-                    <li key={item}>
-                        {item}
+                {names.map((link, i) =>(
+                    <li key={link}>
+                        <Link href={hrefs[i]}>
+                        {link}
+                        </Link>
                     </li>
                 ))}
             </ul>
@@ -21,6 +26,3 @@ function Heading({navList}: HeadingProp)
 }
 
 export default Heading;
-
-
-
