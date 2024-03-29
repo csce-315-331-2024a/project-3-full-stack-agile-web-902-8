@@ -20,6 +20,10 @@ export default function Customer() {
     let changeCategory: Function;
     [currCategory, changeCategory] = React.useState(categoryNames[0]);
 
+    let showPopUp: boolean;
+    let setPopUp: Function;
+    [showPopUp, setPopUp] = React.useState(false);
+
     return (
       // TODO: Change to global styling
       <main className={customerStyles.main}>
@@ -38,15 +42,22 @@ export default function Customer() {
         {/* Menu items */}
         <div id={customerStyles["menu-items"]}>
           {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
-            <CustomerMenuItem key={menuitem} name={menuitem}/>
+            <CustomerMenuItem key={menuitem} name={menuitem} onClick={() => setPopUp(true)}/>
           )}
         </div>
 
         {/* Pop up for adding to order */}
-        <section>
-          {/* Exit button */}
-          <button>X</button>
-        </section>
+        { showPopUp ? 
+            <section id={customerStyles["pop-up"]}>
+              {/* Exit button */}
+              <button 
+                className={customerStyles["exit-button"]} 
+                onClick={() => setPopUp(false)}
+                >
+                X
+              </button>
+            </section>
+        : null }
       </main>
     );
 }

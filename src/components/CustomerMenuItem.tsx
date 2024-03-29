@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./page.module.css";
+import styles from "./component.module.css";
 
 type MenuItemProp = {
     name: string;
