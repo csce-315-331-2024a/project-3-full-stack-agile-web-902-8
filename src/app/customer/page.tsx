@@ -1,7 +1,6 @@
 'use client'
 import styles from "@/app/page.module.css";
 import customerStyles from "@/app/customer/page.module.css";
-import MainHeading from "@/components/MainHeading";
 import CustomerMenuItem from "@/components/CustomerMenuItem";
 import CustomerNav from "@/app/customer/customer-nav";
 import React from "react";
@@ -27,8 +26,9 @@ export default function Customer() {
 
     return (
       // TODO: Change to global styling
-      <main className={styles.main}>
-        <MainHeading name="Customer"/>
+      <main className={customerStyles.main}>
+        <h1 className={customerStyles.pageTitle}>Customer</h1>
+
         <CustomerNav/>
         
         <nav id={customerStyles["categories"]}>
