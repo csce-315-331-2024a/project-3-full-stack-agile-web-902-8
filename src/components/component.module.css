@@ -76,3 +76,19 @@
     text-decoration: none;
     font-family: var(--font-mono);
 }
+
+.logout{
+    color: rgb(var(--text-rgb));
+    background-color: rgb(var(--secondary-rgb));
+    font-family: var(--font);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em 2em;
+}
+
+.card{
+    border: none;
+    border-radius: var(--border-radius);
+    margin: 1rem;
+  }
