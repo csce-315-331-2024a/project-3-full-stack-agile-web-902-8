@@ -5,6 +5,7 @@ import DoubleText from "@/components/DoubleText";
 import SideBar from "@/components/SideBar";
 import styles from '../page.module.css';
 
+
 export default function MenuBoard() {
   const items = ['Home', 'Menu', 'Inventory', 'Order History', 'Reports', 'Logout'];
   const links = ['/', '/', '/', '/', '/', '/'];
@@ -40,7 +41,7 @@ export default function MenuBoard() {
             block2={
               <div>
                 <h1>MenuBoard Page</h1>
-                
+                <PageButton>Refresh</PageButton>
                 {/* Render categories */}
                 {categories.map(renderCategory)}
                 {/* Placeholder for Limited Time Offers */}
