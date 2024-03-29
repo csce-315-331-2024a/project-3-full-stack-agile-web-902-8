@@ -20,9 +20,14 @@ export default function Customer() {
     let changeCategory: Function;
     [currCategory, changeCategory] = React.useState(categoryNames[0]);
 
+    let showPopUp: boolean;
+    let setPopUp: Function;
+    [showPopUp, setPopUp] = React.useState(false);
+
     return (
-      <main className={styles.main}>
-        <h1>Customer</h1>
+      // TODO: Change to global styling
+      <main className={customerStyles.main}>
+        <h1 className={customerStyles.pageTitle}>Customer</h1>
 
         <CustomerNav/>
         
@@ -35,11 +40,24 @@ export default function Customer() {
         </nav>
         
         {/* Menu items */}
-        <div>
+        <div id={customerStyles["menu-items"]}>
           {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
-            <CustomerMenuItem key={menuitem} name={menuitem}/>
+            <CustomerMenuItem key={menuitem} name={menuitem} onClick={() => setPopUp(true)}/>
           )}
         </div>
+
+        {/* Pop up for adding to order */}
+        { showPopUp ? 
+            <section id={customerStyles["pop-up"]}>
+              {/* Exit button */}
+              <button 
+                className={customerStyles["exit-button"]} 
+                onClick={() => setPopUp(false)}
+                >
+                X
+              </button>
+            </section>
+        : null }
       </main>
     );
 }
