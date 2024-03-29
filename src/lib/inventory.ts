@@ -2,32 +2,25 @@ import psql, { transact } from "@/lib/database"
 import {InventoryItem} from "@/lib/models";
 import Error from "@/lib/error";
 import postgres from "postgres";
-import { useParams } from "next/navigation";
 
 export async function removeInventoryItem(name: string, tsql = psql): Promise<boolean> {
     return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in removeInventoryItem", undefined, name), async (isql, _) =>{
         const result = await isql`DELETE FROM inventory WHERE name = ${name}`;
-        let rows = 0;
-        for (const row of result)
-        {
-            rows++;
-        }
-        return rows > 0;
+        return result.length > 0;
     });
 }
 
 export async function existsInInventory(name: string, tsql = psql): Promise<boolean> {
-    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in removeInventoryItem", undefined, name), async (isql, _) =>{
+    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in existsInInventory", undefined, name), async (isql, _) =>{
         const result = await isql`SELECT FROM inventory WHERE name = ${name}`;
         return result.length > 0;
     });
 }
 
 export async function getAllInventoryItemNames(tsql = psql): Promise<string[]> {
-    return transact<string[], postgres.Error, any>(tsql, new Error("SQL error in removeInventoryItem", undefined), async (isql, _) =>{
+    return transact<string[], postgres.Error, any>(tsql, new Error("SQL error in getAllInventoryItemNames", undefined), async (isql, _) =>{
         const names: string[] = [];
         const result = await isql`SELECT name FROM inventory`;
-        let rows = 0;
         for (const row of result)
         {
             names.push(row.name);
@@ -52,7 +45,7 @@ export async function getInventoryItemByName(name: string, tsql = psql): Promise
 }
 
 export async function addOrUpdateInventoryItem(item: InventoryItem, tsql = psql): Promise<boolean> {
-    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in getInventoryItemByName", undefined, item), async (isql, _) =>{
+    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in addOrUpdateInventoryItem", undefined, item), async (isql, _) =>{
         const result = await isql`SELECT COUNT(*) FROM inventory WHERE name = ${item.name}`;
         if (result.length > 0)
         {
@@ -69,7 +62,7 @@ export async function addOrUpdateInventoryItem(item: InventoryItem, tsql = psql)
 }
 
 export async function removeIngredient(menuItemName: string, inventoryName: string, tsql = psql): Promise<boolean> {
-    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in getInventoryItemByName", undefined, {menuItemName, inventoryName}), async (isql, _) =>{
+    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in removeIngredient", undefined, {menuItemName, inventoryName}), async (isql, _) =>{
         let menuItemId = 0;
         let inventoryId = 0;
         const findMenuItemIdSQL = await isql`SELECT id FROM menu_items WHERE name = ${menuItemName}`;
@@ -93,7 +86,7 @@ export async function removeIngredient(menuItemName: string, inventoryName: stri
         }
 
         const checkIngredientExistsStmt = await isql`SELECT EXISTS (SELECT 1 FROM ingredients WHERE item_id = ${menuItemId} AND inventory_id = ${inventoryId})`;
-        if(checkIngredientExistsStmt.length > 0 && checkIngredientExistsStmt[0].existsInInventory)
+        if(checkIngredientExistsStmt.length > 0 && checkIngredientExistsStmt[0].EXISTS)
         {
             const decreaseIngredientAmountStmt = await isql`UPDATE ingredients SET amount = amount - 1 WHERE item_id = ${menuItemId} AND inventory_id = ${inventoryId} AND amount > 1`;
             if (decreaseIngredientAmountStmt.length == 0)
@@ -110,7 +103,7 @@ export async function removeIngredient(menuItemName: string, inventoryName: stri
 }
 
 export async function request(inventoryName: string, amount: number, tsql = psql): Promise<boolean> {
-    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in getInventoryItemByName", undefined, {inventoryName, amount}), async (isql, _) =>{
+    return transact<boolean, postgres.Error, any>(tsql, new Error("SQL error in request", undefined, {inventoryName, amount}), async (isql, _) =>{
         const checkQtySQL = await isql`SELECT qty, max_qty FROM inventory WHERE name = ${inventoryName}`;
         if (checkQtySQL.length > 0)
         {
