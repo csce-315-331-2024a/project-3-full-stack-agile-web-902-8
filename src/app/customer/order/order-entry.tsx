@@ -9,6 +9,7 @@ type OrderEntryProp = {
 
 function OrderEntry({name, qty, price} : OrderEntryProp) {
     return (
+        <p></p>
     );
 }
 
