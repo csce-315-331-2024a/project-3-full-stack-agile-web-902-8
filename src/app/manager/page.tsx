@@ -7,9 +7,9 @@ import styles from '../page.module.css';
 
 export default function Manager() {
   const Items = ['Home', 'Menu', 'Inventory', 'Order History', 'Reports', 'Logout'];
-  const Links = ['/', '/', '/', '/', '/', '/'];
+  const Links = ['/manager', '/manager', '/manager', '/manager', '/manager', '/'];
   const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-  const Links2 = ['/', '/', '/', '/'];
+  const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
   
   return (
     <main className={styles.main}>
