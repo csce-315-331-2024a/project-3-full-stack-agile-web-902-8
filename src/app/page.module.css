@@ -34,6 +34,34 @@
   border-radius: var(--border-radius);
 }
 
+.body{
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.85rem;
+  max-width: var(--max-width);
+  width: 100%;
+  z-index: 2;
+  font-family: var(--font-mono);
+}
+
+.body h1{
+  font-size: 25px;
+  width: 100%;
+  text-align: center;
+}
+
+.body p{
+  position: center;
+  text-align: center;
+  margin: 0;
+  padding: 1rem;
+  background-color: rgba(var(--primary-rgb), 0.5);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  border-radius: var(--border-radius);
+}
+
 .code {
   font-weight: 700;
   font-family: var(--font-mono);

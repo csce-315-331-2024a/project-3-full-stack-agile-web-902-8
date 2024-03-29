@@ -9,11 +9,13 @@ type ButtonProp =
 function PageButton({onClick, children}: ButtonProp)
 {
     return(
+        <div style = {{textAlign: "left"}}>
         <button
             onClick = {onClick}
             type = {"button"}>
             {children}
         </button>
+        </div>
     );
 }
 

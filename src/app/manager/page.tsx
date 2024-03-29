@@ -17,7 +17,7 @@ export default function Manager() {
         <div>
           <Heading names={Items} hrefs={Links}/>
         </div>
-        <div className={styles.description}>
+        <div className={styles.body}>
           <DoubleText 
             block1 = <SideBar names={Items2} hrefs={Links2}/>
             block2 = 
@@ -25,8 +25,10 @@ export default function Manager() {
             <h1>Manager Page</h1>
 
             <PageButton>Refresh</PageButton>
-
-            <p>This is the manager page content.</p></div>/>
+            <p>
+              TimeStamp | Order_Id | Discount | Total
+            </p>
+        </div>/>
         </div>
       </div>
     </main>
