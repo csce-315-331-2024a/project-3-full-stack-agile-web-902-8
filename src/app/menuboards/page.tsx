@@ -10,7 +10,7 @@ export default function MenuBoard() {
   const Links = ['/', '/', '/', '/', '/', '/'];
   const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
   const Links2 = ['/', '/', '/', '/'];
-  
+  const Categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
   return (
     <main className={styles.main}>
       <div className = {styles.description}>
@@ -26,7 +26,7 @@ export default function MenuBoard() {
 
             <PageButton>Refresh</PageButton>
             <p>
-              TimeStamp | Order_Id | Discount | Total
+              
             </p>
         </div>/>
         </div>
