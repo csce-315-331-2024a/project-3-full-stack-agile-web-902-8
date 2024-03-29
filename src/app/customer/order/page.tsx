@@ -10,6 +10,10 @@ export default function CustomerOrder() {
 
         <CustomerNav/>
 
+        {/* Order box with entries */}
+        <div>
+          
+        </div>
 
       </main>
     );
