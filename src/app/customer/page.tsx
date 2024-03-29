@@ -21,8 +21,9 @@ export default function Customer() {
     [currCategory, changeCategory] = React.useState(categoryNames[0]);
 
     return (
-      <main className={styles.main}>
-        <h1>Customer</h1>
+      // TODO: Change to global styling
+      <main className={customerStyles.main}>
+        <h1 className={customerStyles.pageTitle}>Customer</h1>
 
         <CustomerNav/>
         
@@ -35,11 +36,17 @@ export default function Customer() {
         </nav>
         
         {/* Menu items */}
-        <div>
+        <div id={customerStyles["menu-items"]}>
           {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
             <CustomerMenuItem key={menuitem} name={menuitem}/>
           )}
         </div>
+
+        {/* Pop up for adding to order */}
+        <section>
+          {/* Exit button */}
+          <button>X</button>
+        </section>
       </main>
     );
 }
