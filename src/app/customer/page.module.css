@@ -1,0 +1,91 @@
+.main {
+  margin: 0 auto;
+  max-width: 1000px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#categories {
+    height: 40px;
+    width: 50%;
+}
+
+#categories ul {
+    height: fit-content;
+    background: rgb(var(--secondary-rgb));
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+#categories button {
+    background: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+    border: none;
+    display: block;
+    text-align: center;
+    padding: 1em 2em;
+    text-decoration: none;
+}
+
+#categories button:hover {
+    cursor: pointer;
+}
+
+#menu-items {
+    display: grid;
+    width: 80%;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: 10rem;
+    gap: 10px;
+}
+
+#menu-items button {
+    background: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+    border: none;
+    display: block;
+    text-align: center;
+}
+
+#menu-items button:hover {
+    cursor: pointer;
+}
+
+#menu-items button:active {
+    background: rgba(var(--secondary-rgb), 0.5);
+}
+
+#pop-up {
+    background: rgb(var(--secondary-rgb));
+    position: relative;
+    width: 80%;
+    height: 50%;
+}
+
+button.exit-button {
+    background: none;
+    color: rgb(var(--text-rgb));
+    border: none;
+    display: block;
+    text-align: center;
+    font-size: 24pt;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+button.exit-button:hover {
+    cursor: pointer;
+}
+
+button.exit-button:active {
+    color: rgba(var(--text-rgb), 0.5);
+}

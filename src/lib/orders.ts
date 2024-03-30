@@ -35,29 +35,19 @@ export async function enoughInventory(amount: number, id: number, tsql = psql): 
  * @param o The order to check ingredients for.
  * @return true if there is enough inventory for the order, false otherwise.
  */
-
-/** don't forget to document */
-/* name and parameters should change, but don't edit the last parameter */
-/* return type for all async functions should be Promise<ReturnType>, so the real return type for this function is boolean */
 export async function removeFromInventory(o: Order, tsql = psql): Promise<boolean> {
-    /* first type (generic) parameter for transact should be same as return type (assuming you return the result of transact) */
-    /* second and third type parameter for transact are optional but represent inner types that throw inside func, and the context information */
     return transact<boolean, postgres.Error, Order>(tsql, new Error("SQL Error in removeFromInventory", undefined, o), async (isql, abort) => {
         for (const { item: item, quantity: qty } of o.items) {
-            /* you can iterate through rows returned by an sql query using for..of */
             for (const { inventory_id: inventoryId, amount: amount }
                 of await isql`SELECT item_id, inventory_id, amount FROM ingredients WHERE item_id = ${item.id}`
             ) {
                 const removeAmount = amount * qty;
                 if (! await enoughInventory(removeAmount, inventoryId, isql)) {
-                    /* if and only if there is a logical problem with the query, call the abort handler to return without throwing an error (if there is somethign unrecoverably wrong, you can just throw instead) */
-                    /* if the abort handler is called, or anything inside this function throws, the transaction will be aborted and rolled back */
                     abort(false);
                 }
                 await isql`UPDATE inventory SET qty = qty - ${removeAmount} WHERE id = ${inventoryId}`;
             }
         }
-        /* you can still return normally inside the function, and the value will go out to transact */
         return true;
     });
 }
