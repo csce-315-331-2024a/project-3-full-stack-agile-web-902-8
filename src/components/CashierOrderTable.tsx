@@ -40,9 +40,9 @@ function CashierOrderTable({currentOrder, setCurrentOrder} : CashierOrderTablePr
                 <tfoot>
                     <tr>
                         <td></td>
-                        <td></td>
                         <td>Total:</td>
-                        <td>Placeholder</td>
+                        <td>{Math.round(currentOrder.reduce((acc, entry) => acc + (entry.item.price * entry.quantity), 0) * 100) / 100}</td>
+                        <td></td>
                     </tr>
                 </tfoot>
             </table>
