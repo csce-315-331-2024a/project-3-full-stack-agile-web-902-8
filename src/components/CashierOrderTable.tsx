@@ -23,11 +23,29 @@ function CashierOrderTable({currentOrder, setCurrentOrder} : CashierOrderTablePr
     return(
         <div>
             <h2>Current order</h2>
-            <ul>
-                {currentOrder.map((orderEntry) => {
-                    return <CashierOrderItem orderEntry={orderEntry} currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} key={orderEntry.item.id} />;
-                })}
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentOrder.map((orderEntry) => {
+                        return <CashierOrderItem orderEntry={orderEntry} currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} key={orderEntry.item.id} />;
+                    })}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Total:</td>
+                        <td>Placeholder</td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     );
 }
@@ -47,12 +65,14 @@ function CashierOrderItem({orderEntry, currentOrder, setCurrentOrder} : CashierO
     }
 
     return(
-        <li>
-            <button onClick={handleClick}>X</button>
-            <p>{orderEntry.item.name}</p>
-            <p>{orderEntry.item.price}</p>
-            <p>{orderEntry.quantity}</p>
-        </li>
+        <tr>
+            <td>
+                <button onClick={handleClick}>X</button>
+            </td>
+            <td>{orderEntry.item.name}</td>
+            <td>{orderEntry.item.price}</td>
+            <td>{orderEntry.quantity}</td>
+        </tr>
     );
 }
 
