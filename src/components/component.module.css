@@ -121,6 +121,54 @@
     background-color: rgb(var(--secondary-rgb), 0.5);
 }
 
+.placeOrder{
+    color: rgb(var(--background-rgb));
+    background-color: rgb(var(--primary-rgb));
+    font-family: var(--font);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    transition: 250ms;
+}
+
+.placeOrder:hover{
+    cursor: pointer;
+    background-color: rgb(var(--primary-rgb), 0.5);
+    color: rgb(var(--text-rgb));
+}
+
+.categoryBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.categoryButton{
+    color: rgb(var(--text-rgb));
+    background-color: rgb(var(--secondary-rgb));
+    font-family: var(--font);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    transition: 250ms;
+    padding: 1rem;
+    border: none;
+}
+
+.categoryButton:first-of-type{
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.categoryButton:last-of-type{
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.categoryButton:hover{
+    cursor: pointer;
+    background-color: rgb(var(--secondary-rgb), 0.5);
+}
+
 .card{
     border: none;
     border-radius: var(--border-radius);

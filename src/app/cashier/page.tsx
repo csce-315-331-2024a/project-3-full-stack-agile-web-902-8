@@ -2,10 +2,14 @@
 // TODO: Consider separating client-side and server-side code for much better performance
 
 import React, { useEffect, useState } from "react";
+
 import LogoutButton from "@/components/LogoutButton";
 import CashierCategoryBar from "@/components/CashierCategoryBar";
 import CashierItemGrid from "@/components/CashierItemGrid";
 import CashierOrderTable from "@/components/CashierOrderTable";
+
+import componentStyles from '@/components/component.module.css';
+
 import { MenuItem, Ingredient, InventoryItem, Seasonal, Order } from "@/lib/models";
 
 // DEBUG: Placeholder menu item data:
@@ -62,7 +66,7 @@ export default function Cashier() {
       <CashierCategoryBar categories={categories} category={category} setCategory={setCategory} />
       <CashierItemGrid categoryItems={categoryItems} currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} />
       <CashierOrderTable currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} />
-      <button onClick={() => placeOrder(currentOrder)}>
+      <button className={componentStyles.placeOrder + ' ' + componentStyles.card} onClick={() => placeOrder(currentOrder)}>
         Place Order
       </button>
     </main>
