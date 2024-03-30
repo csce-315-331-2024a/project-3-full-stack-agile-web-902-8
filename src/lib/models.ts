@@ -36,14 +36,14 @@ export class OrderItem {
 
 export class Order {
     id: number;
-    timestamp: number;
+    timestamp: Date;
     discount: number;
     total: number;
     items: OrderItem[];
     
     constructor (
         id: number,
-        timestamp: number,
+        timestamp: Date,
         discount: number,
         total: number,
         items: OrderItem[],
@@ -140,3 +140,27 @@ export class InventoryItem {
         this.maxQuantity = maxQuantity;
     }
 }
+
+export class AggregateItem {
+    private id: number;
+    private name: string;
+    private qty: number;
+  
+    constructor(id: number, name: string, qty: number) {
+      this.id = id;
+      this.name = name;
+      this.qty = qty;
+    }
+  
+    public getId(): number {
+      return this.id;
+    }
+  
+    public getName(): string {
+      return this.name;
+    }
+  
+    public getQty(): number {
+      return this.qty;
+    }
+  }

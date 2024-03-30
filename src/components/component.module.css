@@ -77,6 +77,35 @@
     font-family: var(--font-mono);
 }
 
+.table{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th{
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+
+.table td{
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+}
+
+.container{
+    position: relative;
+    margin: 0;
+    padding: 1rem;
+    background-color: rgba(var(--primary-rgb), 0.5);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: var(--border-radius);
+}
+
 .logout{
     color: rgb(var(--text-rgb));
     background-color: rgb(var(--secondary-rgb));
