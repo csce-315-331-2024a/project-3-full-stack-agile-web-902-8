@@ -7,7 +7,7 @@ import styles from '../page.module.css';
 
 
 export default function MenuBoard() {
-  const items = ['Home', 'Menu', 'Inventory', 'Order History', 'Reports', 'Logout'];
+  const items = ['Home', 'Logout'];
   const links = ['/', '/', '/', '/', '/', '/'];
   const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
 
@@ -41,7 +41,7 @@ export default function MenuBoard() {
             block2={
               <div>
                 <h1>MenuBoard Page</h1>
-                <PageButton>Refresh</PageButton>
+                
                 {/* Render categories */}
                 {categories.map(renderCategory)}
                 {/* Placeholder for Limited Time Offers */}
