@@ -1,8 +1,11 @@
 'use client'
 import styles from "@/app/page.module.css";
-import customerStyles from "@/app/customer/page.module.css";
+
+import SideBarMain from "@/components/SideBarMain";
 import GlobalNavbar from "@/components/GlobalNavbar";
 import CustomerNav from "@/app/customer/CustomerNav";
+
+import customerStyles from "@/app/customer/page.module.css";
 import CustomerMenuItem from "@/app/customer/CustomerMenuItem";
 import React from "react";
 
@@ -27,40 +30,49 @@ export default function Customer() {
 
     return (
       // TODO: Change to global styling
-      <main className={customerStyles.main}>
-        <h1 className={customerStyles.pageTitle}>Customer</h1>
-
+      <main className={styles.main}>
+      <div className = {styles.description}>
         <CustomerNav/>
 
-        <GlobalNavbar/>
-        
-        <nav id={customerStyles["categories"]}>
-          <ul>
-            {categoryNames.map((name) => 
-              <li key={name}><button onClick={() => changeCategory(name)}>{name}</button></li>
-            )}
-          </ul>
-        </nav>
-        
-        {/* Menu items */}
-        <div id={customerStyles["menu-items"]}>
-          {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
-            <CustomerMenuItem key={menuitem} name={menuitem} onClick={() => setPopUp(true)}/>
-          )}
-        </div>
+        <div className={styles.body}>
+        <SideBarMain
+            sidebar=<GlobalNavbar/>
+            main=
+            <div>
+            <nav id={customerStyles["categories"]}>
+              <ul>
+                {categoryNames.map((name) => 
+                  <li key={name}><button onClick={() => changeCategory(name)}>{name}</button></li>
+                )}
+              </ul>
+            </nav>
+            
+            {/* Menu items */}
+            <div id={customerStyles["menu-items"]}>
+              {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
+                <CustomerMenuItem key={menuitem} name={menuitem} onClick={() => setPopUp(true)}/>
+              )}
+            </div>
 
-        {/* Pop up for adding to order */}
-        { showPopUp ? 
-            <section id={customerStyles["pop-up"]}>
-              {/* Exit button */}
-              <button 
-                className={customerStyles["exit-button"]} 
-                onClick={() => setPopUp(false)}
-                >
-                X
-              </button>
-            </section>
-        : null }
+            {/* Pop up for adding to order */}
+            { showPopUp ? 
+                <section id={customerStyles["pop-up"]}>
+                  {/* Exit button */}
+                  <button 
+                    className={customerStyles["exit-button"]} 
+                    onClick={() => setPopUp(false)}
+                    >
+                    X
+                  </button>
+                </section>
+            : null }
+
+            </div>
+            />
+        </div>
+      </div>
+
+            
       </main>
     );
 }

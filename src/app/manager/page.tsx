@@ -1,7 +1,6 @@
 import React from "react";
 import PageButton from "@/components/PageButton";
-import DoubleText from "@/components/DoubleText";
-import SideBar from "@/components/SideBar";
+import SideBarMain from "@/components/SideBarMain";
 import TopBar from "@/components/TopBar";
 import GlobalNavbar from "@/components/GlobalNavbar";
 import OrderTable from "@/components/OrderTable";
@@ -22,9 +21,9 @@ export default function Manager() {
           <TopBar names={Items} hrefs={Links}/>
         </div>
         <div className={styles.body}>
-          <DoubleText 
-            block1 = <GlobalNavbar/>
-            block2 = 
+          <SideBarMain 
+            sidebar = <GlobalNavbar/>
+            main = 
             <div>
             <h1>Manager Page</h1>
 
