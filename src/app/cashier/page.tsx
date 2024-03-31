@@ -1,5 +1,7 @@
 'use client';
-// TODO: Consider separating client-side and server-side code for much better performance
+// TODO: Consider separating client-side and server-side code for MUCH better performance
+
+// TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 
 import React, { useEffect, useState } from "react";
 
@@ -16,13 +18,31 @@ import { MenuItem, Ingredient, InventoryItem, Seasonal, Order } from "@/lib/mode
 const cheese = new Ingredient(new InventoryItem(1, "Cheese", 0.5, 100, 10, 200), 1);
 const beefPatty = new Ingredient(new InventoryItem(2, "Beef Patty", 1, 100, 10, 200), 1);
 const bun = new Ingredient(new InventoryItem(3, "Bun", 0.25, 100, 10, 200), 1);
+const lettuce = new Ingredient(new InventoryItem(5, "Lettuce", 0.1, 100, 10, 200), 1);
+const tomato = new Ingredient(new InventoryItem(6, "Tomato", 0.2, 100, 10, 200), 1);
+const onion = new Ingredient(new InventoryItem(7, "Onion", 0.15, 100, 10, 200), 1);
+const bacon = new Ingredient(new InventoryItem(8, "Bacon", 0.5, 100, 10, 200), 2);
+const mushroom = new Ingredient(new InventoryItem(9, "Mushroom", 0.3, 100, 10, 200), 5);
+const swissCheese = new Ingredient(new InventoryItem(10, "Swiss Cheese", 0.6, 100, 10, 200), 1);
 const seasonalSummer = new Seasonal(Date.now(), Date.now() + 3 * 30 * 24 * 60 * 60 * 1000, false);
+const iceCream = new Ingredient(new InventoryItem(11, "Ice Cream", 1, 100, 10, 200), 1);
+const saladGreens = new Ingredient(new InventoryItem(12, "Salad Greens", 0.5, 100, 10, 200), 1);
+const chickenBreast = new Ingredient(new InventoryItem(13, "Chicken Breast", 1.5, 100, 10, 200), 1);
+const croutons = new Ingredient(new InventoryItem(14, "Croutons", 0.3, 100, 10, 200), 1);
+const dressing = new Ingredient(new InventoryItem(15, "Dressing", 0.2, 100, 10, 200), 1);
+
 
 const sampleMenuItems: MenuItem[] = [
   new MenuItem(1, "Classic Burger", "Burgers", 9.99, 5.00, 5, [cheese, beefPatty, bun], seasonalSummer),
-  new MenuItem(2, "Veggie Burger", "Burgers", 8.99, 4.00, 4, [cheese, bun], seasonalSummer),
+  new MenuItem(2, "Veggie Burger", "Burgers", 8.99, 4.00, 4, [lettuce, tomato, bun], seasonalSummer),
+  new MenuItem(3, "Bacon Cheeseburger", "Burgers", 11.99, 6.50, 5, [cheese, beefPatty, bacon, bun], seasonalSummer),
+  new MenuItem(4, "Mushroom Swiss Burger", "Burgers", 12.99, 7.00, 5, [swissCheese, beefPatty, mushroom, bun], seasonalSummer),
+  new MenuItem(5, "BBQ Burger", "Burgers", 10.99, 5.50, 5, [cheese, beefPatty, onion, bun], seasonalSummer),
+  new MenuItem(6, "Deluxe Burger", "Burgers", 13.99, 7.50, 5, [lettuce, tomato, onion, cheese, beefPatty, bun], seasonalSummer),
   new MenuItem(3, "French Fries", "Sides", 2.99, 1.00, 5, [], seasonalSummer),
   new MenuItem(4, "Soft Drink", "Drinks", 1.99, 0.50, 5, [], seasonalSummer),
+  new MenuItem(9, "Vanilla Ice Cream", "Desserts", 3.99, 1.5, 5, [iceCream], seasonalSummer),
+  new MenuItem(10, "Chicken Caesar Salad", "Salads", 7.99, 4.0, 5, [saladGreens, chickenBreast, croutons, dressing], seasonalSummer),
 ];
 
 // DEBUG: Placeholder order creation:
@@ -61,8 +81,9 @@ export default function Cashier() {
   }, [category]);
 
   return (
-    <main>
+    <main className={componentStyles.cashierMain}>
       <LogoutButton />
+      <h1>Cashier</h1>
       <CashierCategoryBar categories={categories} category={category} setCategory={setCategory} />
       <CashierItemGrid categoryItems={categoryItems} currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} />
       <CashierOrderTable currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} />

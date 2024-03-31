@@ -9,9 +9,11 @@ function LogoutButton(){
     };
 
     return (
-        <button className={componentStyles.logout + ' ' + componentStyles.card} onClick={handleLogout}>
-            Logout
-        </button>
+        <div className={componentStyles.logoutDiv}>
+            <button className={componentStyles.logout + ' ' + componentStyles.card} onClick={handleLogout}>
+                Logout
+            </button>
+        </div>
     );
 };
 

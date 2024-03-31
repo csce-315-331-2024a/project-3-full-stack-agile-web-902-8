@@ -5,6 +5,8 @@ import componentStyles from "./component.module.css";
 import { MenuItem } from "@/lib/models";
 import { OrderEntry } from "@/app/cashier/page";
 
+// TODO: only show seasonal items if they are in season
+
 interface CashierItemGridProps{
     categoryItems: MenuItem[];
     currentOrder: OrderEntry[];
@@ -20,14 +22,13 @@ interface CashierItemButtonProps{
 function CashierItemGrid({categoryItems, currentOrder, setCurrentOrder} : CashierItemGridProps){
     
     return (
-        <div>
+        <div className={componentStyles.itemGrid}>
             {categoryItems.map((item) => (
                 <CashierItemButton item={item} currentOrder={currentOrder} setCurrentOrder={setCurrentOrder} key={item.id} />
             ))}
         </div>
     );
 }
-
 
 
 function CashierItemButton({item, currentOrder, setCurrentOrder} : CashierItemButtonProps){
@@ -48,7 +49,7 @@ function CashierItemButton({item, currentOrder, setCurrentOrder} : CashierItemBu
     }
 
     return (
-        <button onClick={handleClick}>
+        <button className={componentStyles.itemButton + ' ' + componentStyles.card} onClick={handleClick}>
             {item.name}
         </button>
     );

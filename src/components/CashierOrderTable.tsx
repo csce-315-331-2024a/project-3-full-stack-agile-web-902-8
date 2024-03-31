@@ -21,7 +21,7 @@ interface CashierOrderItemProps{
 function CashierOrderTable({currentOrder, setCurrentOrder} : CashierOrderTableProps){
     
     return(
-        <div>
+        <div className={componentStyles.orderTable + ' ' + componentStyles.card}>
             <h2>Current order</h2>
             <table>
                 <thead>
@@ -65,7 +65,7 @@ function CashierOrderItem({orderEntry, currentOrder, setCurrentOrder} : CashierO
     }
 
     return(
-        <tr>
+        <tr className={componentStyles.orderEntry}>
             <td>
                 <button onClick={handleClick}>X</button>
             </td>
