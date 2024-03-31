@@ -1,17 +1,16 @@
 import React from "react";
 import Link from "next/link";
-import styles from "./component.module.css";
 
-type HeadingProp = 
+type NavbarProps = 
 {
     names: string[];
     hrefs: string[];
 }
 
-function Heading({names, hrefs}: HeadingProp)
+function Navbar({names, hrefs}: NavbarProps)
 {
     return(
-        <nav className={styles.navbar}>
+        <nav>
             <ul>
                 {names.map((link, i) =>(
                     <li key={link}>
@@ -26,4 +25,4 @@ function Heading({names, hrefs}: HeadingProp)
     );
 }
 
-export default Heading;
+export default Navbar;

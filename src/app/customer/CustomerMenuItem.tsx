@@ -1,11 +1,14 @@
 import React from "react";
-import styles from "./component.module.css";
 
 type MenuItemProp = {
     name: string;
     onClick?: () => void;
 }
 
+/**
+ * @param name the name of the menu item
+ * @param onClick the function to change the popup
+ */
 function CustomerMenuItem({name, onClick}: MenuItemProp) {
     return (
         <button onClick={onClick}>{name}</button>

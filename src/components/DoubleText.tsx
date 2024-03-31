@@ -3,11 +3,11 @@ import SideBar from "./SideBar";
 
 type TextProp = 
 {
-    block1: ReactNode;
-    block2: ReactNode;
+    sidebar: typeof SideBar;
+    block: ReactNode;
 }
 
-function DoubleText({block1, block2}: TextProp)
+function Sidebar({sidebar, block}: TextProp)
 {
     return(
         <div style = {{display: "flex"}}>

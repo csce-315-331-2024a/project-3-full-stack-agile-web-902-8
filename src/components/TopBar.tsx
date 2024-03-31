@@ -2,19 +2,19 @@ import React from "react";
 import Navbar from "./Navbar"
 import styles from "./component.module.css";
 
-type SideProp = 
+type TopProp = 
 {
     names: string[];
     hrefs: string[];
 }
 
-function SideBar({names, hrefs}: SideProp)
+function TopBar({names, hrefs}: TopProp)
 {
     return(
-        <div className={styles.sidebar}>
+        <div className={styles.navbar}>
             <Navbar names={names} hrefs={hrefs}/>
         </div>
     );
 }
 
-export default SideBar;
+export default TopBar;

@@ -1,8 +1,9 @@
 'use client'
 import styles from "@/app/page.module.css";
 import customerStyles from "@/app/customer/page.module.css";
-import CustomerMenuItem from "@/components/CustomerMenuItem";
-import CustomerNav from "@/app/customer/customer-nav";
+import GlobalNavbar from "@/components/GlobalNavbar";
+import CustomerNav from "@/app/customer/CustomerNav";
+import CustomerMenuItem from "@/app/customer/CustomerMenuItem";
 import React from "react";
 
 export default function Customer() {
@@ -30,6 +31,8 @@ export default function Customer() {
         <h1 className={customerStyles.pageTitle}>Customer</h1>
 
         <CustomerNav/>
+
+        <GlobalNavbar/>
         
         <nav id={customerStyles["categories"]}>
           <ul>

@@ -68,6 +68,7 @@
     position: relative;
     width: 80%;
     height: 50%;
+    z-index: 10;
 }
 
 button.exit-button {
