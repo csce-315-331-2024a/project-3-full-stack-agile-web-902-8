@@ -30,15 +30,11 @@ export default function Customer() {
 
     return (
       // TODO: Change to global styling
-      <main className={styles.main}>
-      <div className = {styles.description}>
+      <main className={styles.layout}>
         <CustomerNav/>
-
         <div className={styles.body}>
-        <SideBarMain
-            sidebar=<GlobalNavbar/>
-            main=
-            <div>
+        <GlobalNavbar/>
+        <div style={{width: "100%"}} className={customerStyles["main"]}>
             <nav id={customerStyles["categories"]}>
               <ul>
                 {categoryNames.map((name) => 
@@ -66,10 +62,7 @@ export default function Customer() {
                   </button>
                 </section>
             : null }
-
-            </div>
-            />
-        </div>
+          </div>
       </div>
 
             
