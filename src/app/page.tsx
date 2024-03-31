@@ -10,16 +10,16 @@ export default function HomePage() {
       <nav className={styles.nav}>
         {}
         <Link href="/manager" legacyBehavior>
-          <a className={styles.link}>Manager Portal</a>
+          <a className={styles.link}>Manager </a>
         </Link>
         <Link href="/cashier" legacyBehavior>
-          <a className={styles.link}>Cashier Portal</a>
+          <a className={styles.link}>Cashier </a>
         </Link>
         <Link href="/customer" legacyBehavior>
-          <a className={styles.link}>Customer Portal</a>
+          <a className={styles.link}>Customer </a>
         </Link>
         <Link href="/menuboards" legacyBehavior>
-          <a className={styles.link}>Menu Boards</a>
+          <a className={styles.link}>MenuBoards</a>
         </Link>
       </nav>
       {}
