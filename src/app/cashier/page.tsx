@@ -3,6 +3,8 @@
 
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 
+// TODO: For some reason, the menu item buttons sometimes update other menu item quantities instead of their own
+
 import React, { useEffect, useState } from "react";
 
 import LogoutButton from "@/components/LogoutButton";

@@ -170,9 +170,13 @@
     border: none;
 }
 
+.categoryButton.active{
+    background-color: rgb(var(--background-rgb), 0.33);
+}
+
 .categoryButton:hover{
     cursor: pointer;
-    background-color: rgb(var(--background-rgb), 0.5);
+    background-color: rgb(var(--background-rgb), 0.67);
 }
 
 .itemGrid{
