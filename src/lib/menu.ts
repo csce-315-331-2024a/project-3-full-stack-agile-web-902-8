@@ -3,13 +3,18 @@ import { Ingredient, InventoryItem, MenuItem, Order, Seasonal } from "@/lib/mode
 import Error from "@/lib/error";
 import postgres from "postgres";
 
+
+//whenever theres a nested query, make sure to return tsql
+//go back and fix the affecterows
+
+
 export async function getMenuItemByName(itemName: string, tsql = psql): Promise<MenuItem | null> {
     return transact<MenuItem | null, postgres.Error, any>(tsql, new Error("SQL Error in getMenuItemByName", undefined, {itemName: itemName}), async (isql, _) => {
         const result = await isql`SELECT mi.id, mi.name, mi.type, mi.price, mi.net_price, mi.popularity, si.start_date, si.end_date, si.recurring FROM menu_items mi LEFT JOIN seasonal_items si ON mi.id = si.item_id WHERE mi.name = ${itemName}`;
         if (result.length > 0)
         {
             const item = result[0];
-            const ingredients = await getIngredientsByMenuItemId(item.mi.id); //gets ingredietns information 
+            const ingredients = await getIngredientsByMenuItemId(item.mi.id, tsql); //gets ingredietns information 
             const seasonal = new Seasonal(item.si.start_date, item.si.end_date, item.si.recurring); //gets seasonal information
 
             return new MenuItem(item.mi.id, item.mi.name, item.mi.type, item.mi.price, item.mi.net_price, item.mi.popularity, ingredients, seasonal);
@@ -29,7 +34,7 @@ export async function getIngredientsByMenuItemId(item_id: number, tsql = psql): 
 
         //stores the inventory id and amount for each ingredient
         for (const row of result){
-            const InventoryItem = await getInventoryItemById(row.inventory_id); //content of inventory item
+            const InventoryItem = await getInventoryItemById(row.inventory_id, tsql); //content of inventory item
             ingredients.push( new Ingredient(row.InventoryItem, row.amount));
         }
 

@@ -28,6 +28,9 @@ export default function Customer() {
     let setPopUp: Function;
     [showPopUp, setPopUp] = React.useState(false);
 
+    const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
+    const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
+
     return (
       // TODO: Change to global styling
       <main className={styles.layout}>
