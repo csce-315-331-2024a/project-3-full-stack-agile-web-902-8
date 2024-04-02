@@ -1,1 +1,17 @@
-The goal of this first sprint is to set a foundation for our software. We will focus on creating templates for our interfaces as well as choosing design layouts. In addition we will work on connecting our database to our program and convert our backend java files to Javascript files for our webpage. By the end of the sprint we should have a runnable program. 
+The goal of this first sprint is to set a foundation for our software.
+We will focus on creating templates for our each of our interfaces as well as choosing design layouts.
+In addition we will work on connecting our database to our program and convert our backend java files to Javascript files for our webpage.
+By the end of the sprint we should have a runnable program that can be acces through the web.
+
+Number of tasks: 21
+Total number of points: 37
+
+Sprint Backlog:
+
+-Create interface pages
+-Design layout for each interface respectively
+-Convert query functions to JavaScript to be able to implement functionality to our project
+-Set up designs for reusable components
+-Create color scheme css file for our project
+-Set pages to be navigable
+-Braintstorm what we need to change in database schema
