@@ -46,12 +46,6 @@ Use the command `npm run dev` to run the app from the terminal. Then you can ope
 
 First Daily meeting 3/26/24 4:00-4:15pm Via In person Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran
 
-In this meeting we went in a group and discussed how we will use the database and TypeScript together. Alex, since he is more experienced with databases, showed us a structure to follow when converting our java files to TypeScript. We also discussed briefly about how we would structure our frontend pages. We had a few minutes to discuss any concerns and questions members had.
-
 Second Daily meeting 3/28/24 6:00-6:15pm Via Discord call live share Attendees: Jose Ortiz, Marvin Fung, Kyle Palermo, Sandeep Mishra, Nathan Tran
 
-In this meeting we discussed everyone's progress with their tasks. We went by person per person and demoed their parts to make sure they met the task goals. We discussed ways we could improve the interface and took notes for our future sprint. We also discussed things that must get done before our next meeting so we have an MVP.
-
 Third Daily meeting 3/30/24 6:00-6:15pm Via Discord call live share Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran, Marvin Fung
-
-In this meeting we made sure we met everything we needed to have an MVP. We made sure our interfaces were navigable for now just so everything could be accessed. We looked over our backend files to make sure everything was correct. We discussed goals that we need for our future sprint. We went over any design concerns as well to make sure we have an efficient layout.
