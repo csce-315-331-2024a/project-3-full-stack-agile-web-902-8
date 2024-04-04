@@ -1,4 +1,3 @@
-
 export class User {
     id: number;
     username: string;
@@ -6,14 +5,14 @@ export class User {
     role: number;
     hourlySalary: number;
     hours: number;
-    
+
     constructor(
         id: number,
         username: string,
         password: string,
         role: number,
         hourlySalary: number,
-        hours: number,
+        hours: number
     ) {
         this.id = id;
         this.username = username;
@@ -27,10 +26,10 @@ export class User {
 export class OrderItem {
     quantity: number;
     item: MenuItem;
-    
+
     constructor(_quantity: number, _item: MenuItem) {
         this.quantity = _quantity;
-        this.item = _item
+        this.item = _item;
     }
 }
 
@@ -40,13 +39,13 @@ export class Order {
     discount: number;
     total: number;
     items: OrderItem[];
-    
-    constructor (
+
+    constructor(
         id: number,
         timestamp: Date,
         discount: number,
         total: number,
-        items: OrderItem[],
+        items: OrderItem[]
     ) {
         this.id = id;
         this.timestamp = timestamp;
@@ -59,11 +58,8 @@ export class Order {
 export class Ingredient {
     inventoryItem: InventoryItem;
     amount: number;
-    
-    constructor (
-        inventoryItem: InventoryItem,
-        amount: number,
-    ) {
+
+    constructor(inventoryItem: InventoryItem, amount: number) {
         this.inventoryItem = inventoryItem;
         this.amount = amount;
     }
@@ -73,12 +69,8 @@ export class Seasonal {
     startDate: number;
     endDate: number;
     recurring: boolean;
-    
-    constructor (
-        startDate: number,
-        endDate: number,
-        recurring: boolean,
-    ) {
+
+    constructor(startDate: number, endDate: number, recurring: boolean) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.recurring = recurring;
@@ -94,8 +86,8 @@ export class MenuItem {
     popularity: number;
     ingredients: Ingredient[];
     seasonal: Seasonal;
-    
-    constructor (
+
+    constructor(
         id: number,
         name: string,
         type: string,
@@ -103,7 +95,7 @@ export class MenuItem {
         netPrice: number,
         popularity: number,
         ingredients: Ingredient[],
-        seasonal: Seasonal,
+        seasonal: Seasonal
     ) {
         this.id = id;
         this.name = name;
@@ -123,14 +115,14 @@ export class InventoryItem {
     quantity: number;
     minQuantity: number;
     maxQuantity: number;
-    
-    constructor (
+
+    constructor(
         id: number,
         name: string,
         averageCost: number,
         quantity: number,
         minQuantity: number,
-        maxQuantity: number,
+        maxQuantity: number
     ) {
         this.id = id;
         this.name = name;
@@ -145,22 +137,22 @@ export class AggregateItem {
     private id: number;
     private name: string;
     private qty: number;
-  
+
     constructor(id: number, name: string, qty: number) {
-      this.id = id;
-      this.name = name;
-      this.qty = qty;
+        this.id = id;
+        this.name = name;
+        this.qty = qty;
     }
-  
+
     public getId(): number {
-      return this.id;
+        return this.id;
     }
-  
+
     public getName(): string {
-      return this.name;
+        return this.name;
     }
-  
+
     public getQty(): number {
-      return this.qty;
+        return this.qty;
     }
-  }
+}
