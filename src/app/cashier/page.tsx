@@ -197,12 +197,12 @@ export default function Cashier() {
         if (categories.length > 0) {
             setCategory(categories[0]);
         }
-    }, []);
+    }, [categories, items]);
     // TODO: should have initial items
     useEffect(() => {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
-    }, [category]);
+    }, [category, items]);
 
     return (
         <main className={componentStyles.cashierMain}>
