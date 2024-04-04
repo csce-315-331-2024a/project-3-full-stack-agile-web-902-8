@@ -1,7 +1,6 @@
-
-import psql, { transact } from "@/lib/database";
-import { InventoryItem } from "@/lib/models";
-import Error from "@/lib/error";
+import psql, { transact } from '@/lib/database';
+import { InventoryItem } from '@/lib/models';
+import Error from '@/lib/error';
 
 /**
  * Details an inventory item and its usage over a time interval.
@@ -11,13 +10,9 @@ export class ExcessItem {
     item: InventoryItem;
     qtyUsed: number;
 
-    constructor(
-        item: InventoryItem,
-        qtyUsed: number,
-    ) {
+    constructor(item: InventoryItem, qtyUsed: number) {
         this.item = item;
         this.qtyUsed = qtyUsed;
-
     }
 }
 
@@ -27,14 +22,23 @@ export class ExcessItem {
 export async function restockReport(tsql = psql): Promise<InventoryItem[]> {
     return transact<InventoryItem[], any, undefined>(
         tsql,
-        new Error("SQL Error in restock report", undefined, undefined),
+        new Error('SQL Error in restock report', undefined, undefined),
         async (isql, _) => {
             let res: InventoryItem[] = [];
-            for (const { id: id, name: name, avg_cost: avgCost, qty: qty, min_qty: minQty, max_qty: maxQty } of await isql`SELECT * FROM inventory WHERE qty < min_qty;`) {
-                res.push(new InventoryItem(id, name, avgCost, qty, minQty, maxQty));
+            for (const {
+                id: id,
+                name: name,
+                avg_cost: avgCost,
+                qty: qty,
+                min_qty: minQty,
+                max_qty: maxQty,
+            } of await isql`SELECT * FROM inventory WHERE qty < min_qty;`) {
+                res.push(
+                    new InventoryItem(id, name, avgCost, qty, minQty, maxQty)
+                );
             }
             return res;
-        },
+        }
     );
 }
 
@@ -43,10 +47,17 @@ export async function restockReport(tsql = psql): Promise<InventoryItem[]> {
  * @param end the end of the interval to run the statistic on. Default to current time.
  * @return a list of ExcessItem describing  those inventory items that used less than 10% of the stock between begin and end
  */
-export async function excessReport(begin: number, end: number = Date.now(), tsql = psql): Promise<ExcessItem[]> {
-    return transact<ExcessItem[], any, { begin: number, end: number }>(
+export async function excessReport(
+    begin: number,
+    end: number = Date.now(),
+    tsql = psql
+): Promise<ExcessItem[]> {
+    return transact<ExcessItem[], any, { begin: number; end: number }>(
         tsql,
-        new Error("SQL Error in excess Report", undefined, { begin: begin, end: end }),
+        new Error('SQL Error in excess Report', undefined, {
+            begin: begin,
+            end: end,
+        }),
         async (isql, _) => {
             let res: ExcessItem[] = [];
             const qrows = await isql`
@@ -80,11 +91,31 @@ FROM
     ) AS inter
 WHERE inter.iid=inventory.id;
             `;
-            for (const { used_qty: usedQty, id: id, name: name, avg_cost: avgCost, qty: qty, min_qty: minQty, max_qty: maxQty } of qrows) {
-                res.push(new ExcessItem(new InventoryItem(id, name, avgCost, qty, minQty, maxQty), usedQty));
+            for (const {
+                used_qty: usedQty,
+                id: id,
+                name: name,
+                avg_cost: avgCost,
+                qty: qty,
+                min_qty: minQty,
+                max_qty: maxQty,
+            } of qrows) {
+                res.push(
+                    new ExcessItem(
+                        new InventoryItem(
+                            id,
+                            name,
+                            avgCost,
+                            qty,
+                            minQty,
+                            maxQty
+                        ),
+                        usedQty
+                    )
+                );
             }
             return res;
-        },
+        }
     );
 }
 
@@ -96,11 +127,7 @@ export class AggregateItem {
     name: string;
     qty: number;
 
-    constructor(
-        id: number,
-        name: string,
-        qty: number,
-    ) {
+    constructor(id: number, name: string, qty: number) {
         this.id = id;
         this.name = name;
         this.qty = qty;
@@ -112,10 +139,17 @@ export class AggregateItem {
  * @param end the end of the interval to run the statistic on.
  * @return a list of AggregateItems describing all items that were used in the time interval, and their usage amount.
  */
-export async function aggregateInventory(start: number, end: number, tsql = psql): Promise<AggregateItem[]> {
-    return transact<AggregateItem[], any, { start: number, end: number }>(
+export async function aggregateInventory(
+    start: number,
+    end: number,
+    tsql = psql
+): Promise<AggregateItem[]> {
+    return transact<AggregateItem[], any, { start: number; end: number }>(
         tsql,
-        new Error("SQL Error in aggregateInventory", undefined, { start: start, end: end }),
+        new Error('SQL Error in aggregateInventory', undefined, {
+            start: start,
+            end: end,
+        }),
         async (isql, _) => {
             const rows = await isql`
             SELECT
@@ -155,6 +189,6 @@ export async function aggregateInventory(start: number, end: number, tsql = psql
                 res.push(new AggregateItem(id, name, qty));
             }
             return res;
-        },
+        }
     );
 }

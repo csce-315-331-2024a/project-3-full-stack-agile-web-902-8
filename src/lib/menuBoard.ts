@@ -1,9 +1,8 @@
-import psql, { transact } from "@/lib/database"
-import { Seasonal } from "@/lib/models";
-import { AggregateItem } from "@/lib/models";
-import Error from "@/lib/error";
-import postgres from "postgres";
-
+import psql, { transact } from '@/lib/database';
+import { Seasonal } from '@/lib/models';
+import { AggregateItem } from '@/lib/models';
+import Error from '@/lib/error';
+import postgres from 'postgres';
 
 /**
  * Aggregates menu items sold within a specified time frame.
@@ -12,10 +11,20 @@ import postgres from "postgres";
  * @param tsql The SQL transaction function, defaulting to psql.
  * @return A promise that resolves to an array of AggregateItems with their id, name, and quantity bought.
  */
-export async function aggregateMenuItems(startDate: Date, endDate: Date, tsql = psql): Promise<AggregateItem[]>{
-    return transact<AggregateItem[], postgres.Error, any>(tsql, new Error("SQL Error in removeFromInventory", undefined, {startDate, endDate}), async (isql, abort) => { 
-      const items: AggregateItem[] = [];
-      const result = await isql`
+export async function aggregateMenuItems(
+    startDate: Date,
+    endDate: Date,
+    tsql = psql
+): Promise<AggregateItem[]> {
+    return transact<AggregateItem[], postgres.Error, any>(
+        tsql,
+        new Error('SQL Error in removeFromInventory', undefined, {
+            startDate,
+            endDate,
+        }),
+        async (isql, abort) => {
+            const items: AggregateItem[] = [];
+            const result = await isql`
       SELECT
         mi.id,
         mi.name,
@@ -32,12 +41,12 @@ export async function aggregateMenuItems(startDate: Date, endDate: Date, tsql = 
       GROUP BY
         mi.id;
     `;
-      
-      for (const row of result) {
-          items.push(new AggregateItem(row.id, row.name, row.qty));
-      }
-      
-      return items;
 
-    });
+            for (const row of result) {
+                items.push(new AggregateItem(row.id, row.name, row.qty));
+            }
+
+            return items;
+        }
+    );
 }

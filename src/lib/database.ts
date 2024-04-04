@@ -8,10 +8,10 @@ const psql = postgres({
     port: Number(GlobalConfig.db.port),
     database: GlobalConfig.db.database,
     username: GlobalConfig.db.username,
-    password: GlobalConfig.db.password
+    password: GlobalConfig.db.password,
 });
 
-export default psql
+export default psql;
 
 /**
  * Starts a new "transaction" at this level, such that any rollback inside func only rolls back the changes made inside func.
@@ -22,19 +22,22 @@ export default psql
  * @param sql The sql object to execute func on.
  * @param func The function representing the queries to be run on sql.
  */
-export async function beginOrContinue<TResult>(sql: postgres.Sql | postgres.TransactionSql, func: (a: postgres.TransactionSql) => TResult | Promise<TResult>) {
-    if ("savepoint" in sql) {
+export async function beginOrContinue<TResult>(
+    sql: postgres.Sql | postgres.TransactionSql,
+    func: (a: postgres.TransactionSql) => TResult | Promise<TResult>
+) {
+    if ('savepoint' in sql) {
         return (sql as postgres.TransactionSql).savepoint(func);
     }
     return sql.begin(func);
 }
 
-const ABORT_SIGNAL = Symbol("__blubywaff_abort_signal");
+const ABORT_SIGNAL = Symbol('__blubywaff_abort_signal');
 
 type aborter<T> = {
-    [ABORT_SIGNAL]: true,
-    returnValue: T,
-}
+    [ABORT_SIGNAL]: true;
+    returnValue: T;
+};
 
 /**
  * Wraps database interactions to ensure that synchronization and errors are handled correctly.
@@ -63,23 +66,28 @@ export async function transact<TResult, EInner = any, EContext = any>(
     func: (
         sql: postgres.TransactionSql,
         abort: (ret: TResult) => void
-    ) => TResult | Promise<TResult>,
+    ) => TResult | Promise<TResult>
 ): Promise<TResult> {
-    const p = new Promise((R: (v: TResult) => void, F: (e: Error<EInner, EContext> | aborter<TResult>) => void) => {
-        const abort = (v: TResult) => {
-            throw { returnValue: v, [ABORT_SIGNAL]: true };
-        };
+    const p = new Promise(
+        (
+            R: (v: TResult) => void,
+            F: (e: Error<EInner, EContext> | aborter<TResult>) => void
+        ) => {
+            const abort = (v: TResult) => {
+                throw { returnValue: v, [ABORT_SIGNAL]: true };
+            };
 
-        beginOrContinue<TResult>(sql, (sql) => func(sql, abort))
-            .then(v => R(v as TResult))
-            .catch(e => {
-                if (typeof e === "object" && ABORT_SIGNAL in e) {
-                    R(e.returnValue as TResult);
-                } else {
-                    errorTemplate.cause = e;
-                    F(errorTemplate);
-                }
-            });
-    });
+            beginOrContinue<TResult>(sql, (sql) => func(sql, abort))
+                .then((v) => R(v as TResult))
+                .catch((e) => {
+                    if (typeof e === 'object' && ABORT_SIGNAL in e) {
+                        R(e.returnValue as TResult);
+                    } else {
+                        errorTemplate.cause = e;
+                        F(errorTemplate);
+                    }
+                });
+        }
+    );
     return p;
 }
