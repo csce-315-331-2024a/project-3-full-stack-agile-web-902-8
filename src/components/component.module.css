@@ -222,28 +222,15 @@
     border-collapse: collapse;
 }
 
-<<<<<<< HEAD
-
-.orderTable tbody tr:nth-child(odd) td{
+.orderTable tbody tr:nth-child(odd) td {
     background-color: rgba(var(--secondary-rgb), 0.5);
 }
 
-.orderTable tbody tr:nth-child(odd) td:first-child{
+.orderTable tbody tr:nth-child(odd) td:first-child {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
-.orderTable tbody tr:nth-child(odd) td:last-child{
-=======
-.orderTable tbody tr:nth-child(even) td {
-    background-color: rgba(var(--secondary-rgb), 0.5);
-}
-
-.orderTable tbody tr:nth-child(even) td:first-child {
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
-}
-
-.orderTable tbody tr:nth-child(even) td:last-child {
->>>>>>> origin
+.orderTable tbody tr:nth-child(odd) td:last-child {
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
@@ -267,11 +254,7 @@
     height: 2.5rem;
 }
 
-<<<<<<< HEAD
-.orderTable button{
-=======
 .orderTable button {
->>>>>>> origin
     border-radius: var(--border-radius);
     background-color: rgb(var(--text-rgb));
     color: rgb(var(--background-rgb));
@@ -283,21 +266,18 @@
     margin: 0.5rem;
 }
 
-<<<<<<< HEAD
-.orderTable th:first-of-type{
+.orderTable th:first-of-type {
     width: 2.5rem;
     height: 2.5rem;
     background: none;
 }
 
-.orderTable th:nth-of-type(3), .orderTable th:nth-of-type(4){
+.orderTable th:nth-of-type(3),
+.orderTable th:nth-of-type(4) {
     padding-left: 1rem;
 }
 
-.orderTable button:hover{
-=======
 .orderTable button:hover {
->>>>>>> origin
     background-color: rgb(var(--background-rgb));
     color: rgb(var(--text-rgb));
 }
@@ -329,49 +309,44 @@
     border: none;
     border-radius: var(--border-radius);
     padding: 1rem;
-<<<<<<< HEAD
-  }
+}
 
-
-@media (max-width: 399px){
-    .orderTable{
+@media (max-width: 399px) {
+    .orderTable {
         grid-column: 1 / 3;
         grid-row: 5 / 6;
     }
 
-    .orderTable tr{
+    .orderTable tr {
         font-size: 0.75rem;
     }
 
-    .placeOrder{
+    .placeOrder {
         grid-column: 1 / 3;
         grid-row: 6 / 7;
     }
 }
 
-@media (min-width: 400px) and (max-width: 599px){
-    .placeOrder{
+@media (min-width: 400px) and (max-width: 599px) {
+    .placeOrder {
         font-size: 1rem;
     }
 }
 
-@media (min-width: 600px) and (max-width: 799px){
-    .placeOrder{
+@media (min-width: 600px) and (max-width: 799px) {
+    .placeOrder {
         font-size: 2rem;
     }
 }
 
-@media (min-width: 800px) and (max-width: 999px){
-    .placeOrder{
+@media (min-width: 800px) and (max-width: 999px) {
+    .placeOrder {
         font-size: 3rem;
     }
 }
 
-@media (min-width: 1000px){
-    .placeOrder{
+@media (min-width: 1000px) {
+    .placeOrder {
         font-size: 3rem;
     }
 }
-=======
-}
->>>>>>> origin
