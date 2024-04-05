@@ -54,7 +54,7 @@
     flex-direction: column;
     display: flex;
     list-style: none;
-    background-color: white
+    background-color: white;
 }
 
 .sidebar ul {
@@ -77,7 +77,7 @@
     font-family: var(--font-mono);
 }
 
-.table{
+.table {
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -85,19 +85,19 @@
     border-collapse: collapse;
 }
 
-.table th{
+.table th {
     border: 1px solid #ddd;
     padding: 6px;
     text-align: center;
 }
 
-.table td{
+.table td {
     border: 1px solid #ddd;
     padding: 6px;
     text-align: center;
 }
 
-.container{
+.container {
     position: relative;
     margin: 0;
     padding: 1rem;
@@ -106,27 +106,27 @@
     border-radius: var(--border-radius);
 }
 
-.logout{
+.logout {
     color: rgb(var(--text-rgb));
     background-color: rgb(var(--secondary-rgb));
     font-family: var(--font);
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: fit-content;
     transition: 250ms;
 }
 
-.logout:hover{
+.logout:hover {
     cursor: pointer;
     background-color: rgb(var(--secondary-rgb), 0.5);
 }
 
-.placeOrder{
+.placeOrder {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--primary-rgb));
     font-family: var(--font);
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     transition: 250ms;
@@ -137,13 +137,13 @@
     margin: auto;
 }
 
-.placeOrder:hover{
+.placeOrder:hover {
     cursor: pointer;
     background-color: rgb(var(--primary-rgb), 0.5);
     color: rgb(var(--text-rgb));
 }
 
-.categoryBar{
+.categoryBar {
     background-color: rgb(var(--secondary-rgb));
     border-radius: var(--border-radius);
     display: flex;
@@ -158,11 +158,11 @@
     margin: 0 auto;
 }
 
-.categoryButton{
+.categoryButton {
     color: rgb(var(--text-rgb));
     background-color: rgb(var(--secondary-rgb));
     font-family: var(--font);
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     transition: 250ms;
@@ -170,16 +170,16 @@
     border: none;
 }
 
-.categoryButton.active{
+.categoryButton.active {
     background-color: rgb(var(--background-rgb), 0.33);
 }
 
-.categoryButton:hover{
+.categoryButton:hover {
     cursor: pointer;
     background-color: rgb(var(--background-rgb), 0.67);
 }
 
-.itemGrid{
+.itemGrid {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -189,39 +189,40 @@
     margin: -1rem auto;
 }
 
-.itemButton{
+.itemButton {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--accent-rgb));
     font-family: var(--font);
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     transition: 250ms;
     margin: 1rem;
 }
 
-.itemButton:hover{
+.itemButton:hover {
     cursor: pointer;
     background-color: rgb(var(--accent-rgb), 0.5);
     color: rgb(var(--text-rgb));
 }
 
-.orderTable{
+.orderTable {
     grid-column: 1 / 2;
     grid-row: 5 / 6;
     font-family: var(--font);
     background-color: rgba(var(--secondary-rgb), 0.5);
 }
 
-.orderTable h2{
+.orderTable h2 {
     text-align: center;
 }
 
-.orderTable table{
+.orderTable table {
     width: 100%;
     border-collapse: collapse;
 }
 
+<<<<<<< HEAD
 
 .orderTable tbody tr:nth-child(odd) td{
     background-color: rgba(var(--secondary-rgb), 0.5);
@@ -232,27 +233,45 @@
 }
 
 .orderTable tbody tr:nth-child(odd) td:last-child{
+=======
+.orderTable tbody tr:nth-child(even) td {
+    background-color: rgba(var(--secondary-rgb), 0.5);
+}
+
+.orderTable tbody tr:nth-child(even) td:first-child {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.orderTable tbody tr:nth-child(even) td:last-child {
+>>>>>>> origin
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
-.orderTable tr td:nth-child(2), .orderTable tr th:nth-child(2){
+.orderTable tr td:nth-child(2),
+.orderTable tr th:nth-child(2) {
     text-align: left;
 }
 
-.orderTable tr td:nth-child(3), .orderTable tr th:nth-child(3){
+.orderTable tr td:nth-child(3),
+.orderTable tr th:nth-child(3) {
     text-align: right;
 }
 
-.orderTable tr td:nth-child(4), .orderTable tr th:nth-child(4){
+.orderTable tr td:nth-child(4),
+.orderTable tr th:nth-child(4) {
     text-align: right;
     padding-right: 1rem;
 }
 
-.orderTable tfoot tr{
+.orderTable tfoot tr {
     height: 2.5rem;
 }
 
+<<<<<<< HEAD
 .orderTable button{
+=======
+.orderTable button {
+>>>>>>> origin
     border-radius: var(--border-radius);
     background-color: rgb(var(--text-rgb));
     color: rgb(var(--background-rgb));
@@ -264,6 +283,7 @@
     margin: 0.5rem;
 }
 
+<<<<<<< HEAD
 .orderTable th:first-of-type{
     width: 2.5rem;
     height: 2.5rem;
@@ -275,11 +295,14 @@
 }
 
 .orderTable button:hover{
+=======
+.orderTable button:hover {
+>>>>>>> origin
     background-color: rgb(var(--background-rgb));
     color: rgb(var(--text-rgb));
 }
 
-.logoutDiv{
+.logoutDiv {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -288,24 +311,25 @@
     grid-row: 1 / 2;
 }
 
-.cashierMain{
-    display:grid;
+.cashierMain {
+    display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     padding: 1rem;
 }
 
-.cashierMain h1{
+.cashierMain h1 {
     font-family: var(--font);
     text-align: center;
     grid-column: 1 / 3;
     grid-row: 2 / 3;
 }
 
-.card{
+.card {
     border: none;
     border-radius: var(--border-radius);
     padding: 1rem;
+<<<<<<< HEAD
   }
 
 
@@ -348,3 +372,6 @@
         font-size: 3rem;
     }
 }
+=======
+}
+>>>>>>> origin

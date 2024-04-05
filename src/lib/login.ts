@@ -1,13 +1,13 @@
-import psql, { transact } from "@/lib/database";
-import postgres from "postgres";
-import Error from "@/lib/error";
+import psql, { transact } from '@/lib/database';
+import postgres from 'postgres';
+import Error from '@/lib/error';
 
-export const LOGIN_FAILED = Symbol("FAILED");
-export const LOGIN_MANAGER = Symbol("MANAGER");
-export const LOGIN_CASHIER = Symbol("CASHIER");
-export const LOGIN_CUSTOMER = Symbol("CUSTOMER");
-export type LoginResult
-    = typeof LOGIN_FAILED
+export const LOGIN_FAILED = Symbol('FAILED');
+export const LOGIN_MANAGER = Symbol('MANAGER');
+export const LOGIN_CASHIER = Symbol('CASHIER');
+export const LOGIN_CUSTOMER = Symbol('CUSTOMER');
+export type LoginResult =
+    | typeof LOGIN_FAILED
     | typeof LOGIN_MANAGER
     | typeof LOGIN_CASHIER
     | typeof LOGIN_CUSTOMER;
@@ -19,24 +19,33 @@ export type LoginResult
  * @return LOGIN_FAILED if the username is not present or the password did not match, otherwise,
  * returns the LoginResult representing the user's role.
  */
-export async function attemptLogin(username: string, password: string, tsql = psql): Promise<LoginResult> {
-    return transact<LoginResult, postgres.Error, {username: string, hashedPassword: string}>(
-        tsql, new Error("SQL Error in attemptLogin", undefined, {username: username, hashedPassword: password}),
+export async function attemptLogin(
+    username: string,
+    password: string,
+    tsql = psql
+): Promise<LoginResult> {
+    return transact<
+        LoginResult,
+        postgres.Error,
+        { username: string; hashedPassword: string }
+    >(
+        tsql,
+        new Error('SQL Error in attemptLogin', undefined, {
+            username: username,
+            hashedPassword: password,
+        }),
         async (isql, _) => {
-            const rows = await isql`SELECT password, manager FROM users WHERE username = ${username};`;
-            if (rows.length === 0)
-                return LOGIN_FAILED
+            const rows =
+                await isql`SELECT password, manager FROM users WHERE username = ${username};`;
+            if (rows.length === 0) return LOGIN_FAILED;
 
-            const [{password: hashed, manager: isManager}] = rows;
+            const [{ password: hashed, manager: isManager }] = rows;
 
-            if (!verify(password, hashed))
-                return LOGIN_FAILED as LoginResult;
+            if (!verify(password, hashed)) return LOGIN_FAILED as LoginResult;
 
-            if (isManager)
-                return LOGIN_MANAGER as LoginResult;
-            else
-                return LOGIN_CASHIER as LoginResult;
-        },
+            if (isManager) return LOGIN_MANAGER as LoginResult;
+            else return LOGIN_CASHIER as LoginResult;
+        }
     );
 }
 
@@ -67,15 +76,17 @@ async function hash(str: string): Promise<THashPhrase> {
     salted.set(salt, len);
 
     // compute the hash of salted
-    const digest = new Uint8Array(await crypto.subtle.digest(`SHA-${hashSize*8}`, salted));
+    const digest = new Uint8Array(
+        await crypto.subtle.digest(`SHA-${hashSize * 8}`, salted)
+    );
 
     // produce HashPhrase by concat digest salt
-    const full = new Uint8Array(2*hashSize);
+    const full = new Uint8Array(2 * hashSize);
     full.set(digest);
     full.set(salt, hashSize);
 
     // convert result to base64
-    const res = Buffer.from(full).toString("base64");
+    const res = Buffer.from(full).toString('base64');
     return res;
 }
 
@@ -84,10 +95,10 @@ async function hash(str: string): Promise<THashPhrase> {
  */
 async function verify(str: string, hashPhrase: THashPhrase): Promise<boolean> {
     // convert hash from base64 to binary
-    const buf = new Uint8Array(Buffer.from(hashPhrase, "base64"));
+    const buf = new Uint8Array(Buffer.from(hashPhrase, 'base64'));
 
     // split hashphrase into salt and hash
-    const salt = buf.subarray(hashSize, 2*hashSize);
+    const salt = buf.subarray(hashSize, 2 * hashSize);
     const hashPart = buf.subarray(0, hashSize);
 
     // convert str to utf-8 bytes
@@ -100,7 +111,9 @@ async function verify(str: string, hashPhrase: THashPhrase): Promise<boolean> {
     salted.set(salt, len);
 
     // compute the hash of salted
-    const digest = new Uint8Array(await crypto.subtle.digest(`SHA-${hashSize*8}`, salted));
+    const digest = new Uint8Array(
+        await crypto.subtle.digest(`SHA-${hashSize * 8}`, salted)
+    );
 
     // compare that digest is equal to original hashpart
     return digest.every((v, i) => hashPart.at(i) === v);

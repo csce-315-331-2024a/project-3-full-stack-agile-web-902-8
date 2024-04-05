@@ -1,0 +1,16 @@
+The goal of the second sprint is to connect the already implemented interfaces with full functionality (edit, remove, add, etc).
+We will create the missing pages in the customer and manager interface with their functionality (mostly statstics information) so we have a fully implemented program.
+In addition We will implement our APIs that will help us with our personas we are accounting for (touch interaction, text to audio, transalation).
+By the end of the sprint we will be able to access each feature and have full functionality with features to help our personas.
+
+Number of tasks: 20
+Total number of points: 52
+
+Sprint Backlog:
+
+- Add full functionality to each major interface
+- Create additional pages needed in customer and manager interfaces with correct functional implementation
+- Go back modify our global css file
+- Modify database schema
+- Implement APIs that will help our user personas
+- Create proper login page so users acces appropriate interfaces

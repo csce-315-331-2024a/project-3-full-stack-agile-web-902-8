@@ -54,7 +54,7 @@
     flex-direction: column;
     display: flex;
     list-style: none;
-    background-color: white
+    background-color: white;
 }
 
 .sidebar ul {
