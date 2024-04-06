@@ -21,6 +21,7 @@ import {
     Seasonal,
     Order,
 } from '@/lib/models';
+import { getAllMenuTypes } from '@/lib/menu';
 
 // DEBUG: Placeholder menu item data:
 const cheese = new Ingredient(
@@ -188,16 +189,17 @@ export default function Cashier() {
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
     useEffect(() => {
-        // TODO: Fetch categories from the server
-        const uniqueCategories = Array.from(
-            new Set(items.map((item) => item.type))
-        );
-        setCategories(uniqueCategories);
-
-        if (categories.length > 0) {
-            setCategory(categories[0]);
+        async function fetchAllMenuTypes(){
+            const response = await fetch('/api/menuTypes');
+            const menuTypes = await response.json();
+            setCategories(menuTypes);
+            if(category === '' && menuTypes.length > 0){
+                setCategory(menuTypes[0]);
+            }
         }
-    }, [categories, items]);
+        fetchAllMenuTypes();
+    });
+
     // TODO: should have initial items
     useEffect(() => {
         const itemsInCategory = items.filter((item) => item.type === category);
