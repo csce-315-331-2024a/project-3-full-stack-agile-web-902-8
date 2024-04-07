@@ -11,7 +11,6 @@ import LogoutButton from '@/components/LogoutButton';
 import CashierCategoryBar from '@/components/CashierCategoryBar';
 import CashierItemGrid from '@/components/CashierItemGrid';
 import CashierOrderTable from '@/components/CashierOrderTable';
-
 import componentStyles from '@/components/component.module.css';
 
 import {
@@ -21,7 +20,6 @@ import {
     Seasonal,
     Order,
 } from '@/lib/models';
-import { getAllMenuTypes } from '@/lib/menu';
 
 // DEBUG: Placeholder menu item data:
 const cheese = new Ingredient(
@@ -184,7 +182,7 @@ export interface OrderEntry {
 export default function Cashier() {
     const [categories, setCategories] = useState<string[]>([]);
     const [category, setCategory] = useState('');
-    const [items, setItems] = useState<MenuItem[]>(sampleMenuItems);
+    const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
@@ -200,11 +198,19 @@ export default function Cashier() {
         fetchAllMenuTypes();
     });
 
-    // TODO: should have initial items
     useEffect(() => {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
+
+    useEffect(() => {
+        async function fetchAllMenuItems(){
+            const response = await fetch('/api/menuItems');
+            const menuItems = await response.json();
+            setItems(menuItems);
+        }
+        fetchAllMenuItems();
+    }, [])
 
     return (
         <main className={componentStyles.cashierMain}>
