@@ -20,10 +20,8 @@ export async function getMenuItemsInSeason(
         tsql,
         new Error('SQL Error in getMenuItemsInSeason', undefined),
         async (isql, _) => {
-            console.log("Getting menu items in season");
             const now = new Date();
             const date = now.toISOString().split('T')[0];
-            console.log("Date: " + date);
             const result = await isql`
             SELECT
                 mi.id, mi.name, mi.type, mi.price, mi.net_price, mi.popularity,
@@ -39,20 +37,10 @@ export async function getMenuItemsInSeason(
                 )
             `;
             
-            console.log("Result: " + result);
             const menuItems: MenuItem[] = [];
             for(const row of result){
-                console.log("Row: " + row);
-                try{
-                    console.log("MenuItem ID: " + row.id);
-                }
-                catch{
-                    console.log("MenuItem ID reference isn't working");
-                }
                 const ingredients = await getIngredientsByMenuItemId(row.id, tsql);
-                console.log("Ingredients: " + ingredients);
                 const seasonal = row.start_date ? new Seasonal(row.start_date, row.end_date, row.recurring) : null;
-                console.log("Seasonal: " + seasonal);
                 menuItems.push(new MenuItem(
                     row.id,
                     row.name,
@@ -63,9 +51,7 @@ export async function getMenuItemsInSeason(
                     ingredients,
                     seasonal
                 ));
-                console.log("MenuItems: " + menuItems);
             }
-            console.log("Completed MenuItems: " + menuItems);
             return menuItems;
         }
     );
