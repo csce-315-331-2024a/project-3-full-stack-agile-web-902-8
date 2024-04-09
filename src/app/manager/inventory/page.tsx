@@ -3,8 +3,7 @@ import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
-import OrderTable from '@/components/OrderTable';
-import styles from '../page.module.css';
+import styles from '@/app/page.module.css';
 
 export default function Manager() {
     const Items = [
@@ -25,11 +24,6 @@ export default function Manager() {
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
     const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
-    const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
-    const tableBody = [
-        ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
-        ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
-    ];
 
     return (
         <main className={styles.main}>
@@ -41,11 +35,10 @@ export default function Manager() {
                     <DoubleText
                         block1=<SideBar names={Items2} hrefs={Links2} />
                         block2=<div>
-                            <h1>Manager Page</h1>
+                            <h1>Manage Inventory</h1>
 
                             <PageButton>Refresh</PageButton>
 
-                            <OrderTable heading={tableHead} rows={tableBody} />
                         </div>
                     />
                 </div>
