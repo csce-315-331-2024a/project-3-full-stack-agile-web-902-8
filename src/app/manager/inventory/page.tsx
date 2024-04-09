@@ -1,11 +1,14 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
 import styles from '@/app/page.module.css';
+import InventoryAdjuster from '@/components/InventoryAdjuster';
+import { InventoryItem } from '@/lib/models';
 
-export default function Manager() {
+export default function Inventory() {
     const Items = [
         'Home',
         'Menu',
@@ -24,6 +27,14 @@ export default function Manager() {
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
     const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
+    const inventoryItem: InventoryItem = new InventoryItem(
+        1,
+        'Soup',
+        2,
+        100,
+        10,
+        200
+    );
 
     return (
         <main className={styles.main}>
@@ -38,6 +49,7 @@ export default function Manager() {
                             <h1>Manage Inventory</h1>
 
                             <PageButton>Refresh</PageButton>
+                            <InventoryAdjuster item={inventoryItem} />
                         </div>
                     />
                 </div>
