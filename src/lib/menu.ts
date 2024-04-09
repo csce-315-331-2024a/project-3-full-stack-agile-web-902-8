@@ -13,7 +13,8 @@ import postgres from 'postgres';
  * Retrieves a menu item by its name from the database.
  *
  * @param itemName - The name of the menu item to retrieve.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
+ *
  * @returns A Promise resolving to a MenuItem object if found, or null if not found.
  */
 export async function getMenuItemByName(
@@ -66,7 +67,7 @@ export async function getMenuItemByName(
  * Retrieves ingredients for a menu item specified by its ID from the database.
  *
  * @param item_id - The ID of the menu item to retrieve ingredients for.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of Ingredient objects representing the ingredients for the specified menu item.
  */
 export async function getIngredientsByMenuItemId(
@@ -103,7 +104,7 @@ export async function getIngredientsByMenuItemId(
  * Retrieves an inventory item by its ID from the database.
  *
  * @param inventory_id - The ID of the inventory item to retrieve.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an InventoryItem object representing the inventory item with the specified ID.
  */
 export async function getInventoryItemById(
@@ -137,7 +138,7 @@ export async function getInventoryItemById(
  * Adds a new menu item to the database.
  *
  * @param menuItem - The MenuItem object representing the menu item to be added.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the menu item is successfully added, false otherwise.
  */
 export async function addMenuItem(
@@ -183,7 +184,7 @@ export async function addMenuItem(
  * Adds ingredients for a menu item to the database.
  *
  * @param menuItem - The MenuItem object representing the menu item for which ingredients are to be added.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredients are successfully added, false otherwise.
  */
 export async function addIngredients(
@@ -224,7 +225,7 @@ export async function addIngredients(
  * Finds the ID of an inventory item by its name in the database.
  *
  * @param name - The name of the inventory item to find.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to the ID of the inventory item if found, or -1 if not found.
  */
 export async function findInventoryIdByName(
@@ -252,7 +253,7 @@ export async function findInventoryIdByName(
  * @param item_id - The ID of the menu item to which the ingredient is added.
  * @param inventory_id - The ID of the inventory item being used as the ingredient.
  * @param amount - The amount of the ingredient required for the menu item.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredient is successfully added, false otherwise.
  */
 export async function addIngredient(
@@ -286,7 +287,7 @@ export async function addIngredient(
  * Updates a menu item in the database.
  *
  * @param menuItem - The MenuItem object representing the menu item to be updated.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the menu item is successfully updated, false otherwise.
  */
 export async function updateMenuItem(
@@ -342,7 +343,7 @@ export async function updateMenuItem(
  * Finds the ID of a menu item by its name in the database.
  *
  * @param name - The name of the menu item to find.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to the ID of the menu item if found, or -1 if not found.
  */
 export async function findMenuItemIdByName(
@@ -368,7 +369,7 @@ export async function findMenuItemIdByName(
  * Updates the ingredients for a menu item in the database.
  *
  * @param menuItem - The MenuItem object representing the menu item whose ingredients are to be updated.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredients are successfully updated, false otherwise.
  */
 export async function updateIngredients(
@@ -490,7 +491,7 @@ export async function updateIngredients(
  *
  * @param item_id - The ID of the menu item from which the ingredient is to be deleted.
  * @param inventory_id - The ID of the inventory item representing the ingredient to be deleted.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredient is successfully deleted, false otherwise.
  */
 export async function deleteIngredient(
@@ -523,7 +524,7 @@ export async function deleteIngredient(
  * @param item_id - The ID of the menu item whose ingredient amount is to be updated.
  * @param inventory_id - The ID of the inventory item representing the ingredient.
  * @param amount - The new amount of the ingredient.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredient amount is successfully updated, false otherwise.
  */
 export async function updateIngredient(
@@ -556,7 +557,7 @@ export async function updateIngredient(
  * Deletes a menu item from the database.
  *
  * @param menuItem - The MenuItem object representing the menu item to be deleted.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the menu item is successfully deleted, false otherwise.
  */
 export async function deleteMenuItem(
@@ -602,7 +603,7 @@ export async function deleteMenuItem(
  * Deletes all ingredients associated with a menu item from the database.
  *
  * @param menuItem - The MenuItem object representing the menu item whose ingredients are to be deleted.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredients are successfully deleted, false otherwise.
  */
 export async function deleteIngredients(
@@ -631,7 +632,7 @@ export async function deleteIngredients(
  * Adds a seasonal item entry for a menu item to the database.
  *
  * @param menuItem - The MenuItem object representing the menu item for which the seasonal item entry is to be added.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the seasonal item entry is successfully added, false otherwise.
  */
 export async function addSeasonalItem(
@@ -665,7 +666,7 @@ export async function addSeasonalItem(
  * Updates the seasonal item entry for a menu item in the database.
  *
  * @param menuItem - The MenuItem object representing the menu item whose seasonal item entry is to be updated.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the seasonal item entry is successfully updated, false otherwise.
  */
 export async function updateSeasonalItem(
@@ -717,7 +718,7 @@ export async function updateSeasonalItem(
  * Adds a new menu item or updates an existing one in the database.
  *
  * @param menuItem - The MenuItem object representing the menu item to be added or updated.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the menu item is successfully added or updated, false otherwise.
  */
 export async function addOrUpdate(
@@ -765,7 +766,7 @@ export async function addOrUpdate(
 /**
  * Retrieves all distinct menu types from the database.
  *
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of strings representing all distinct menu types.
  */
 export async function getAllMenuTypes(tsql = psql): Promise<string[]> {
@@ -789,7 +790,7 @@ export async function getAllMenuTypes(tsql = psql): Promise<string[]> {
 /**
  * Retrieves the names of all menu items from the database.
  *
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of strings representing the names of all menu items.
  */
 export async function getAllMenuItemNames(tsql = psql): Promise<string[]> {
@@ -814,7 +815,7 @@ export async function getAllMenuItemNames(tsql = psql): Promise<string[]> {
  * Retrieves the names of menu items of a specific type from the database.
  *
  * @param type - The type of menu items to retrieve.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of strings representing the names of menu items of the specified type.
  */
 export async function getMenuItemNamesByType(
@@ -844,7 +845,7 @@ export async function getMenuItemNamesByType(
  * Removes a menu item from the database by its name.
  *
  * @param name - The name of the menu item to be removed.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the menu item is successfully removed, false otherwise.
  */
 export async function remove(name: string, tsql = psql): Promise<boolean> {
@@ -868,7 +869,7 @@ export async function remove(name: string, tsql = psql): Promise<boolean> {
  * Checks if a menu item with the given name exists in the database.
  *
  * @param name - The name of the menu item to check for existence.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if a menu item with the given name exists in the database, false otherwise.
  */
 export async function existsInDatabase(
@@ -896,7 +897,7 @@ export async function existsInDatabase(
  *
  * @param name - The name of the menu item from which ingredients are to be removed.
  * @param ingredientsToRemove - An array of strings representing the names of ingredients to be removed.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to true if the ingredients are successfully removed, false otherwise.
  */
 export async function removeIngredients(
@@ -954,7 +955,7 @@ export async function removeIngredients(
  * Retrieves the names of menu items of a specific type that are currently in season from the database.
  *
  * @param type - The type of menu items to retrieve.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of strings representing the names of menu items of the specified type that are currently in season.
  */
 export async function getMenuItemNamesByTypeAndInSeason(
@@ -1003,7 +1004,7 @@ class Pair<T, U> {
  *
  * @param begin - The start date of the time range.
  * @param end - The end date of the time range.
- * @param tsql - Optional parameter for specifying the SQL dialect. Default is PostgreSQL.
+ * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of objects representing pairs of menu item names along with their frequency of being sold.
  */
 export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
