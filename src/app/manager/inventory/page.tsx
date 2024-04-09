@@ -38,7 +38,6 @@ export default function Manager() {
                             <h1>Manage Inventory</h1>
 
                             <PageButton>Refresh</PageButton>
-
                         </div>
                     />
                 </div>
