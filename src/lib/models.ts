@@ -85,7 +85,7 @@ export class MenuItem {
     netPrice: number;
     popularity: number;
     ingredients: Ingredient[];
-    seasonal: Seasonal;
+    seasonal: Seasonal | null;
 
     constructor(
         id: number,
@@ -95,7 +95,7 @@ export class MenuItem {
         netPrice: number,
         popularity: number,
         ingredients: Ingredient[],
-        seasonal: Seasonal
+        seasonal: Seasonal | null
     ) {
         this.id = id;
         this.name = name;
