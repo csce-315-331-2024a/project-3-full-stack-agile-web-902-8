@@ -3,10 +3,8 @@
 
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 
-// TODO: For some reason, the menu item buttons sometimes update other menu item quantities instead of their own
-// TODO: Discount button
+// TODO: Discount button and no tax button
 // TODO: Numbers should use monospace font, although we should consider adding a fancier font for this
-// TODO: Make sure that orders with no items are not placed
 
 import React, { useEffect, useState } from 'react';
 
@@ -40,11 +38,11 @@ export default function Cashier() {
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
     useEffect(() => {
-        async function fetchAllMenuTypes(){
+        async function fetchAllMenuTypes() {
             const response = await fetch('/api/menuTypes');
             const menuTypes = await response.json();
             setCategories(menuTypes);
-            if(category === '' && menuTypes.length > 0){
+            if (category === '' && menuTypes.length > 0) {
                 setCategory(menuTypes[0]);
             }
         }
@@ -57,18 +55,22 @@ export default function Cashier() {
     }, [category, items]);
 
     useEffect(() => {
-        async function fetchAllMenuItems(){
-            console.log("Fetching menu items may take a while sometimes, especially if you're running locally.");
+        async function fetchAllMenuItems() {
+            console.log(
+                "Fetching menu items may take a while sometimes, especially if you're running locally."
+            );
             const response = await fetch('/api/menuItems');
             const menuItems = await response.json();
             setItems(menuItems);
-            console.log("Fetching should be done now.");
+            console.log('Fetching should be done now.');
         }
         fetchAllMenuItems();
-    }, [])
+    }, []);
 
-    // TODO: also clear the order from the ui
-    async function placeOrder(currentOrder: OrderEntry[], isDiscounted: boolean) {
+    async function placeOrder(
+        currentOrder: OrderEntry[],
+        isDiscounted: boolean
+    ) {
         if (currentOrder.length === 0) {
             console.log('No items in order');
             return;
@@ -76,13 +78,16 @@ export default function Cashier() {
 
         const id = 0;
         const timestamp = new Date();
-        let total = currentOrder.reduce((acc, orderEntry) =>
-            acc + orderEntry.item.price * orderEntry.quantity,
+        let total = currentOrder.reduce(
+            (acc, orderEntry) =>
+                acc + orderEntry.item.price * orderEntry.quantity,
             0
         );
         const discount = isDiscounted ? total * discountRate : 0;
         total -= discount;
-        const items = currentOrder.map((orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item));
+        const items = currentOrder.map(
+            (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
+        );
         const order = new Order(id, timestamp, discount, total, items);
 
         const response = await fetch('/api/addOrder', {
@@ -93,7 +98,7 @@ export default function Cashier() {
             body: JSON.stringify(order),
         });
 
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
 

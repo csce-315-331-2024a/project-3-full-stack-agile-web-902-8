@@ -3,7 +3,7 @@ import { getMenuItemsInSeason } from '@/lib/menu';
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse,
+    res: NextApiResponse
 ) {
     console.log('GET /api/menuItems');
     try {

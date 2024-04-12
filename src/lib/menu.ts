@@ -13,9 +13,7 @@ import { minify } from 'next/dist/build/swc';
 //whenever theres a nested query, make sure to return tsql
 //go back and fix the affecterows
 
-export async function getMenuItemsInSeason(
-    tsql = psql
-): Promise<MenuItem[]> {
+export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
     return transact<MenuItem[], postgres.Error, any>(
         tsql,
         new Error('SQL Error in getMenuItemsInSeason', undefined),
@@ -36,21 +34,28 @@ export async function getMenuItemsInSeason(
                     AND EXTRACT(DAY FROM si.end_date) >= EXTRACT(DAY FROM ${date}::date))
                 )
             `;
-            
+
             const menuItems: MenuItem[] = [];
-            for(const row of result){
-                const ingredients = await getIngredientsByMenuItemId(row.id, tsql);
-                const seasonal = row.start_date ? new Seasonal(row.start_date, row.end_date, row.recurring) : null;
-                menuItems.push(new MenuItem(
+            for (const row of result) {
+                const ingredients = await getIngredientsByMenuItemId(
                     row.id,
-                    row.name,
-                    row.type,
-                    row.price,
-                    row.net_price,
-                    row.popularity,
-                    ingredients,
-                    seasonal
-                ));
+                    tsql
+                );
+                const seasonal = row.start_date
+                    ? new Seasonal(row.start_date, row.end_date, row.recurring)
+                    : null;
+                menuItems.push(
+                    new MenuItem(
+                        row.id,
+                        row.name,
+                        row.type,
+                        row.price,
+                        row.net_price,
+                        row.popularity,
+                        ingredients,
+                        seasonal
+                    )
+                );
             }
             return menuItems;
         }

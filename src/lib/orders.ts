@@ -12,7 +12,7 @@ export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
         tsql,
         new Error('SQL Error in addOrder', undefined, o),
         async (isql, _) => {
-            if(o.items.length === 0) {
+            if (o.items.length === 0) {
                 console.error('Order has no items', o);
                 throw new Error('Order has no items', undefined, o);
             }
@@ -22,20 +22,24 @@ export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
                 VALUES (${o.timestamp}, ${o.discount}, ${o.total}) 
                 RETURNING id;
             `;
-            if(orderInsertResult.rowCount === 0) {
+            if (orderInsertResult.rowCount === 0) {
                 console.error('Order insert failed', o);
                 throw new Error('Order insert failed', undefined, o);
             }
             const id = orderInsertResult[0].id;
-            
-            for (const item of o.items) {               
+
+            for (const item of o.items) {
                 const result = await isql`
                     INSERT INTO order_items (order_id, item_id, qty) 
                     VALUES (${id}, ${item.item.id}, ${item.quantity});
                 `;
-                if(result.rowCount === 0) {
+                if (result.rowCount === 0) {
                     console.error('Order item insert failed', item);
-                    throw new Error('Order item insert failed', undefined, item);
+                    throw new Error(
+                        'Order item insert failed',
+                        undefined,
+                        item
+                    );
                 }
             }
 
