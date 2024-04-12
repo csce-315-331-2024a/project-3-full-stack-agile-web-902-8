@@ -7,6 +7,7 @@
 // TODO: Discount button
 // TODO: Numbers should use monospace font, although we should consider adding a fancier font for this
 // TODO: Make sure that orders with no items are not placed
+
 import React, { useEffect, useState } from 'react';
 
 import LogoutButton from '@/components/LogoutButton';
@@ -26,38 +27,6 @@ import {
 
 const discountRate = 0.1;
 
-// TODO: also clear the order from the ui
-async function placeOrder(currentOrder: OrderEntry[], isDiscounted: boolean) {
-    const id = 0;
-    const timestamp = new Date();
-    let total = currentOrder.reduce((acc, orderEntry) =>
-        acc + orderEntry.item.price * orderEntry.quantity,
-        0
-    );
-    const discount = isDiscounted ? total * discountRate : 0;
-    total -= discount;
-    const items = currentOrder.map((orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item));
-    const order = new Order(id, timestamp, discount, total, items);
-
-    const response = await fetch('/api/addOrder', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(order),
-    });
-
-    if(!response.ok){
-        throw new Error(`Error: ${response.statusText}`);
-    }
-
-    console.log('Order placed:');
-    currentOrder.forEach((orderEntry) => {
-        console.log(`${orderEntry.quantity}x ${orderEntry.item.name}`);
-    });
-}
-
-// TODO: This should just be OrderItem at this point and should probably be refactored
 export interface OrderEntry {
     item: MenuItem;
     quantity: number;
@@ -97,6 +66,44 @@ export default function Cashier() {
         }
         fetchAllMenuItems();
     }, [])
+
+    // TODO: also clear the order from the ui
+    async function placeOrder(currentOrder: OrderEntry[], isDiscounted: boolean) {
+        if (currentOrder.length === 0) {
+            console.log('No items in order');
+            return;
+        }
+
+        const id = 0;
+        const timestamp = new Date();
+        let total = currentOrder.reduce((acc, orderEntry) =>
+            acc + orderEntry.item.price * orderEntry.quantity,
+            0
+        );
+        const discount = isDiscounted ? total * discountRate : 0;
+        total -= discount;
+        const items = currentOrder.map((orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item));
+        const order = new Order(id, timestamp, discount, total, items);
+
+        const response = await fetch('/api/addOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        });
+
+        if(!response.ok){
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        console.log('Order placed:');
+        currentOrder.forEach((orderEntry) => {
+            console.log(`${orderEntry.quantity}x ${orderEntry.item.name}`);
+        });
+
+        setCurrentOrder([]);
+    }
 
     return (
         <main className={componentStyles.cashierMain}>
