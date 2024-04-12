@@ -22,7 +22,7 @@ export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
                 VALUES (${o.timestamp}, ${o.discount}, ${o.total}) 
                 RETURNING id;
             `;
-            if (orderInsertResult.rowCount === 0) {
+            if (orderInsertResult.count === 0) {
                 console.error('Order insert failed', o);
                 throw new Error('Order insert failed', undefined, o);
             }
@@ -33,7 +33,7 @@ export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
                     INSERT INTO order_items (order_id, item_id, qty) 
                     VALUES (${id}, ${item.item.id}, ${item.quantity});
                 `;
-                if (result.rowCount === 0) {
+                if (result.count === 0) {
                     console.error('Order item insert failed', item);
                     throw new Error(
                         'Order item insert failed',
