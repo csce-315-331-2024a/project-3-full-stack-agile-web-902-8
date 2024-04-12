@@ -8,9 +8,7 @@ function InventoryDropDown() {
 
     useEffect(() => {
         async function fetchInventoryItems() {
-            const response = await fetch('/api/getAllInventoryItemNames', {
-                method: 'GET'
-            });
+            const response = await fetch('/api/getAllInventoryItemNames');
             const inventoryItemNames = await response.json();
             setItemNames(inventoryItemNames);
         }
