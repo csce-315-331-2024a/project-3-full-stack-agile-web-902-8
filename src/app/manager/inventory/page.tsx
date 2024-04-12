@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
@@ -7,6 +7,7 @@ import SideBar from '@/components/SideBar';
 import styles from '@/app/page.module.css';
 import InventoryAdjuster from '@/components/InventoryAdjuster';
 import { InventoryItem } from '@/lib/models';
+import InventoryDropDown from '@/components/InventoryDropDown';
 
 export default function Inventory() {
     const Items = [
@@ -49,7 +50,7 @@ export default function Inventory() {
                             <h1>Manage Inventory</h1>
 
                             <PageButton>Refresh</PageButton>
-                            <InventoryAdjuster item={inventoryItem} />
+                            <InventoryAdjuster item = {inventoryItem}/>
                         </div>
                     />
                 </div>

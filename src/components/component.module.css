@@ -299,3 +299,28 @@
     border-radius: var(--border-radius);
     padding: 1rem;
 }
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    border: 1px solid;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border: 1px solid;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li{
+    padding: 5px 10px;
+    cursor: pointer;
+}
