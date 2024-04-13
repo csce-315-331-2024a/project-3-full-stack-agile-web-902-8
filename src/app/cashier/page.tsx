@@ -4,7 +4,7 @@
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 
 // TODO: Discount button and no tax button
-// TODO: Numbers should use monospace font, although we should consider adding a fancier font for this
+// TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
 
 import React, { useEffect, useState } from 'react';
 
@@ -39,15 +39,21 @@ export default function Cashier() {
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
-            const response = await fetch('/api/menuTypes');
+            const response = await fetch('/api/getAllMenuTypes');
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
             const menuTypes = await response.json();
             setCategories(menuTypes);
-            if (category === '' && menuTypes.length > 0) {
-                setCategory(menuTypes[0]);
-            }
         }
         fetchAllMenuTypes();
-    });
+    }, []);
+
+    useEffect(() => {
+        if (categories.length > 0) {
+            setCategory(categories[0]);
+        }
+    }, [categories]);
 
     useEffect(() => {
         const itemsInCategory = items.filter((item) => item.type === category);
@@ -59,7 +65,10 @@ export default function Cashier() {
             console.log(
                 "Fetching menu items may take a while sometimes, especially if you're running locally."
             );
-            const response = await fetch('/api/menuItems');
+            const response = await fetch('/api/getMenuItemsInSeason');
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
             const menuItems = await response.json();
             setItems(menuItems);
             console.log('Fetching should be done now.');
