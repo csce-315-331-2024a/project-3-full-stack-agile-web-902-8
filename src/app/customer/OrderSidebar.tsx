@@ -31,7 +31,7 @@ export function OrderItem({item, qty, setQty} : OrderItemProp) {
             <img src="/menuItemImages/Aggie_Chicken_Club.png" width="100px"/>
             <h3 className={styles.name}>{item.name}</h3>
             <p className={styles.description}>
-                {/*Description*/}
+                {/* TODO: Description*/}
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed 
             </p>
 

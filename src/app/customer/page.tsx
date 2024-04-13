@@ -1,7 +1,7 @@
 'use client';
 import styles from '@/app/customer/page.module.css';
 
-import CustomerMenuItem from '@/components/CustomerMenuItem';
+import CustomerMenuItem from '@/app/customer/CustomerMenuItem';
 import CustomerCategoryBar from '@/app/customer/CategoryBar';
 import {OrderItem, OrderSidebar} from '@/app/customer/OrderSidebar';
 import {MenuItem, Seasonal} from '@/lib/models';
@@ -16,11 +16,23 @@ export default function Customer() {
         'Baskets',
     ];
     // TODO: Change from static to dynamic from database
-    let menuItemsByCategory: Map<string, Array<string>> = new Map();
-    menuItemsByCategory.set('Burgers', ['Hamburger', 'Cheeseburger', 'Meal']);
-    menuItemsByCategory.set('Drinks', ['Water', 'Fountain Drink']);
-    menuItemsByCategory.set('Sandwiches', ['Grilled Cheese', 'Ham Sandwich']);
-    menuItemsByCategory.set('Baskets', ['3 Tender Basket']);
+    let menuItemsByCategory: Map<string, Array<MenuItem>> = new Map();
+    menuItemsByCategory.set('Burgers', [
+        new MenuItem(0, 'Hamburger', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+        new MenuItem(0, 'Cheeseburger', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+        new MenuItem(0, 'Meal', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+    ]);
+    menuItemsByCategory.set('Drinks', [
+        new MenuItem(0, 'Water', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+        new MenuItem(0, 'Fountain Drink', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+    ]);
+    menuItemsByCategory.set('Sandwiches', [
+        new MenuItem(0, 'Grilled Cheese', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+        new MenuItem(0, 'Ham Sandwich', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+    ]);
+    menuItemsByCategory.set('Baskets', [
+        new MenuItem(0, '3 Tender Basket', 'type', 5, 5, 10, [], new Seasonal(0, 0, false)), 
+    ]);
 
     // set default category
     let currCategory: string;
@@ -64,8 +76,17 @@ export default function Customer() {
                         />
                     </div>
                 </div>
-                <div>
-                    {}
+               {/* Menu items */}
+                <div id={styles['menu-items']}>
+                    {menuItemsByCategory
+                        .get(currCategory)!
+                        .map((menuitem: MenuItem) => (
+                            <CustomerMenuItem
+                                key={menuitem.name}
+                                item={menuitem}
+                                onClick={() => setPopUp(true)}
+                            />
+                        ))}
                 </div>
             </div>
             <OrderSidebar>
