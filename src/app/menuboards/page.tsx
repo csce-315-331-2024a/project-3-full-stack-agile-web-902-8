@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router'; // Import useRouter
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
@@ -6,52 +7,57 @@ import SideBar from '@/components/SideBar';
 import styles from '../page.module.css';
 
 export default function MenuBoard() {
+  const router = useRouter();
   const items = ['Home', 'Logout'];
   const links = ['/', '/', '/', '/', '/', '/'];
   const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
+  const textSize = parseInt(router.query.size, 10) || 16; // Ensure to parse with a radix of 10
 
-
-    const renderCategory = (category: string) => (
-        <div className={styles.category}>
-            <h2>{category}</h2>
-            {/* Placeholder for the menu items in this category */}
-            <div className={styles.menuItems}>
-                <p>Description of food item ... Price</p>
-                {/* More items can be added here */}
-            </div>
-        </div>
-    );
-
-  const handleRefresh = () => {
-    console.log('Refresh button clicked'); // Placeholder for actual logic
+  // Function to handle text enlargement
+  const handleTextEnlarge = () => {
+    const newSize = textSize + 1;
+    // Update the query parameters and reload the page
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, size: newSize }
+    });
   };
 
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        {/* Render the heading with navigation items */}
-        <Heading names={items} hrefs={links} />
-        
-        {/* Render the body of the page */}
-        <div className={styles.body}>
-          <DoubleText
-            block1={<SideBar names={categories} hrefs={links} />}
-            block2={
-              <div>
-                <h1>MenuBoard Page</h1>
-                <PageButton>Refresh</PageButton>
-                {/* Render categories */}
-                {categories.map(renderCategory)}
-                {/* Placeholder for Limited Time Offers */}
-                <div className={styles.limitedTimeOffers}>
-                  <h2>Limited Time Offers</h2>
-                  {/* Limited time offers items will go here */}
-                </div>
-              </div>
-            }
-          />
+  const renderCategory = (category: string) => (
+    <div className={styles.category} style={{ fontSize: `${textSize}px` }}>
+        <h2>{category}</h2>
+        <div className={styles.menuItems}>
+            <p>Description of food item ... Price</p>
         </div>
-      </div>
-    </main>
+    </div>
+  );
+
+  return (
+      <main className={styles.main}>
+          <div className={styles.description}>
+              <Heading names={items} hrefs={links} />
+
+              <button onClick={handleTextEnlarge}>Enlarge Text</button>
+              
+              <div className={styles.body}>
+                  <DoubleText
+                      block1={
+                          <div>
+                              <h1></h1>
+                          </div>
+                      }
+                      block2={
+                          <div>
+                              <h1>MenuBoard Page</h1>
+                              {categories.map(renderCategory)}
+                              <div className={styles.limitedTimeOffers}>
+                                  <h2>Limited Time Offers</h2>
+                              </div>
+                          </div>
+                      }
+                  />
+              </div>
+          </div>
+      </main>
   );
 }
