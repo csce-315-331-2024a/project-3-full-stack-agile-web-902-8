@@ -36,6 +36,8 @@ export default function Cashier() {
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
+    const [isDiscounted, setIsDiscounted] = useState(false);
+    const [isTaxed, setIsTaxed] = useState(true);
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
@@ -117,6 +119,8 @@ export default function Cashier() {
         });
 
         setCurrentOrder([]);
+        setIsDiscounted(false);
+        setIsTaxed(true);
     }
 
     return (
@@ -134,6 +138,8 @@ export default function Cashier() {
                 setCurrentOrder={setCurrentOrder}
             />
             <CashierOrderTable
+                isDiscounted={isDiscounted}
+                isTaxed={isTaxed}
                 currentOrder={currentOrder}
                 setCurrentOrder={setCurrentOrder}
             />
@@ -145,6 +151,24 @@ export default function Cashier() {
             >
                 Place Order
             </button>
+            <div className={componentStyles.discountTaxButtons}>
+                <button
+                    className={
+                        componentStyles.discountOrder + ' ' + componentStyles.card
+                    }
+                    onClick={() => setIsDiscounted(!isDiscounted)}
+                >
+                    {isDiscounted ? "Remove Discount" : "Add Discount"}
+                </button>
+                <button
+                    className={
+                        componentStyles.noTaxOrder + ' ' + componentStyles.card
+                    }
+                    onClick={() => setIsTaxed(!isTaxed)}
+                >
+                    {isTaxed ? "Remove Tax" : "Add Tax"}
+                </button>
+            </div>
         </main>
     );
 }
