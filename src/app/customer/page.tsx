@@ -2,6 +2,7 @@
 import styles from '@/app/customer/page.module.css';
 
 import CustomerMenuItem from '@/components/CustomerMenuItem';
+import CustomerCategoryBar from '@/app/customer/CategoryBar';
 import {OrderItem, OrderSidebar} from '@/app/customer/OrderSidebar';
 import {MenuItem, Seasonal} from '@/lib/models';
 import React from 'react';
@@ -23,7 +24,7 @@ export default function Customer() {
 
     // set default category
     let currCategory: string;
-    let changeCategory: Function;
+    let changeCategory: (category: string) => void;
     [currCategory, changeCategory] = React.useState(categoryNames[0]);
 
     let showPopUp: boolean;
@@ -34,7 +35,7 @@ export default function Customer() {
     const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
 
     let item = new MenuItem(
-        1, "test", "type", 10, 10, 10, [], new Seasonal(1,1,false)
+        1, "Aggie Chicken Club", "type", 10, 10, 10, [], new Seasonal(1,1,false)
     );
     let [qty, setQty] = React.useState(1);
 
@@ -55,16 +56,16 @@ export default function Customer() {
                 </div>
                 <div>
                     <h2>Categories</h2>
-                    <ul className={styles.bar} id={styles["menu-categories"]} aria-label="menu categories">
-                        <li><button>test</button></li>
-                        <li>test</li>
-                        <li>test</li>
-                        <li>test</li>
-                        <li>test</li>
-                    </ul>
+                    <div className={styles.bar} id={styles["menu-categories"]}>
+                        <CustomerCategoryBar
+                            categories={categoryNames}
+                            category={currCategory}
+                            setCategory={changeCategory}
+                        />
+                    </div>
                 </div>
                 <div>
-
+                    {}
                 </div>
             </div>
             <OrderSidebar>

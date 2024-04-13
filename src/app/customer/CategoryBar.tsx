@@ -5,50 +5,50 @@ import styles from './page.module.css';
 
 // TODO: consider using an active button style
 
-interface CashierCategoryBarProps {
+interface CustomerCategoryBarProps {
     categories: string[];
     category: string;
     setCategory: (category: string) => void;
 }
 
-interface CashierCategoryButtonProps {
+interface CustomerCategoryButtonProps {
     categoryName: string;
     category: string;
     setCategory: (category: string) => void;
 }
 
-function CashierCategoryBar({
+function CustomerCategoryBar({
     categories,
     category,
     setCategory,
-}: CashierCategoryBarProps) {
+}: CustomerCategoryBarProps) {
     return (
-        <div className={styles.categoryBar}>
+        <ul className={styles.bar} id={styles.categories}>
             {categories.map((categoryName) => (
-                <CashierCategoryButton
+                <li><CustomerCategoryButton
                     categoryName={categoryName}
                     category={category}
                     setCategory={setCategory}
                     key={categoryName}
-                />
+                /></li>
             ))}
-        </div>
+        </ul>
     );
 }
 
-function CashierCategoryButton({
+function CustomerCategoryButton({
     categoryName,
     category,
     setCategory,
-}: CashierCategoryButtonProps) {
+}: CustomerCategoryButtonProps) {
     function handleClick() {
         setCategory(categoryName);
     }
 
     const isActive = categoryName === category;
     const buttonStyles = isActive
-        ? styles.categoryButton + ' ' + styles.active
-        : styles.categoryButton;
+        ? styles["category-button"] + ' ' + styles.active
+        : styles["category-button"];
 
     return (
         <button className={buttonStyles} onClick={handleClick}>
@@ -57,4 +57,4 @@ function CashierCategoryButton({
     );
 }
 
-export default CashierCategoryBar;
+export default CustomerCategoryBar;

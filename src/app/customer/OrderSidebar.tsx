@@ -13,9 +13,22 @@ interface OrderSidebarProp {
 }
 
 export function OrderItem({item, qty, setQty} : OrderItemProp) {
+    function changeQty(newQty: number) {
+        if(newQty > 0 && newQty < 100) {
+            setQty(newQty);
+        }
+    }
+
+    // Specifying options for formatting
+    const options = {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    };
+
     return (
         <div className={styles["order-item"]}>
-            <img/>
+            <img src="/menuItemImages/Aggie_Chicken_Club.png" width="100px"/>
             <h3 className={styles.name}>{item.name}</h3>
             <p className={styles.description}>
                 {/*Description*/}
@@ -23,12 +36,14 @@ export function OrderItem({item, qty, setQty} : OrderItemProp) {
             </p>
 
             <div className={styles["quantity"]}>
-                <button>-</button>
+                <button onClick={() => changeQty(qty - 1)}>-</button>
                 {/* TODO: Add method for onChange */}
-                <p>{qty}</p>
-                <button>+</button>
+                <p>{qty}</p> 
+                <button onClick={() => changeQty(qty + 1)}>+</button>
             </div>
-            <p className={styles.price}>${item.price.toFixed(2)}</p>
+            <p className={styles.price}>
+                ${(item.price * qty).toLocaleString('en-US', options)}
+            </p>
         </div>
     )
 }
