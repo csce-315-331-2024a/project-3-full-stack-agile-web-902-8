@@ -15,7 +15,6 @@ interface MenuBoardProps {
     initialTextSize: number;
 }
 
-// Import the TextEnlarger dynamically with SSR disabled
 const TextEnlarger = dynamic(() => import('./menu.client'), {
     ssr: false,
     loading: () => <div>Loading...</div>
@@ -34,12 +33,12 @@ const MenuBoard: React.FC<MenuBoardProps> = ({ initialTextSize }) => {
 
     const RenderCategory = ({ id, name, description }: Category) => (
         <div key={id} className={styles.category}>
-            <h2>{name}</h2>
+            <h2 style={{ fontSize: `${initialTextSize}px` }}>{name}</h2>
             <div className={styles.menuItems}>
-                <p>{description}</p> {/* Render the description */}
+                <p style={{ fontSize: `${initialTextSize}px` }}>{description}</p> {/* Render the description */}
             </div>
         </div>
-    );
+      );
 
     return (
         <TextSizeProvider> {/* Pass initial text size to TextSizeProvider */}

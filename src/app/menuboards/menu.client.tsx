@@ -1,18 +1,22 @@
-// src/components/TextEnlarger.client.tsx
+
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 
 interface TextSizeContextType {
   textSize: number;
-  setTextSize: Dispatch<SetStateAction<number>>;  // This type supports both number and functions returning a number
+  setTextSize: Dispatch<SetStateAction<number>>;  
 }
 
 const TextSizeContext = createContext<TextSizeContextType>({
-  textSize: 16, // Default base text size
-  setTextSize: () => {}, // Placeholder function
+  textSize: 16, 
+  setTextSize: () => {}, 
 });
 
+export const useTextSize = () => {
+    return useContext(TextSizeContext);
+  };
+  
 interface TextSizeProviderProps {
   children: ReactNode;
 }
@@ -32,7 +36,7 @@ const TextEnlarger = () => {
   const { setTextSize } = useContext(TextSizeContext);
 
   const handleTextEnlarge = () => {
-    setTextSize((currentSize: number) => currentSize + 5); // Correctly typed
+    setTextSize((currentSize: number) => currentSize + 5);
   };
 
   return (
