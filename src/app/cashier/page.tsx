@@ -23,7 +23,9 @@ import {
     OrderItem,
 } from '@/lib/models';
 
-const discountRate = 0.1;
+// TODO: These should be defined elsewhere
+const DISCOUNT_RATE = 0.1;
+const TAX_RATE = .0825;
 
 export interface OrderEntry {
     item: MenuItem;
@@ -78,10 +80,7 @@ export default function Cashier() {
         fetchAllMenuItems();
     }, []);
 
-    async function placeOrder(
-        currentOrder: OrderEntry[],
-        isDiscounted: boolean
-    ) {
+    async function placeOrder() {
         if (currentOrder.length === 0) {
             console.log('No items in order');
             return;
@@ -89,13 +88,12 @@ export default function Cashier() {
 
         const id = 0;
         const timestamp = new Date();
-        let total = currentOrder.reduce(
-            (acc, orderEntry) =>
-                acc + orderEntry.item.price * orderEntry.quantity,
-            0
-        );
-        const discount = isDiscounted ? total * discountRate : 0;
-        total -= discount;
+        
+        const subTotal = Math.round(currentOrder.reduce((acc, entry) =>acc + entry.item.price * entry.quantity,0) * 100) / 100;
+        const discount = Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) / 100;
+        const tax = Math.round((subTotal - discount) * (isTaxed ? TAX_RATE : 0) * 100) / 100;
+        const total = Math.round((subTotal - discount + tax) * 100) / 100;
+        
         const items = currentOrder.map(
             (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
         );
@@ -147,7 +145,7 @@ export default function Cashier() {
                 className={
                     componentStyles.placeOrder + ' ' + componentStyles.card
                 }
-                onClick={() => placeOrder(currentOrder, false)}
+                onClick={() => placeOrder()}
             >
                 Place Order
             </button>
