@@ -25,7 +25,7 @@ import {
 
 // TODO: These should be defined elsewhere
 const DISCOUNT_RATE = 0.1;
-const TAX_RATE = .0825;
+const TAX_RATE = 0.0825;
 
 export interface OrderEntry {
     item: MenuItem;
@@ -88,12 +88,22 @@ export default function Cashier() {
 
         const id = 0;
         const timestamp = new Date();
-        
-        const subTotal = Math.round(currentOrder.reduce((acc, entry) =>acc + entry.item.price * entry.quantity,0) * 100) / 100;
-        const discount = Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) / 100;
-        const tax = Math.round((subTotal - discount) * (isTaxed ? TAX_RATE : 0) * 100) / 100;
+
+        const subTotal =
+            Math.round(
+                currentOrder.reduce(
+                    (acc, entry) => acc + entry.item.price * entry.quantity,
+                    0
+                ) * 100
+            ) / 100;
+        const discount =
+            Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) /
+            100;
+        const tax =
+            Math.round((subTotal - discount) * (isTaxed ? TAX_RATE : 0) * 100) /
+            100;
         const total = Math.round((subTotal - discount + tax) * 100) / 100;
-        
+
         const items = currentOrder.map(
             (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
         );
@@ -152,11 +162,13 @@ export default function Cashier() {
             <div className={componentStyles.discountTaxButtons}>
                 <button
                     className={
-                        componentStyles.discountOrder + ' ' + componentStyles.card
+                        componentStyles.discountOrder +
+                        ' ' +
+                        componentStyles.card
                     }
                     onClick={() => setIsDiscounted(!isDiscounted)}
                 >
-                    {isDiscounted ? "Remove Discount" : "Add Discount"}
+                    {isDiscounted ? 'Remove Discount' : 'Add Discount'}
                 </button>
                 <button
                     className={
@@ -164,7 +176,7 @@ export default function Cashier() {
                     }
                     onClick={() => setIsTaxed(!isTaxed)}
                 >
-                    {isTaxed ? "Remove Tax" : "Add Tax"}
+                    {isTaxed ? 'Remove Tax' : 'Add Tax'}
                 </button>
             </div>
         </main>

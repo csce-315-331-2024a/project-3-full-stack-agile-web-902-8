@@ -7,7 +7,7 @@ import { OrderEntry } from '@/app/cashier/page';
 
 // TODO: These should be defined elsewhere
 const DISCOUNT_RATE = 0.1;
-const TAX_RATE = .0825;
+const TAX_RATE = 0.0825;
 
 interface CashierOrderTableProps {
     isDiscounted: boolean;
@@ -32,11 +32,24 @@ function CashierOrderTable({
     const [tax, setTax] = React.useState(0);
     const [total, setTotal] = React.useState(0);
 
-    useEffect(() =>{
-        const subTotal = Math.round(currentOrder.reduce((acc, entry) =>acc + entry.item.price * entry.quantity,0) * 100) / 100;
-        const calculatedDiscount = Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) / 100;
-        const calculatedTax = Math.round((subTotal - calculatedDiscount) * (isTaxed ? TAX_RATE : 0) * 100) / 100;
-        const calculatedTotal = Math.round((subTotal - calculatedDiscount + calculatedTax) * 100) / 100;
+    useEffect(() => {
+        const subTotal =
+            Math.round(
+                currentOrder.reduce(
+                    (acc, entry) => acc + entry.item.price * entry.quantity,
+                    0
+                ) * 100
+            ) / 100;
+        const calculatedDiscount =
+            Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) /
+            100;
+        const calculatedTax =
+            Math.round(
+                (subTotal - calculatedDiscount) * (isTaxed ? TAX_RATE : 0) * 100
+            ) / 100;
+        const calculatedTotal =
+            Math.round((subTotal - calculatedDiscount + calculatedTax) * 100) /
+            100;
 
         setDiscount(calculatedDiscount);
         setTax(calculatedTax);
@@ -68,41 +81,36 @@ function CashierOrderTable({
                             />
                         );
                     })}
-                    {
-                        currentOrder.length === 0 &&
+                    {currentOrder.length === 0 && (
                         <tr>
                             <td></td>
                             <td>No items in order</td>
                             <td></td>
                             <td></td>
                         </tr>
-                    }
-                    {
-                        currentOrder.length > 0 && isDiscounted &&
+                    )}
+                    {currentOrder.length > 0 && isDiscounted && (
                         <tr>
                             <td></td>
                             <td>Discount:</td>
-                            <td>{"-" + discount.toFixed(2)}</td>
+                            <td>{'-' + discount.toFixed(2)}</td>
                             <td></td>
                         </tr>
-                    }
-                    {
-                        currentOrder.length > 0 && isTaxed &&
+                    )}
+                    {currentOrder.length > 0 && isTaxed && (
                         <tr>
                             <td></td>
                             <td>Tax:</td>
                             <td>{tax.toFixed(2)}</td>
                             <td></td>
                         </tr>
-                    }
+                    )}
                 </tbody>
                 <tfoot>
                     <tr>
                         <td></td>
                         <td>Total:</td>
-                        <td>
-                            {total.toFixed(2)}
-                        </td>
+                        <td>{total.toFixed(2)}</td>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -140,7 +148,13 @@ function CashierOrderItem({
                 <button onClick={handleClick}>X</button>
             </td>
             <td>{orderEntry.item.name}</td>
-            <td>{(Math.round(orderEntry.item.price * orderEntry.quantity * 100) / 100).toFixed(2)}</td>
+            <td>
+                {(
+                    Math.round(
+                        orderEntry.item.price * orderEntry.quantity * 100
+                    ) / 100
+                ).toFixed(2)}
+            </td>
             <td>{orderEntry.quantity}</td>
         </tr>
     );
