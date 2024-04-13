@@ -1,63 +1,70 @@
 import React from 'react';
-import { useRouter } from 'next/router'; // Import useRouter
+import dynamic from 'next/dynamic';
 import Heading from '@/components/Heading';
-import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
 import styles from '../page.module.css';
+import { GetServerSidePropsContext, GetServerSideProps } from 'next';
+import { TextSizeProvider } from './menu.client';
 
-export default function MenuBoard() {
-  const router = useRouter();
-  const items = ['Home', 'Logout'];
-  const links = ['/', '/', '/', '/', '/', '/'];
-  const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
-  const textSize = parseInt(router.query.size, 10) || 16; // Ensure to parse with a radix of 10
-
-  // Function to handle text enlargement
-  const handleTextEnlarge = () => {
-    const newSize = textSize + 1;
-    // Update the query parameters and reload the page
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, size: newSize }
-    });
-  };
-
-  const renderCategory = (category: string) => (
-    <div className={styles.category} style={{ fontSize: `${textSize}px` }}>
-        <h2>{category}</h2>
-        <div className={styles.menuItems}>
-            <p>Description of food item ... Price</p>
-        </div>
-    </div>
-  );
-
-  return (
-      <main className={styles.main}>
-          <div className={styles.description}>
-              <Heading names={items} hrefs={links} />
-
-              <button onClick={handleTextEnlarge}>Enlarge Text</button>
-              
-              <div className={styles.body}>
-                  <DoubleText
-                      block1={
-                          <div>
-                              <h1></h1>
-                          </div>
-                      }
-                      block2={
-                          <div>
-                              <h1>MenuBoard Page</h1>
-                              {categories.map(renderCategory)}
-                              <div className={styles.limitedTimeOffers}>
-                                  <h2>Limited Time Offers</h2>
-                              </div>
-                          </div>
-                      }
-                  />
-              </div>
-          </div>
-      </main>
-  );
+interface Category {
+    id: string;
+    name: string;
 }
+
+interface MenuBoardProps {
+    initialTextSize: number;
+}
+
+// Import the TextEnlarger dynamically with SSR disabled
+const TextEnlarger = dynamic(() => import('./menu.client'), {
+    ssr: false,
+    loading: () => <div>Loading...</div>
+});
+
+
+const MenuBoard: React.FC<MenuBoardProps> = ({ initialTextSize }) => {
+    const items = ['Home', 'Logout'];
+    const links = ['/', '/', '/', '/', '/', '/'];
+    const categories: Category[] = [
+        { id: '1', name: 'Value Meals' },
+        { id: '2', name: 'Sandwiches' },
+        { id: '3', name: 'Burgers' },
+        { id: '4', name: 'Baskets' }
+    ];
+
+    const RenderCategory = ({ id, name }: Category) => (
+        <div key={id} className={styles.category}>
+            <h2>{name}</h2>
+            <div className={styles.menuItems}>
+                <p>Description of food item ... Price</p>
+            </div>
+        </div>
+    );
+
+    return (
+        <TextSizeProvider> {/* Wrap the contents in the TextSizeProvider */}
+            <main className={styles.main} style={{ fontSize: `${initialTextSize}px` }}>
+                <div className={styles.description}>
+                    <Heading names={items} hrefs={links} />
+                    <TextEnlarger />
+                    <div className={styles.body}>
+                        <DoubleText
+                            block1={<div><h1></h1></div>}
+                            block2={
+                                <div>
+                                    <h1>MenuBoard Page</h1>
+                                    {categories.map(category => <RenderCategory key={category.id} id={category.id} name={category.name} />)}
+                                    <div className={styles.limitedTimeOffers}>
+                                        <h2>Limited Time Offers</h2>
+                                    </div>
+                                </div>
+                            }
+                        />
+                    </div>
+                </div>
+            </main>
+        </TextSizeProvider>
+    );
+};
+
+export default MenuBoard;
