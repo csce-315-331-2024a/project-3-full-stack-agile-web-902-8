@@ -4,7 +4,7 @@
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 
 // TODO: Discount button and no tax button
-// TODO: Numbers should use monospace font, although we should consider adding a fancier font for this
+// TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
 
 import React, { useEffect, useState } from 'react';
 
@@ -40,7 +40,7 @@ export default function Cashier() {
     useEffect(() => {
         async function fetchAllMenuTypes() {
             const response = await fetch('/api/getAllMenuTypes');
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
             const menuTypes = await response.json();
