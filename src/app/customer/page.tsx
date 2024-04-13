@@ -1,11 +1,9 @@
 'use client';
-import styles from '@/app/page.module.css';
-import customerStyles from '@/app/customer/page.module.css';
+import styles from '@/app/customer/page.module.css';
 
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
 import CustomerMenuItem from '@/components/CustomerMenuItem';
-import CustomerNav from '@/app/customer/customer-nav';
+import {OrderItem, OrderSidebar} from '@/app/customer/OrderSidebar';
+import {MenuItem, Seasonal} from '@/lib/models';
 import React from 'react';
 
 export default function Customer() {
@@ -35,68 +33,48 @@ export default function Customer() {
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
     const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
 
+    let item = new MenuItem(
+        1, "test", "type", 10, 10, 10, [], new Seasonal(1,1,false)
+    );
+    let [qty, setQty] = React.useState(1);
+
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
-            <div className={styles.description}>
+            <div id={styles.menu}>
+                <h1>Menu</h1> 
                 <div>
-                    <CustomerNav />
+                    <h2>Recommendations</h2>
+                    <ul className={styles.bar}>
+                        <li>test</li>
+                        <li>test</li>
+                        <li>test</li>
+                        <li>test</li>
+                        <li>test</li>
+                    </ul>
                 </div>
-                <div className={styles.body}>
-                    <DoubleText
-                        block1=<SideBar names={Items2} hrefs={Links2} />
-                        block2=<div className={customerStyles['main']}>
-                            <h1 className={customerStyles.pageTitle}>
-                                Customer
-                            </h1>
+                <div>
+                    <h2>Categories</h2>
+                    <ul className={styles.bar} id={styles["menu-categories"]} aria-label="menu categories">
+                        <li><button>test</button></li>
+                        <li>test</li>
+                        <li>test</li>
+                        <li>test</li>
+                        <li>test</li>
+                    </ul>
+                </div>
+                <div>
 
-                            <nav id={customerStyles['categories']}>
-                                <ul>
-                                    {categoryNames.map((name) => (
-                                        <li key={name}>
-                                            <button
-                                                onClick={() =>
-                                                    changeCategory(name)
-                                                }
-                                            >
-                                                {name}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </nav>
-
-                            {/* Menu items */}
-                            <div id={customerStyles['menu-items']}>
-                                {menuItemsByCategory
-                                    .get(currCategory)!
-                                    .map((menuitem: string) => (
-                                        <CustomerMenuItem
-                                            key={menuitem}
-                                            name={menuitem}
-                                            onClick={() => setPopUp(true)}
-                                        />
-                                    ))}
-                            </div>
-
-                            {/* Pop up for adding to order */}
-                            {showPopUp ? (
-                                <section id={customerStyles['pop-up']}>
-                                    {/* Exit button */}
-                                    <button
-                                        className={
-                                            customerStyles['exit-button']
-                                        }
-                                        onClick={() => setPopUp(false)}
-                                    >
-                                        X
-                                    </button>
-                                </section>
-                            ) : null}
-                        </div>
-                    />
                 </div>
             </div>
+            <OrderSidebar>
+                <OrderItem item={item} qty={qty} setQty={setQty}/>
+                <OrderItem item={item} qty={qty} setQty={setQty}/>
+                <OrderItem item={item} qty={qty} setQty={setQty}/>
+                <OrderItem item={item} qty={qty} setQty={setQty}/>
+                <OrderItem item={item} qty={qty} setQty={setQty}/>
+                <OrderItem item={item} qty={qty} setQty={setQty}/>
+            </OrderSidebar>
         </main>
     );
 }
