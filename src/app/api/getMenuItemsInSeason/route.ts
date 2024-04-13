@@ -6,9 +6,9 @@ export async function GET() {
     try {
         const menuItems = await getMenuItemsInSeason();
         return NextResponse.json(menuItems, { status: 200 });
-    } catch (error) {
+    } catch (error: any) {
         return NextResponse.json(
-            { error: 'Error fetching menu items' },
+            { error: `Error fetching menu items: ${error.message}` },
             { status: 500 }
         );
     }
