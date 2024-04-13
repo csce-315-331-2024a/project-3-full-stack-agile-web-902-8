@@ -32,7 +32,7 @@ const TextEnlarger = () => {
   const { setTextSize } = useContext(TextSizeContext);
 
   const handleTextEnlarge = () => {
-    setTextSize((currentSize: number) => currentSize + 1); // Correctly typed
+    setTextSize((currentSize: number) => currentSize + 5); // Correctly typed
   };
 
   return (
