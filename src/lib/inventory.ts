@@ -34,18 +34,18 @@ export async function existsInInventory(
 }
 
 export async function getAllInventoryItemNames(tsql = psql): Promise<string[]> {
-        return transact<string[], postgres.Error, any>(
-            tsql,
-            new Error('SQL error in getAllInventoryItemNames', undefined),
-            async (isql, _) => {
-                const names: string[] = [];
-                const result = await isql`SELECT name FROM inventory`;
-                for (const row of result) {
-                    names.push(row.name);
-                }
-                return names;
+    return transact<string[], postgres.Error, any>(
+        tsql,
+        new Error('SQL error in getAllInventoryItemNames', undefined),
+        async (isql, _) => {
+            const names: string[] = [];
+            const result = await isql`SELECT name FROM inventory`;
+            for (const row of result) {
+                names.push(row.name);
             }
-        );
+            return names;
+        }
+    );
 }
 
 export async function getInventoryItemByName(

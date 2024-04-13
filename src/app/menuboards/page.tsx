@@ -6,15 +6,9 @@ import SideBar from '@/components/SideBar';
 import styles from '../page.module.css';
 
 export default function MenuBoard() {
-<<<<<<< HEAD
     const items = ['Home', 'Logout'];
     const links = ['/', '/', '/', '/', '/', '/'];
     const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
-=======
-  const items = ['Home', 'Logout'];
-  const links = ['/', '/', '/', '/', '/', '/'];
-  const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
->>>>>>> 9c9922ff020a43f980ec5e3262daf601f5bde83a
 
     const renderCategory = (category: string) => (
         <div className={styles.category}>
@@ -49,7 +43,6 @@ export default function MenuBoard() {
                             <div>
                                 <h1>MenuBoard Page</h1>
 
-<<<<<<< HEAD
                                 {/* Render categories */}
                                 {categories.map(renderCategory)}
                                 {/* Placeholder for Limited Time Offers */}
@@ -60,32 +53,6 @@ export default function MenuBoard() {
                             </div>
                         }
                     />
-=======
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        {/* Render the heading with navigation items */}
-        <Heading names={items} hrefs={links} />
-        
-        {/* Render the body of the page */}
-        <div className={styles.body}>
-          <DoubleText
-            block1={<div>
-              <h1></h1>
-              
-              
-            </div>}
-            block2={
-              <div>
-                <h1>MenuBoard Page</h1>
-                
-                {/* Render categories */}
-                {categories.map(renderCategory)}
-                {/* Placeholder for Limited Time Offers */}
-                <div className={styles.limitedTimeOffers}>
-                  <h2>Limited Time Offers</h2>
-                  {/* Limited time offers items will go here */}
->>>>>>> 9c9922ff020a43f980ec5e3262daf601f5bde83a
                 </div>
             </div>
         </main>
