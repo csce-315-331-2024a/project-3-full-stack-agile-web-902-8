@@ -6,11 +6,14 @@ export async function GET(request: NextRequest) {
     try {
         const url = new URL(request.url);
         const startParam = url.searchParams.get('start');
-        const endParam = url.searchParams.get('end') || new Date().toISOString();
+        const endParam =
+            url.searchParams.get('end') || new Date().toISOString();
 
         if (!startParam || !endParam) {
             return NextResponse.json(
-                { error: 'Missing required parameters: start and/or end dates' },
+                {
+                    error: 'Missing required parameters: start and/or end dates',
+                },
                 { status: 400 }
             );
         }
