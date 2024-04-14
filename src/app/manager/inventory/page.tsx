@@ -42,7 +42,7 @@ export default function Inventory() {
                             <h1>Manage Inventory</h1>
 
                             <PageButton>Refresh</PageButton>
-                            <InventoryAdjuster/>
+                            <InventoryAdjuster />
                         </div>
                     />
                 </div>
