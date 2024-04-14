@@ -7,21 +7,20 @@
 // TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
 
 import React, { useEffect, useState } from 'react';
-
 import LogoutButton from '@/components/LogoutButton';
 import CashierCategoryBar from '@/components/CashierCategoryBar';
 import CashierItemGrid from '@/components/CashierItemGrid';
 import CashierOrderTable from '@/components/CashierOrderTable';
 import componentStyles from '@/components/component.module.css';
-
 import {
-    MenuItem,
-    Ingredient,
-    InventoryItem,
-    Seasonal,
-    Order,
-    OrderItem,
-} from '@/lib/models';
+    ScaleProvider,
+    useScale,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '../zoom.client';
+
+import { MenuItem, OrderItem, Order } from '@/lib/models';
 
 // TODO: These should be defined elsewhere
 const DISCOUNT_RATE = 0.1;
@@ -40,6 +39,7 @@ export default function Cashier() {
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
     const [isDiscounted, setIsDiscounted] = useState(false);
     const [isTaxed, setIsTaxed] = useState(true);
+    const { scale } = useScale();
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
@@ -66,16 +66,13 @@ export default function Cashier() {
 
     useEffect(() => {
         async function fetchAllMenuItems() {
-            console.log(
-                "Fetching menu items may take a while sometimes, especially if you're running locally."
-            );
+            console.log('Fetching menu items...');
             const response = await fetch('/api/getMenuItemsInSeason');
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
             const menuItems = await response.json();
             setItems(menuItems);
-            console.log('Fetching should be done now.');
         }
         fetchAllMenuItems();
     }, []);
@@ -85,9 +82,6 @@ export default function Cashier() {
             console.log('No items in order');
             return;
         }
-
-        const id = 0;
-        const timestamp = new Date();
 
         const subTotal =
             Math.round(
@@ -107,7 +101,7 @@ export default function Cashier() {
         const items = currentOrder.map(
             (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
         );
-        const order = new Order(id, timestamp, discount, total, items);
+        const order = new Order(0, new Date(), discount, total, items);
 
         const response = await fetch('/api/addOrder', {
             method: 'POST',
@@ -132,53 +126,67 @@ export default function Cashier() {
     }
 
     return (
-        <main className={componentStyles.cashierMain}>
-            <LogoutButton />
-            <h1>Cashier</h1>
-            <CashierCategoryBar
-                categories={categories}
-                category={category}
-                setCategory={setCategory}
-            />
-            <CashierItemGrid
-                categoryItems={categoryItems}
-                currentOrder={currentOrder}
-                setCurrentOrder={setCurrentOrder}
-            />
-            <CashierOrderTable
-                isDiscounted={isDiscounted}
-                isTaxed={isTaxed}
-                currentOrder={currentOrder}
-                setCurrentOrder={setCurrentOrder}
-            />
-            <button
-                className={
-                    componentStyles.placeOrder + ' ' + componentStyles.card
-                }
-                onClick={() => placeOrder()}
+        <ScaleProvider initialScale={1}>
+            <main
+                className={componentStyles.cashierMain}
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                    overflow: 'auto',
+                }}
             >
-                Place Order
-            </button>
-            <div className={componentStyles.discountTaxButtons}>
-                <button
-                    className={
-                        componentStyles.discountOrder +
-                        ' ' +
-                        componentStyles.card
-                    }
-                    onClick={() => setIsDiscounted(!isDiscounted)}
+                <div
+                    style={{
+                        position: 'fixed',
+                        bottom: '10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1000,
+                    }}
                 >
-                    {isDiscounted ? 'Remove Discount' : 'Add Discount'}
-                </button>
+                    <ZoomIn />
+                    <ZoomOut />
+                    <ResetZoom />
+                </div>
+                <LogoutButton />
+                <h1>Cashier</h1>
+                <CashierCategoryBar
+                    categories={categories}
+                    category={category}
+                    setCategory={setCategory}
+                />
+                <CashierItemGrid
+                    categoryItems={categoryItems}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                />
+                <CashierOrderTable
+                    isDiscounted={isDiscounted}
+                    isTaxed={isTaxed}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                />
                 <button
-                    className={
-                        componentStyles.noTaxOrder + ' ' + componentStyles.card
-                    }
-                    onClick={() => setIsTaxed(!isTaxed)}
+                    className={`${componentStyles.placeOrder} ${componentStyles.card}`}
+                    onClick={placeOrder}
                 >
-                    {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                    Place Order
                 </button>
-            </div>
-        </main>
+                <div className={componentStyles.discountTaxButtons}>
+                    <button
+                        className={`${componentStyles.discountOrder} ${componentStyles.card}`}
+                        onClick={() => setIsDiscounted(!isDiscounted)}
+                    >
+                        {isDiscounted ? 'Remove Discount' : 'Add Discount'}
+                    </button>
+                    <button
+                        className={`${componentStyles.noTaxOrder} ${componentStyles.card}`}
+                        onClick={() => setIsTaxed(!isTaxed)}
+                    >
+                        {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                    </button>
+                </div>
+            </main>
+        </ScaleProvider>
     );
 }
