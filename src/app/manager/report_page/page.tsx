@@ -6,7 +6,7 @@ import tables from '@/components/component.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
 
-export default function reportPage() {
+export default function ReportPage() {
     const items = ['', 'Back'];
     const links = ['/', '/manager'];
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
