@@ -1,9 +1,17 @@
+'use client';
 import React from 'react';
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
 import OrderTable from '@/components/OrderTable';
+import {
+    ScaleProvider,
+    useScale,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '../zoom.client'; // Ensure these are correctly imported
 import styles from '../page.module.css';
 
 export default function Manager() {
@@ -30,28 +38,50 @@ export default function Manager() {
         ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
         ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
     ];
+    const { scale } = useScale(); // Use the scale from the context
 
     return (
-        <main className={styles.main}>
-            <div className={styles.description}>
-                <div>
+        <ScaleProvider initialScale={1}>
+            <main
+                className={styles.main}
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                    overflow: 'auto',
+                }}
+            >
+                <div
+                    style={{
+                        position: 'fixed',
+                        bottom: '10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1000,
+                    }}
+                >
+                    <ZoomIn />
+                    <ZoomOut />
+                    <ResetZoom />
+                </div>
+                <div className={styles.description}>
                     <Heading names={Items} hrefs={Links} />
+                    <div className={styles.body}>
+                        <DoubleText
+                            block1={<SideBar names={Items2} hrefs={Links2} />}
+                            block2={
+                                <div>
+                                    <h1>Manager Page</h1>
+                                    <PageButton>Refresh</PageButton>
+                                    <OrderTable
+                                        heading={tableHead}
+                                        rows={tableBody}
+                                    />
+                                </div>
+                            }
+                        />
+                    </div>
                 </div>
-                <div className={styles.body}>
-                    <DoubleText
-                        block1=<SideBar names={Items2} hrefs={Links2} />
-                        block2=<div>
-                            <h1>Manager Page</h1>
-
-                            <PageButton>Refresh</PageButton>
-                            {/*<p>
-              TimeStamp | Order_Id | Discount | Total
-  </p>*/}
-                            <OrderTable heading={tableHead} rows={tableBody} />
-                        </div>
-                    />
-                </div>
-            </div>
-        </main>
+            </main>
+        </ScaleProvider>
     );
 }

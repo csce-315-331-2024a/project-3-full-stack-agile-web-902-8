@@ -1,7 +1,13 @@
 'use client';
 import styles from '@/app/page.module.css';
 import customerStyles from '@/app/customer/page.module.css';
-import { ScaleProvider, useScale, ZoomIn, ZoomOut, ResetZoom } from '../zoom.client'; // Assuming these are exported correctly in menu.client.tsx
+import {
+    ScaleProvider,
+    useScale,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '../zoom.client'; // Assuming these are exported correctly in menu.client.tsx
 
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
@@ -31,9 +37,24 @@ export default function Customer() {
 
     return (
         <ScaleProvider initialScale={1}>
-            <main className={styles.main} style={{ transform: `scale(${scale})`, transformOrigin: 'top left', overflow: 'auto' }}>
+            <main
+                className={styles.main}
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                    overflow: 'auto',
+                }}
+            >
                 <CustomerNav />
-                <div style={{ position: 'fixed', bottom: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
+                <div
+                    style={{
+                        position: 'fixed',
+                        bottom: '10px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1000,
+                    }}
+                >
                     <ZoomIn />
                     <ZoomOut />
                     <ResetZoom />
@@ -42,12 +63,18 @@ export default function Customer() {
                     block1={<SideBar names={Items2} hrefs={Links2} />}
                     block2={
                         <div className={customerStyles['main']}>
-                            <h1 className={customerStyles.pageTitle}>Customer</h1>
+                            <h1 className={customerStyles.pageTitle}>
+                                Customer
+                            </h1>
                             <nav id={customerStyles['categories']}>
                                 <ul>
                                     {categoryNames.map((name) => (
                                         <li key={name}>
-                                            <button onClick={() => changeCategory(name)}>
+                                            <button
+                                                onClick={() =>
+                                                    changeCategory(name)
+                                                }
+                                            >
                                                 {name}
                                             </button>
                                         </li>
@@ -55,17 +82,24 @@ export default function Customer() {
                                 </ul>
                             </nav>
                             <div id={customerStyles['menu-items']}>
-                                {menuItemsByCategory.get(currCategory)!.map((menuitem: string) => (
-                                    <CustomerMenuItem
-                                        key={menuitem}
-                                        name={menuitem}
-                                        onClick={() => setPopUp(true)}
-                                    />
-                                ))}
+                                {menuItemsByCategory
+                                    .get(currCategory)!
+                                    .map((menuitem: string) => (
+                                        <CustomerMenuItem
+                                            key={menuitem}
+                                            name={menuitem}
+                                            onClick={() => setPopUp(true)}
+                                        />
+                                    ))}
                             </div>
                             {showPopUp ? (
                                 <section id={customerStyles['pop-up']}>
-                                    <button className={customerStyles['exit-button']} onClick={() => setPopUp(false)}>
+                                    <button
+                                        className={
+                                            customerStyles['exit-button']
+                                        }
+                                        onClick={() => setPopUp(false)}
+                                    >
                                         X
                                     </button>
                                 </section>
