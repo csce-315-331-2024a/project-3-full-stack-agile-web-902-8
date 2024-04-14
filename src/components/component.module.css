@@ -368,15 +368,12 @@ ul.bar.customer {
     border-radius: 15px;
     padding: 0 15px;
 
-    display: flex;
-
-    justify-content: space-around;
-    align-items: center;
-
     list-style-type: none;
 }
 
 .customer#categories {
+    display: flex;
+
     justify-content: stretch;
     align-items: stretch;
 }
@@ -411,6 +408,14 @@ ul.bar.customer {
     background-color: rgba(var(--background-rgb), 0.5);
 }
 
+.menu-items {
+    display: grid;
+    width: 100%;
+    height: fit-content;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
 button.menu-item.customer {
     height: fit-content;
     background: none;
@@ -436,14 +441,25 @@ button.menu-item.customer .description {
     text-align: center;
 }
 
-button.menu-item.customer:hover,
-button.recommended-item.customer:hover {
-    cursor: pointer;
+button.menu-item.customer:active {
+    background: rgba(var(--secondary-rgb), 0.5);
 }
 
-button.menu-item.customer:active,
-button.recommended-item.customer:active {
-    background: rgba(var(--secondary-rgb), 0.5);
+ul.customer.recommended-items {
+    display: grid;
+    width: 100%;
+    height: fit-content;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+ul.customer.recommended-items li {
+    width: 100%;
+    height: fit-content;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .customer.recommended-item {
@@ -453,7 +469,8 @@ button.recommended-item.customer:active {
     border: none;
     display: block;
     text-align: center;
-    padding: 20px 20px;
+    padding: 30px 20px;
+    display: inline-block;
 }
 
 .customer.recommended-item img {
@@ -471,6 +488,14 @@ button.recommended-item.customer:active {
 .customer button.recommended-item:active {
     background: rgba(var(--background-rgb), 0.5);
 }
+
+button.menu-item.customer:hover,
+button.recommended-item.customer:hover {
+    cursor: pointer;
+}
+
+
+
 
 /******************************************
  *              Order Siderbar            *

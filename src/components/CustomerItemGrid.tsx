@@ -1,16 +1,24 @@
-import styles from '@/components/component.module.css';
-import { CustomerRecommendedItem } from '@/components/CustomerMenuItem';
+'use client'
+
+import React from 'react';
+import styles from './component.module.css';
 import { OrderEntry } from '@/components/CustomerOrderSidebar';
+import { CustomerMenuItem } from '@/components/CustomerMenuItem';
 import { MenuItem } from '@/lib/models';
 
-interface RecommendedBarProp {
+interface CustomerItemGridProps {
     isFetchingMenuItems: boolean;
-    menuItems: MenuItem[];
+    categoryItems: MenuItem[];
     currentOrder: OrderEntry[];
-    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
+    setCurrentOrder: (order: OrderEntry[]) => void;
 }
 
-function CustomerRecommendedBar({ isFetchingMenuItems, menuItems, currentOrder, setCurrentOrder }: RecommendedBarProp) {
+function CustomerItemGrid({
+    isFetchingMenuItems,
+    categoryItems,
+    currentOrder,
+    setCurrentOrder,
+}: CustomerItemGridProps) {
     if (isFetchingMenuItems) {
         return (
             <div>
@@ -31,18 +39,20 @@ function CustomerRecommendedBar({ isFetchingMenuItems, menuItems, currentOrder, 
     }
 
     return (
-        <ul className={styles.bar + ' ' + styles["recommended-items"] + ' ' + styles.customer}>
-            {menuItems.map((menuItem: MenuItem) => (
-                <li key={menuItem.id}>
-                    <CustomerRecommendedItem
-                        item={menuItem}
+        <div className={styles["menu-items"]}>
+            {categoryItems
+                .map((menuitem: MenuItem) => (
+                    <CustomerMenuItem
+                        key={menuitem.id}
+                        item={menuitem}
                         currentOrder={currentOrder}
                         setCurrentOrder={setCurrentOrder}
                     />
-                </li>
-            ))}
-        </ul>
+                ))
+            }
+        </div>
     );
 }
 
-export default CustomerRecommendedBar;
+export default CustomerItemGrid;
+
