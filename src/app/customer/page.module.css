@@ -78,16 +78,15 @@
     background-color: rgba(var(--background-rgb), 0.5);
 }
 
-#menu-items {
+.menu-items {
     display: grid;
     width: 100%;
     height: fit-content;
     grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 10rem;
     gap: 10px;
 }
 
-#menu-items button.menu-item {
+.menu-items button.menu-item {
     height: fit-content;
     background: none;
     color: rgb(var(--text-rgb));
@@ -98,25 +97,25 @@
     margin: 0 20px;
 }
 
-#menu-items button.menu-item img {
+.menu-items button.menu-item img {
     max-width: 200px;
 }
 
-#menu-items button.menu-item .name {
+.menu-items button.menu-item .name {
     font-size: 24pt;
 }
 
-#menu-items button.menu-item .description {
+.menu-items button.menu-item .description {
     font-size: 12pt;
     padding: 0 30px;
     text-align: center;
 }
 
-#menu-items button:hover {
+.menu-items button:hover {
     cursor: pointer;
 }
 
-#menu-items button:active {
+.menu-items button:active {
     background: rgba(var(--secondary-rgb), 0.5);
 }
 

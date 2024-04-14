@@ -8,7 +8,7 @@ import {
 import CustomerCategoryBar from '@/app/customer/CategoryBar';
 import { OrderItem, OrderSidebar } from '@/app/customer/OrderSidebar';
 import { MenuItem, Seasonal } from '@/lib/models';
-import React from 'react';
+import {useState, useEffect} from 'react';
 
 export default function Customer() {
     // TODO: Change from static to dynamic from database
@@ -51,6 +51,107 @@ export default function Customer() {
             [],
             new Seasonal(0, 0, false)
         ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+        new MenuItem(
+            0,
+            'Meal',
+            'type',
+            5,
+            5,
+            10,
+            [],
+            new Seasonal(0, 0, false)
+        ),
+
     ]);
     menuItemsByCategory.set('Drinks', [
         new MenuItem(
@@ -112,14 +213,11 @@ export default function Customer() {
     // set default category
     let currCategory: string;
     let changeCategory: (category: string) => void;
-    [currCategory, changeCategory] = React.useState(categoryNames[0]);
+    [currCategory, changeCategory] = useState(categoryNames[0]);
 
     let showPopUp: boolean;
     let setPopUp: Function;
-    [showPopUp, setPopUp] = React.useState(false);
-
-    const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
+    [showPopUp, setPopUp] = useState(false);
 
     let item = new MenuItem(
         1,
@@ -131,7 +229,9 @@ export default function Customer() {
         [],
         new Seasonal(1, 1, false)
     );
-    let [qty, setQty] = React.useState(1);
+    let [qty, setQty] = useState(1);
+
+
 
     return (
         // TODO: Change to global styling
@@ -142,7 +242,7 @@ export default function Customer() {
                     <h2>Recommendations</h2>
                     <ul className={styles.bar}>
                         {menuItemsByCategory
-                            .get('Burgers')!
+                            .get('Burgers')!.slice(0,6)
                             .map((menuItem: MenuItem) => (
                                 <li key={menuItem.name}>
                                     <CustomerRecommendedItem
@@ -164,9 +264,12 @@ export default function Customer() {
                     </div>
                 </div>
                 {/* Menu items */}
-                <div id={styles['menu-items']}>
+                {categoryNames.map((category) => (
+                    <div key={category} 
+                        className={styles['menu-items']}
+                        style={(category != currCategory) ? {display: "none"} : {}}>
                     {menuItemsByCategory
-                        .get(currCategory)!
+                        .get(category)!
                         .map((menuitem: MenuItem) => (
                             <CustomerMenuItem
                                 key={menuitem.name}
@@ -174,7 +277,8 @@ export default function Customer() {
                                 onClick={() => setPopUp(true)}
                             />
                         ))}
-                </div>
+                    </div>
+                ))}
             </div>
             <OrderSidebar>
                 <OrderItem item={item} qty={qty} setQty={setQty} />
