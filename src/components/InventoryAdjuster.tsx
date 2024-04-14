@@ -158,7 +158,7 @@ function InventoryAdjuster() {
             getInventoryItem();
             setExists(true);
         }
-    }, [selected, requesting, exists]);
+    }, [selected, exists]);
 
     /*useEffect(() => {
         existsInInventory();
@@ -205,7 +205,6 @@ function InventoryAdjuster() {
             quantity: form.quantity + adjustedRequest,
         }));
         setRequesting(false);
-        getInventoryItem();
     };
 
     return (
