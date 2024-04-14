@@ -64,9 +64,8 @@ export default function Customer() {
                         {menuItemsByCategory
                         .get('Burgers')!
                         .map((menuItem: MenuItem) => (
-                            <li>
+                            <li key={menuItem.name}>
                             <CustomerRecommendedItem
-                                key={menuItem.name}
                                 item={menuItem}
                                 onClick={() => setPopUp(true)}
                             />

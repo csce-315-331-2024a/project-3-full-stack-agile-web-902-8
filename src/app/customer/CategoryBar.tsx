@@ -25,11 +25,11 @@ function CustomerCategoryBar({
     return (
         <ul className={styles.bar} id={styles.categories}>
             {categories.map((categoryName) => (
-                <li><CustomerCategoryButton
+                <li key={categoryName}>
+                <CustomerCategoryButton
                     categoryName={categoryName}
                     category={category}
                     setCategory={setCategory}
-                    key={categoryName}
                 /></li>
             ))}
         </ul>

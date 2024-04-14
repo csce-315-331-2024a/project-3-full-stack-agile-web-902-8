@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image'
 import {MenuItem} from '@/lib/models';
 import styles from './page.module.css';
 
@@ -21,7 +22,7 @@ export function CustomerMenuItem({ item, onClick }: MenuItemProp) {
             className={styles["menu-item"]}
             onClick={onClick}
         >
-        <img src="/menuItemImages/Aggie_Chicken_Club.png"/>
+        <Image src="/menuItemImages/Aggie_Chicken_Club.png" alt={item.name} width={200} height={200}/>
         <p className={styles["name"]}>{item.name}</p>
         <p className={styles["description"]}>
             {/* TODO: Description */}
@@ -40,7 +41,7 @@ export function CustomerRecommendedItem({item, onClick}: MenuItemProp) {
             className={styles["recommended-item"]}
             onClick={onClick}
         >
-        <img src="/menuItemImages/Aggie_Chicken_Club.png"/>
+        <Image src="/menuItemImages/Aggie_Chicken_Club.png" alt={item.name} width={150} height={150}/>
         <p className={styles["name"]}>{item.name}</p>
         </button>
     );

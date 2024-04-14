@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import styles from './page.module.css';
 import {MenuItem} from '@/lib/models';
 
@@ -28,7 +29,7 @@ export function OrderItem({item, qty, setQty} : OrderItemProp) {
 
     return (
         <div className={styles["order-item"]}>
-            <img src="/menuItemImages/Aggie_Chicken_Club.png" width="100px"/>
+            <Image src="/menuItemImages/Aggie_Chicken_Club.png" alt={item.name} width={100} height={100}/>
             <h3 className={styles.name}>{item.name}</h3>
             <p className={styles.description}>
                 {/* TODO: Description*/}

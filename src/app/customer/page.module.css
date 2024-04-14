@@ -95,10 +95,12 @@
     border: none;
     display: block;
     text-align: center;
+    padding: 20px 0;
+    margin: 0 20px;
 }
 
 #menu-items button.menu-item img {
-    max-width: 150px;
+    max-width: 200px;
 }
 
 #menu-items button.menu-item .name {
@@ -126,15 +128,23 @@
     border: none;
     display: block;
     text-align: center;
-    padding: 20px;
+    padding: 20px 20px;
 }
 
 .recommended-item img {
-    max-width: 100px;
+    max-width: 150px;
 }
 
 .recommended-item .name {
     font-size: 16pt;
+}
+
+button.recommended-item:hover {
+    cursor: pointer;
+}
+
+button.recommended-item:active {
+    background: rgba(var(--background-rgb), 0.5);
 }
 
 /******************************************
