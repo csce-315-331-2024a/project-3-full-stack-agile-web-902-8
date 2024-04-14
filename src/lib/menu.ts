@@ -8,6 +8,59 @@ import {
 } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
+import { minify } from 'next/dist/build/swc';
+
+//whenever theres a nested query, make sure to return tsql
+//go back and fix the affecterows
+
+export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
+    return transact<MenuItem[], postgres.Error, any>(
+        tsql,
+        new Error('SQL Error in getMenuItemsInSeason', undefined),
+        async (isql, _) => {
+            const now = new Date();
+            const date = now.toISOString().split('T')[0];
+            const result = await isql`
+            SELECT
+                mi.id, mi.name, mi.type, mi.price, mi.net_price, mi.popularity,
+                si.start_date, si.end_date, si.recurring
+            FROM
+                menu_items mi
+                LEFT JOIN seasonal_items si ON mi.id = si.item_id AND (
+                    si.start_date <= ${date}::date AND si.end_date >= ${date}::date
+                    OR (si.recurring = true AND EXTRACT(MONTH FROM si.start_date) <= EXTRACT(MONTH FROM ${date}::date)
+                    AND EXTRACT(MONTH FROM si.end_date) >= EXTRACT(MONTH FROM ${date}::date)
+                    AND EXTRACT(DAY FROM si.start_date) <= EXTRACT(DAY FROM ${date}::date)
+                    AND EXTRACT(DAY FROM si.end_date) >= EXTRACT(DAY FROM ${date}::date))
+                )
+            `;
+
+            const menuItems: MenuItem[] = [];
+            for (const row of result) {
+                const ingredients = await getIngredientsByMenuItemId(
+                    row.id,
+                    tsql
+                );
+                const seasonal = row.start_date
+                    ? new Seasonal(row.start_date, row.end_date, row.recurring)
+                    : null;
+                menuItems.push(
+                    new MenuItem(
+                        row.id,
+                        row.name,
+                        row.type,
+                        row.price,
+                        row.net_price,
+                        row.popularity,
+                        ingredients,
+                        seasonal
+                    )
+                );
+            }
+            return menuItems;
+        }
+    );
+}
 
 /**
  * Retrieves a menu item by its name from the database.
@@ -91,7 +144,7 @@ export async function getIngredientsByMenuItemId(
                     row.inventory_id,
                     tsql
                 ); //content of inventory item
-                ingredients.push(new Ingredient(row.InventoryItem, row.amount));
+                ingredients.push(new Ingredient(InventoryItem, row.amount));
             }
 
             //return as Ingredient arr
