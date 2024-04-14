@@ -431,7 +431,8 @@ button.recommended-item.customer:active {
 
 .customer #order-box {
     height: 80%;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .customer.order-item {
