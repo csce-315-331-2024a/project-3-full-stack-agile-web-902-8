@@ -1,9 +1,6 @@
 'use client';
 // TODO: Consider separating client-side and server-side code for MUCH better performance
-
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
-
-// TODO: Discount button and no tax button
 // TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
 
 import React, { useEffect, useState } from 'react';

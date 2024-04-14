@@ -5,8 +5,6 @@ import componentStyles from './component.module.css';
 import { MenuItem } from '@/lib/models';
 import { OrderEntry } from '@/app/cashier/page';
 
-// TODO: only show seasonal items if they are in season
-
 interface CashierItemGridProps {
     categoryItems: MenuItem[];
     currentOrder: OrderEntry[];
