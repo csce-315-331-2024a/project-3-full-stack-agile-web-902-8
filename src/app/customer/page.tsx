@@ -12,11 +12,6 @@ import {
 import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
-interface uniqueQuantity {
-    id: number,
-    qty: number
-}
-
 export default function Customer() {
     // TODO: Change from static to dynamic from database
     let categoryNames: Array<string> = [
@@ -149,9 +144,22 @@ export default function Customer() {
     let setOrderItems: (orderItems: OrderItemProp[]) => void;
     [orderItems, setOrderItems] = useState<OrderItemProp[]>([]);
 
-    var qtys: uniqueQuantity[];
-    var setQtys: (qtys: uniqueQuantity[]) => void;
-    [qtys, setQtys] = useState<uniqueQuantity[]>([{id: -1, qty: 1}]);
+    // create new quantity and set quantity function
+    function setQty(qty: number, id: number) {
+        let newItems = orderItems.map((orderItem) => {
+            if(orderItem.item.id == id) {
+                return {
+                    item: orderItem.item,
+                    qty: qty,
+                    setQty: orderItem.setQty
+                }
+            } else {
+                return orderItem;
+            }
+        });
+
+        setOrderItems(newItems);
+    }
 
     function addToOrder(item: MenuItem) {
         // check if the item already exists
@@ -163,25 +171,7 @@ export default function Customer() {
             }
         }
 
-        // create new quantity and set quantity function
-        console.log(qtys);
-        let qty: uniqueQuantity = {id: item.id, qty: 1};
-        setQtys([...qtys, qty]);
-        console.log(qtys);
-        function editQty(newQty: number) {
-            console.log(qtys);
-            let newQtys = qtys.map(qty => {
-                if(item.id != qty.id) {
-                    return qty;
-                } else {
-                    return {id: qty.id, qty: newQty};
-                }
-            });
-
-            setQtys(newQtys);
-        }
-
-        let orderItem: OrderItemProp = {item: item, qty: qtys[qtys.length-1].qty, setQty: editQty};
+        let orderItem: OrderItemProp = {item: item, qty: 1, setQty: (qty: number) => setQty(qty, item.id)};
         setOrderItems([...orderItems, orderItem]);
     }
 
