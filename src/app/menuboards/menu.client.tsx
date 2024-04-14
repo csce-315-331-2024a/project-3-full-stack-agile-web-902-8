@@ -21,15 +21,16 @@ interface TextSizeProviderProps {
   children: ReactNode;
 }
 
-export const TextSizeProvider = ({ children }: TextSizeProviderProps) => {
-  const [textSize, setTextSize] = useState<number>(16);
-
-  return (
-    <TextSizeContext.Provider value={{ textSize, setTextSize }}>
-      {children}
-    </TextSizeContext.Provider>
-  );
-};
+export const TextSizeProvider = ({ children, initialTextSize = 16 }: TextSizeProviderProps & { initialTextSize?: number }) => {
+    const [textSize, setTextSize] = useState<number>(initialTextSize); // Use initialTextSize
+  
+    return (
+      <TextSizeContext.Provider value={{ textSize, setTextSize }}>
+        {children}
+      </TextSizeContext.Provider>
+    );
+  };
+  
 
 // Component to use the context and provide a button to enlarge text
 const TextEnlarger = () => {
