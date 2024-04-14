@@ -1,7 +1,13 @@
 // menu.client.tsx
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    ReactNode,
+} from 'react';
 
 interface ScaleContextType {
     scale: number;
@@ -9,7 +15,7 @@ interface ScaleContextType {
 }
 
 const ScaleContext = createContext<ScaleContextType>({
-    scale: 1, // Default scale is 1
+    scale: 1,
     setScale: () => {},
 });
 
@@ -26,12 +32,11 @@ export const ScaleProvider = ({
 }: ScaleProviderProps) => {
     const [scale, setScale] = useState<number>(initialScale);
 
-    // This sets the body style whenever scale changes
-    React.useEffect(() => {
-        const newScale = scale;
-        document.body.style.transform = `scale(${newScale})`;
-        document.body.style.transformOrigin = '0 0';
-        document.body.style.overflow = newScale === 1 ? '' : 'auto'; // Enables scrolling when zoomed in
+    useEffect(() => {
+        document.body.style.transform = `scale(${scale})`;
+        document.body.style.transformOrigin = 'center center';
+        // Enable scrolling when zoomed in, set to 'hidden' otherwise
+        document.body.style.overflow = scale > 1 ? 'auto' : 'hidden';
     }, [scale]);
 
     return (
@@ -41,34 +46,56 @@ export const ScaleProvider = ({
     );
 };
 
-// Button to increase the zoom level of the page.
 const ZoomIn = () => {
-    const { setScale } = useScale();
+    const { scale, setScale } = useScale();
 
     const handleZoomIn = () => {
-        setScale((currentScale) => currentScale * 1.1);
+        const newScale = scale * 1.1;
+        setScale(newScale);
+        if (newScale > 1) {
+            document.body.style.overflowX = 'scroll';
+
+            document.documentElement.style.minWidth = '200vw';
+            document.documentElement.style.minHeight = '100vh';
+
+            document.body.style.position = 'relative';
+            document.body.style.top = '0';
+            document.body.style.left = '0';
+        }
     };
 
     return <button onClick={handleZoomIn}>Zoom In</button>;
 };
 
-// Button to decrease the zoom level of the page.
 const ZoomOut = () => {
-    const { setScale } = useScale();
+    const { scale, setScale } = useScale();
 
     const handleZoomOut = () => {
-        setScale((currentScale) => currentScale / 1.1);
+        const newScale = scale / 1.1;
+        setScale(newScale);
+        if (newScale <= 1) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.height = '100%';
+            document.documentElement.style.width = '100%';
+        }
     };
 
     return <button onClick={handleZoomOut}>Zoom Out</button>;
 };
 
-// Button to reset the zoom level to the default.
 const ResetZoom = () => {
     const { setScale } = useScale();
 
     const handleResetZoom = () => {
-        setScale(1); // Resets scale to 100%
+        setScale(1);
+
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.minHeight = '100vh';
+        document.documentElement.style.minWidth = '100vw';
+        document.body.style.position = 'static';
+        document.body.style.top = '0';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
     };
 
     return <button onClick={handleResetZoom}>Reset Zoom</button>;
