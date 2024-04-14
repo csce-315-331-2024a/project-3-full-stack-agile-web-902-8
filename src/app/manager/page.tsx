@@ -1,6 +1,5 @@
 'use client';
 
-// Manager.tsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import Heading from '@/components/Heading';
@@ -22,8 +21,11 @@ interface GraphDataItem {
 }
 
 const Manager: React.FC = () => {
+    // State for handling API response for graphs
     const [inventoryData, setInventoryData] = useState<GraphDataItem[]>([]);
     const [menuItemsData, setMenuItemsData] = useState<GraphDataItem[]>([]);
+
+    // State for date range inputs
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
 
@@ -33,7 +35,10 @@ const Manager: React.FC = () => {
                 const response = await axios.get<DataItem[]>(
                     '/api/aggregateInventory',
                     {
-                        params: { start: startTime, end: endTime },
+                        params: {
+                            start: new Date(startTime).toISOString(),
+                            end: new Date(endTime).toISOString(),
+                        },
                     }
                 );
                 setInventoryData(
@@ -44,6 +49,7 @@ const Manager: React.FC = () => {
                 );
             } catch (error) {
                 console.error('Error fetching inventory data:', error);
+                
             }
         }
     };
@@ -54,7 +60,10 @@ const Manager: React.FC = () => {
                 const response = await axios.get<DataItem[]>(
                     '/api/aggregateMenuItems',
                     {
-                        params: { startDate: startTime, endDate: endTime },
+                        params: {
+                            startDate: new Date(startTime).toISOString(),
+                            endDate: new Date(endTime).toISOString(),
+                        },
                     }
                 );
                 setMenuItemsData(
@@ -65,6 +74,7 @@ const Manager: React.FC = () => {
                 );
             } catch (error) {
                 console.error('Error fetching menu items data:', error);
+                // Add your error handling here
             }
         }
     };
@@ -75,33 +85,41 @@ const Manager: React.FC = () => {
             fetchMenuItemsData();
         } else {
             console.error('Please select both start and end times.');
+            // You may want to display this message to the user
         }
     };
 
+    // Define navigation items
+    const navItems = [
+        'Home',
+        'Menu',
+        'Inventory',
+        'Order History',
+        'Reports',
+        'Logout',
+    ];
+    const navLinks = [
+        '/manager',
+        '/manager',
+        '/manager',
+        '/manager',
+        '/manager/report_page',
+        '/',
+    ];
+    const sidebarItems = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
+    const sidebarLinks = ['/manager', '/customer', '/cashier', '/menu-board'];
+
+    // Define table data
+    const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
+    const tableBody = [
+        ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
+        ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
+    ];
+
     return (
         <main className={styles.main}>
-            <Heading
-                names={[
-                    'Home',
-                    'Menu',
-                    'Inventory',
-                    'Order History',
-                    'Reports',
-                    'Logout',
-                ]}
-                hrefs={[
-                    '/',
-                    '/menu',
-                    '/inventory',
-                    '/order-history',
-                    '/reports',
-                    '/logout',
-                ]}
-            />
-            <SideBar
-                names={['Manager', 'Customer', 'Cashier', 'MenuBoard']}
-                hrefs={['/manager', '/customer', '/cashier', '/menu-board']}
-            />
+            <Heading names={navItems} hrefs={navLinks} />
+            <SideBar names={sidebarItems} hrefs={sidebarLinks} />
             <div className={styles.body}>
                 <h1>Manager Page</h1>
                 <input
@@ -116,24 +134,11 @@ const Manager: React.FC = () => {
                 />
                 <PageButton onClick={handleRefresh}>Refresh</PageButton>
                 <Graph data={inventoryData} title="Product Usage" />
-                <Graph data={menuItemsData} title="Sales and Sales Together" />
-                <OrderTable
-                    heading={['TimeStamp', 'Order_Id', 'Discount', 'Total']}
-                    rows={[
-                        [
-                            'Sample time 1',
-                            'Sample id 1',
-                            'Sample Discount 1',
-                            'Sample Total 1',
-                        ],
-                        [
-                            'Sample time 2',
-                            'Sample id 2',
-                            'Sample Discount 2',
-                            'Sample Total 2',
-                        ],
-                    ]}
+                <Graph
+                    data={menuItemsData}
+                    title="Menu Item Sales and What Sales together"
                 />
+                <OrderTable heading={tableHead} rows={tableBody} />
             </div>
         </main>
     );
