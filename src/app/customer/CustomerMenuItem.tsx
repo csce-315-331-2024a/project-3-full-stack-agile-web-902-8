@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import {MenuItem} from '@/lib/models';
 import styles from './page.module.css';
@@ -9,7 +7,7 @@ type MenuItemProp = {
     onClick?: () => void;
 };
 
-function CustomerMenuItem({ item, onClick }: MenuItemProp) {
+export function CustomerMenuItem({ item, onClick }: MenuItemProp) {
 
     // Specifying options for formatting
     const options = {
@@ -32,8 +30,18 @@ function CustomerMenuItem({ item, onClick }: MenuItemProp) {
         <p className={styles.price}>
             ${(item.price).toLocaleString('en-US', options)}
         </p>
+        </button>
+    );
+}
 
-        <p></p>
+export function CustomerRecommendedItem({item, onClick}: MenuItemProp) {
+    return (
+        <button 
+            className={styles["recommended-item"]}
+            onClick={onClick}
+        >
+        <img src="/menuItemImages/Aggie_Chicken_Club.png"/>
+        <p className={styles["name"]}>{item.name}</p>
         </button>
     );
 }

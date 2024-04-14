@@ -1,7 +1,9 @@
 'use client';
 import styles from '@/app/customer/page.module.css';
 
-import CustomerMenuItem from '@/app/customer/CustomerMenuItem';
+import {CustomerMenuItem, 
+        CustomerRecommendedItem} 
+        from '@/app/customer/CustomerMenuItem';
 import CustomerCategoryBar from '@/app/customer/CategoryBar';
 import {OrderItem, OrderSidebar} from '@/app/customer/OrderSidebar';
 import {MenuItem, Seasonal} from '@/lib/models';
@@ -59,11 +61,17 @@ export default function Customer() {
                 <div>
                     <h2>Recommendations</h2>
                     <ul className={styles.bar}>
-                        <li>test</li>
-                        <li>test</li>
-                        <li>test</li>
-                        <li>test</li>
-                        <li>test</li>
+                        {menuItemsByCategory
+                        .get('Burgers')!
+                        .map((menuItem: MenuItem) => (
+                            <li>
+                            <CustomerRecommendedItem
+                                key={menuItem.name}
+                                item={menuItem}
+                                onClick={() => setPopUp(true)}
+                            />
+                            </li>
+                        ))}
                     </ul>
                 </div>
                 <div>
