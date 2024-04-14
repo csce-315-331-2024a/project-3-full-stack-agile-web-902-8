@@ -29,37 +29,89 @@ const Manager: React.FC = () => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  // Fetch inventory data
   const fetchInventoryData = async () => {
-    const response = await axios.get<DataItem[]>('/api/aggregateInventory', {
-      params: { start: new Date(startTime).toISOString(), end: new Date(endTime).toISOString() }
-    });
-    setInventoryData(response.data.map(item => ({
-      label: item.name,
-      value: item.qty
-    })));
+    if (startTime && endTime) {
+      try {
+        const response = await axios.get<DataItem[]>('/api/aggregateInventory', {
+          params: { start: new Date(startTime).toISOString(), end: new Date(endTime).toISOString() }
+        });
+        setInventoryData(response.data.map(item => ({
+          label: item.name,
+          value: item.qty
+        })));
+      } catch (error) {
+        console.error('Error fetching inventory data:', error);
+        // Add your error handling here
+      }
+    }
   };
-
-  // Fetch menu items data
+  
   const fetchMenuItemsData = async () => {
-    const response = await axios.get<DataItem[]>('/api/aggregateMenuItems', {
-      params: { startDate: new Date(startTime).toISOString(), endDate: new Date(endTime).toISOString() }
-    });
-    setMenuItemsData(response.data.map(item => ({
-      label: item.name,
-      value: item.qty
-    })));
+    if (startTime && endTime) {
+      try {
+        const response = await axios.get<DataItem[]>('/api/aggregateMenuItems', {
+          params: { startDate: new Date(startTime).toISOString(), endDate: new Date(endTime).toISOString() }
+        });
+        setMenuItemsData(response.data.map(item => ({
+          label: item.name,
+          value: item.qty
+        })));
+      } catch (error) {
+        console.error('Error fetching menu items data:', error);
+        // Add your error handling here
+      }
+    }
   };
-
-  // Handle the refresh button click
+  
   const handleRefresh = () => {
-    fetchInventoryData();
-    fetchMenuItemsData();
+    if (startTime && endTime) {
+      fetchInventoryData();
+      fetchMenuItemsData();
+    } else {
+      console.error('Please select both start and end times.');
+      // You may want to display this message to the user
+    }
   };
+  
+  // ... rest of your component
+  
+
+/**
+ *    const Items = [
+        'Home',
+        'Menu',
+        'Inventory',
+        'Order History',
+        'Reports',
+        'Logout',
+    ];
+    const Links = [
+        '/manager',
+        '/manager',
+        '/manager',
+        '/manager',
+        '/manager/report_page',
+        '/',
+    ];
+    const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
+    const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
+    const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
+    const tableBody = [
+        ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
+        ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
+    ];
+ */
 
   // Define navigation items
   const navItems = ['Home', 'Menu', 'Inventory', 'Order History', 'Reports', 'Logout'];
-  const navLinks = ['/', '/menu', '/inventory', '/order-history', '/reports', '/logout'];
+  const navLinks = [
+    '/manager',
+    '/manager',
+    '/manager',
+    '/manager',
+    '/manager/report_page',
+    '/',
+];
   const sidebarItems = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
   const sidebarLinks = ['/manager', '/customer', '/cashier', '/menu-board'];
   
