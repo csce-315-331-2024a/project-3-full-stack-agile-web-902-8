@@ -33,44 +33,6 @@ function InventoryAdjuster() {
         setItemNames(sortedNames);
     }
 
-    async function getInventoryItem() {
-        const response = await fetch('/api/getInventoryItemByName', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(selected),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        const inventoryItem = await response.json();
-        const parseItem = JSON.parse(inventoryItem);
-        console.log(inventoryItem);
-        console.log(parseItem);
-        //setForm(inventoryItem);
-        setForm((form) => ({
-            ...form,
-            name: parseItem.name,
-        }));
-        setForm((form) => ({
-            ...form,
-            quantity: parseItem.quantity,
-        }));
-        setForm((form) => ({
-            ...form,
-            averageCost: parseItem.averageCost,
-        }));
-        setForm((form) => ({
-            ...form,
-            minQuantity: parseItem.minQuantity,
-        }));
-        setForm((form) => ({
-            ...form,
-            maxQuantity: parseItem.maxQuantity,
-        }));
-    }
-
     /*async function existsInInventory() {
         console.log(form.name);
         const response = await fetch('/api/existsInInventory', {
@@ -145,6 +107,44 @@ function InventoryAdjuster() {
     }, [itemNames]);
 
     useEffect(() => {
+        async function getInventoryItem() {
+            const response = await fetch('/api/getInventoryItemByName', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selected),
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+            const inventoryItem = await response.json();
+            const parseItem = JSON.parse(inventoryItem);
+            console.log(inventoryItem);
+            console.log(parseItem);
+            //setForm(inventoryItem);
+            setForm((form) => ({
+                ...form,
+                name: parseItem.name,
+            }));
+            setForm((form) => ({
+                ...form,
+                quantity: parseItem.quantity,
+            }));
+            setForm((form) => ({
+                ...form,
+                averageCost: parseItem.averageCost,
+            }));
+            setForm((form) => ({
+                ...form,
+                minQuantity: parseItem.minQuantity,
+            }));
+            setForm((form) => ({
+                ...form,
+                maxQuantity: parseItem.maxQuantity,
+            }));
+        }
+
         if (selected == 'new') {
             setExists(false);
             setForm({
