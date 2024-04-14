@@ -1,37 +1,36 @@
 import { addOrder } from '@/lib/orders';
 import { Order } from '@/lib/models';
 import { NextRequest, NextResponse } from 'next/server';
+import Error from '@/lib/error';
 
 export async function POST(request: NextRequest) {
     console.log('POST /api/addOrder');
     try {
         const order = (await request.json()) as Order;
+        if(order.items.length === 0) {
+            return NextResponse.json(
+                { error: 'Order must have at least one item' },
+                { status: 400 }
+            );
+        }
+
         await addOrder(order);
         return NextResponse.json(
             { message: 'Successfully added order' },
             { status: 201 }
         );
-    } catch (error: any) {
-        if (error.message === 'Order has no items') {
+    } catch (error : unknown) {
+        if(!(error instanceof Error)) {
+            console.error('Unexpected error:', error);
             return NextResponse.json(
-                { error: 'Error adding order: Order has no items' },
-                { status: 400 }
-            );
-        }
-        if (error.message === 'Order insert failed') {
-            return NextResponse.json(
-                { error: 'Error adding order: Order insert failed' },
+                { error: 'Server error' },
                 { status: 500 }
             );
         }
-        if (error.message === 'Order item insert failed') {
-            return NextResponse.json(
-                { error: 'Error adding order: Order item insert failed' },
-                { status: 500 }
-            );
-        }
+        
+        console.log('Error adding order:', error.toString());
         return NextResponse.json(
-            { error: 'Error adding order: Unexpected server error' },
+            { error: 'Server error' },
             { status: 500 }
         );
     }
