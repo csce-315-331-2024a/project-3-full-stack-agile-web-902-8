@@ -52,6 +52,7 @@ function InventoryAdjuster() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+
         setForm((form) => ({
             ...form,
             [name]: value,
@@ -80,26 +81,42 @@ function InventoryAdjuster() {
                 throw new Error(`Error: ${response.statusText}`);
             }
         }
-        if (selected == 'new') {
-            const confirm = window.confirm(
-                'Are you sure you want to add this item?'
-            );
-            if (confirm) {
+
+        if (
+            form.averageCost < 0 ||
+            form.maxQuantity < 0 ||
+            form.minQuantity < 0 ||
+            form.quantity < 0
+        ) {
+            alert('Cannot have negative values');
+        } else if (
+            form.minQuantity > form.maxQuantity ||
+            form.quantity > form.maxQuantity
+        ) {
+            alert('Exceeds max or min bounds for quantity');
+        } else {
+            if (selected == 'new') {
+                const confirm = window.confirm(
+                    'Are you sure you want to add this item?'
+                );
+                if (confirm) {
+                    console.log('Creating new');
+                    console.log(item);
+                    updateInventoryItem();
+                    setForm({
+                        name: '',
+                        quantity: 0,
+                        minQuantity: 0,
+                        maxQuantity: 0,
+                        averageCost: 0,
+                    });
+                }
+            } else {
                 console.log(item);
                 updateInventoryItem();
-                setForm({
-                    name: '',
-                    quantity: 0,
-                    minQuantity: 0,
-                    maxQuantity: 0,
-                    averageCost: 0,
-                });
             }
-        } else {
-            console.log(item);
-            updateInventoryItem();
+            fetchInventoryItems();
         }
-        fetchInventoryItems();
     };
 
     useEffect(() => {
@@ -179,7 +196,7 @@ function InventoryAdjuster() {
     };
 
     const handleReqChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newRequest = Number(e.target.value);
+        const newRequest = parseInt(e.target.value);
         setAdjustedRequest(newRequest);
     };
 
@@ -199,12 +216,37 @@ function InventoryAdjuster() {
                 throw new Error(`Error: ${response.statusText}`);
             }
         }
-        doRequest();
-        setForm((form) => ({
-            ...form,
-            quantity: form.quantity + adjustedRequest,
-        }));
-        setRequesting(false);
+        if (adjustedRequest < 0) {
+            alert('Cannot request a negative amount');
+        } else if (form.quantity + adjustedRequest > form.maxQuantity) {
+            alert('Exceeds maximum quantity');
+        } else {
+            doRequest();
+            setForm((form) => ({
+                ...form,
+                quantity: form.quantity + adjustedRequest,
+            }));
+            setRequesting(false);
+        }
+    };
+
+    const handleRemove = () => {
+        async function removeInventoryItem() {
+            const response = await fetch('/api/removeInventoryItem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selected),
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+        }
+        removeInventoryItem();
+        setSelected('');
+        setVisible(false);
+        setItemNames([]);
     };
 
     return (
@@ -275,7 +317,9 @@ function InventoryAdjuster() {
                         <button type="submit">
                             {exists ? 'Save Changes' : 'Add Item'}
                         </button>
-                        {exists && <button>Delete Item</button>}
+                        {exists && (
+                            <button onClick={handleRemove}>Delete Item</button>
+                        )}
                         {exists && (
                             <button onClick={handleReqClick}>
                                 Request Item

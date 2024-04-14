@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
         );
     } catch (error: any) {
         return NextResponse.json(
-            { error: `Error adding/udpating item: ${error.message}` },
+            { error: `Error adding/updating item: ${error.message}` },
             { status: 500 }
         );
     }
