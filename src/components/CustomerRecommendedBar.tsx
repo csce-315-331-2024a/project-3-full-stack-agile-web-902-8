@@ -4,17 +4,17 @@ import { MenuItem } from '@/lib/models';
 
 interface RecommendedBarProp {
     menuItems: MenuItem[];
-    onClick: () => any;
+    addToOrder: (menuItem: MenuItem) => void;
 }
 
-function CustomerRecommendedBar({ menuItems, onClick }: RecommendedBarProp) {
+function CustomerRecommendedBar({ menuItems, addToOrder }: RecommendedBarProp) {
     return (
         <ul className={styles.bar + ' ' + styles.customer}>
             {menuItems.map((menuItem: MenuItem) => (
-                <li key={menuItem.name}>
+                <li key={menuItem.id}>
                     <CustomerRecommendedItem
                         item={menuItem}
-                        onClick={onClick}
+                        addToOrder={addToOrder}
                     />
                 </li>
             ))}

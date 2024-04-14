@@ -5,10 +5,10 @@ import styles from '@/components/component.module.css';
 
 type MenuItemProp = {
     item: MenuItem;
-    onClick?: () => void;
+    addToOrder: (menuItem: MenuItem) => void;
 };
 
-export function CustomerMenuItem({ item, onClick }: MenuItemProp) {
+export function CustomerMenuItem({ item, addToOrder }: MenuItemProp) {
     // Specifying options for formatting
     const options = {
         style: 'decimal',
@@ -19,7 +19,7 @@ export function CustomerMenuItem({ item, onClick }: MenuItemProp) {
     return (
         <button
             className={styles['menu-item'] + ' ' + styles.customer}
-            onClick={onClick}
+            onClick={() => addToOrder(item)}
         >
             <Image
                 src="/menuItemImages/Aggie_Chicken_Club.png"
@@ -39,11 +39,11 @@ export function CustomerMenuItem({ item, onClick }: MenuItemProp) {
     );
 }
 
-export function CustomerRecommendedItem({ item, onClick }: MenuItemProp) {
+export function CustomerRecommendedItem({ item, addToOrder }: MenuItemProp) {
     return (
         <button
             className={styles['recommended-item'] + ' ' + styles.customer}
-            onClick={onClick}
+            onClick={() => addToOrder(item)}
         >
             <Image
                 src="/menuItemImages/Aggie_Chicken_Club.png"

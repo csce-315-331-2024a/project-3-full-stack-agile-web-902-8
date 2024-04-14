@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from '@/components/component.module.css';
 import { MenuItem } from '@/lib/models';
 
-interface OrderItemProp {
+export interface OrderItemProp {
     item: MenuItem;
     qty: number;
     setQty: (qty: number) => void;

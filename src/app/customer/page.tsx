@@ -5,11 +5,17 @@ import { CustomerMenuItem } from '@/components/CustomerMenuItem';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
 import CustomerRecommendedBar from '@/components/CustomerRecommendedBar';
 import {
+    OrderItemProp,
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
 import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
+
+interface uniqueQuantity {
+    id: number,
+    qty: number
+}
 
 export default function Customer() {
     // TODO: Change from static to dynamic from database
@@ -33,7 +39,7 @@ export default function Customer() {
             new Seasonal(0, 0, false)
         ),
         new MenuItem(
-            0,
+            1,
             'Cheeseburger',
             'type',
             5,
@@ -43,7 +49,7 @@ export default function Customer() {
             new Seasonal(0, 0, false)
         ),
         new MenuItem(
-            0,
+            993,
             'Meal',
             'type',
             5,
@@ -53,7 +59,7 @@ export default function Customer() {
             new Seasonal(0, 0, false)
         ),
         new MenuItem(
-            0,
+            994,
             'Meal',
             'type',
             5,
@@ -63,87 +69,7 @@ export default function Customer() {
             new Seasonal(0, 0, false)
         ),
         new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
+            995,
             'Meal',
             'type',
             5,
@@ -155,7 +81,7 @@ export default function Customer() {
     ]);
     menuItemsByCategory.set('Drinks', [
         new MenuItem(
-            0,
+            996,
             'Water',
             'type',
             5,
@@ -165,7 +91,7 @@ export default function Customer() {
             new Seasonal(0, 0, false)
         ),
         new MenuItem(
-            0,
+            997,
             'Fountain Drink',
             'type',
             5,
@@ -177,7 +103,7 @@ export default function Customer() {
     ]);
     menuItemsByCategory.set('Sandwiches', [
         new MenuItem(
-            0,
+            998,
             'Grilled Cheese',
             'type',
             5,
@@ -187,7 +113,7 @@ export default function Customer() {
             new Seasonal(0, 0, false)
         ),
         new MenuItem(
-            0,
+            999,
             'Ham Sandwich',
             'type',
             5,
@@ -199,7 +125,7 @@ export default function Customer() {
     ]);
     menuItemsByCategory.set('Baskets', [
         new MenuItem(
-            0,
+            1000,
             '3 Tender Basket',
             'type',
             5,
@@ -219,17 +145,45 @@ export default function Customer() {
     let setPopUp: Function;
     [showPopUp, setPopUp] = useState(false);
 
-    let item = new MenuItem(
-        1,
-        'Aggie Chicken Club',
-        'type',
-        10,
-        10,
-        10,
-        [],
-        new Seasonal(1, 1, false)
-    );
-    let [qty, setQty] = useState(1);
+    let orderItems: OrderItemProp[];
+    let setOrderItems: (orderItems: OrderItemProp[]) => void;
+    [orderItems, setOrderItems] = useState<OrderItemProp[]>([]);
+
+    var qtys: uniqueQuantity[];
+    var setQtys: (qtys: uniqueQuantity[]) => void;
+    [qtys, setQtys] = useState<uniqueQuantity[]>([{id: -1, qty: 1}]);
+
+    function addToOrder(item: MenuItem) {
+        // check if the item already exists
+        for(let i = 0; i < orderItems.length; i++) {
+            if(item.id == orderItems[i].item.id){
+                // increment quantity
+                orderItems[i].setQty(orderItems[i].qty + 1);
+                return;
+            }
+        }
+
+        // create new quantity and set quantity function
+        console.log(qtys);
+        let qty: uniqueQuantity = {id: item.id, qty: 1};
+        setQtys([...qtys, qty]);
+        console.log(qtys);
+        function editQty(newQty: number) {
+            console.log(qtys);
+            let newQtys = qtys.map(qty => {
+                if(item.id != qty.id) {
+                    return qty;
+                } else {
+                    return {id: qty.id, qty: newQty};
+                }
+            });
+
+            setQtys(newQtys);
+        }
+
+        let orderItem: OrderItemProp = {item: item, qty: qtys[qtys.length-1].qty, setQty: editQty};
+        setOrderItems([...orderItems, orderItem]);
+    }
 
     return (
         // TODO: Change to global styling
@@ -242,7 +196,7 @@ export default function Customer() {
                         menuItems={menuItemsByCategory
                             .get('Burgers')!
                             .slice(0, 6)}
-                        onClick={() => setPopUp(true)}
+                        addToOrder={addToOrder}
                     />
                 </div>
                 <div>
@@ -268,21 +222,18 @@ export default function Customer() {
                             .get(category)!
                             .map((menuitem: MenuItem) => (
                                 <CustomerMenuItem
-                                    key={menuitem.name}
+                                    key={menuitem.id}
                                     item={menuitem}
-                                    onClick={() => setPopUp(true)}
+                                    addToOrder={addToOrder}
                                 />
                             ))}
                     </div>
                 ))}
             </div>
             <CustomerOrderSidebar>
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+                {orderItems.map(({item, qty, setQty}) => (
+                    <CustomerOrderItem key={item.id} item={item} qty={qty} setQty={setQty} />
+                ))}
             </CustomerOrderSidebar>
         </main>
     );

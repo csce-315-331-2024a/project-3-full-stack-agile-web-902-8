@@ -420,7 +420,7 @@ button.recommended-item.customer:active {
 /******************************************
  *              Order Siderbar            *
  ******************************************/
-.customer #order-sidebar {
+.customer#order-sidebar {
     background: rgb(var(--background-rgb));
     color: rgb(var(--text-rgb));
     border-left: 1pt solid rgb(var(--text-rgb));
