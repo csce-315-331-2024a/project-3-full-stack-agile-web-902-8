@@ -2,6 +2,7 @@
 // TODO: Consider separating client-side and server-side code for MUCH better performance
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 // TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
+// TODO: The user should be notified if an order is in progress and if it is successfully placed
 
 import React, { useEffect, useState } from 'react';
 
@@ -197,7 +198,7 @@ export default function Cashier() {
                 onClick={() => placeOrder()}
                 disabled={isPlacingOrder}
             >
-                {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
+                Place Order
             </button>
             <div className={componentStyles.discountTaxButtons}>
                 <button
