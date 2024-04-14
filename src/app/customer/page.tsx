@@ -7,7 +7,7 @@ import {
     ZoomIn,
     ZoomOut,
     ResetZoom,
-} from '../zoom.client'; // Assuming these are exported correctly in menu.client.tsx
+} from '../zoom.client';
 
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';

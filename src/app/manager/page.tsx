@@ -11,7 +11,7 @@ import {
     ZoomIn,
     ZoomOut,
     ResetZoom,
-} from '../zoom.client'; // Ensure these are correctly imported
+} from '../zoom.client';
 import styles from '../page.module.css';
 
 export default function Manager() {
@@ -38,7 +38,7 @@ export default function Manager() {
         ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
         ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
     ];
-    const { scale } = useScale(); // Use the scale from the context
+    const { scale } = useScale();
 
     return (
         <ScaleProvider initialScale={1}>

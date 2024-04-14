@@ -57,9 +57,8 @@ const MenuBoard: React.FC = () => {
         { id: '4', name: 'Baskets', description: 'Description of Baskets' },
     ];
 
-    const [initialScale, setInitialScale] = useState(1); // Default scale set to 1
+    const [initialScale, setInitialScale] = useState(1);
 
-    // Dynamically import ZoomIn, ZoomOut, and ResetZoom with no server-side rendering
     const ZoomInWithClientSide = dynamic(
         () => import('../zoom.client').then((mod) => mod.ZoomIn),
         { ssr: false }
