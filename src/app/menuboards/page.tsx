@@ -1,7 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import nookies from 'nookies';
 import Heading from '@/components/Heading';
 import DoubleText from '@/components/DoubleText';
 import styles from '../page.module.css';
@@ -12,7 +11,6 @@ import {
     ZoomOut,
     ResetZoom,
 } from '../zoom.client';
-import { NextApiRequest } from 'next';
 
 interface Category {
     id: string;
@@ -59,13 +57,7 @@ const MenuBoard: React.FC = () => {
         { id: '4', name: 'Baskets', description: 'Description of Baskets' },
     ];
 
-    // Use internal state for initialScale with a default or cookie-fetched value
-    const [initialScale, setInitialScale] = useState(1);
-
-    useEffect(() => {
-        const fetchedScale = parseFloat(nookies.get(null).initialScale || '1');
-        setInitialScale(fetchedScale);
-    }, []);
+    const [initialScale, setInitialScale] = useState(1); // Default scale set to 1
 
     // Dynamically import ZoomIn, ZoomOut, and ResetZoom with no server-side rendering
     const ZoomInWithClientSide = dynamic(
