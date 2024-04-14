@@ -26,11 +26,12 @@ function CustomerCategoryBar({
         <ul className={styles.bar} id={styles.categories}>
             {categories.map((categoryName) => (
                 <li key={categoryName}>
-                <CustomerCategoryButton
-                    categoryName={categoryName}
-                    category={category}
-                    setCategory={setCategory}
-                /></li>
+                    <CustomerCategoryButton
+                        categoryName={categoryName}
+                        category={category}
+                        setCategory={setCategory}
+                    />
+                </li>
             ))}
         </ul>
     );
@@ -47,8 +48,8 @@ function CustomerCategoryButton({
 
     const isActive = categoryName === category;
     const buttonStyles = isActive
-        ? styles["category-button"] + ' ' + styles.active
-        : styles["category-button"];
+        ? styles['category-button'] + ' ' + styles.active
+        : styles['category-button'];
 
     return (
         <button className={buttonStyles} onClick={handleClick}>

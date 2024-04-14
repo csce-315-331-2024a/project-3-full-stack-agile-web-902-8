@@ -1,4 +1,3 @@
-
 .main {
     background: rgb(var(--background-rgb));
     color: rgb(var(--text-rgb));
@@ -230,8 +229,6 @@ button.recommended-item:active {
 
     cursor: pointer;
 }
-
-
 
 #pop-up {
     background: rgb(var(--secondary-rgb));
