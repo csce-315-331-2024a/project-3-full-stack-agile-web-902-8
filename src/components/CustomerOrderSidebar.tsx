@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
-import styles from './page.module.css';
+import styles from '@/components/component.module.css';
 import { MenuItem } from '@/lib/models';
 
-export interface OrderItemProp {
+interface OrderItemProp {
     item: MenuItem;
     qty: number;
     setQty: (qty: number) => void;
@@ -13,7 +13,7 @@ interface OrderSidebarProp {
     children: React.ReactNode;
 }
 
-export function OrderItem({ item, qty, setQty }: OrderItemProp) {
+export function CustomerOrderItem({ item, qty, setQty }: OrderItemProp) {
     function changeQty(newQty: number) {
         if (newQty > 0 && newQty < 100) {
             setQty(newQty);
@@ -28,7 +28,7 @@ export function OrderItem({ item, qty, setQty }: OrderItemProp) {
     };
 
     return (
-        <div className={styles['order-item']}>
+        <div className={styles['order-item'] + ' ' + styles.customer}>
             <Image
                 src="/menuItemImages/Aggie_Chicken_Club.png"
                 alt={item.name}
@@ -54,9 +54,9 @@ export function OrderItem({ item, qty, setQty }: OrderItemProp) {
     );
 }
 
-export function OrderSidebar({ children }: OrderSidebarProp) {
+export function CustomerOrderSidebar({ children }: OrderSidebarProp) {
     return (
-        <div id={styles['order-sidebar']}>
+        <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
             <button className={styles['checkout']}>Checkout</button>
         </div>

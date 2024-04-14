@@ -1,12 +1,13 @@
 'use client';
 import styles from '@/app/customer/page.module.css';
 
+import { CustomerMenuItem } from '@/components/CustomerMenuItem';
+import CustomerCategoryBar from '@/components/CustomerCategoryBar';
+import CustomerRecommendedBar from '@/components/CustomerRecommendedBar';
 import {
-    CustomerMenuItem,
-    CustomerRecommendedItem,
-} from '@/app/customer/CustomerMenuItem';
-import CustomerCategoryBar from '@/app/customer/CategoryBar';
-import { OrderItem, OrderSidebar } from '@/app/customer/OrderSidebar';
+    CustomerOrderItem,
+    CustomerOrderSidebar,
+} from '@/components/CustomerOrderSidebar';
 import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
@@ -237,23 +238,16 @@ export default function Customer() {
                 <h1>Menu</h1>
                 <div>
                     <h2>Recommendations</h2>
-                    <ul className={styles.bar}>
-                        {menuItemsByCategory
+                    <CustomerRecommendedBar
+                        menuItems={menuItemsByCategory
                             .get('Burgers')!
-                            .slice(0, 6)
-                            .map((menuItem: MenuItem) => (
-                                <li key={menuItem.name}>
-                                    <CustomerRecommendedItem
-                                        item={menuItem}
-                                        onClick={() => setPopUp(true)}
-                                    />
-                                </li>
-                            ))}
-                    </ul>
+                            .slice(0, 6)}
+                        onClick={() => setPopUp(true)}
+                    />
                 </div>
                 <div>
                     <h2>Categories</h2>
-                    <div className={styles.bar} id={styles['menu-categories']}>
+                    <div id={styles['menu-categories']}>
                         <CustomerCategoryBar
                             categories={categoryNames}
                             category={currCategory}
@@ -282,14 +276,14 @@ export default function Customer() {
                     </div>
                 ))}
             </div>
-            <OrderSidebar>
-                <OrderItem item={item} qty={qty} setQty={setQty} />
-                <OrderItem item={item} qty={qty} setQty={setQty} />
-                <OrderItem item={item} qty={qty} setQty={setQty} />
-                <OrderItem item={item} qty={qty} setQty={setQty} />
-                <OrderItem item={item} qty={qty} setQty={setQty} />
-                <OrderItem item={item} qty={qty} setQty={setQty} />
-            </OrderSidebar>
+            <CustomerOrderSidebar>
+                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+            </CustomerOrderSidebar>
         </main>
     );
 }

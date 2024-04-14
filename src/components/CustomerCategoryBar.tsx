@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import styles from './page.module.css';
+import styles from '@/components/component.module.css';
 
 interface CustomerCategoryBarProps {
     categories: string[];
@@ -21,7 +21,10 @@ function CustomerCategoryBar({
     setCategory,
 }: CustomerCategoryBarProps) {
     return (
-        <ul className={styles.bar} id={styles.categories}>
+        <ul
+            className={styles.bar + ' ' + styles.customer}
+            id={styles.categories}
+        >
             {categories.map((categoryName) => (
                 <li key={categoryName}>
                     <CustomerCategoryButton
@@ -50,7 +53,10 @@ function CustomerCategoryButton({
         : styles['category-button'];
 
     return (
-        <button className={buttonStyles} onClick={handleClick}>
+        <button
+            className={buttonStyles + ' ' + styles.customer}
+            onClick={handleClick}
+        >
             {categoryName}
         </button>
     );
