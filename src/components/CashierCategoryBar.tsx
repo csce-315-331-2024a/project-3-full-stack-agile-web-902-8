@@ -22,11 +22,25 @@ function CashierCategoryBar({
     category,
     setCategory,
 }: CashierCategoryBarProps) {
-    if(isFetchingMenuTypes){
-        return(
-            <div className={componentStyles.categoryBar + ' ' + componentStyles.loading}>
-                <button className={componentStyles.categoryButton + ' ' + componentStyles.card + ' ' + componentStyles.loading}
-                disabled={true}>Loading Menu Categories...</button>
+    if (isFetchingMenuTypes) {
+        return (
+            <div
+                className={
+                    componentStyles.categoryBar + ' ' + componentStyles.loading
+                }
+            >
+                <button
+                    className={
+                        componentStyles.categoryButton +
+                        ' ' +
+                        componentStyles.card +
+                        ' ' +
+                        componentStyles.loading
+                    }
+                    disabled={true}
+                >
+                    Loading Menu Categories...
+                </button>
             </div>
         );
     }

@@ -8,18 +8,15 @@ export async function GET() {
         const menuTypes = await getAllMenuTypes();
         return NextResponse.json(menuTypes, { status: 200 });
     } catch (error: unknown) {
-        if(!(error instanceof Error)) {
+        if (!(error instanceof Error)) {
             console.error('Unexpected error:', error);
             return NextResponse.json(
                 { error: 'Server error' },
                 { status: 500 }
             );
         }
-        
+
         console.log('Error fetching menu types:', error.toString());
-        return NextResponse.json(
-            { error: 'Server error' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
 }

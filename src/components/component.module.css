@@ -143,7 +143,7 @@
     color: rgb(var(--text-rgb));
 }
 
-.placeOrder.disabled{
+.placeOrder.disabled {
     cursor: wait;
     background-color: rgb(var(--primary-rgb), 0.33);
     color: rgb(var(--text-rgb));
@@ -355,13 +355,13 @@
     padding: 1rem;
 }
 
-.loading{
+.loading {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));
     cursor: wait;
 }
 
-.loading:hover{
+.loading:hover {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));
     cursor: wait;

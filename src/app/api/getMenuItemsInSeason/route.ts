@@ -17,9 +17,6 @@ export async function GET() {
         }
 
         console.log('Error fetching menu items:', error.toString());
-        return NextResponse.json(
-            { error: 'Server error' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
 }

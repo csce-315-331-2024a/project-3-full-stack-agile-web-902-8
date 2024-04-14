@@ -32,7 +32,7 @@ export default function Cashier() {
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
-    
+
     const [isDiscounted, setIsDiscounted] = useState(false);
     const [isTaxed, setIsTaxed] = useState(true);
 
@@ -47,15 +47,14 @@ export default function Cashier() {
     useEffect(() => {
         async function fetchAllMenuTypes() {
             setIsFetchingMenuTypes(true);
-            try{
+            try {
                 const response = await fetch('/api/getAllMenuTypes');
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
                 const menuTypes = await response.json();
                 setCategories(menuTypes);
-            }
-            finally{
+            } finally {
                 setIsFetchingMenuTypes(false);
             }
         }
@@ -71,7 +70,7 @@ export default function Cashier() {
     useEffect(() => {
         async function fetchAllMenuItems() {
             setIsFetchingMenuItems(true);
-            try{
+            try {
                 console.log(
                     "Fetching menu items may take a while sometimes, especially if you're running locally."
                 );
@@ -82,8 +81,7 @@ export default function Cashier() {
                 const menuItems = await response.json();
                 setItems(menuItems);
                 console.log('Fetching should be done now.');
-            }
-            finally{
+            } finally {
                 setIsFetchingMenuItems(false);
             }
         }
@@ -95,7 +93,7 @@ export default function Cashier() {
         setCategoryItems(itemsInCategory);
     }, [category, items]);
 
-    useEffect(() =>{
+    useEffect(() => {
         const subTotal =
             Math.round(
                 currentOrder.reduce(
@@ -104,12 +102,19 @@ export default function Cashier() {
                 ) * 100
             ) / 100;
         const updatedDiscount =
-            Math.round(subTotal * (isDiscounted ? GlobalConfig.rates.discount : 0) * 100) /
-            100;
+            Math.round(
+                subTotal *
+                    (isDiscounted ? GlobalConfig.rates.discount : 0) *
+                    100
+            ) / 100;
         const updatedTax =
-            Math.round((subTotal - updatedDiscount) * (isTaxed ? GlobalConfig.rates.tax : 0) * 100) /
-            100;
-        const updatedTotal = Math.round((subTotal - updatedDiscount + updatedTax) * 100) / 100;
+            Math.round(
+                (subTotal - updatedDiscount) *
+                    (isTaxed ? GlobalConfig.rates.tax : 0) *
+                    100
+            ) / 100;
+        const updatedTotal =
+            Math.round((subTotal - updatedDiscount + updatedTax) * 100) / 100;
 
         setDiscount(updatedDiscount);
         setTax(updatedTax);
@@ -123,14 +128,15 @@ export default function Cashier() {
         }
 
         setIsPlacingOrder(true);
-        try{
+        try {
             const id = 0;
             const timestamp = new Date();
             const items = currentOrder.map(
-                (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
+                (orderEntry) =>
+                    new OrderItem(orderEntry.quantity, orderEntry.item)
             );
             const order = new Order(id, timestamp, discount, total, items);
-        
+
             const response = await fetch('/api/addOrder', {
                 method: 'POST',
                 headers: {
@@ -151,8 +157,7 @@ export default function Cashier() {
             setCurrentOrder([]);
             setIsDiscounted(false);
             setIsTaxed(true);
-        }
-        finally{
+        } finally {
             setIsPlacingOrder(false);
         }
     }
@@ -184,7 +189,10 @@ export default function Cashier() {
             />
             <button
                 className={
-                    componentStyles.placeOrder + ' ' + componentStyles.card + (isPlacingOrder ? ' ' + componentStyles.disabled : '')
+                    componentStyles.placeOrder +
+                    ' ' +
+                    componentStyles.card +
+                    (isPlacingOrder ? ' ' + componentStyles.disabled : '')
                 }
                 onClick={() => placeOrder()}
                 disabled={isPlacingOrder}

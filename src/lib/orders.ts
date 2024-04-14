@@ -30,11 +30,7 @@ export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
                 `;
                 if (result.count === 0) {
                     console.error('Order item insert failed', item);
-                    throw new Error(
-                        'Order item insert failed',
-                        item,
-                        o
-                    );
+                    throw new Error('Order item insert failed', item, o);
                 }
             }
 

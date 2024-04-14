@@ -25,10 +25,20 @@ function CashierItemGrid({
     setCurrentOrder,
 }: CashierItemGridProps) {
     if (isFetchingMenuItems) {
-        return(
+        return (
             <div className={componentStyles.itemGrid}>
-                <button className={componentStyles.itemButton + ' ' + componentStyles.card + ' ' + componentStyles.loading}
-                disabled={true}>Loading Menu Items...</button>
+                <button
+                    className={
+                        componentStyles.itemButton +
+                        ' ' +
+                        componentStyles.card +
+                        ' ' +
+                        componentStyles.loading
+                    }
+                    disabled={true}
+                >
+                    Loading Menu Items...
+                </button>
             </div>
         );
     }

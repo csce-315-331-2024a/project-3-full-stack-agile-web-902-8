@@ -8,8 +8,8 @@ const db = {
 
 const rates = {
     discount: 0.1,
-    tax: 0.0825,    // College Station sales tax rate
-}
+    tax: 0.0825, // College Station sales tax rate
+};
 
 const GlobalConfig = {
     db: db,
