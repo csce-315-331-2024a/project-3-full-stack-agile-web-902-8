@@ -1,20 +1,23 @@
 import styles from '@/components/component.module.css';
 import { CustomerRecommendedItem } from '@/components/CustomerMenuItem';
+import { OrderEntry } from '@/components/CustomerOrderSidebar';
 import { MenuItem } from '@/lib/models';
 
 interface RecommendedBarProp {
     menuItems: MenuItem[];
-    addToOrder: (menuItem: MenuItem) => void;
+    currentOrder: OrderEntry[];
+    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
-function CustomerRecommendedBar({ menuItems, addToOrder }: RecommendedBarProp) {
+function CustomerRecommendedBar({ menuItems, currentOrder, setCurrentOrder }: RecommendedBarProp) {
     return (
         <ul className={styles.bar + ' ' + styles.customer}>
             {menuItems.map((menuItem: MenuItem) => (
                 <li key={menuItem.id}>
                     <CustomerRecommendedItem
                         item={menuItem}
-                        addToOrder={addToOrder}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
                     />
                 </li>
             ))}

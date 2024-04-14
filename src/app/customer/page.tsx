@@ -5,7 +5,7 @@ import { CustomerMenuItem } from '@/components/CustomerMenuItem';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
 import CustomerRecommendedBar from '@/components/CustomerRecommendedBar';
 import {
-    OrderItemProp,
+    OrderEntry,
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
@@ -136,44 +136,9 @@ export default function Customer() {
     let changeCategory: (category: string) => void;
     [currCategory, changeCategory] = useState(categoryNames[0]);
 
-    let showPopUp: boolean;
-    let setPopUp: Function;
-    [showPopUp, setPopUp] = useState(false);
-
-    let orderItems: OrderItemProp[];
-    let setOrderItems: (orderItems: OrderItemProp[]) => void;
-    [orderItems, setOrderItems] = useState<OrderItemProp[]>([]);
-
-    // create new quantity and set quantity function
-    function setQty(qty: number, id: number) {
-        let newItems = orderItems.map((orderItem) => {
-            if(orderItem.item.id == id) {
-                return {
-                    item: orderItem.item,
-                    qty: qty,
-                    setQty: orderItem.setQty
-                }
-            } else {
-                return orderItem;
-            }
-        });
-
-        setOrderItems(newItems);
-    }
-
-    function addToOrder(item: MenuItem) {
-        // check if the item already exists
-        for(let i = 0; i < orderItems.length; i++) {
-            if(item.id == orderItems[i].item.id){
-                // increment quantity
-                orderItems[i].setQty(orderItems[i].qty + 1);
-                return;
-            }
-        }
-
-        let orderItem: OrderItemProp = {item: item, qty: 1, setQty: (qty: number) => setQty(qty, item.id)};
-        setOrderItems([...orderItems, orderItem]);
-    }
+    let currentOrder: OrderEntry[];
+    let setCurrentOrder: (orderItems: OrderEntry[]) => void;
+    [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
     return (
         // TODO: Change to global styling
@@ -186,7 +151,8 @@ export default function Customer() {
                         menuItems={menuItemsByCategory
                             .get('Burgers')!
                             .slice(0, 6)}
-                        addToOrder={addToOrder}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
                     />
                 </div>
                 <div>
@@ -214,15 +180,22 @@ export default function Customer() {
                                 <CustomerMenuItem
                                     key={menuitem.id}
                                     item={menuitem}
-                                    addToOrder={addToOrder}
+                                    currentOrder={currentOrder}
+                                    setCurrentOrder={setCurrentOrder}
                                 />
                             ))}
                     </div>
                 ))}
             </div>
             <CustomerOrderSidebar>
-                {orderItems.map(({item, qty, setQty}) => (
-                    <CustomerOrderItem key={item.id} item={item} qty={qty} setQty={setQty} />
+                {currentOrder.map(({item, qty}) => (
+                    <CustomerOrderItem 
+                        key={item.id} 
+                        item={item} 
+                        qty={qty} 
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
                 ))}
             </CustomerOrderSidebar>
         </main>

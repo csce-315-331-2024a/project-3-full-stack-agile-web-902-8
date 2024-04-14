@@ -1,14 +1,47 @@
 import React from 'react';
 import Image from 'next/image';
 import { MenuItem } from '@/lib/models';
+import { OrderEntry } from '@/components/CustomerOrderSidebar';
 import styles from '@/components/component.module.css';
 
-type MenuItemProp = {
+interface MenuItemProp {
     item: MenuItem;
-    addToOrder: (menuItem: MenuItem) => void;
+    currentOrder: OrderEntry[];
+    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 };
 
-export function CustomerMenuItem({ item, addToOrder }: MenuItemProp) {
+export function CustomerMenuItem({ item, currentOrder, setCurrentOrder }: MenuItemProp) {
+    // create new quantity and set quantity function
+    function setQty(qty: number) {
+        let newItems = currentOrder.map((orderItem) => {
+            if(orderItem.item.id == item.id) {
+                return {
+                    item: orderItem.item,
+                    qty: qty,
+                }
+            } else {
+                return orderItem;
+            }
+        });
+
+        setCurrentOrder(newItems);
+    }
+
+    function addToOrder(item: MenuItem) {
+        // check if the item already exists
+        for(let i = 0; i < currentOrder.length; i++) {
+            if(item.id == currentOrder[i].item.id){
+                // increment quantity
+                setQty(currentOrder[i].qty + 1);
+                return;
+            }
+        }
+
+
+        let orderItem: OrderEntry = {item: item, qty: 1};
+        setCurrentOrder([...currentOrder, orderItem]);
+    }
+
     // Specifying options for formatting
     const options = {
         style: 'decimal',
@@ -39,7 +72,37 @@ export function CustomerMenuItem({ item, addToOrder }: MenuItemProp) {
     );
 }
 
-export function CustomerRecommendedItem({ item, addToOrder }: MenuItemProp) {
+export function CustomerRecommendedItem({ item, currentOrder, setCurrentOrder }: MenuItemProp) {
+    // create new quantity and set quantity function
+    function setQty(qty: number) {
+        let newItems = currentOrder.map((orderItem) => {
+            if(orderItem.item.id == item.id) {
+                return {
+                    item: orderItem.item,
+                    qty: qty,
+                }
+            } else {
+                return orderItem;
+            }
+        });
+
+        setCurrentOrder(newItems);
+    }
+
+    function addToOrder(item: MenuItem) {
+        // check if the item already exists
+        for(let i = 0; i < currentOrder.length; i++) {
+            if(item.id == currentOrder[i].item.id){
+                // increment quantity
+                setQty(currentOrder[i].qty + 1);
+                return;
+            }
+        }
+
+        let orderItem: OrderEntry = {item: item, qty: 1};
+        setCurrentOrder([...currentOrder, orderItem]);
+    }
+
     return (
         <button
             className={styles['recommended-item'] + ' ' + styles.customer}

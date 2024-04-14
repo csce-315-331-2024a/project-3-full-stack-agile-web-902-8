@@ -3,17 +3,38 @@ import Image from 'next/image';
 import styles from '@/components/component.module.css';
 import { MenuItem } from '@/lib/models';
 
+export interface OrderEntry {
+    item: MenuItem;
+    qty: number;
+}
+
 export interface OrderItemProp {
     item: MenuItem;
     qty: number;
-    setQty: (qty: number) => void;
+    currentOrder: OrderEntry[];
+    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
 interface OrderSidebarProp {
     children: React.ReactNode;
 }
 
-export function CustomerOrderItem({ item, qty, setQty }: OrderItemProp) {
+export function CustomerOrderItem({ item, qty, currentOrder, setCurrentOrder }: OrderItemProp) {
+    function setQty(qty: number) {
+        let newItems = currentOrder.map((orderItem) => {
+            if(orderItem.item.id == item.id) {
+                return {
+                    item: orderItem.item,
+                    qty: qty,
+                }
+            } else {
+                return orderItem;
+            }
+        });
+
+        setCurrentOrder(newItems);
+    }
+
     function changeQty(newQty: number) {
         if (newQty > 0 && newQty < 100) {
             setQty(newQty);
