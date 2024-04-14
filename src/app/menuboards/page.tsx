@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import nookies from 'nookies';
 import Heading from '@/components/Heading';
@@ -18,10 +18,6 @@ interface Category {
     id: string;
     name: string;
     description: string;
-}
-
-interface MenuBoardProps {
-    initialScale: number;
 }
 
 const RenderCategory: React.FC<Category & { scale: number }> = ({
@@ -44,7 +40,7 @@ const RenderCategory: React.FC<Category & { scale: number }> = ({
     );
 };
 
-const MenuBoard: React.FC<MenuBoardProps> = ({ initialScale }) => {
+const MenuBoard: React.FC = () => {
     const { scale } = useScale();
     const items = ['Home', 'Logout'];
     const links = ['/', '/', '/', '/', '/', '/'];
@@ -62,6 +58,14 @@ const MenuBoard: React.FC<MenuBoardProps> = ({ initialScale }) => {
         { id: '3', name: 'Burgers', description: 'Description of Burgers' },
         { id: '4', name: 'Baskets', description: 'Description of Baskets' },
     ];
+
+    // Use internal state for initialScale with a default or cookie-fetched value
+    const [initialScale, setInitialScale] = useState(1);
+
+    useEffect(() => {
+        const fetchedScale = parseFloat(nookies.get(null).initialScale || '1');
+        setInitialScale(fetchedScale);
+    }, []);
 
     // Dynamically import ZoomIn, ZoomOut, and ResetZoom with no server-side rendering
     const ZoomInWithClientSide = dynamic(
@@ -117,20 +121,5 @@ const MenuBoard: React.FC<MenuBoardProps> = ({ initialScale }) => {
         </ScaleProvider>
     );
 };
-
-// Loader function to fetch initial data from the server side
-export async function loader({
-    params,
-    request,
-}: {
-    params: any;
-    request: NextApiRequest;
-}) {
-    const cookies = nookies.get({ req: request });
-    const initialScale = parseFloat(cookies.scale || '1');
-
-    // Return the data as props
-    return { props: { initialScale } };
-}
 
 export default MenuBoard;
