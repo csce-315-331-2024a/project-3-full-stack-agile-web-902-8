@@ -19,10 +19,7 @@ import {
     Order,
     OrderItem,
 } from '@/lib/models';
-
-// TODO: These should be defined elsewhere
-const DISCOUNT_RATE = 0.1;
-const TAX_RATE = 0.0825;
+import GlobalConfig from '@/lib/config';
 
 export interface OrderEntry {
     item: MenuItem;
@@ -94,10 +91,10 @@ export default function Cashier() {
                 ) * 100
             ) / 100;
         const discount =
-            Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) /
+            Math.round(subTotal * (isDiscounted ? GlobalConfig.rates.discount : 0) * 100) /
             100;
         const tax =
-            Math.round((subTotal - discount) * (isTaxed ? TAX_RATE : 0) * 100) /
+            Math.round((subTotal - discount) * (isTaxed ? GlobalConfig.rates.tax : 0) * 100) /
             100;
         const total = Math.round((subTotal - discount + tax) * 100) / 100;
 

@@ -4,10 +4,7 @@ import React, { useEffect } from 'react';
 import componentStyles from './component.module.css';
 import { MenuItem, Order } from '@/lib/models';
 import { OrderEntry } from '@/app/cashier/page';
-
-// TODO: These should be defined elsewhere
-const DISCOUNT_RATE = 0.1;
-const TAX_RATE = 0.0825;
+import GlobalConfig from '@/lib/config';
 
 interface CashierOrderTableProps {
     isDiscounted: boolean;
@@ -41,11 +38,11 @@ function CashierOrderTable({
                 ) * 100
             ) / 100;
         const calculatedDiscount =
-            Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) /
+            Math.round(subTotal * (isDiscounted ? GlobalConfig.rates.discount : 0) * 100) /
             100;
         const calculatedTax =
             Math.round(
-                (subTotal - calculatedDiscount) * (isTaxed ? TAX_RATE : 0) * 100
+                (subTotal - calculatedDiscount) * (isTaxed ? GlobalConfig.rates.discount : 0) * 100
             ) / 100;
         const calculatedTotal =
             Math.round((subTotal - calculatedDiscount + calculatedTax) * 100) /
