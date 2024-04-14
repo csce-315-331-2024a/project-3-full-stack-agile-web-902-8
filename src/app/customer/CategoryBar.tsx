@@ -3,8 +3,6 @@
 import React from 'react';
 import styles from './page.module.css';
 
-// TODO: consider using an active button style
-
 interface CustomerCategoryBarProps {
     categories: string[];
     category: string;

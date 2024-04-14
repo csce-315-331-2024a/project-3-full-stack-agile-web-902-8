@@ -8,7 +8,7 @@ import {
 import CustomerCategoryBar from '@/app/customer/CategoryBar';
 import { OrderItem, OrderSidebar } from '@/app/customer/OrderSidebar';
 import { MenuItem, Seasonal } from '@/lib/models';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Customer() {
     // TODO: Change from static to dynamic from database
@@ -151,7 +151,6 @@ export default function Customer() {
             [],
             new Seasonal(0, 0, false)
         ),
-
     ]);
     menuItemsByCategory.set('Drinks', [
         new MenuItem(
@@ -231,8 +230,6 @@ export default function Customer() {
     );
     let [qty, setQty] = useState(1);
 
-
-
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
@@ -242,7 +239,8 @@ export default function Customer() {
                     <h2>Recommendations</h2>
                     <ul className={styles.bar}>
                         {menuItemsByCategory
-                            .get('Burgers')!.slice(0,6)
+                            .get('Burgers')!
+                            .slice(0, 6)
                             .map((menuItem: MenuItem) => (
                                 <li key={menuItem.name}>
                                     <CustomerRecommendedItem
@@ -265,18 +263,22 @@ export default function Customer() {
                 </div>
                 {/* Menu items */}
                 {categoryNames.map((category) => (
-                    <div key={category} 
+                    <div
+                        key={category}
                         className={styles['menu-items']}
-                        style={(category != currCategory) ? {display: "none"} : {}}>
-                    {menuItemsByCategory
-                        .get(category)!
-                        .map((menuitem: MenuItem) => (
-                            <CustomerMenuItem
-                                key={menuitem.name}
-                                item={menuitem}
-                                onClick={() => setPopUp(true)}
-                            />
-                        ))}
+                        style={
+                            category != currCategory ? { display: 'none' } : {}
+                        }
+                    >
+                        {menuItemsByCategory
+                            .get(category)!
+                            .map((menuitem: MenuItem) => (
+                                <CustomerMenuItem
+                                    key={menuitem.name}
+                                    item={menuitem}
+                                    onClick={() => setPopUp(true)}
+                                />
+                            ))}
                     </div>
                 ))}
             </div>
