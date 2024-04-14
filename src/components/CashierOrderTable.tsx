@@ -9,6 +9,9 @@ import GlobalConfig from '@/lib/config';
 interface CashierOrderTableProps {
     isDiscounted: boolean;
     isTaxed: boolean;
+    discount: number;
+    tax: number;
+    total: number;
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
 }
@@ -22,37 +25,12 @@ interface CashierOrderItemProps {
 function CashierOrderTable({
     isDiscounted,
     isTaxed,
+    discount,
+    tax,
+    total,
     currentOrder,
     setCurrentOrder,
 }: CashierOrderTableProps) {
-    const [discount, setDiscount] = React.useState(0);
-    const [tax, setTax] = React.useState(0);
-    const [total, setTotal] = React.useState(0);
-
-    useEffect(() => {
-        const subTotal =
-            Math.round(
-                currentOrder.reduce(
-                    (acc, entry) => acc + entry.item.price * entry.quantity,
-                    0
-                ) * 100
-            ) / 100;
-        const calculatedDiscount =
-            Math.round(subTotal * (isDiscounted ? GlobalConfig.rates.discount : 0) * 100) /
-            100;
-        const calculatedTax =
-            Math.round(
-                (subTotal - calculatedDiscount) * (isTaxed ? GlobalConfig.rates.discount : 0) * 100
-            ) / 100;
-        const calculatedTotal =
-            Math.round((subTotal - calculatedDiscount + calculatedTax) * 100) /
-            100;
-
-        setDiscount(calculatedDiscount);
-        setTax(calculatedTax);
-        setTotal(calculatedTotal);
-    }, [isDiscounted, isTaxed, currentOrder]);
-
     return (
         <div
             className={componentStyles.orderTable + ' ' + componentStyles.card}

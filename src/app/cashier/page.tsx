@@ -35,6 +35,10 @@ export default function Cashier() {
     const [isDiscounted, setIsDiscounted] = useState(false);
     const [isTaxed, setIsTaxed] = useState(true);
 
+    const [discount, setDiscount] = useState(0);
+    const [tax, setTax] = useState(0);
+    const [total, setTotal] = useState(0);
+
     useEffect(() => {
         async function fetchAllMenuTypes() {
             const response = await fetch('/api/getAllMenuTypes');
@@ -54,11 +58,6 @@ export default function Cashier() {
     }, [categories]);
 
     useEffect(() => {
-        const itemsInCategory = items.filter((item) => item.type === category);
-        setCategoryItems(itemsInCategory);
-    }, [category, items]);
-
-    useEffect(() => {
         async function fetchAllMenuItems() {
             console.log(
                 "Fetching menu items may take a while sometimes, especially if you're running locally."
@@ -74,6 +73,32 @@ export default function Cashier() {
         fetchAllMenuItems();
     }, []);
 
+    useEffect(() => {
+        const itemsInCategory = items.filter((item) => item.type === category);
+        setCategoryItems(itemsInCategory);
+    }, [category, items]);
+
+    useEffect(() =>{
+        const subTotal =
+            Math.round(
+                currentOrder.reduce(
+                    (acc, entry) => acc + entry.item.price * entry.quantity,
+                    0
+                ) * 100
+            ) / 100;
+        const updatedDiscount =
+            Math.round(subTotal * (isDiscounted ? GlobalConfig.rates.discount : 0) * 100) /
+            100;
+        const updatedTax =
+            Math.round((subTotal - updatedDiscount) * (isTaxed ? GlobalConfig.rates.tax : 0) * 100) /
+            100;
+        const updatedTotal = Math.round((subTotal - updatedDiscount + updatedTax) * 100) / 100;
+
+        setDiscount(updatedDiscount);
+        setTax(updatedTax);
+        setTotal(updatedTotal);
+    }, [isDiscounted, isTaxed, currentOrder]);
+
     async function placeOrder() {
         if (currentOrder.length === 0) {
             console.log('No items in order');
@@ -82,22 +107,6 @@ export default function Cashier() {
 
         const id = 0;
         const timestamp = new Date();
-
-        const subTotal =
-            Math.round(
-                currentOrder.reduce(
-                    (acc, entry) => acc + entry.item.price * entry.quantity,
-                    0
-                ) * 100
-            ) / 100;
-        const discount =
-            Math.round(subTotal * (isDiscounted ? GlobalConfig.rates.discount : 0) * 100) /
-            100;
-        const tax =
-            Math.round((subTotal - discount) * (isTaxed ? GlobalConfig.rates.tax : 0) * 100) /
-            100;
-        const total = Math.round((subTotal - discount + tax) * 100) / 100;
-
         const items = currentOrder.map(
             (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
         );
@@ -142,6 +151,9 @@ export default function Cashier() {
             <CashierOrderTable
                 isDiscounted={isDiscounted}
                 isTaxed={isTaxed}
+                discount={discount}
+                tax={tax}
+                total={total}
                 currentOrder={currentOrder}
                 setCurrentOrder={setCurrentOrder}
             />
