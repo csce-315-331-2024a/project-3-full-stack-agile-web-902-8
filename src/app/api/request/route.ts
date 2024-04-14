@@ -1,13 +1,13 @@
-import { getInventoryItemByName } from '@/lib/inventory';
-import { InventoryItem } from '@/lib/models';
+import { request } from '@/lib/inventory';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
-    console.log('POST /api/getInventoryItemByName');
+export async function POST(req: NextRequest) {
+    console.log('POST /api/request');
     try {
-        const name = (await request.json()) as string;
+        const { name, amount } = await req.json();
         console.log(name);
-        const result = await getInventoryItemByName(name);
+        console.log(amount);
+        const result = await request(name, amount);
         console.log(result);
         return NextResponse.json(JSON.stringify(result), { status: 200 });
     } catch (error: any) {

@@ -3,27 +3,20 @@ import styles from './component.module.css';
 import { InventoryItem } from '@/lib/models';
 import { addOrUpdateInventoryItem } from '@/lib/inventory';
 import { POST } from '@/app/api/addOrUpdateInventoryItem/route';
+import { urlToHttpOptions } from 'url';
+import { warnOptionHasBeenDeprecated } from 'next/dist/server/config';
 
-/*type adjusterProps = {
-    item: InventoryItem;
-};*/
-
-function InventoryAdjuster(/*{ item }: adjusterProps*/) {
+function InventoryAdjuster() {
     const [itemNames, setItemNames] = useState<string[]>([]);
-    const [selected, setSelected] = useState<string | null>(null);
-    //const [adjustedItem, setAdjustedItem] = useState<InventoryItem | null>(null);
+    const [selected, setSelected] = useState<string>('');
+    const [requesting, setRequesting] = useState<boolean>(false);
     const [form, setForm] = useState({
         name: '',
         quantity: 0,
-        minQuanity: 0,
+        minQuantity: 0,
         maxQuantity: 0,
         averageCost: 0,
     });
-    /*const [adjustedName, setAdjustedName] = useState<string>('');
-    const [adjustedQuantity, setAdjustedQuantity] = useState<number>(0);
-    const [adjustedMinQuantity, setAdjustedMinQuantity] = useState<number>(0);
-    const [adjustedMaxQuantity, setAdjustedMaxQuantity] = useState<number>(0);
-    const [adjustedCost, setAdjustedCost] = useState<number>(0);*/
     const [adjustedRequest, setAdjustedRequest] = useState<number>(0);
     const [exists, setExists] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
@@ -34,8 +27,66 @@ function InventoryAdjuster(/*{ item }: adjusterProps*/) {
             throw new Error(`Error: ${response.statusText}`);
         }
         const inventoryItemNames = await response.json();
-        setItemNames(inventoryItemNames);
+        const sortedNames = inventoryItemNames.sort((a: string, b: string) =>
+            a.localeCompare(b)
+        );
+        setItemNames(sortedNames);
     }
+
+    async function getInventoryItem() {
+        const response = await fetch('/api/getInventoryItemByName', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(selected),
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const inventoryItem = await response.json();
+        const parseItem = JSON.parse(inventoryItem);
+        console.log(inventoryItem);
+        console.log(parseItem);
+        //setForm(inventoryItem);
+        setForm((form) => ({
+            ...form,
+            name: parseItem.name,
+        }));
+        setForm((form) => ({
+            ...form,
+            quantity: parseItem.quantity,
+        }));
+        setForm((form) => ({
+            ...form,
+            averageCost: parseItem.averageCost,
+        }));
+        setForm((form) => ({
+            ...form,
+            minQuantity: parseItem.minQuantity,
+        }));
+        setForm((form) => ({
+            ...form,
+            maxQuantity: parseItem.maxQuantity,
+        }));
+    }
+
+    /*async function existsInInventory() {
+        console.log(form.name);
+        const response = await fetch('/api/existsInInventory', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form.name),
+        });
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const existing = await response.json();
+        console.log(existing);
+        setExists(existing);
+    }*/
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -43,23 +94,6 @@ function InventoryAdjuster(/*{ item }: adjusterProps*/) {
             ...form,
             [name]: value,
         }));
-
-        async function existsInInventory() {
-            const response = await fetch('/api/existInInventory', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(form.name),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-            const existing = await response.json();
-            setExists(existing);
-        }
-        existsInInventory();
-        console.log(selected);
     };
 
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -67,12 +101,11 @@ function InventoryAdjuster(/*{ item }: adjusterProps*/) {
         const item = new InventoryItem(
             0,
             form.name,
-            form.averageCost,
-            form.quantity,
-            form.minQuanity,
-            form.maxQuantity
+            Number(form.averageCost),
+            Number(form.quantity),
+            Number(form.minQuantity),
+            Number(form.maxQuantity)
         );
-        console.log(item);
         async function updateInventoryItem() {
             const response = await fetch('/api/addOrUpdateInventoryItem', {
                 method: 'POST',
@@ -85,83 +118,124 @@ function InventoryAdjuster(/*{ item }: adjusterProps*/) {
                 throw new Error(`Error: ${response.statusText}`);
             }
         }
-        updateInventoryItem();
+        if (selected == 'new') {
+            const confirm = window.confirm(
+                'Are you sure you want to add this item?'
+            );
+            if (confirm) {
+                console.log(item);
+                updateInventoryItem();
+                setForm({
+                    name: '',
+                    quantity: 0,
+                    minQuantity: 0,
+                    maxQuantity: 0,
+                    averageCost: 0,
+                });
+            }
+        } else {
+            console.log(item);
+            updateInventoryItem();
+        }
         fetchInventoryItems();
-        console.log(itemNames);
     };
 
     useEffect(() => {
         fetchInventoryItems();
-        console.log(itemNames);
     }, [itemNames]);
 
-    const handleSelect = (itemName: string) => {
+    useEffect(() => {
+        if (selected == 'new') {
+            setExists(false);
+            setForm({
+                name: '',
+                quantity: 0,
+                minQuantity: 0,
+                maxQuantity: 0,
+                averageCost: 0,
+            });
+        } else if (selected != '') {
+            getInventoryItem();
+            setExists(true);
+        }
+    }, [selected, requesting, exists]);
+
+    /*useEffect(() => {
+        existsInInventory();
+    }, [form.name]);*/
+
+    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const itemName = e.target.value;
         setSelected(itemName);
-        async function getInventoryItem() {
-            const response = await fetch('/api/getInventoryItemByName', {
-                method: 'GET',
+        setVisible(true);
+    };
+
+    const handleReqClick = () => {
+        setRequesting(true);
+    };
+
+    const handleCloseRequest = () => {
+        setRequesting(false);
+    };
+
+    const handleReqChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newRequest = Number(e.target.value);
+        setAdjustedRequest(newRequest);
+    };
+
+    const handleRequest = () => {
+        async function doRequest() {
+            const response = await fetch('/api/request', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(selected),
+                body: JSON.stringify({
+                    name: selected,
+                    amount: adjustedRequest,
+                }),
             });
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-            const inventoryItem = await response.json();
-            //setForm(inventoryItem);
-            setForm((form) => ({
-                ...form,
-                [form.name]: inventoryItem.name,
-            }));
-            setForm((form) => ({
-                ...form,
-                [form.quantity]: inventoryItem.quantity,
-            }));
-            setForm((form) => ({
-                ...form,
-                [form.averageCost]: inventoryItem.averageCost,
-            }));
-            setForm((form) => ({
-                ...form,
-                [form.minQuanity]: inventoryItem.minQuantity,
-            }));
-            setForm((form) => ({
-                ...form,
-                [form.maxQuantity]: inventoryItem.maxQuantity,
-            }));
         }
+        doRequest();
+        setForm((form) => ({
+            ...form,
+            quantity: form.quantity + adjustedRequest,
+        }));
+        setRequesting(false);
         getInventoryItem();
-        setVisible(true);
     };
 
     return (
         <div>
-            <div className="dropdown">
-                <button className="dropdown-toggle">
-                    {selected || 'Select an option'}
-                </button>
-                <ul className="dropdown-menu">
-                    {itemNames.map((itemName, index) => (
-                        <li key={index} onClick={() => handleSelect(itemName)}>
-                            {itemName}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <select id="dropdown" value={selected} onChange={handleSelect}>
+                <option value="" disabled>
+                    Select an option
+                </option>
+                {itemNames.map((option, index) => (
+                    <option key={index} value={option}>
+                        {option}
+                    </option>
+                ))}
+                <option value="new">Add an Inventory Item</option>
+            </select>
 
             {visible && (
                 <form onSubmit={handleSubmit}>
                     <h2>{selected || ''}</h2>
-                    <label>
-                        Name:
-                        <input
-                            type="text"
-                            name="name"
-                            value={form.name}
-                            onChange={handleChange}
-                        />
-                    </label>
+                    {!exists && (
+                        <label>
+                            Name:
+                            <input
+                                type="text"
+                                name="name"
+                                value={form.name}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    )}
                     <label>
                         Current Quantity:
                         <input
@@ -185,7 +259,7 @@ function InventoryAdjuster(/*{ item }: adjusterProps*/) {
                         <input
                             type="number"
                             name="minQuantity"
-                            value={form.minQuanity}
+                            value={form.minQuantity}
                             onChange={handleChange}
                         />
                     </label>
@@ -198,24 +272,34 @@ function InventoryAdjuster(/*{ item }: adjusterProps*/) {
                             onChange={handleChange}
                         />
                     </label>
+                    <div>
+                        <button type="submit">
+                            {exists ? 'Save Changes' : 'Add Item'}
+                        </button>
+                        {exists && <button>Delete Item</button>}
+                        {exists && (
+                            <button onClick={handleReqClick}>
+                                Request Item
+                            </button>
+                        )}
+                    </div>
+                </form>
+            )}
+
+            {requesting && (
+                <div>
                     <label>
                         Quantity to Request:
                         <input
                             type="number"
                             name="reqQuantity"
                             value={adjustedRequest}
-                            onChange={handleChange}
+                            onChange={handleReqChange}
                         />
                     </label>
-                    <div>
-                        <button>Add Item</button>
-                        <button type="submit">
-                            {exists ? 'Save Changes' : 'Add Item'}
-                        </button>
-                        <button>Delete Item</button>
-                        <button>Request Item</button>
-                    </div>
-                </form>
+                    <button onClick={handleRequest}>Submit Request</button>
+                    <button onClick={handleCloseRequest}>Nevermind</button>
+                </div>
             )}
         </div>
     );
