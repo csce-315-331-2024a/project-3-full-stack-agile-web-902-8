@@ -32,12 +32,15 @@ export default function Cashier() {
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
+    
     const [isDiscounted, setIsDiscounted] = useState(false);
     const [isTaxed, setIsTaxed] = useState(true);
 
     const [discount, setDiscount] = useState(0);
     const [tax, setTax] = useState(0);
     const [total, setTotal] = useState(0);
+
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
@@ -105,33 +108,39 @@ export default function Cashier() {
             return;
         }
 
-        const id = 0;
-        const timestamp = new Date();
-        const items = currentOrder.map(
-            (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
-        );
-        const order = new Order(id, timestamp, discount, total, items);
+        setIsPlacingOrder(true);
+        try{
+            const id = 0;
+            const timestamp = new Date();
+            const items = currentOrder.map(
+                (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
+            );
+            const order = new Order(id, timestamp, discount, total, items);
+        
+            const response = await fetch('/api/addOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order),
+            });
 
-        const response = await fetch('/api/addOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-        });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+            console.log('Order placed:');
+            currentOrder.forEach((orderEntry) => {
+                console.log(`${orderEntry.quantity}x ${orderEntry.item.name}`);
+            });
+
+            setCurrentOrder([]);
+            setIsDiscounted(false);
+            setIsTaxed(true);
         }
-
-        console.log('Order placed:');
-        currentOrder.forEach((orderEntry) => {
-            console.log(`${orderEntry.quantity}x ${orderEntry.item.name}`);
-        });
-
-        setCurrentOrder([]);
-        setIsDiscounted(false);
-        setIsTaxed(true);
+        finally{
+            setIsPlacingOrder(false);
+        }
     }
 
     return (
@@ -159,11 +168,12 @@ export default function Cashier() {
             />
             <button
                 className={
-                    componentStyles.placeOrder + ' ' + componentStyles.card
+                    componentStyles.placeOrder + ' ' + componentStyles.card + (isPlacingOrder ? ' ' + componentStyles.disabled : '')
                 }
                 onClick={() => placeOrder()}
+                disabled={isPlacingOrder}
             >
-                Place Order
+                {isPlacingOrder ? 'Placing Order...' : 'Place Order'}
             </button>
             <div className={componentStyles.discountTaxButtons}>
                 <button
