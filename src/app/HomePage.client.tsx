@@ -9,16 +9,16 @@ export default function HomePage() {
             <nav className={styles.nav}>
                 {}
                 <button onClick={() => router.push('/manager')}>
-                    Manager Portal
+                    Manager{' '}
                 </button>
                 <button onClick={() => router.push('/cashier')}>
-                    Cashier Portal
+                    Cashier{' '}
                 </button>
                 <button onClick={() => router.push('/customer')}>
-                    Customer Portal
+                    Customer{' '}
                 </button>
                 <button onClick={() => router.push('/menuboards')}>
-                    Menu Boards
+                    MenuBoards
                 </button>
             </nav>
             {}

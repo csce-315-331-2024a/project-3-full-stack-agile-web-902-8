@@ -4,7 +4,7 @@
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 
 // TODO: Discount button and no tax button
-// TODO: Numbers should use monospace font, although we should consider adding a fancier font for this
+// TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
 
 import React, { useEffect, useState } from 'react';
 
@@ -23,7 +23,9 @@ import {
     OrderItem,
 } from '@/lib/models';
 
-const discountRate = 0.1;
+// TODO: These should be defined elsewhere
+const DISCOUNT_RATE = 0.1;
+const TAX_RATE = 0.0825;
 
 export interface OrderEntry {
     item: MenuItem;
@@ -36,18 +38,26 @@ export default function Cashier() {
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
+    const [isDiscounted, setIsDiscounted] = useState(false);
+    const [isTaxed, setIsTaxed] = useState(true);
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
-            const response = await fetch('/api/menuTypes');
+            const response = await fetch('/api/getAllMenuTypes');
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
             const menuTypes = await response.json();
             setCategories(menuTypes);
-            if (category === '' && menuTypes.length > 0) {
-                setCategory(menuTypes[0]);
-            }
         }
         fetchAllMenuTypes();
-    });
+    }, []);
+
+    useEffect(() => {
+        if (categories.length > 0) {
+            setCategory(categories[0]);
+        }
+    }, [categories]);
 
     useEffect(() => {
         const itemsInCategory = items.filter((item) => item.type === category);
@@ -59,7 +69,10 @@ export default function Cashier() {
             console.log(
                 "Fetching menu items may take a while sometimes, especially if you're running locally."
             );
-            const response = await fetch('/api/menuItems');
+            const response = await fetch('/api/getMenuItemsInSeason');
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
             const menuItems = await response.json();
             setItems(menuItems);
             console.log('Fetching should be done now.');
@@ -67,10 +80,7 @@ export default function Cashier() {
         fetchAllMenuItems();
     }, []);
 
-    async function placeOrder(
-        currentOrder: OrderEntry[],
-        isDiscounted: boolean
-    ) {
+    async function placeOrder() {
         if (currentOrder.length === 0) {
             console.log('No items in order');
             return;
@@ -78,13 +88,22 @@ export default function Cashier() {
 
         const id = 0;
         const timestamp = new Date();
-        let total = currentOrder.reduce(
-            (acc, orderEntry) =>
-                acc + orderEntry.item.price * orderEntry.quantity,
-            0
-        );
-        const discount = isDiscounted ? total * discountRate : 0;
-        total -= discount;
+
+        const subTotal =
+            Math.round(
+                currentOrder.reduce(
+                    (acc, entry) => acc + entry.item.price * entry.quantity,
+                    0
+                ) * 100
+            ) / 100;
+        const discount =
+            Math.round(subTotal * (isDiscounted ? DISCOUNT_RATE : 0) * 100) /
+            100;
+        const tax =
+            Math.round((subTotal - discount) * (isTaxed ? TAX_RATE : 0) * 100) /
+            100;
+        const total = Math.round((subTotal - discount + tax) * 100) / 100;
+
         const items = currentOrder.map(
             (orderEntry) => new OrderItem(orderEntry.quantity, orderEntry.item)
         );
@@ -108,6 +127,8 @@ export default function Cashier() {
         });
 
         setCurrentOrder([]);
+        setIsDiscounted(false);
+        setIsTaxed(true);
     }
 
     return (
@@ -125,6 +146,8 @@ export default function Cashier() {
                 setCurrentOrder={setCurrentOrder}
             />
             <CashierOrderTable
+                isDiscounted={isDiscounted}
+                isTaxed={isTaxed}
                 currentOrder={currentOrder}
                 setCurrentOrder={setCurrentOrder}
             />
@@ -132,10 +155,30 @@ export default function Cashier() {
                 className={
                     componentStyles.placeOrder + ' ' + componentStyles.card
                 }
-                onClick={() => placeOrder(currentOrder, false)}
+                onClick={() => placeOrder()}
             >
                 Place Order
             </button>
+            <div className={componentStyles.discountTaxButtons}>
+                <button
+                    className={
+                        componentStyles.discountOrder +
+                        ' ' +
+                        componentStyles.card
+                    }
+                    onClick={() => setIsDiscounted(!isDiscounted)}
+                >
+                    {isDiscounted ? 'Remove Discount' : 'Add Discount'}
+                </button>
+                <button
+                    className={
+                        componentStyles.noTaxOrder + ' ' + componentStyles.card
+                    }
+                    onClick={() => setIsTaxed(!isTaxed)}
+                >
+                    {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                </button>
+            </div>
         </main>
     );
 }
