@@ -41,15 +41,23 @@ export default function Cashier() {
     const [total, setTotal] = useState(0);
 
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
+    const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
-            const response = await fetch('/api/getAllMenuTypes');
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+            setIsFetchingMenuTypes(true);
+            try{
+                const response = await fetch('/api/getAllMenuTypes');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuTypes = await response.json();
+                setCategories(menuTypes);
             }
-            const menuTypes = await response.json();
-            setCategories(menuTypes);
+            finally{
+                setIsFetchingMenuTypes(false);
+            }
         }
         fetchAllMenuTypes();
     }, []);
@@ -62,16 +70,22 @@ export default function Cashier() {
 
     useEffect(() => {
         async function fetchAllMenuItems() {
-            console.log(
-                "Fetching menu items may take a while sometimes, especially if you're running locally."
-            );
-            const response = await fetch('/api/getMenuItemsInSeason');
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+            setIsFetchingMenuItems(true);
+            try{
+                console.log(
+                    "Fetching menu items may take a while sometimes, especially if you're running locally."
+                );
+                const response = await fetch('/api/getMenuItemsInSeason');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuItems = await response.json();
+                setItems(menuItems);
+                console.log('Fetching should be done now.');
             }
-            const menuItems = await response.json();
-            setItems(menuItems);
-            console.log('Fetching should be done now.');
+            finally{
+                setIsFetchingMenuItems(false);
+            }
         }
         fetchAllMenuItems();
     }, []);
@@ -148,11 +162,13 @@ export default function Cashier() {
             <LogoutButton />
             <h1>Cashier</h1>
             <CashierCategoryBar
+                isFetchingMenuTypes={isFetchingMenuTypes}
                 categories={categories}
                 category={category}
                 setCategory={setCategory}
             />
             <CashierItemGrid
+                isFetchingMenuItems={isFetchingMenuItems}
                 categoryItems={categoryItems}
                 currentOrder={currentOrder}
                 setCurrentOrder={setCurrentOrder}

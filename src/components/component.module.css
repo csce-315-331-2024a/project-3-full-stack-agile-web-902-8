@@ -355,6 +355,18 @@
     padding: 1rem;
 }
 
+.loading{
+    color: rgb(var(--background-rgb));
+    background-color: rgb(var(--text-rgb));
+    cursor: wait;
+}
+
+.loading:hover{
+    color: rgb(var(--background-rgb));
+    background-color: rgb(var(--text-rgb));
+    cursor: wait;
+}
+
 @media (max-width: 399px) {
     .orderTable {
         grid-column: 1 / 3;
