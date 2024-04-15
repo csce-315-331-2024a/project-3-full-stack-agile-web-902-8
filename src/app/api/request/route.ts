@@ -1,6 +1,10 @@
 import { request } from '@/lib/inventory';
 import { NextRequest, NextResponse } from 'next/server';
-
+/**
+ * api route for the request function
+ * @param req the request
+ * @returns the result of the request function
+ */
 export async function POST(req: NextRequest) {
     console.log('POST /api/request');
     try {

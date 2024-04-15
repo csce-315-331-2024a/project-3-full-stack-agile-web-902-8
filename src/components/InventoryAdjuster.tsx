@@ -6,6 +6,10 @@ import { POST } from '@/app/api/addOrUpdateInventoryItem/route';
 import { urlToHttpOptions } from 'url';
 import { warnOptionHasBeenDeprecated } from 'next/dist/server/config';
 
+/**
+ * Creates the component for adjusting the inventory
+ * @returns the component for adjusting the inventory
+ */
 function InventoryAdjuster() {
     const [itemNames, setItemNames] = useState<string[]>([]);
     const [selected, setSelected] = useState<string>('');
@@ -21,6 +25,9 @@ function InventoryAdjuster() {
     const [exists, setExists] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
 
+    /**
+     * Fetches the list of inventory items from the api route
+     */
     async function fetchInventoryItems() {
         const response = await fetch('/api/getAllInventoryItemNames');
         if (!response.ok) {
@@ -50,6 +57,10 @@ function InventoryAdjuster() {
         setExists(existing);
     }*/
 
+    /**
+     * Handles change in any of the form input elements
+     * @param e the input element changed
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
@@ -59,6 +70,10 @@ function InventoryAdjuster() {
         }));
     };
 
+    /**
+     * handles submitting the form and changed the database accordingly
+     * @param e the form that was submitted
+     */
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         const item = new InventoryItem(
@@ -69,6 +84,10 @@ function InventoryAdjuster() {
             Number(form.minQuantity),
             Number(form.maxQuantity)
         );
+
+        /**
+         * Updates the inventory item in the database with the form values
+         */
         async function updateInventoryItem() {
             const response = await fetch('/api/addOrUpdateInventoryItem', {
                 method: 'POST',
@@ -181,25 +200,42 @@ function InventoryAdjuster() {
         existsInInventory();
     }, [form.name]);*/
 
+    /**
+     * Sets the selected inventory item
+     * @param e the select element
+     */
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const itemName = e.target.value;
         setSelected(itemName);
         setVisible(true);
     };
 
+    /**
+     * Reveals the popup for requests when making requests
+     */
     const handleReqClick = () => {
         setRequesting(true);
     };
 
+    /**
+     * Hides the popup for requests when no longer making requests
+     */
     const handleCloseRequest = () => {
         setRequesting(false);
     };
 
+    /**
+     * Handles changes in the request field
+     * @param e the request input field
+     */
     const handleReqChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newRequest = parseInt(e.target.value);
         setAdjustedRequest(newRequest);
     };
 
+    /**
+     * Handles processing a request for the current inventory item
+     */
     const handleRequest = () => {
         async function doRequest() {
             const response = await fetch('/api/request', {
@@ -233,6 +269,9 @@ function InventoryAdjuster() {
         }
     };
 
+    /**
+     * Handles removing the current inventory item
+     */
     const handleRemove = () => {
         async function removeInventoryItem() {
             const response = await fetch('/api/removeInventoryItem', {

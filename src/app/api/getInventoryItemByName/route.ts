@@ -1,6 +1,10 @@
 import { getInventoryItemByName } from '@/lib/inventory';
 import { NextRequest, NextResponse } from 'next/server';
-
+/**
+ * api route for the getInventoryItemByName function
+ * @param req the request
+ * @returns the result of the getInventoryItemByName function
+ */
 export async function POST(request: NextRequest) {
     console.log('POST /api/getInventoryItemByName');
     try {

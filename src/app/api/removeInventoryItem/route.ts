@@ -1,6 +1,10 @@
 import { removeInventoryItem } from '@/lib/inventory';
 import { NextRequest, NextResponse } from 'next/server';
-
+/**
+ * api route for the removeInventoryItem function
+ * @param req the request
+ * @returns the result of the removeInventoryItem function
+ */
 export async function POST(request: NextRequest) {
     console.log('POST /api/removeInventoryItem');
     try {

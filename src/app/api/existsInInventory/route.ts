@@ -2,7 +2,11 @@ import { existsInInventory } from '@/lib/inventory';
 import { InventoryItem } from '@/lib/models';
 import { request } from 'http';
 import { NextRequest, NextResponse } from 'next/server';
-
+/**
+ * api route for the existsInInventory function
+ * @param req the request
+ * @returns the result of the existsInInventory function
+ */
 export async function POST(request: NextRequest) {
     console.log('GET /api/existsInInventory');
     try {
