@@ -106,7 +106,7 @@ export default function Customer() {
                     setCurrentOrder={setCurrentOrder}
                 />
             </div>
-            <CustomerOrderSidebar>
+            <CustomerOrderSidebar setCurrentOrder={setCurrentOrder}>
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem
                         key={item.id}

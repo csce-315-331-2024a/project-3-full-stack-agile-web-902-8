@@ -28,6 +28,11 @@ function CustomerCategoryBar({
                 className={
                     styles.bar + ' ' + styles.customer + ' ' + styles.loading
                 }
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
             >
                 <button
                     className={

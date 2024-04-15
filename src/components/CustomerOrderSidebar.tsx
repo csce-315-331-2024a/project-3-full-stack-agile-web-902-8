@@ -17,6 +17,8 @@ export interface OrderItemProp {
 
 interface OrderSidebarProp {
     children: React.ReactNode;
+    // TODO: Change from just empty order to send order
+    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
 export function CustomerOrderItem({
@@ -86,11 +88,20 @@ export function CustomerOrderItem({
     );
 }
 
-export function CustomerOrderSidebar({ children }: OrderSidebarProp) {
+export function CustomerOrderSidebar({
+    children,
+    setCurrentOrder,
+}: OrderSidebarProp) {
     return (
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
-            <button className={styles['checkout']}>Checkout</button>
+            <button
+                className={styles['checkout']}
+                // TODO: Change from just empty order to send order
+                onClick={() => setCurrentOrder([])}
+            >
+                Checkout
+            </button>
         </div>
     );
 }
