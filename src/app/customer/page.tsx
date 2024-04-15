@@ -12,6 +12,9 @@ import {
 import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
+import DoubleText from '@/components/DoubleText';
+import SideBar from '@/components/SideBar';
+
 export default function Customer() {
     // set default category
     const [categories, setCategories] = useState<string[]>([]);
@@ -72,9 +75,30 @@ export default function Customer() {
         setCategoryItems(itemsInCategory);
     }, [category, items]);
 
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
+
+    const Items = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
+    const Links = ['/manager', '/customer', '/cashier', '/'];
+
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
+            <DoubleText
+                block1={
+                    <SideBar
+                        names={Items}
+                        hrefs={Links}
+                        onClick={openMenuBoardsPages}
+                    />
+                }
+                block2={undefined}
+            />
+
             <div id={styles.menu}>
                 <h1>Menu</h1>
                 <div>
