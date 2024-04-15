@@ -3,19 +3,51 @@ import Image from 'next/image';
 import styles from '@/components/component.module.css';
 import { MenuItem } from '@/lib/models';
 
-interface OrderItemProp {
+export interface OrderEntry {
     item: MenuItem;
     qty: number;
-    setQty: (qty: number) => void;
+}
+
+export interface OrderItemProp {
+    item: MenuItem;
+    qty: number;
+    currentOrder: OrderEntry[];
+    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
 interface OrderSidebarProp {
     children: React.ReactNode;
+    // TODO: Change from just empty order to send order
+    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
-export function CustomerOrderItem({ item, qty, setQty }: OrderItemProp) {
+export function CustomerOrderItem({
+    item,
+    qty,
+    currentOrder,
+    setCurrentOrder,
+}: OrderItemProp) {
+    function setQty(qty: number) {
+        let newItems = currentOrder
+            .map((orderItem) => {
+                if (orderItem.item.id == item.id) {
+                    return {
+                        item: orderItem.item,
+                        qty: qty,
+                    };
+                } else {
+                    return orderItem;
+                }
+            })
+            .filter((orderItem) => {
+                return orderItem.qty > 0;
+            });
+
+        setCurrentOrder(newItems);
+    }
+
     function changeQty(newQty: number) {
-        if (newQty > 0 && newQty < 100) {
+        if (newQty > -1 && newQty < 100) {
             setQty(newQty);
         }
     }
@@ -42,7 +74,9 @@ export function CustomerOrderItem({ item, qty, setQty }: OrderItemProp) {
             </p>
 
             <div className={styles['quantity']}>
-                <button onClick={() => changeQty(qty - 1)}>-</button>
+                <button onClick={() => changeQty(qty - 1)}>
+                    {qty == 1 ? 'x' : '-'}
+                </button>
                 {/* TODO: Add method for onChange */}
                 <p>{qty}</p>
                 <button onClick={() => changeQty(qty + 1)}>+</button>
@@ -54,11 +88,20 @@ export function CustomerOrderItem({ item, qty, setQty }: OrderItemProp) {
     );
 }
 
-export function CustomerOrderSidebar({ children }: OrderSidebarProp) {
+export function CustomerOrderSidebar({
+    children,
+    setCurrentOrder,
+}: OrderSidebarProp) {
     return (
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
-            <button className={styles['checkout']}>Checkout</button>
+            <button
+                className={styles['checkout']}
+                // TODO: Change from just empty order to send order
+                onClick={() => setCurrentOrder([])}
+            >
+                Checkout
+            </button>
         </div>
     );
 }

@@ -1,10 +1,11 @@
 'use client';
 import styles from '@/app/customer/page.module.css';
 
-import { CustomerMenuItem } from '@/components/CustomerMenuItem';
+import CustomerItemGrid from '@/components/CustomerItemGrid';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
 import CustomerRecommendedBar from '@/components/CustomerRecommendedBar';
 import {
+    OrderEntry,
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
@@ -12,231 +13,64 @@ import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
 export default function Customer() {
-    const openMenuBoardsPages = () => {
-        window.open('/menuboards/Burgs', '_blank');
-        window.open('/menuboards/Meals_Limited', '_blank');
-        window.open('/menuboards/Misc', '_blank');
-        window.open('/menuboards/Sandwiches_Baskets', '_blank');
-    };
-
-    // TODO: Change from static to dynamic from database
-    let categoryNames: Array<string> = [
-        'Burgers',
-        'Drinks',
-        'Sandwiches',
-        'Baskets',
-    ];
-    // TODO: Change from static to dynamic from database
-    let menuItemsByCategory: Map<string, Array<MenuItem>> = new Map();
-    menuItemsByCategory.set('Burgers', [
-        new MenuItem(
-            0,
-            'Hamburger',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Cheeseburger',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Meal',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-    ]);
-    menuItemsByCategory.set('Drinks', [
-        new MenuItem(
-            0,
-            'Water',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Fountain Drink',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-    ]);
-    menuItemsByCategory.set('Sandwiches', [
-        new MenuItem(
-            0,
-            'Grilled Cheese',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-        new MenuItem(
-            0,
-            'Ham Sandwich',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-    ]);
-    menuItemsByCategory.set('Baskets', [
-        new MenuItem(
-            0,
-            '3 Tender Basket',
-            'type',
-            5,
-            5,
-            10,
-            [],
-            new Seasonal(0, 0, false)
-        ),
-    ]);
-
     // set default category
-    let currCategory: string;
-    let changeCategory: (category: string) => void;
-    [currCategory, changeCategory] = useState(categoryNames[0]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [category, setCategory] = useState('');
+    const [items, setItems] = useState<MenuItem[]>([]);
+    const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
+    const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
-    let showPopUp: boolean;
-    let setPopUp: Function;
-    [showPopUp, setPopUp] = useState(false);
+    const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
+    const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
 
-    let item = new MenuItem(
-        1,
-        'Aggie Chicken Club',
-        'type',
-        10,
-        10,
-        10,
-        [],
-        new Seasonal(1, 1, false)
-    );
-    let [qty, setQty] = useState(1);
+    useEffect(() => {
+        async function fetchAllMenuTypes() {
+            setIsFetchingMenuTypes(true);
+            try {
+                const response = await fetch('/api/getAllMenuTypes');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuTypes = await response.json();
+                setCategories(menuTypes);
+            } finally {
+                setIsFetchingMenuTypes(false);
+            }
+        }
+        fetchAllMenuTypes();
+    }, []);
+
+    useEffect(() => {
+        if (categories.length > 0) {
+            setCategory(categories[0]);
+        }
+    }, [categories]);
+
+    useEffect(() => {
+        async function fetchAllMenuItems() {
+            setIsFetchingMenuItems(true);
+            try {
+                console.log(
+                    "Fetching menu items may take a while sometimes, especially if you're running locally."
+                );
+                const response = await fetch('/api/getMenuItemsInSeason');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuItems = await response.json();
+                setItems(menuItems);
+                console.log('Fetching should be done now.');
+            } finally {
+                setIsFetchingMenuItems(false);
+            }
+        }
+        fetchAllMenuItems();
+    }, []);
+
+    useEffect(() => {
+        const itemsInCategory = items.filter((item) => item.type === category);
+        setCategoryItems(itemsInCategory);
+    }, [category, items]);
 
     return (
         // TODO: Change to global styling
@@ -246,50 +80,41 @@ export default function Customer() {
                 <div>
                     <h2>Recommendations</h2>
                     <CustomerRecommendedBar
-                        menuItems={menuItemsByCategory
-                            .get('Burgers')!
-                            .slice(0, 6)}
-                        onClick={() => setPopUp(true)}
+                        isFetchingMenuItems={isFetchingMenuItems}
+                        menuItems={categoryItems.slice(0, 6)}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
                     />
                 </div>
                 <div>
                     <h2>Categories</h2>
                     <div id={styles['menu-categories']}>
                         <CustomerCategoryBar
-                            categories={categoryNames}
-                            category={currCategory}
-                            setCategory={changeCategory}
+                            isFetchingMenuTypes={isFetchingMenuTypes}
+                            categories={categories}
+                            category={category}
+                            setCategory={setCategory}
                         />
                     </div>
                 </div>
                 {/* Menu items */}
-                {categoryNames.map((category) => (
-                    <div
-                        key={category}
-                        className={styles['menu-items']}
-                        style={
-                            category != currCategory ? { display: 'none' } : {}
-                        }
-                    >
-                        {menuItemsByCategory
-                            .get(category)!
-                            .map((menuitem: MenuItem) => (
-                                <CustomerMenuItem
-                                    key={menuitem.name}
-                                    item={menuitem}
-                                    onClick={() => setPopUp(true)}
-                                />
-                            ))}
-                    </div>
-                ))}
+                <CustomerItemGrid
+                    isFetchingMenuItems={isFetchingMenuItems}
+                    categoryItems={categoryItems}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                />
             </div>
-            <CustomerOrderSidebar>
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
-                <CustomerOrderItem item={item} qty={qty} setQty={setQty} />
+            <CustomerOrderSidebar setCurrentOrder={setCurrentOrder}>
+                {currentOrder.map(({ item, qty }) => (
+                    <CustomerOrderItem
+                        key={item.id}
+                        item={item}
+                        qty={qty}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                ))}
             </CustomerOrderSidebar>
         </main>
     );

@@ -25,11 +25,3 @@
 #menu h1 {
     text-align: center;
 }
-
-.menu-items {
-    display: grid;
-    width: 100%;
-    height: fit-content;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
