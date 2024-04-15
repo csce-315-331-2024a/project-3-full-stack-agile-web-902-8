@@ -1,31 +1,30 @@
 import { aggregateMenuItems } from '@/lib/menuBoard';
 import { NextRequest, NextResponse } from 'next/server';
+
 export async function GET(request: NextRequest) {
-    console.log('GET /api/aggregateMenuItems');
     try {
         const url = new URL(request.url);
-        const startDateParam = url.searchParams.get('startDate');
-        const endDateParam = url.searchParams.get('endDate');
+        // Since aggregateMenuItems expects Date objects, parse the timestamps directly to Dates
+        const beginDate = new Date(Number(url.searchParams.get('beginTime')));
+        const endDate = new Date(Number(url.searchParams.get('endTime')));
 
-        if (!startDateParam || !endDateParam) {
-            return NextResponse.json(
-                { error: 'Missing required date parameters' },
-                { status: 400 }
-            );
-        }
+        console.log(
+            'GET /api/aggregateMenuItems with beginDate:',
+            beginDate.toISOString(),
+            'and endDate:',
+            endDate.toISOString()
+        );
 
-        const startDate = new Date(startDateParam);
-        const endDate = new Date(endDateParam);
-
-        // Further validate the date objects if necessary
-        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        // Check if the dates are valid
+        if (isNaN(beginDate.getTime()) || isNaN(endDate.getTime())) {
             return NextResponse.json(
                 { error: 'Invalid date parameters' },
                 { status: 400 }
             );
         }
 
-        const menuTypes = await aggregateMenuItems(startDate, endDate);
+        // Call the function with Date objects
+        const menuTypes = await aggregateMenuItems(beginDate, endDate);
         return NextResponse.json(menuTypes, { status: 200 });
     } catch (error: any) {
         return NextResponse.json(

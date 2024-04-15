@@ -1,5 +1,6 @@
 'use client';
-
+import { aggregateMenuItems } from '@/lib/menuBoard';
+import { aggregateInventory } from '@/lib/inventory-report';
 import React, { useState } from 'react';
 import axios from 'axios';
 import Heading from '@/components/Heading';
