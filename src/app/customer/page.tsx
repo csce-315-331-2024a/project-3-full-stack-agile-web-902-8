@@ -1,7 +1,6 @@
 'use client';
 import styles from '@/app/customer/page.module.css';
 
-import { CustomerMenuItem } from '@/components/CustomerMenuItem';
 import CustomerItemGrid from '@/components/CustomerItemGrid';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
 import CustomerRecommendedBar from '@/components/CustomerRecommendedBar';
