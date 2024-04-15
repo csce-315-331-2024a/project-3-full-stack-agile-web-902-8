@@ -218,7 +218,10 @@ function InventoryAdjuster() {
         }
         if (Number(adjustedRequest) < 0) {
             alert('Cannot request a negative amount');
-        } else if (Number(form.quantity) + Number(adjustedRequest) > Number(form.maxQuantity)) {
+        } else if (
+            Number(form.quantity) + Number(adjustedRequest) >
+            Number(form.maxQuantity)
+        ) {
             alert('Exceeds maximum quantity');
         } else {
             doRequest();
