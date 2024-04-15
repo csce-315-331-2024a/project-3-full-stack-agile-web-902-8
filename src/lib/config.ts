@@ -6,9 +6,15 @@ const db = {
     database: process.env.DB_DATABASE || '',
 };
 
+const rates = {
+    discount: 0.1,
+    tax: 0.0825, // College Station sales tax rate
+};
+
 const GlobalConfig = {
     db: db,
     dev: process.env.NODE_ENV === 'development',
+    rates: rates,
 };
 
 export default GlobalConfig;

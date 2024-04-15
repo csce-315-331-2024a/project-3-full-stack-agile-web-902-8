@@ -1,9 +1,8 @@
 'use client';
 // TODO: Consider separating client-side and server-side code for MUCH better performance
-
 // TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
-
-// TODO: For some reason, the menu item buttons sometimes update other menu item quantities instead of their own
+// TODO: Numbers should use monospace font, although we should consider adding a fancier monospace font for this
+// TODO: The user should be notified if an order is in progress and if it is successfully placed
 
 import React, { useEffect, useState } from 'react';
 
@@ -11,7 +10,6 @@ import LogoutButton from '@/components/LogoutButton';
 import CashierCategoryBar from '@/components/CashierCategoryBar';
 import CashierItemGrid from '@/components/CashierItemGrid';
 import CashierOrderTable from '@/components/CashierOrderTable';
-
 import componentStyles from '@/components/component.module.css';
 
 import {
@@ -20,160 +18,9 @@ import {
     InventoryItem,
     Seasonal,
     Order,
+    OrderItem,
 } from '@/lib/models';
-
-// DEBUG: Placeholder menu item data:
-const cheese = new Ingredient(
-    new InventoryItem(1, 'Cheese', 0.5, 100, 10, 200),
-    1
-);
-const beefPatty = new Ingredient(
-    new InventoryItem(2, 'Beef Patty', 1, 100, 10, 200),
-    1
-);
-const bun = new Ingredient(new InventoryItem(3, 'Bun', 0.25, 100, 10, 200), 1);
-const lettuce = new Ingredient(
-    new InventoryItem(5, 'Lettuce', 0.1, 100, 10, 200),
-    1
-);
-const tomato = new Ingredient(
-    new InventoryItem(6, 'Tomato', 0.2, 100, 10, 200),
-    1
-);
-const onion = new Ingredient(
-    new InventoryItem(7, 'Onion', 0.15, 100, 10, 200),
-    1
-);
-const bacon = new Ingredient(
-    new InventoryItem(8, 'Bacon', 0.5, 100, 10, 200),
-    2
-);
-const mushroom = new Ingredient(
-    new InventoryItem(9, 'Mushroom', 0.3, 100, 10, 200),
-    5
-);
-const swissCheese = new Ingredient(
-    new InventoryItem(10, 'Swiss Cheese', 0.6, 100, 10, 200),
-    1
-);
-const seasonalSummer = new Seasonal(
-    Date.now(),
-    Date.now() + 3 * 30 * 24 * 60 * 60 * 1000,
-    false
-);
-const iceCream = new Ingredient(
-    new InventoryItem(11, 'Ice Cream', 1, 100, 10, 200),
-    1
-);
-const saladGreens = new Ingredient(
-    new InventoryItem(12, 'Salad Greens', 0.5, 100, 10, 200),
-    1
-);
-const chickenBreast = new Ingredient(
-    new InventoryItem(13, 'Chicken Breast', 1.5, 100, 10, 200),
-    1
-);
-const croutons = new Ingredient(
-    new InventoryItem(14, 'Croutons', 0.3, 100, 10, 200),
-    1
-);
-const dressing = new Ingredient(
-    new InventoryItem(15, 'Dressing', 0.2, 100, 10, 200),
-    1
-);
-
-const sampleMenuItems: MenuItem[] = [
-    new MenuItem(
-        1,
-        'Classic Burger',
-        'Burgers',
-        9.99,
-        5.0,
-        5,
-        [cheese, beefPatty, bun],
-        seasonalSummer
-    ),
-    new MenuItem(
-        2,
-        'Veggie Burger',
-        'Burgers',
-        8.99,
-        4.0,
-        4,
-        [lettuce, tomato, bun],
-        seasonalSummer
-    ),
-    new MenuItem(
-        3,
-        'Bacon Cheeseburger',
-        'Burgers',
-        11.99,
-        6.5,
-        5,
-        [cheese, beefPatty, bacon, bun],
-        seasonalSummer
-    ),
-    new MenuItem(
-        4,
-        'Mushroom Swiss Burger',
-        'Burgers',
-        12.99,
-        7.0,
-        5,
-        [swissCheese, beefPatty, mushroom, bun],
-        seasonalSummer
-    ),
-    new MenuItem(
-        5,
-        'BBQ Burger',
-        'Burgers',
-        10.99,
-        5.5,
-        5,
-        [cheese, beefPatty, onion, bun],
-        seasonalSummer
-    ),
-    new MenuItem(
-        6,
-        'Deluxe Burger',
-        'Burgers',
-        13.99,
-        7.5,
-        5,
-        [lettuce, tomato, onion, cheese, beefPatty, bun],
-        seasonalSummer
-    ),
-    new MenuItem(3, 'French Fries', 'Sides', 2.99, 1.0, 5, [], seasonalSummer),
-    new MenuItem(4, 'Soft Drink', 'Drinks', 1.99, 0.5, 5, [], seasonalSummer),
-    new MenuItem(
-        9,
-        'Vanilla Ice Cream',
-        'Desserts',
-        3.99,
-        1.5,
-        5,
-        [iceCream],
-        seasonalSummer
-    ),
-    new MenuItem(
-        10,
-        'Chicken Caesar Salad',
-        'Salads',
-        7.99,
-        4.0,
-        5,
-        [saladGreens, chickenBreast, croutons, dressing],
-        seasonalSummer
-    ),
-];
-
-// DEBUG: Placeholder order creation:
-function placeOrder(currentOrder: OrderEntry[]): void {
-    console.log('Placing order with items:');
-    currentOrder.forEach((orderEntry) => {
-        console.log(`${orderEntry.quantity}x ${orderEntry.item.name}`);
-    });
-}
+import GlobalConfig from '@/lib/config';
 
 export interface OrderEntry {
     item: MenuItem;
@@ -183,53 +30,196 @@ export interface OrderEntry {
 export default function Cashier() {
     const [categories, setCategories] = useState<string[]>([]);
     const [category, setCategory] = useState('');
-    const [items, setItems] = useState<MenuItem[]>(sampleMenuItems);
+    const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
-    useEffect(() => {
-        // TODO: Fetch categories from the server
-        const uniqueCategories = Array.from(
-            new Set(items.map((item) => item.type))
-        );
-        setCategories(uniqueCategories);
+    const [isDiscounted, setIsDiscounted] = useState(false);
+    const [isTaxed, setIsTaxed] = useState(true);
 
+    const [discount, setDiscount] = useState(0);
+    const [tax, setTax] = useState(0);
+    const [total, setTotal] = useState(0);
+
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
+    const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+
+    useEffect(() => {
+        async function fetchAllMenuTypes() {
+            setIsFetchingMenuTypes(true);
+            try {
+                const response = await fetch('/api/getAllMenuTypes');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuTypes = await response.json();
+                setCategories(menuTypes);
+            } finally {
+                setIsFetchingMenuTypes(false);
+            }
+        }
+        fetchAllMenuTypes();
+    }, []);
+
+    useEffect(() => {
         if (categories.length > 0) {
             setCategory(categories[0]);
         }
-    }, [categories, items]);
-    // TODO: should have initial items
+    }, [categories]);
+
+    useEffect(() => {
+        async function fetchAllMenuItems() {
+            setIsFetchingMenuItems(true);
+            try {
+                console.log(
+                    "Fetching menu items may take a while sometimes, especially if you're running locally."
+                );
+                const response = await fetch('/api/getMenuItemsInSeason');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuItems = await response.json();
+                setItems(menuItems);
+                console.log('Fetching should be done now.');
+            } finally {
+                setIsFetchingMenuItems(false);
+            }
+        }
+        fetchAllMenuItems();
+    }, []);
+
     useEffect(() => {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
+
+    useEffect(() => {
+        const subTotal =
+            Math.round(
+                currentOrder.reduce(
+                    (acc, entry) => acc + entry.item.price * entry.quantity,
+                    0
+                ) * 100
+            ) / 100;
+        const updatedDiscount =
+            Math.round(
+                subTotal *
+                    (isDiscounted ? GlobalConfig.rates.discount : 0) *
+                    100
+            ) / 100;
+        const updatedTax =
+            Math.round(
+                (subTotal - updatedDiscount) *
+                    (isTaxed ? GlobalConfig.rates.tax : 0) *
+                    100
+            ) / 100;
+        const updatedTotal =
+            Math.round((subTotal - updatedDiscount + updatedTax) * 100) / 100;
+
+        setDiscount(updatedDiscount);
+        setTax(updatedTax);
+        setTotal(updatedTotal);
+    }, [isDiscounted, isTaxed, currentOrder]);
+
+    async function placeOrder() {
+        if (currentOrder.length === 0) {
+            console.log('No items in order');
+            return;
+        }
+
+        setIsPlacingOrder(true);
+        try {
+            const id = 0;
+            const timestamp = new Date();
+            const items = currentOrder.map(
+                (orderEntry) =>
+                    new OrderItem(orderEntry.quantity, orderEntry.item)
+            );
+            const order = new Order(id, timestamp, discount, total, items);
+
+            const response = await fetch('/api/addOrder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            console.log('Order placed:');
+            currentOrder.forEach((orderEntry) => {
+                console.log(`${orderEntry.quantity}x ${orderEntry.item.name}`);
+            });
+
+            setCurrentOrder([]);
+            setIsDiscounted(false);
+            setIsTaxed(true);
+        } finally {
+            setIsPlacingOrder(false);
+        }
+    }
 
     return (
         <main className={componentStyles.cashierMain}>
             <LogoutButton />
             <h1>Cashier</h1>
             <CashierCategoryBar
+                isFetchingMenuTypes={isFetchingMenuTypes}
                 categories={categories}
                 category={category}
                 setCategory={setCategory}
             />
             <CashierItemGrid
+                isFetchingMenuItems={isFetchingMenuItems}
                 categoryItems={categoryItems}
                 currentOrder={currentOrder}
                 setCurrentOrder={setCurrentOrder}
             />
             <CashierOrderTable
+                isDiscounted={isDiscounted}
+                isTaxed={isTaxed}
+                discount={discount}
+                tax={tax}
+                total={total}
                 currentOrder={currentOrder}
                 setCurrentOrder={setCurrentOrder}
             />
             <button
                 className={
-                    componentStyles.placeOrder + ' ' + componentStyles.card
+                    componentStyles.placeOrder +
+                    ' ' +
+                    componentStyles.card +
+                    (isPlacingOrder ? ' ' + componentStyles.disabled : '')
                 }
-                onClick={() => placeOrder(currentOrder)}
+                onClick={() => placeOrder()}
+                disabled={isPlacingOrder}
             >
                 Place Order
             </button>
+            <div className={componentStyles.discountTaxButtons}>
+                <button
+                    className={
+                        componentStyles.discountOrder +
+                        ' ' +
+                        componentStyles.card
+                    }
+                    onClick={() => setIsDiscounted(!isDiscounted)}
+                >
+                    {isDiscounted ? 'Remove Discount' : 'Add Discount'}
+                </button>
+                <button
+                    className={
+                        componentStyles.noTaxOrder + ' ' + componentStyles.card
+                    }
+                    onClick={() => setIsTaxed(!isTaxed)}
+                >
+                    {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                </button>
+            </div>
         </main>
     );
 }
