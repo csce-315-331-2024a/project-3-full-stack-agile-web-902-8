@@ -12,6 +12,13 @@ import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
 export default function Customer() {
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
+
     // TODO: Change from static to dynamic from database
     let categoryNames: Array<string> = [
         'Burgers',
