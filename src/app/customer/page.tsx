@@ -107,11 +107,11 @@ export default function Customer() {
                 />
             </div>
             <CustomerOrderSidebar>
-                {currentOrder.map(({item, qty}) => (
-                    <CustomerOrderItem 
-                        key={item.id} 
-                        item={item} 
-                        qty={qty} 
+                {currentOrder.map(({ item, qty }) => (
+                    <CustomerOrderItem
+                        key={item.id}
+                        item={item}
+                        qty={qty}
                         currentOrder={currentOrder}
                         setCurrentOrder={setCurrentOrder}
                     />

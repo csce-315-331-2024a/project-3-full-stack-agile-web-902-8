@@ -10,7 +10,12 @@ interface RecommendedBarProp {
     setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
-function CustomerRecommendedBar({ isFetchingMenuItems, menuItems, currentOrder, setCurrentOrder }: RecommendedBarProp) {
+function CustomerRecommendedBar({
+    isFetchingMenuItems,
+    menuItems,
+    currentOrder,
+    setCurrentOrder,
+}: RecommendedBarProp) {
     if (isFetchingMenuItems) {
         return (
             <div>
@@ -31,7 +36,15 @@ function CustomerRecommendedBar({ isFetchingMenuItems, menuItems, currentOrder, 
     }
 
     return (
-        <ul className={styles.bar + ' ' + styles["recommended-items"] + ' ' + styles.customer}>
+        <ul
+            className={
+                styles.bar +
+                ' ' +
+                styles['recommended-items'] +
+                ' ' +
+                styles.customer
+            }
+        >
             {menuItems.map((menuItem: MenuItem) => (
                 <li key={menuItem.id}>
                     <CustomerRecommendedItem

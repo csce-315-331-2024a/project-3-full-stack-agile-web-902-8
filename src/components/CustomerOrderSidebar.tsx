@@ -19,14 +19,19 @@ interface OrderSidebarProp {
     children: React.ReactNode;
 }
 
-export function CustomerOrderItem({ item, qty, currentOrder, setCurrentOrder }: OrderItemProp) {
+export function CustomerOrderItem({
+    item,
+    qty,
+    currentOrder,
+    setCurrentOrder,
+}: OrderItemProp) {
     function setQty(qty: number) {
         let newItems = currentOrder.map((orderItem) => {
-            if(orderItem.item.id == item.id) {
+            if (orderItem.item.id == item.id) {
                 return {
                     item: orderItem.item,
                     qty: qty,
-                }
+                };
             } else {
                 return orderItem;
             }

@@ -8,17 +8,21 @@ interface MenuItemProp {
     item: MenuItem;
     currentOrder: OrderEntry[];
     setCurrentOrder: (currentOrder: OrderEntry[]) => void;
-};
+}
 
-export function CustomerMenuItem({ item, currentOrder, setCurrentOrder }: MenuItemProp) {
+export function CustomerMenuItem({
+    item,
+    currentOrder,
+    setCurrentOrder,
+}: MenuItemProp) {
     // create new quantity and set quantity function
     function setQty(qty: number) {
         let newItems = currentOrder.map((orderItem) => {
-            if(orderItem.item.id == item.id) {
+            if (orderItem.item.id == item.id) {
                 return {
                     item: orderItem.item,
                     qty: qty,
-                }
+                };
             } else {
                 return orderItem;
             }
@@ -29,16 +33,15 @@ export function CustomerMenuItem({ item, currentOrder, setCurrentOrder }: MenuIt
 
     function addToOrder(item: MenuItem) {
         // check if the item already exists
-        for(let i = 0; i < currentOrder.length; i++) {
-            if(item.id == currentOrder[i].item.id){
+        for (let i = 0; i < currentOrder.length; i++) {
+            if (item.id == currentOrder[i].item.id) {
                 // increment quantity
                 setQty(currentOrder[i].qty + 1);
                 return;
             }
         }
 
-
-        let orderItem: OrderEntry = {item: item, qty: 1};
+        let orderItem: OrderEntry = { item: item, qty: 1 };
         setCurrentOrder([...currentOrder, orderItem]);
     }
 
@@ -72,15 +75,19 @@ export function CustomerMenuItem({ item, currentOrder, setCurrentOrder }: MenuIt
     );
 }
 
-export function CustomerRecommendedItem({ item, currentOrder, setCurrentOrder }: MenuItemProp) {
+export function CustomerRecommendedItem({
+    item,
+    currentOrder,
+    setCurrentOrder,
+}: MenuItemProp) {
     // create new quantity and set quantity function
     function setQty(qty: number) {
         let newItems = currentOrder.map((orderItem) => {
-            if(orderItem.item.id == item.id) {
+            if (orderItem.item.id == item.id) {
                 return {
                     item: orderItem.item,
                     qty: qty,
-                }
+                };
             } else {
                 return orderItem;
             }
@@ -91,15 +98,15 @@ export function CustomerRecommendedItem({ item, currentOrder, setCurrentOrder }:
 
     function addToOrder(item: MenuItem) {
         // check if the item already exists
-        for(let i = 0; i < currentOrder.length; i++) {
-            if(item.id == currentOrder[i].item.id){
+        for (let i = 0; i < currentOrder.length; i++) {
+            if (item.id == currentOrder[i].item.id) {
                 // increment quantity
                 setQty(currentOrder[i].qty + 1);
                 return;
             }
         }
 
-        let orderItem: OrderEntry = {item: item, qty: 1};
+        let orderItem: OrderEntry = { item: item, qty: 1 };
         setCurrentOrder([...currentOrder, orderItem]);
     }
 

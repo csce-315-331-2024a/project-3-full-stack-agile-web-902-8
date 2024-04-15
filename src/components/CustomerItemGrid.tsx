@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import styles from './component.module.css';
@@ -39,20 +39,17 @@ function CustomerItemGrid({
     }
 
     return (
-        <div className={styles["menu-items"]}>
-            {categoryItems
-                .map((menuitem: MenuItem) => (
-                    <CustomerMenuItem
-                        key={menuitem.id}
-                        item={menuitem}
-                        currentOrder={currentOrder}
-                        setCurrentOrder={setCurrentOrder}
-                    />
-                ))
-            }
+        <div className={styles['menu-items']}>
+            {categoryItems.map((menuitem: MenuItem) => (
+                <CustomerMenuItem
+                    key={menuitem.id}
+                    item={menuitem}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                />
+            ))}
         </div>
     );
 }
 
 export default CustomerItemGrid;
-
