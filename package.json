@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "error": "^10.4.0",
+<<<<<<< HEAD
     "next": "14.1.4",
     "nookies": "^2.5.2",
+=======
+    "next": "^14.2.1",
+>>>>>>> main
     "postgres": "^3.4.4",
     "promise": "^8.3.0",
     "react": "^18",
