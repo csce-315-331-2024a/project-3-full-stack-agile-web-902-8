@@ -26,18 +26,20 @@ export function CustomerOrderItem({
     setCurrentOrder,
 }: OrderItemProp) {
     function setQty(qty: number) {
-        let newItems = currentOrder.map((orderItem) => {
-            if (orderItem.item.id == item.id) {
-                return {
-                    item: orderItem.item,
-                    qty: qty,
-                };
-            } else {
-                return orderItem;
-            }
-        }).filter((orderItem) => {
-            return orderItem.qty > 0;        
-        });
+        let newItems = currentOrder
+            .map((orderItem) => {
+                if (orderItem.item.id == item.id) {
+                    return {
+                        item: orderItem.item,
+                        qty: qty,
+                    };
+                } else {
+                    return orderItem;
+                }
+            })
+            .filter((orderItem) => {
+                return orderItem.qty > 0;
+            });
 
         setCurrentOrder(newItems);
     }
@@ -71,7 +73,7 @@ export function CustomerOrderItem({
 
             <div className={styles['quantity']}>
                 <button onClick={() => changeQty(qty - 1)}>
-                    {qty == 1 ? "x": "-"}
+                    {qty == 1 ? 'x' : '-'}
                 </button>
                 {/* TODO: Add method for onChange */}
                 <p>{qty}</p>
