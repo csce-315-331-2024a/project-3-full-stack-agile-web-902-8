@@ -53,7 +53,7 @@ export default function Manager() {
                 <div
                     style={{
                         position: 'fixed',
-                        bottom: '10px',
+                        top: '70px',
                         left: '50%',
                         transform: 'translateX(-50%)',
                         zIndex: 1000,

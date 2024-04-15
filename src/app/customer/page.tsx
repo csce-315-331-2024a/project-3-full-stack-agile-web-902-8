@@ -49,7 +49,7 @@ export default function Customer() {
                 <div
                     style={{
                         position: 'fixed',
-                        bottom: '10px',
+                        top: '70px',
                         left: '50%',
                         transform: 'translateX(-50%)',
                         zIndex: 1000,
@@ -92,7 +92,7 @@ export default function Customer() {
                                         />
                                     ))}
                             </div>
-                            {showPopUp ? (
+                            {showPopUp && (
                                 <section id={customerStyles['pop-up']}>
                                     <button
                                         className={
@@ -103,7 +103,7 @@ export default function Customer() {
                                         X
                                     </button>
                                 </section>
-                            ) : null}
+                            )}
                         </div>
                     }
                 />
