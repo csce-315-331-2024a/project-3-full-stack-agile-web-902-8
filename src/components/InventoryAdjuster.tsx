@@ -129,18 +129,21 @@ function InventoryAdjuster() {
                         maxQuantity: 0,
                         averageCost: 0,
                     });
+                    setSelected('');
+                    setVisible(false);
+                    fetchInventoryItems();
                 }
             } else {
                 console.log(item);
                 updateInventoryItem();
             }
-            fetchInventoryItems();
         }
+        fetchInventoryItems();
     };
 
     useEffect(() => {
         fetchInventoryItems();
-    }, [itemNames]);
+    }, [selected, exists]);
 
     useEffect(() => {
         async function getInventoryItem() {
@@ -288,7 +291,7 @@ function InventoryAdjuster() {
         removeInventoryItem();
         setSelected('');
         setVisible(false);
-        setItemNames([]);
+        fetchInventoryItems();
     };
 
     return (
