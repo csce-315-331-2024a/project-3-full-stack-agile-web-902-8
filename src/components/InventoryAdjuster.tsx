@@ -83,15 +83,15 @@ function InventoryAdjuster() {
         }
 
         if (
-            form.averageCost < 0 ||
-            form.maxQuantity < 0 ||
-            form.minQuantity < 0 ||
-            form.quantity < 0
+            Number(form.averageCost) < 0 ||
+            Number(form.maxQuantity) < 0 ||
+            Number(form.minQuantity) < 0 ||
+            Number(form.quantity) < 0
         ) {
             alert('Cannot have negative values');
         } else if (
-            form.minQuantity > form.maxQuantity ||
-            form.quantity > form.maxQuantity
+            Number(form.minQuantity) > Number(form.maxQuantity) ||
+            Number(form.quantity) > Number(form.maxQuantity)
         ) {
             alert('Exceeds max or min bounds for quantity');
         } else {
@@ -216,9 +216,9 @@ function InventoryAdjuster() {
                 throw new Error(`Error: ${response.statusText}`);
             }
         }
-        if (adjustedRequest < 0) {
+        if (Number(adjustedRequest) < 0) {
             alert('Cannot request a negative amount');
-        } else if (form.quantity + adjustedRequest > form.maxQuantity) {
+        } else if (Number(form.quantity) + Number(adjustedRequest) > Number(form.maxQuantity)) {
             alert('Exceeds maximum quantity');
         } else {
             doRequest();
