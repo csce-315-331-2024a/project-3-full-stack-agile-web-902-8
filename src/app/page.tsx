@@ -1,27 +1,37 @@
-//import Image from "next/image";
-import styles from './page.module.css';
+'use client';
+import React from 'react';
+import Heading from '@/components/Heading';
+import DoubleText from '@/components/DoubleText';
+import SideBar from '@/components/SideBar';
+import styles from '@/app/page.module.css';
 
-import Link from 'next/link';
+export default function Manager() {
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
 
-export default function HomePage() {
+    const Items = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
+    const Links = ['/manager', '/customer', '/cashier', '/'];
+
     return (
-        <div className={styles.container}>
-            <nav className={styles.nav}>
-                {}
-                <Link href="/manager" legacyBehavior>
-                    <a className={styles.link}>Manager </a>
-                </Link>
-                <Link href="/cashier" legacyBehavior>
-                    <a className={styles.link}>Cashier </a>
-                </Link>
-                <Link href="/customer" legacyBehavior>
-                    <a className={styles.link}>Customer </a>
-                </Link>
-                <Link href="/menuboards" legacyBehavior>
-                    <a className={styles.link}>MenuBoards</a>
-                </Link>
-            </nav>
-            {}
-        </div>
+        <main className={styles.main}>
+            <div className={styles.description}>
+                <div className={styles.body}>
+                    <DoubleText
+                        block1={
+                            <SideBar
+                                names={Items}
+                                hrefs={Links}
+                                onClick={openMenuBoardsPages}
+                            />
+                        }
+                        block2={undefined}
+                    />
+                </div>
+            </div>
+        </main>
     );
 }
