@@ -592,6 +592,73 @@ button.recommended-item.customer:hover {
     cursor: wait;
 }
 
+.dateInput {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.genresbutton {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.genresbutton:hover {
+    background-color: #37803b;
+}
+
+.reportTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #faf5f5;
+}
+
+.reportTable td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.reportTable th {
+    background-color: #000000;
+    font-weight: bold;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+.reportTable tr:hover {
+    background-color: #442d2d;
+}
+
+.reportGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.excessReport {
+    grid-column: 1 / 2;
+}
+
+.restockReport {
+    grid-column: 2 / 3;
+}
+
 @media (max-width: 399px) {
     .orderTable {
         grid-column: 1 / 3;

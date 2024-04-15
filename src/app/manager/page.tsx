@@ -28,7 +28,7 @@ export default function Manager() {
         '/manager',
         '/manager',
         '/manager',
-        '/manager',
+        '/manager/report_page',
         '/',
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
