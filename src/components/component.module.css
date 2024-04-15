@@ -518,6 +518,7 @@ button.recommended-item.customer:hover {
     border: 1pt solid rgb(var(--text-rgb));
 
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .customer.order-item .name {
