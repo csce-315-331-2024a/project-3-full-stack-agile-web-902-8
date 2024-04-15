@@ -35,13 +35,15 @@ export function CustomerOrderItem({
             } else {
                 return orderItem;
             }
+        }).filter((orderItem) => {
+            return orderItem.qty > 0;        
         });
 
         setCurrentOrder(newItems);
     }
 
     function changeQty(newQty: number) {
-        if (newQty > 0 && newQty < 100) {
+        if (newQty > -1 && newQty < 100) {
             setQty(newQty);
         }
     }
@@ -68,7 +70,9 @@ export function CustomerOrderItem({
             </p>
 
             <div className={styles['quantity']}>
-                <button onClick={() => changeQty(qty - 1)}>-</button>
+                <button onClick={() => changeQty(qty - 1)}>
+                    {qty == 1 ? "x": "-"}
+                </button>
                 {/* TODO: Add method for onChange */}
                 <p>{qty}</p>
                 <button onClick={() => changeQty(qty + 1)}>+</button>
