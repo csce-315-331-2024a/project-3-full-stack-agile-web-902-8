@@ -26,6 +26,14 @@ export async function GET(request: Request) {
             );
         }
 
+        // Check if begin time is greater than end time
+        if (beginTime > endTime) {
+            return NextResponse.json(
+                { error: 'Begin time cannot be greater than end time.' },
+                { status: 400 }
+            );
+        }
+
         const res = await excessReport(beginTime, endTime);
         return NextResponse.json(res, { status: 200 });
     } catch (error: any) {

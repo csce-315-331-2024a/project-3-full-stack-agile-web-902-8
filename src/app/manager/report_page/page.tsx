@@ -1,8 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
-import styles from '@/app/page.module.css';
-import tables from '@/components/component.module.css';
+import design from '@/app/manager/report_page/page.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
 
@@ -13,7 +12,7 @@ export default function ReportPage() {
     const [excessItems, setExcessItems] = useState<ExcessItem[]>([]);
     const [beginTimeString, setBeginTimeString] = useState<string>('');
     const [endTimeString, setEndTimeString] = useState<string>('');
-    const [beginTime, setBeginTime] = useState<number>(0);
+    const [, setBeginTime] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
     const [isExcessReportGenerated, setIsExcessReportGenerated] =
         useState(false);
@@ -56,6 +55,9 @@ export default function ReportPage() {
         if (!response.ok) {
             const errorData = await response.json();
             setError(errorData.error);
+            // Reset excess report data
+            setExcessItems([]);
+            setIsExcessReportGenerated(false);
             return;
         }
         const res = await response.json();
@@ -75,14 +77,12 @@ export default function ReportPage() {
     };
 
     return (
-        <main className={`${styles.main} ${tables.reportGrid}`}>
-            <div className={styles.description}>
-                <Heading names={items} hrefs={links} />
+        <main>
+            <Heading names={items} hrefs={links} />
 
-                <div className={tables.excessReport}>
+            <div className={design.reportContainer}>
+                <div className={design.excessReport}>
                     <h1>Excess Report:</h1>
-
-                    {error && <div className={styles.error}>{error}</div>}
 
                     <div>
                         <label htmlFor="beginTime">Select a begin date: </label>
@@ -91,7 +91,7 @@ export default function ReportPage() {
                             id="beginTime"
                             value={beginTimeString}
                             onChange={handleBeginTimeChange}
-                            className={tables.dateInput}
+                            className={design.dateInput}
                         />
                         <label htmlFor="endTime">Select an end date: </label>
                         <input
@@ -99,27 +99,26 @@ export default function ReportPage() {
                             id="endTime"
                             value={endTimeString}
                             onChange={handleEndTimeChange}
-                            className={tables.dateInput}
+                            className={design.dateInput}
                         />
-                    </div>
-
-                    <div>
                         <button
                             onClick={handleGenerateExcessReport}
-                            className={tables.genresbutton}
+                            className={design.genresbutton}
                         >
                             Generate Excess Report
                         </button>
                         <button
                             onClick={handleReset}
-                            className={tables.genresbutton}
+                            className={design.genresbutton}
                         >
                             Reset
                         </button>
                     </div>
 
+                    {error && <div className={design.error}>{error}</div>}
+
                     {isExcessReportGenerated && (
-                        <table className={tables.reportTable}>
+                        <table className={design.reportTable}>
                             <thead>
                                 <tr>
                                     <th>Inventory</th>
@@ -156,9 +155,9 @@ export default function ReportPage() {
                     )}
                 </div>
 
-                <div className={tables.restockReport}>
+                <div className={design.restockReport}>
                     <h1>Restock Report:</h1>
-                    <table className={tables.reportTable}>
+                    <table className={design.reportTable}>
                         <thead>
                             <tr>
                                 <th>ID</th>

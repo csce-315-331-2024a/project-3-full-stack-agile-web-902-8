@@ -1,0 +1,92 @@
+/***************************
+ * Interactable Buttons
+ ***************************/
+.dateInput {
+    background: rgb(var(--secondary-rgb));
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    margin-top: 10px;
+    color: white;
+}
+
+.dateInput:hover {
+    cursor: pointer;
+    background-color: rgb(var(--secondary-rgb), 0.67);
+}
+
+.genresbutton {
+    background: rgb(var(--secondary-rgb));
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.genresbutton:hover {
+    cursor: pointer;
+    background-color: rgb(var(--secondary-rgb), 0.67);
+}
+
+/***************************
+ * Table Components
+ ***************************/
+.reportTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #faf5f5;
+}
+
+.reportTable td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.reportTable th {
+    background-color: rgb(var(--accent-rgb));
+    font-weight: bold;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+.reportTable tr:hover {
+    cursor: pointer;
+    background-color: rgb(var(--secondary-rgb), 0.67);
+}
+
+/***************************
+ * Report Page Layout
+ ***************************/
+
+.reportContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.excessReport {
+    flex: 2;
+    margin-right: 20px;
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+.restockReport {
+    flex: 1;
+    margin-left: 20px;
+    margin-top: 50px;
+    margin-right: 20px;
+}
