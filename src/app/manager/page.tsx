@@ -32,7 +32,7 @@ export default function Manager() {
         '/',
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links2 = ['/manager', '/customer', '/cashier', '/manager'];
+    const Links2 = ['/manager', '/customer', '/cashier', '/'];
 
     const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
     const tableBody = [
