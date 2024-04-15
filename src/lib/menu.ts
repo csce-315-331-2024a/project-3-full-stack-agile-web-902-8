@@ -857,7 +857,7 @@ export async function getAllMenuItemNames(tsql = psql): Promise<string[]> {
 
             //stores the inventory id and amount for each ingredient
             for (const row of result) {
-                menuNames.push(row.type);
+                menuNames.push(row.name);
             }
             return menuNames;
         }

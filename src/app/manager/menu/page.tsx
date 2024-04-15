@@ -1,10 +1,11 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
-import OrderTable from '@/components/OrderTable';
-import styles from '../page.module.css';
+import styles from '@/app/page.module.css';
+import MenuEditer from '@/components/MenuEditer';
 
 export default function Manager() {
     const Items = [
@@ -17,7 +18,7 @@ export default function Manager() {
     ];
     const Links = [
         '/manager',
-        '/manager/menu',
+        '/manager',
         '/manager',
         '/manager',
         '/manager',
@@ -44,10 +45,7 @@ export default function Manager() {
                             <h1>Manager Page</h1>
 
                             <PageButton>Refresh</PageButton>
-                            {/*<p>
-              TimeStamp | Order_Id | Discount | Total
-  </p>*/}
-                            <OrderTable heading={tableHead} rows={tableBody} />
+                            <MenuEditer />
                         </div>
                     />
                 </div>
