@@ -9,6 +9,13 @@ import InventoryAdjuster from '@/components/InventoryAdjuster';
 import { InventoryItem } from '@/lib/models';
 
 export default function Inventory() {
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
+
     const Items = [
         'Home',
         'Menu',
@@ -37,7 +44,13 @@ export default function Inventory() {
                 </div>
                 <div className={styles.body}>
                     <DoubleText
-                        block1=<SideBar names={Items2} hrefs={Links2} />
+                        block1={
+                            <SideBar
+                                names={Items2}
+                                hrefs={Links2}
+                                onClick={openMenuBoardsPages}
+                            />
+                        }
                         block2=<div>
                             <h1>Manage Inventory</h1>
 
