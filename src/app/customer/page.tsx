@@ -9,6 +9,13 @@ import CustomerNav from '@/app/customer/customer-nav';
 import React from 'react';
 
 export default function Customer() {
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
+
     // TODO: Change from static to dynamic from database
     let categoryNames: Array<string> = [
         'Burgers',
@@ -44,7 +51,11 @@ export default function Customer() {
                 </div>
                 <div className={styles.body}>
                     <DoubleText
-                        block1=<SideBar names={Items2} hrefs={Links2} />
+                        block1=<SideBar
+                            names={Items2}
+                            hrefs={Links2}
+                            onClick={openMenuBoardsPages}
+                        />
                         block2=<div className={customerStyles['main']}>
                             <h1 className={customerStyles.pageTitle}>
                                 Customer
