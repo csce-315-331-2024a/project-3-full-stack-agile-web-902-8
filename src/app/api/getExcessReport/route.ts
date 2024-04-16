@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
         if (isNaN(beginTime) || isNaN(endTime)) {
             return NextResponse.json(
-                { error: 'Please provide valid begin time and end time.' },
+                { error: 'Please provide a valid begin time and end time.' },
                 { status: 400 }
             );
         }
@@ -29,7 +29,9 @@ export async function GET(request: Request) {
         // Check if begin time is greater than end time
         if (beginTime > endTime) {
             return NextResponse.json(
-                { error: 'Begin time cannot be greater than end time.' },
+                {
+                    error: 'Warning: starting date cannot be greater than end date.',
+                },
                 { status: 400 }
             );
         }

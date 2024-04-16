@@ -4,29 +4,43 @@ import Heading from '@/components/Heading';
 import design from '@/app/manager/report_page/page.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
+import { format, startOfToday } from 'date-fns';
 
 export default function ReportPage() {
     const items = ['', 'Back'];
     const links = ['/', '/manager'];
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [excessItems, setExcessItems] = useState<ExcessItem[]>([]);
-    const [beginTimeString, setBeginTimeString] = useState<string>('');
-    const [endTimeString, setEndTimeString] = useState<string>('');
+    const [beginTimeString, setBeginTimeString] = useState<string>(
+        format(startOfToday(), "yyyy-MM-dd'T'00:00")
+    );
+    const [endTimeString, setEndTimeString] = useState<string>(
+        format(new Date(), "yyyy-MM-dd'T'HH:mm")
+    );
     const [, setBeginTime] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
     const [isExcessReportGenerated, setIsExcessReportGenerated] =
         useState(false);
     const [generateClicked, setGenerateClicked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRestockReportLoading, setIsRestockReportLoading] = useState(false);
 
     useEffect(() => {
-        async function fetchRestockReport() {
-            const response = await fetch('/api/getRestockReport');
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+        const fetchRestockReport = async () => {
+            setIsRestockReportLoading(true);
+            try {
+                const response = await fetch('/api/getRestockReport');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const res = await response.json();
+                setInventoryItems(res);
+            } catch (error: any) {
+                setError(error.message);
+            } finally {
+                setIsRestockReportLoading(false);
             }
-            const res = await response.json();
-            setInventoryItems(res);
-        }
+        };
         fetchRestockReport();
     }, []);
 
@@ -44,6 +58,7 @@ export default function ReportPage() {
 
     const handleGenerateExcessReport = async () => {
         setGenerateClicked(true);
+        setIsLoading(true);
         const selectedBeginDate = new Date(beginTimeString);
         const selectedEndDate = new Date(endTimeString);
         const beginTimeNumber = selectedBeginDate.getTime();
@@ -55,9 +70,9 @@ export default function ReportPage() {
         if (!response.ok) {
             const errorData = await response.json();
             setError(errorData.error);
-            // Reset excess report data
             setExcessItems([]);
             setIsExcessReportGenerated(false);
+            setIsLoading(false);
             return;
         }
         const res = await response.json();
@@ -66,14 +81,16 @@ export default function ReportPage() {
         setError(null);
         setIsExcessReportGenerated(true);
         setGenerateClicked(false);
+        setIsLoading(false);
     };
 
     const handleReset = () => {
-        setBeginTimeString('');
-        setEndTimeString('');
+        setBeginTimeString(format(startOfToday(), "yyyy-MM-dd'T'00:00"));
+        setEndTimeString(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
         setBeginTime(0);
         setIsExcessReportGenerated(false);
         setExcessItems([]);
+        setError(null);
     };
 
     return (
@@ -85,7 +102,7 @@ export default function ReportPage() {
                     <h1>Excess Report:</h1>
 
                     <div>
-                        <label htmlFor="beginTime">Select a begin date: </label>
+                        <label htmlFor="beginTime">Select a starting date: </label>
                         <input
                             type="datetime-local"
                             id="beginTime"
@@ -117,7 +134,13 @@ export default function ReportPage() {
 
                     {error && <div className={design.error}>{error}</div>}
 
-                    {isExcessReportGenerated && (
+                    {isLoading ? (
+                        <div className={design.loadingContainer}>
+                            <button className={`${design.loading}`} disabled>
+                                Loading...
+                            </button>
+                        </div>
+                    ) : (
                         <table className={design.reportTable}>
                             <thead>
                                 <tr>
@@ -146,7 +169,8 @@ export default function ReportPage() {
                                 ) : (
                                     <tr>
                                         <td colSpan={5}>
-                                            No excess items found.
+                                            {' '}
+                                            No excess items found{' '}
                                         </td>
                                     </tr>
                                 )}
@@ -157,24 +181,32 @@ export default function ReportPage() {
 
                 <div className={design.restockReport}>
                     <h1>Restock Report:</h1>
-                    <table className={design.reportTable}>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {inventoryItems.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.id}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
+                    {isRestockReportLoading ? (
+                        <div className={design.loadingContainer}>
+                            <button className={`${design.loading}`} disabled>
+                                Loading...
+                            </button>
+                        </div>
+                    ) : (
+                        <table className={design.reportTable}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {inventoryItems.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.id}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </main>
