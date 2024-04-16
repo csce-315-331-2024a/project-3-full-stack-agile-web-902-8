@@ -102,7 +102,9 @@ export default function ReportPage() {
                     <h1>Excess Report:</h1>
 
                     <div>
-                        <label htmlFor="beginTime">Select a starting date: </label>
+                        <label htmlFor="beginTime">
+                            Select a starting date:{' '}
+                        </label>
                         <input
                             type="datetime-local"
                             id="beginTime"
