@@ -7,8 +7,22 @@ import { ExcessItem } from '@/lib/inventory-report';
 import { format, startOfToday } from 'date-fns';
 
 export default function ReportPage() {
-    const items = ['', 'Back'];
-    const links = ['/', '/manager'];
+    const Items = [
+        'Home',
+        'Menu',
+        'Inventory',
+        'Order History',
+        'Reports',
+        'Logout',
+    ];
+    const Links = [
+        '/manager',
+        '/manager',
+        '/manager/inventory',
+        '/manager',
+        '/manager/report_page',
+        '/',
+    ];
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [excessItems, setExcessItems] = useState<ExcessItem[]>([]);
     const [beginTimeString, setBeginTimeString] = useState<string>(
@@ -95,7 +109,7 @@ export default function ReportPage() {
 
     return (
         <main>
-            <Heading names={items} hrefs={links} />
+            <Heading names={Items} hrefs={Links} />
 
             <div className={design.reportContainer}>
                 <div className={design.excessReport}>

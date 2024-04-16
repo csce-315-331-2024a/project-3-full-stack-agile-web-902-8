@@ -29,7 +29,7 @@ export default function Inventory() {
         '/manager',
         '/manager/inventory',
         '/manager',
-        '/manager',
+        '/manager/report_page',
         '/',
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
