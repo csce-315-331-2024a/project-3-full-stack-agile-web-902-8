@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import styles from '@/components/component.module.css';
 import { MenuItem } from '@/lib/models';
+import Link from 'next/link';
 
 export interface OrderEntry {
     item: MenuItem;
@@ -17,8 +18,7 @@ export interface OrderItemProp {
 
 interface OrderSidebarProp {
     children: React.ReactNode;
-    // TODO: Change from just empty order to send order
-    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
+    checkoutPage: string;
 }
 
 export function CustomerOrderItem({
@@ -90,18 +90,16 @@ export function CustomerOrderItem({
 
 export function CustomerOrderSidebar({
     children,
-    setCurrentOrder,
+    checkoutPage,
 }: OrderSidebarProp) {
     return (
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
-            <button
-                className={styles['checkout']}
-                // TODO: Change from just empty order to send order
-                onClick={() => setCurrentOrder([])}
-            >
+            <Link href={checkoutPage}>
+            <button className={styles['checkout']}>
                 Checkout
             </button>
+            </Link>
         </div>
     );
 }

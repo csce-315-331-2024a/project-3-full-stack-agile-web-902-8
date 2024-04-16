@@ -21,10 +21,28 @@ export default function Customer() {
     const [category, setCategory] = useState('');
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
-    const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+
+    const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
+
+    // wrapper around setting the current order
+    function setCurrentOrder(currentOrder: OrderEntry[]) {
+        localStorage.setItem("customer-order", JSON.stringify(currentOrder));
+        changeCurrentOrder(currentOrder);
+    }
+
+    useEffect(() => {
+        // grab the order from local storage if it exists
+        let serializedOrder = localStorage.getItem("customer-order");
+        let order = [];
+        if(serializedOrder != null){
+            order = JSON.parse(serializedOrder);
+        }
+        changeCurrentOrder(order);
+    }, []);
+
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
@@ -74,6 +92,7 @@ export default function Customer() {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
+
 
     const openMenuBoardsPages = () => {
         window.open('/menuboards/Burgs', '_blank');
@@ -129,7 +148,7 @@ export default function Customer() {
                     setCurrentOrder={setCurrentOrder}
                 />
             </div>
-            <CustomerOrderSidebar setCurrentOrder={setCurrentOrder}>
+            <CustomerOrderSidebar checkoutPage={'/customer/checkout'}>
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem
                         key={item.id}
