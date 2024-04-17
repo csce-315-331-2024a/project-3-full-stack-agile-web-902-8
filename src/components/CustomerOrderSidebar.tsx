@@ -75,7 +75,16 @@ export function CustomerOrderItem({
 
             <div className={styles['quantity']}>
                 <button onClick={() => changeQty(qty - 1)}>
-                    {qty == 1 ? 'X' : '-'}
+                    {qty == 1 ? (
+                        <Image
+                            src="/remove.svg"
+                            alt={'remove'}
+                            width={30}
+                            height={30}
+                        />
+                    ) : (
+                        '-'
+                    )}
                 </button>
                 {/* TODO: Add method for onChange */}
                 <p>{qty}</p>

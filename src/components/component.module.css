@@ -547,8 +547,8 @@ button.recommended-item.customer:hover {
 }
 
 .customer.order-item img {
-    width: 5em;
-    height: 5em;
+    width: 6em;
+    height: 6em;
 }
 
 .customer.order-item .name {
@@ -568,7 +568,6 @@ button.recommended-item.customer:hover {
     display: flex;
     justify-content: row;
     align-items: center;
-    flex: 1 1 33%;
     grid-column: 1;
 }
 
@@ -582,6 +581,10 @@ button.recommended-item.customer:hover {
     text-align: center;
 }
 
+.customer.order-item .quantity p {
+    padding: 1em;
+}
+
 .customer.order-item .quantity button {
     background-color: rgb(var(--background-rgb));
     color: rgb(var(--text-rgb));
@@ -591,6 +594,10 @@ button.recommended-item.customer:hover {
     font-size: 1.5em;
     margin: 0.25em 0.1em;
     cursor: pointer;
+}
+
+.customer.order-item .quantity button img {
+    padding: 3px;
 }
 
 .customer.order-item .price {
