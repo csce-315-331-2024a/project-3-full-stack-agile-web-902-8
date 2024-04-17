@@ -35,3 +35,41 @@
     font-size: 16pt;
     overflow-y: scroll;
 }
+
+#checkout-summary {
+    width: 70%;
+    height: 50%;
+    margin: 20px;
+    overflow-y: scroll;
+}
+
+table#item-summary {
+    width: 100%;
+    border-collapse: collapse;
+    border-bottom: 1px solid rgb(var(--text-rgb));
+    font-size: 18px;
+    color: rgb(var(--text-rgb));
+}
+
+table#item-summary thead {
+    height: 60px;
+    top: 0;
+    position: sticky;
+    z-index: 1;
+}
+
+table#item-summary tbody tr td:first-child,
+table#item-summary thead tr th:first-child {
+    text-align: left;
+}
+
+table#item-summary th, table#item-summary td {
+    padding: 5px 12px;
+    border-bottom: 1px solid rgb(var(--text-rgb));
+    text-align: center;
+}
+
+table#item-summary th {
+    background-color: rgb(var(--secondary-rgb));
+    font-weight: bold;
+}

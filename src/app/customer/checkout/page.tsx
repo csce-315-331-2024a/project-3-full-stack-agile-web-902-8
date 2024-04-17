@@ -39,7 +39,26 @@ export default function CustomerCheckout() {
                     />
                 ))}
             </div>
-            <div></div>
+            <div id={styles["checkout-summary"]}>
+                <table id={styles["item-summary"]}>
+                    <thead>
+                        <tr>
+                            <th style={{width: "70%"}}>item</th>
+                            <th>quantity</th>
+                            <th>price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentOrder.map(({ item, qty }) => (
+                            <tr key={item.id}>
+                                <td>{item.name}</td>
+                                <td>x{qty}</td>
+                                <td>${(item.price * qty).toFixed(2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </main>
     );
 }
