@@ -25,3 +25,13 @@
 #menu h1 {
     text-align: center;
 }
+
+/******************************************
+ *               Checkout                 *
+ ******************************************/
+#order-box {
+    width: 500px;
+    margin: 20px;
+    font-size: 16pt;
+    overflow-y: scroll;
+}

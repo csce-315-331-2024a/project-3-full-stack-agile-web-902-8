@@ -9,7 +9,7 @@ import {
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
-import { MenuItem, Seasonal } from '@/lib/models';
+import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
 import DoubleText from '@/components/DoubleText';
@@ -29,20 +29,19 @@ export default function Customer() {
 
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
-        localStorage.setItem("customer-order", JSON.stringify(currentOrder));
+        localStorage.setItem('customer-order', JSON.stringify(currentOrder));
         changeCurrentOrder(currentOrder);
     }
 
     useEffect(() => {
         // grab the order from local storage if it exists
-        let serializedOrder = localStorage.getItem("customer-order");
+        let serializedOrder = localStorage.getItem('customer-order');
         let order = [];
-        if(serializedOrder != null){
+        if (serializedOrder != null) {
             order = JSON.parse(serializedOrder);
         }
         changeCurrentOrder(order);
     }, []);
-
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
@@ -92,7 +91,6 @@ export default function Customer() {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
-
 
     const openMenuBoardsPages = () => {
         window.open('/menuboards/Burgs', '_blank');

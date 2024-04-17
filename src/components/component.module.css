@@ -537,12 +537,18 @@ button.recommended-item.customer:hover {
 }
 
 .customer.order-item {
-    height: 200px;
+    height: 12em;
     padding: 10px 10px 20px 10px;
     border: 1pt solid rgb(var(--text-rgb));
 
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.customer.order-item img {
+    width: 5em;
+    height: 5em;
 }
 
 .customer.order-item .name {
@@ -550,11 +556,12 @@ button.recommended-item.customer:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    grid-column: 2 / span 2;
 }
 
 .customer.order-item .description {
-    font-size: 10pt;
-    grid-column: 1 / span 2;
+    font-size: 1em;
+    grid-column: 1 / span 3;
 }
 
 .customer.order-item .quantity {
@@ -562,11 +569,12 @@ button.recommended-item.customer:hover {
     justify-content: row;
     align-items: center;
     flex: 1 1 33%;
+    grid-column: 1;
 }
 
 .customer.order-item .quantity * {
-    width: 25px;
-    height: 25px;
+    width: 1em;
+    height: 1em;
 
     display: flex;
     justify-content: center;
@@ -580,16 +588,17 @@ button.recommended-item.customer:hover {
     border: 1pt solid rgb(var(--text-rgb));
 
     text-decoration: none;
-    font-size: 16pt;
-    margin: 4px 2px;
+    font-size: 1.5em;
+    margin: 0.25em 0.1em;
     cursor: pointer;
 }
 
 .customer.order-item .price {
-    font-size: 16pt;
+    font-size: 1.5em;
     display: flex;
     justify-content: center;
     align-items: center;
+    grid-column: 3;
 }
 
 .customer#order-sidebar button.checkout {
@@ -599,7 +608,7 @@ button.recommended-item.customer:hover {
     background-color: rgb(var(--secondary-rgb));
     color: rgb(var(--text-rgb));
     border: 1pt solid rgb(var(--text-rgb));
-    font-size: 24pt;
+    font-size: 2em;
 
     cursor: pointer;
 }

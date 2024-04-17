@@ -64,8 +64,8 @@ export function CustomerOrderItem({
             <Image
                 src="/menuItemImages/Aggie_Chicken_Club.png"
                 alt={item.name}
-                width={100}
-                height={100}
+                width={200}
+                height={200}
             />
             <h3 className={styles.name}>{item.name}</h3>
             <p className={styles.description}>
@@ -75,7 +75,7 @@ export function CustomerOrderItem({
 
             <div className={styles['quantity']}>
                 <button onClick={() => changeQty(qty - 1)}>
-                    {qty == 1 ? 'x' : '-'}
+                    {qty == 1 ? 'X' : '-'}
                 </button>
                 {/* TODO: Add method for onChange */}
                 <p>{qty}</p>
@@ -96,9 +96,7 @@ export function CustomerOrderSidebar({
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
             <Link href={checkoutPage}>
-            <button className={styles['checkout']}>
-                Checkout
-            </button>
+                <button className={styles['checkout']}>Checkout</button>
             </Link>
         </div>
     );
