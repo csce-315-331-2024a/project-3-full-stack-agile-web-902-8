@@ -2,11 +2,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Home(){
-  const { push } = useRouter();
+export default function Home() {
+    const { push } = useRouter();
 
-  useEffect(() => {
-     push('/customer');
-  }, []);
-  return (<main>Redirecting...</main>);
-};
+    useEffect(() => {
+        push('/customer');
+    }, []);
+    return <main>Redirecting...</main>;
+}
