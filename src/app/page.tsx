@@ -7,6 +7,6 @@ export default function Home() {
 
     useEffect(() => {
         push('/customer');
-    }, []);
+    }, [push]);
     return <main>Redirecting...</main>;
 }
