@@ -107,103 +107,97 @@ export default function CustomerCheckout() {
 
     return (
         <main className={styles.main}>
-            {!isPlacingOrder && (
-                <>
-                    <div id={styles['order-box']}>
-                        {currentOrder.map(({ item, qty }) => (
-                            <CustomerOrderItem
-                                key={item.id}
-                                item={item}
-                                qty={qty}
-                                currentOrder={currentOrder}
-                                setCurrentOrder={setCurrentOrder}
-                            />
-                        ))}
-                    </div>
-                    <div id={styles['checkout']}>
-                        <div id={styles['checkout-summary']}>
-                            <table id={styles['item-summary']}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: '70%' }}>item</th>
-                                        <th>quantity</th>
-                                        <th>price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentOrder.map(({ item, qty }) => (
-                                        <tr key={item.id}>
-                                            <td>{item.name}</td>
-                                            <td>x{qty}</td>
-                                            <td>
-                                                ${(item.price * qty).toFixed(2)}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <td>Subtotal</td>
-                                        <td>${subTotal.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>Tax</td>
-                                        <td>${tax.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>Total</td>
-                                        <td>${total.toFixed(2)}</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                        <section id={styles.payment}>
-                            <h2>Payment Method</h2>
-                            <ul className={styles.buttons}>
-                                <li>
-                                    <button
-                                        onClick={placeOrder}
-                                        disabled={isPlacingOrder}
-                                    >
-                                        {' '}
-                                        Dining Dollars{' '}
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={placeOrder}
-                                        disabled={isPlacingOrder}
-                                    >
-                                        {' '}
-                                        Credit Card{' '}
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={placeOrder}
-                                        disabled={isPlacingOrder}
-                                    >
-                                        {' '}
-                                        Debit Card{' '}
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={placeOrder}
-                                        disabled={isPlacingOrder}
-                                    >
-                                        {' '}
-                                        Cash{' '}
-                                    </button>
-                                </li>
-                            </ul>
-                        </section>
-                    </div>
-                </>
-            )}
+            <div id={styles['order-box']}>
+                {currentOrder.map(({ item, qty }) => (
+                    <CustomerOrderItem
+                        key={item.id}
+                        item={item}
+                        qty={qty}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                ))}
+            </div>
+            <div id={styles['checkout']}>
+                <div id={styles['checkout-summary']}>
+                    <table id={styles['item-summary']}>
+                        <thead>
+                            <tr>
+                                <th style={{ width: '70%' }}>item</th>
+                                <th>quantity</th>
+                                <th>price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentOrder.map(({ item, qty }) => (
+                                <tr key={item.id}>
+                                    <td>{item.name}</td>
+                                    <td>x{qty}</td>
+                                    <td>${(item.price * qty).toFixed(2)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td>Subtotal</td>
+                                <td>${subTotal.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Tax</td>
+                                <td>${tax.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Total</td>
+                                <td>${total.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <section id={styles.payment}>
+                    <h2>Payment Method</h2>
+                    <ul className={styles.buttons}>
+                        <li>
+                            <button
+                                onClick={placeOrder}
+                                disabled={isPlacingOrder}
+                            >
+                                {' '}
+                                Dining Dollars{' '}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                onClick={placeOrder}
+                                disabled={isPlacingOrder}
+                            >
+                                {' '}
+                                Credit Card{' '}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                onClick={placeOrder}
+                                disabled={isPlacingOrder}
+                            >
+                                {' '}
+                                Debit Card{' '}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                onClick={placeOrder}
+                                disabled={isPlacingOrder}
+                            >
+                                {' '}
+                                Cash{' '}
+                            </button>
+                        </li>
+                    </ul>
+                </section>
+            </div>
         </main>
     );
 }
