@@ -355,6 +355,255 @@
     padding: 1rem;
 }
 
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    border: 1px solid;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border: 1px solid;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+/******************************************
+ *           Customer Components          *
+ ******************************************/
+ul.bar.customer {
+    background-color: rgb(var(--secondary-rgb));
+
+    width: 100%;
+    min-height: 100px;
+
+    border: 1pt solid rgb(var(--text-rgb));
+    border-radius: 15px;
+    padding: 0 15px;
+
+    list-style-type: none;
+}
+
+.customer#categories {
+    display: flex;
+
+    justify-content: stretch;
+    align-items: stretch;
+}
+
+.customer#categories * {
+    width: 100%;
+    display: inline-block;
+}
+
+.customer#categories .category-button {
+    background-color: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+    height: 100%;
+    width: 100%;
+
+    font-family: var(--font);
+    font-size: 16pt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 250ms;
+    padding: 1rem;
+    border: none;
+}
+
+.customer#categories .category-button {
+    cursor: pointer;
+}
+
+.customer#categories .category-button.active {
+    /* TODO: change the colors for active button */
+    background-color: rgba(var(--background-rgb), 0.5);
+}
+
+.menu-items {
+    display: grid;
+    width: 100%;
+    height: fit-content;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button.menu-item.customer {
+    height: fit-content;
+    background: none;
+    color: rgb(var(--text-rgb));
+    border: none;
+    display: block;
+    text-align: center;
+    padding: 20px 0;
+    margin: 0 20px;
+}
+
+button.menu-item.customer img {
+    max-width: 200px;
+}
+
+button.menu-item.customer .name {
+    font-size: 24pt;
+}
+
+button.menu-item.customer .description {
+    font-size: 12pt;
+    padding: 0 30px;
+    text-align: center;
+}
+
+button.menu-item.customer:active {
+    background: rgba(var(--secondary-rgb), 0.5);
+}
+
+ul.customer.recommended-items {
+    display: grid;
+    width: 100%;
+    height: fit-content;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+ul.customer.recommended-items li {
+    width: 100%;
+    height: fit-content;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customer.recommended-item {
+    height: fit-content;
+    background: none;
+    color: rgb(var(--text-rgb));
+    border: none;
+    display: block;
+    text-align: center;
+    padding: 30px 20px;
+    display: inline-block;
+}
+
+.customer.recommended-item img {
+    max-width: 150px;
+}
+
+.customer.recommended-item .name {
+    font-size: 16pt;
+}
+
+.customer button.recommended-item:hover {
+    cursor: pointer;
+}
+
+.customer button.recommended-item:active {
+    background: rgba(var(--background-rgb), 0.5);
+}
+
+button.menu-item.customer:hover,
+button.recommended-item.customer:hover {
+    cursor: pointer;
+}
+
+/******************************************
+ *              Order Siderbar            *
+ ******************************************/
+.customer#order-sidebar {
+    background: rgb(var(--background-rgb));
+    color: rgb(var(--text-rgb));
+    border-left: 1pt solid rgb(var(--text-rgb));
+
+    height: 100vh;
+    width: 300px;
+}
+
+.customer #order-box {
+    height: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.customer.order-item {
+    height: 200px;
+    padding: 10px 10px 20px 10px;
+    border: 1pt solid rgb(var(--text-rgb));
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.customer.order-item .name {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customer.order-item .description {
+    font-size: 10pt;
+    grid-column: 1 / span 2;
+}
+
+.customer.order-item .quantity {
+    display: flex;
+    justify-content: row;
+    align-items: center;
+    flex: 1 1 33%;
+}
+
+.customer.order-item .quantity * {
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.customer.order-item .quantity button {
+    background-color: rgb(var(--background-rgb));
+    color: rgb(var(--text-rgb));
+    border: 1pt solid rgb(var(--text-rgb));
+
+    text-decoration: none;
+    font-size: 16pt;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.customer.order-item .price {
+    font-size: 16pt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customer#order-sidebar button.checkout {
+    width: 100%;
+    height: 20%;
+
+    background-color: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+    border: 1pt solid rgb(var(--text-rgb));
+    font-size: 24pt;
+
+    cursor: pointer;
+}
+
 .loading {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));
@@ -365,6 +614,73 @@
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));
     cursor: wait;
+}
+
+.dateInput {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.genresbutton {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.genresbutton:hover {
+    background-color: #37803b;
+}
+
+.reportTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #faf5f5;
+}
+
+.reportTable td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.reportTable th {
+    background-color: #000000;
+    font-weight: bold;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+
+.reportTable tr:hover {
+    background-color: #442d2d;
+}
+
+.reportGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.excessReport {
+    grid-column: 1 / 2;
+}
+
+.restockReport {
+    grid-column: 2 / 3;
 }
 
 @media (max-width: 399px) {

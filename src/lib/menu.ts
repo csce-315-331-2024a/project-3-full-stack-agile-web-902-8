@@ -8,9 +8,7 @@ import {
 } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
-import { minify } from 'next/dist/build/swc';
 
-//whenever theres a nested query, make sure to return tsql
 //go back and fix the affecterows
 
 export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
@@ -39,7 +37,7 @@ export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
             for (const row of result) {
                 const ingredients = await getIngredientsByMenuItemId(
                     row.id,
-                    tsql
+                    isql
                 );
                 const seasonal = row.start_date
                     ? new Seasonal(row.start_date, row.end_date, row.recurring)
@@ -90,22 +88,22 @@ export async function getMenuItemByName(
             if (result.length > 0) {
                 const item = result[0];
                 const ingredients = await getIngredientsByMenuItemId(
-                    item.mi.id,
-                    tsql
+                    item.id,
+                    isql
                 ); //gets ingredietns information
                 const seasonal = new Seasonal(
-                    item.si.start_date,
-                    item.si.end_date,
-                    item.si.recurring
+                    item.start_date,
+                    item.end_date,
+                    item.recurring
                 ); //gets seasonal information
 
                 return new MenuItem(
-                    item.mi.id,
-                    item.mi.name,
-                    item.mi.type,
-                    item.mi.price,
-                    item.mi.net_price,
-                    item.mi.popularity,
+                    item.id,
+                    item.name,
+                    item.type,
+                    item.price,
+                    item.net_price,
+                    item.popularity,
                     ingredients,
                     seasonal
                 );
@@ -142,7 +140,7 @@ export async function getIngredientsByMenuItemId(
             for (const row of result) {
                 const InventoryItem = await getInventoryItemById(
                     row.inventory_id,
-                    tsql
+                    isql
                 ); //content of inventory item
                 ingredients.push(new Ingredient(InventoryItem, row.amount));
             }
@@ -253,7 +251,7 @@ export async function addIngredients(
             for (const ingredient of menuItem.ingredients) {
                 const inventoryId = await findInventoryIdByName(
                     ingredient.inventoryItem.name,
-                    tsql
+                    isql
                 ); //if no inventory id is found
                 if (inventoryId == -1) {
                     return false;
@@ -263,7 +261,7 @@ export async function addIngredients(
                     menuItem.id,
                     inventoryId,
                     ingredient.amount,
-                    tsql
+                    isql
                 ); //if add does not work
                 if (!added) {
                     return false;
@@ -380,11 +378,11 @@ export async function updateMenuItem(
 
             const seasonalItemUpdated = await updateSeasonalItem(
                 updatedMenuItem,
-                tsql
+                isql
             );
             const ingredientsUpdated = await updateIngredients(
                 updatedMenuItem,
-                tsql
+                isql
             );
 
             return seasonalItemUpdated && ingredientsUpdated; //if it meets requirements
@@ -458,9 +456,9 @@ export async function updateIngredients(
                                     menuItem.id,
                                     await findInventoryIdByName(
                                         newIngredient.inventoryItem.name,
-                                        tsql
+                                        isql
                                     ),
-                                    tsql
+                                    isql
                                 ))
                             ) {
                                 return false;
@@ -476,7 +474,7 @@ export async function updateIngredients(
                                         newIngredient.inventoryItem.name
                                     ),
                                     newIngredient.amount,
-                                    tsql
+                                    isql
                                 ))
                             ) {
                                 return false;
@@ -492,7 +490,7 @@ export async function updateIngredients(
                             menuItem.id,
                             await findInventoryIdByName(
                                 currentIngredient.inventoryItem.name,
-                                tsql
+                                isql
                             )
                         ))
                     ) {
@@ -523,11 +521,11 @@ export async function updateIngredients(
                             menuItem.id,
                             await findInventoryIdByName(
                                 newIngredient.inventoryItem.name,
-                                tsql
+                                isql
                             ),
                             newIngredient.amount
                         ),
-                        tsql)
+                        isql)
                     ) {
                         //if addingredient returns false
                         return false;
@@ -624,7 +622,7 @@ export async function deleteMenuItem(
         }),
         async (isql, _) => {
             //checks if menu item exists
-            const itemId = await findMenuItemIdByName(menuItem.name, tsql);
+            const itemId = await findMenuItemIdByName(menuItem.name, isql);
             if (itemId == -1) {
                 return false;
             }
@@ -759,7 +757,7 @@ export async function updateSeasonalItem(
             } else {
                 if (menuItem.seasonal != null) {
                     //add seasonal item entry
-                    return addSeasonalItem(menuItem, tsql);
+                    return addSeasonalItem(menuItem, isql);
                 }
                 return true;
             }
@@ -962,7 +960,7 @@ export async function removeIngredients(
         tsql,
         new Error('SQL Error in removeIngredients', undefined, { name: name }),
         async (isql, _) => {
-            if (!(await existsInDatabase(name, tsql))) {
+            if (!(await existsInDatabase(name, isql))) {
                 //checks if menu item exits
                 return false;
             }
@@ -1043,15 +1041,6 @@ export async function getMenuItemNamesByTypeAndInSeason(
     );
 }
 
-interface ArrayList<T> extends Array<T> {}
-
-class Pair<T, U> {
-    constructor(
-        public first: T,
-        public second: U
-    ) {}
-}
-
 /**
  * Retrieves pairs of frequently sold menu item names of a specific type and in season within a given time range from the database.
  *
@@ -1064,12 +1053,8 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
     begin: Date,
     end: Date,
     tsql = psql
-): Promise<ArrayList<Pair<Pair<string, string>, number>>> {
-    return transact<
-        ArrayList<Pair<Pair<string, string>, number>>,
-        postgres.Error,
-        any
-    >(
+): Promise<[string, string, number][]> {
+    return transact<[string, string, number][], postgres.Error, any>(
         tsql,
         new Error('SQL Error in getMenuItemNamesByTypeAndInSeason', undefined, {
             begin: begin,
@@ -1087,16 +1072,11 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             GROUP BY mi1.name, mi2.name
             ORDER BY frequency DESC`;
 
-            const itemNames: ArrayList<Pair<Pair<string, string>, number>> = [];
+            const itemNames: [string, string, number][] = [];
 
             //returns pair that sell frequently
             for (const row of result) {
-                itemNames.push(
-                    new Pair(
-                        new Pair(row.item1Name, row.item2Name),
-                        row.frequency
-                    )
-                );
+                itemNames.push([row.item1Name, row.item2Name, row.frequency]);
             }
             return itemNames;
         }

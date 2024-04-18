@@ -3,7 +3,7 @@ import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
-import styles from '../page.module.css';
+import styles from '@/app/page.module.css';
 
 export default function MenuBoard() {
     const items = ['Home', 'Logout'];
@@ -41,7 +41,7 @@ export default function MenuBoard() {
                         }
                         block2={
                             <div>
-                                <h1>MenuBoard Page</h1>
+                                <h1>Beverages, Sides, and Desserts</h1>
 
                                 {/* Render categories */}
                                 {categories.map(renderCategory)}

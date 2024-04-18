@@ -84,7 +84,7 @@ export async function addOrUpdateInventoryItem(
         new Error('SQL error in addOrUpdateInventoryItem', undefined, item),
         async (isql, _) => {
             const result =
-                await isql`SELECT COUNT(*) FROM inventory WHERE name = ${item.name}`;
+                await isql`SELECT * FROM inventory WHERE name = ${item.name}`;
             if (result.length > 0) {
                 const subResult =
                     await isql`UPDATE inventory SET qty = ${item.quantity}, avg_cost = ${item.averageCost}, min_qty = ${item.minQuantity}, max_qty = ${item.maxQuantity} WHERE name = ${item.name}`;

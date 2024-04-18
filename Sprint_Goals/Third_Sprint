@@ -1,0 +1,8 @@
+The goal of the third sprint is to first and foremost complete our tasks from sprint 2. We were too ambitious with the last sprint and assigned more work that should have been assigned in the sprint 3. This includes finishing our API and third party API implementations and completing the pages for manager interface. We will implement the login authentication that will determine what interface a user will have access to based on the email. We will create a kitchen page that will display the status of the orders (complete, pending, canceled, etc). Finally we will start verifying and validating our code to make sure it meets industry standards. By the end of this sprint we will have a completed POS system with full functionality on each interface.
+
+Sprint Backlog:
+-Complete API implementations
+-Complete the functionality and missing pages for our manager interface
+-Implement Google Auth
+-Create Kitchen page with ability to view orders
+-Verify and Validate code
