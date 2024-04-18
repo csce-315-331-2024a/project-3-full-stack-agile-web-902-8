@@ -16,6 +16,7 @@ import {
 import styles from '@/app/customer/page.module.css';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 import GlobalConfig from '@/lib/config';
 
@@ -107,6 +108,17 @@ export default function CustomerCheckout() {
 
     return (
         <main className={styles.main}>
+            <header id={styles.topbar}>
+                <ul className={styles["nav-left"]}>
+                    <li><Link href='/customer'>Menu</Link></li>
+                </ul>
+                <ul className={styles["nav-right"]}>
+                    <li><Link className={styles.login} href='/'>Login</Link></li>
+                </ul>
+            </header>
+
+
+            <div id={styles['checkout-page']}>
             <div id={styles['order-box']}>
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem
@@ -197,6 +209,7 @@ export default function CustomerCheckout() {
                         </li>
                     </ul>
                 </section>
+            </div>
             </div>
         </main>
     );
