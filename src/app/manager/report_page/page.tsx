@@ -1,33 +1,60 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
-import styles from '@/app/page.module.css';
-import tables from '@/components/component.module.css';
+import design from '@/app/manager/report_page/page.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
+import { format, startOfToday } from 'date-fns';
 
 export default function ReportPage() {
-    const items = ['', 'Back'];
-    const links = ['/', '/manager'];
+    const Items = [
+        'Home',
+        'Menu',
+        'Inventory',
+        'Order History',
+        'Reports',
+        'Logout',
+    ];
+    const Links = [
+        '/manager',
+        '/manager',
+        '/manager/inventory',
+        '/manager',
+        '/manager/report_page',
+        '/',
+    ];
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [excessItems, setExcessItems] = useState<ExcessItem[]>([]);
-    const [beginTimeString, setBeginTimeString] = useState<string>('');
-    const [endTimeString, setEndTimeString] = useState<string>('');
-    const [beginTime, setBeginTime] = useState<number>(0);
+    const [beginTimeString, setBeginTimeString] = useState<string>(
+        format(startOfToday(), "yyyy-MM-dd'T'00:00")
+    );
+    const [endTimeString, setEndTimeString] = useState<string>(
+        format(new Date(), "yyyy-MM-dd'T'HH:mm")
+    );
+    const [, setBeginTime] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
     const [isExcessReportGenerated, setIsExcessReportGenerated] =
         useState(false);
     const [generateClicked, setGenerateClicked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRestockReportLoading, setIsRestockReportLoading] = useState(false);
 
     useEffect(() => {
-        async function fetchRestockReport() {
-            const response = await fetch('/api/getRestockReport');
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+        const fetchRestockReport = async () => {
+            setIsRestockReportLoading(true);
+            try {
+                const response = await fetch('/api/getRestockReport');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const res = await response.json();
+                setInventoryItems(res);
+            } catch (error: any) {
+                setError(error.message);
+            } finally {
+                setIsRestockReportLoading(false);
             }
-            const res = await response.json();
-            setInventoryItems(res);
-        }
+        };
         fetchRestockReport();
     }, []);
 
@@ -45,6 +72,7 @@ export default function ReportPage() {
 
     const handleGenerateExcessReport = async () => {
         setGenerateClicked(true);
+        setIsLoading(true);
         const selectedBeginDate = new Date(beginTimeString);
         const selectedEndDate = new Date(endTimeString);
         const beginTimeNumber = selectedBeginDate.getTime();
@@ -56,6 +84,9 @@ export default function ReportPage() {
         if (!response.ok) {
             const errorData = await response.json();
             setError(errorData.error);
+            setExcessItems([]);
+            setIsExcessReportGenerated(false);
+            setIsLoading(false);
             return;
         }
         const res = await response.json();
@@ -64,34 +95,36 @@ export default function ReportPage() {
         setError(null);
         setIsExcessReportGenerated(true);
         setGenerateClicked(false);
+        setIsLoading(false);
     };
 
     const handleReset = () => {
-        setBeginTimeString('');
-        setEndTimeString('');
+        setBeginTimeString(format(startOfToday(), "yyyy-MM-dd'T'00:00"));
+        setEndTimeString(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
         setBeginTime(0);
         setIsExcessReportGenerated(false);
         setExcessItems([]);
+        setError(null);
     };
 
     return (
-        <main className={`${styles.main} ${tables.reportGrid}`}>
-            <div className={styles.description}>
-                <Heading names={items} hrefs={links} />
+        <main>
+            <Heading names={Items} hrefs={Links} />
 
-                <div className={tables.excessReport}>
+            <div className={design.reportContainer}>
+                <div className={design.excessReport}>
                     <h1>Excess Report:</h1>
 
-                    {error && <div className={styles.error}>{error}</div>}
-
                     <div>
-                        <label htmlFor="beginTime">Select a begin date: </label>
+                        <label htmlFor="beginTime">
+                            Select a starting date:{' '}
+                        </label>
                         <input
                             type="datetime-local"
                             id="beginTime"
                             value={beginTimeString}
                             onChange={handleBeginTimeChange}
-                            className={tables.dateInput}
+                            className={design.dateInput}
                         />
                         <label htmlFor="endTime">Select an end date: </label>
                         <input
@@ -99,27 +132,32 @@ export default function ReportPage() {
                             id="endTime"
                             value={endTimeString}
                             onChange={handleEndTimeChange}
-                            className={tables.dateInput}
+                            className={design.dateInput}
                         />
-                    </div>
-
-                    <div>
                         <button
                             onClick={handleGenerateExcessReport}
-                            className={tables.genresbutton}
+                            className={design.genresbutton}
                         >
                             Generate Excess Report
                         </button>
                         <button
                             onClick={handleReset}
-                            className={tables.genresbutton}
+                            className={design.genresbutton}
                         >
                             Reset
                         </button>
                     </div>
 
-                    {isExcessReportGenerated && (
-                        <table className={tables.reportTable}>
+                    {error && <div className={design.error}>{error}</div>}
+
+                    {isLoading ? (
+                        <div className={design.loadingContainer}>
+                            <button className={`${design.loading}`} disabled>
+                                Loading...
+                            </button>
+                        </div>
+                    ) : (
+                        <table className={design.reportTable}>
                             <thead>
                                 <tr>
                                     <th>Inventory</th>
@@ -147,7 +185,8 @@ export default function ReportPage() {
                                 ) : (
                                     <tr>
                                         <td colSpan={5}>
-                                            No excess items found.
+                                            {' '}
+                                            No excess items found{' '}
                                         </td>
                                     </tr>
                                 )}
@@ -156,26 +195,34 @@ export default function ReportPage() {
                     )}
                 </div>
 
-                <div className={tables.restockReport}>
+                <div className={design.restockReport}>
                     <h1>Restock Report:</h1>
-                    <table className={tables.reportTable}>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Quantity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {inventoryItems.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.id}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.quantity}</td>
+                    {isRestockReportLoading ? (
+                        <div className={design.loadingContainer}>
+                            <button className={`${design.loading}`} disabled>
+                                Loading...
+                            </button>
+                        </div>
+                    ) : (
+                        <table className={design.reportTable}>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {inventoryItems.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.id}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.quantity}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </main>
