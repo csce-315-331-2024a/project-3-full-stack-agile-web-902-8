@@ -11,9 +11,7 @@ import {
 } from '@/components/CustomerOrderSidebar';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
-
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
+import Link from 'next/link';
 
 export default function Customer() {
     // set default category
@@ -92,30 +90,16 @@ export default function Customer() {
         setCategoryItems(itemsInCategory);
     }, [category, items]);
 
-    const openMenuBoardsPages = () => {
-        window.open('/menuboards/Burgs', '_blank');
-        window.open('/menuboards/Meals_Limited', '_blank');
-        window.open('/menuboards/Misc', '_blank');
-        window.open('/menuboards/Sandwiches_Baskets', '_blank');
-    };
-
-    const Items = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links = ['/manager', '/customer', '/cashier', '/'];
-
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
-            <DoubleText
-                block1={
-                    <SideBar
-                        names={Items}
-                        hrefs={Links}
-                        onClick={openMenuBoardsPages}
-                    />
-                }
-                block2={undefined}
-            />
+            <header id={styles.topbar}>
+                <ul className={styles["nav-right"]}>
+                    <li><Link className={styles.login} href='/'>Login</Link></li>
+                </ul>
+            </header>
 
+            <div id={styles["menu-page"]}>
             <div id={styles.menu}>
                 <h1>Menu</h1>
                 <div>
@@ -157,6 +141,7 @@ export default function Customer() {
                     />
                 ))}
             </CustomerOrderSidebar>
+            </div>
         </main>
     );
 }

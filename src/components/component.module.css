@@ -526,7 +526,7 @@ button.recommended-item.customer:hover {
     color: rgb(var(--text-rgb));
     border-left: 1pt solid rgb(var(--text-rgb));
 
-    height: 100vh;
+    height: 100%;
     width: 300px;
 }
 

@@ -2,9 +2,38 @@
     background: rgb(var(--background-rgb));
     color: rgb(var(--text-rgb));
 
-    height: 100vh;
+    height: 100%;
+}
+
+#topbar {
+    background: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+
+    height: 50px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#topbar li {
+    display: inline-block;
+    padding: 0 20px;
+}
+
+#topbar .nav-right {
+    grid-column: 3;
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#menu-page {
+    height: calc(100vh - 50px);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    overflow-y: hidden;
 }
 
 /******************************************
