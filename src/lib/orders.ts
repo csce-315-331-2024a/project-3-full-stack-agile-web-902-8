@@ -5,19 +5,37 @@ import postgres from 'postgres';
 
 /**
  * @param o The order to submit to the database.
- * @return The id of the added order.
+ * @return If the order was successfully added to the database.
  */
-export async function addOrder(o: Order, tsql = psql): Promise<number> {
-    return transact<number, postgres.Error, any>(
+export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
+    return transact<boolean, postgres.Error, Order>(
         tsql,
         new Error('SQL Error in addOrder', undefined, o),
         async (isql, _) => {
-            let [{ id: id }] =
-                await isql`INSERT INTO orders (timestamp, discount, total) VALUES (${o.timestamp}, ${o.discount}, ${o.total}) RETURNING id;`;
-            for (const item of o.items) {
-                await isql`INSERT INTO order_items (order_id, item_id, qty) VALUES (${id}, ${item.item.id}, ${item.quantity});`;
+            const orderInsertResult = await isql`
+                INSERT INTO orders (timestamp, discount, total) 
+                VALUES (${o.timestamp}, ${o.discount}, ${o.total}) 
+                RETURNING id;
+            `;
+            if (orderInsertResult.count === 0) {
+                console.error('Order insert failed', o);
+                throw new Error('Order insert failed', undefined, o);
             }
-            return id;
+            const id = orderInsertResult[0].id;
+
+            for (const item of o.items) {
+                const result = await isql`
+                    INSERT INTO order_items (order_id, item_id, qty) 
+                    VALUES (${id}, ${item.item.id}, ${item.quantity});
+                `;
+                if (result.count === 0) {
+                    console.error('Order item insert failed', item);
+                    throw new Error('Order item insert failed', item, o);
+                }
+            }
+
+            console.log('Order added: ', id);
+            return true;
         }
     );
 }

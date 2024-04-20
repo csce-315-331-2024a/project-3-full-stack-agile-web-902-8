@@ -3,9 +3,8 @@
 import React from 'react';
 import componentStyles from './component.module.css';
 
-// TODO: consider using an active button style
-
 interface CashierCategoryBarProps {
+    isFetchingMenuTypes: boolean;
     categories: string[];
     category: string;
     setCategory: (category: string) => void;
@@ -18,10 +17,33 @@ interface CashierCategoryButtonProps {
 }
 
 function CashierCategoryBar({
+    isFetchingMenuTypes,
     categories,
     category,
     setCategory,
 }: CashierCategoryBarProps) {
+    if (isFetchingMenuTypes) {
+        return (
+            <div
+                className={
+                    componentStyles.categoryBar + ' ' + componentStyles.loading
+                }
+            >
+                <button
+                    className={
+                        componentStyles.categoryButton +
+                        ' ' +
+                        componentStyles.card +
+                        ' ' +
+                        componentStyles.loading
+                    }
+                    disabled={true}
+                >
+                    Loading Menu Categories...
+                </button>
+            </div>
+        );
+    }
     return (
         <div className={componentStyles.categoryBar}>
             {categories.map((categoryName) => (
