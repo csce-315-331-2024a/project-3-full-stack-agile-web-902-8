@@ -8,6 +8,13 @@ python -m pip install -r pyreqs.txt && \
 # Run legacy scripts
 (
     builtin cd old/src && \
+    mkdir -p ../output && \
     python script.py && \
     python convert_csv_to_sql.py menu_items ../input/insert_values/menu_items.csv ../output/menu_items.sql
+) && \
+# Run New scripts
+(
+    builtin cd src/ && \
+    mkdir -p ../output && \
+    python main.py
 )
