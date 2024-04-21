@@ -41,17 +41,13 @@ export default function Manager() {
     ];
 
     return (
-        <main className={styles.main}>
-            <div className={styles.description}>
-                <div className={styles.body}>
-                    <h1>Manager Page</h1>
-                    <PageButton>Refresh</PageButton>
-                    <OrderTable
-                        heading={tableHead}
-                        rows={tableBody}
-                    />
-                </div>
-            </div>
+        <main>
+            <h1>Manager Page</h1>
+            <PageButton>Refresh</PageButton>
+            <OrderTable
+                heading={tableHead}
+                rows={tableBody}
+            />
         </main>
     );
 }

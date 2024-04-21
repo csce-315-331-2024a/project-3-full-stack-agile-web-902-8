@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
-import design from '@/app/manager/report_page/page.module.css';
+import design from '@/app/user/manager/report_page/page.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
 import { format, startOfToday } from 'date-fns';
@@ -109,8 +109,6 @@ export default function ReportPage() {
 
     return (
         <main>
-            <Heading names={Items} hrefs={Links} />
-
             <div className={design.reportContainer}>
                 <div className={design.excessReport}>
                     <h1>Excess Report:</h1>
