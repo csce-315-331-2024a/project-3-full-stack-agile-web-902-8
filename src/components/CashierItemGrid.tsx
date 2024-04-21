@@ -3,7 +3,7 @@
 import React from 'react';
 import componentStyles from './component.module.css';
 import { MenuItem } from '@/lib/models';
-import { OrderEntry } from '@/app/cashier/page';
+import { OrderEntry } from '@/app/user/cashier/page';
 
 interface CashierItemGridProps {
     isFetchingMenuItems: boolean;

@@ -44,7 +44,7 @@ export default function Manager() {
         <main className={styles.main}>
             <div className={styles.description}>
                 <div>
-                    <Heading names={Items} hrefs={Links} />
+                    <Heading names={Items} hrefs={Links} isLoggedIn={false}/>
                 </div>
                 <div className={styles.body}>
                     <DoubleText
