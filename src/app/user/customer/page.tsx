@@ -82,23 +82,9 @@ export default function Customer() {
         window.open('/menuboards/Sandwiches_Baskets', '_blank');
     };
 
-    const Items = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links = ['/manager', '/customer', '/cashier', '/'];
-
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
-            <DoubleText
-                block1={
-                    <SideBar
-                        names={Items}
-                        hrefs={Links}
-                        onClick={openMenuBoardsPages}
-                    />
-                }
-                block2={undefined}
-            />
-
             <div id={styles.menu}>
                 <h1>Menu</h1>
                 <div>

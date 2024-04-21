@@ -43,28 +43,12 @@ export default function Manager() {
     return (
         <main className={styles.main}>
             <div className={styles.description}>
-                <div>
-                    <Heading names={Items} hrefs={Links} isLoggedIn={false}/>
-                </div>
                 <div className={styles.body}>
-                    <DoubleText
-                        block1={
-                            <SideBar
-                                names={Items2}
-                                hrefs={Links2}
-                                onClick={openMenuBoardsPages}
-                            />
-                        }
-                        block2={
-                            <div>
-                                <h1>Manager Page</h1>
-                                <PageButton>Refresh</PageButton>
-                                <OrderTable
-                                    heading={tableHead}
-                                    rows={tableBody}
-                                />
-                            </div>
-                        }
+                    <h1>Manager Page</h1>
+                    <PageButton>Refresh</PageButton>
+                    <OrderTable
+                        heading={tableHead}
+                        rows={tableBody}
                     />
                 </div>
             </div>

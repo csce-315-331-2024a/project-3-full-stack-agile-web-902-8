@@ -39,25 +39,10 @@ export default function Inventory() {
     return (
         <main className={styles.main}>
             <div className={styles.description}>
-                <div>
-                    <Heading names={Items} hrefs={Links} isLoggedIn={false}/>
-                </div>
                 <div className={styles.body}>
-                    <DoubleText
-                        block1={
-                            <SideBar
-                                names={Items2}
-                                hrefs={Links2}
-                                onClick={openMenuBoardsPages}
-                            />
-                        }
-                        block2={<div>
-                            <h1>Manage Inventory</h1>
-
-                            <PageButton>Refresh</PageButton>
-                            <InventoryAdjuster />
-                        </div>}
-                    />
+                    <h1>Manage Inventory</h1>
+                    <PageButton>Refresh</PageButton>
+                    <InventoryAdjuster />
                 </div>
             </div>
         </main>
