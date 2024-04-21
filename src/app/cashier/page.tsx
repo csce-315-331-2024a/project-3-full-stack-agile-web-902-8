@@ -142,7 +142,7 @@ export default function Cashier() {
                 discount,
                 total,
                 items,
-                'FILLED'
+                'PENDING'
             );
 
             const response = await fetch('/api/addOrder', {
