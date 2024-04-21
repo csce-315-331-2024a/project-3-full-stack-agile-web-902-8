@@ -12,15 +12,22 @@ type HeadingProp = {
     names: string[];
     hrefs: string[];
     isLoggedIn: boolean;
+    openMenuBoardPages: () => void;
 };
 
-function Heading({ names, hrefs, isLoggedIn }: HeadingProp) {
+function Heading({ names, hrefs, isLoggedIn, openMenuBoardPages }: HeadingProp) {
     const pathName = usePathname();
     return (
         <nav className={styles.navbar}>
             <Image src={revsLogo} alt="Rev's American Grill" />
             <ul>
                 {names.map((link, i) => (
+                    link === 'Menu Board' ? 
+                    <li key={link} onClick={openMenuBoardPages}>
+                        <a>
+                            {link}
+                        </a>
+                    </li> :
                     <li
                         key={link}
                         className={

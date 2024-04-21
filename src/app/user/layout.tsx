@@ -4,6 +4,13 @@ import Heading from '@/components/Heading';
 import React, { useState } from 'react';
 import componentStyles from '@/components/component.module.css';
 
+function openMenuBoardPages() {
+    window.open('/menuboards/Burgs', '_blank');
+    window.open('/menuboards/Meals_Limited', '_blank');
+    window.open('/menuboards/Misc', '_blank');
+    window.open('/menuboards/Sandwiches_Baskets', '_blank');
+}
+
 export default function UserLayout({
     children,
 }: {
@@ -19,7 +26,7 @@ export default function UserLayout({
 
     return (
         <div className={componentStyles.layoutDiv}>
-            <Heading names={headingNames} hrefs={headingHrefs} isLoggedIn={isLoggedIn}/>
+            <Heading names={headingNames} hrefs={headingHrefs} isLoggedIn={isLoggedIn} openMenuBoardPages={openMenuBoardPages} />
             { children }
         </div>
     );
