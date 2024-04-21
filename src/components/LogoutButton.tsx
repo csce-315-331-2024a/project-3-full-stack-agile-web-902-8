@@ -13,12 +13,7 @@ function LogoutButton({ isLoggedIn }: LogoutButtonProps) {
     };
 
     return (
-        <button
-            className={
-                componentStyles.logout
-            }
-            onClick={handleLogout}
-        >
+        <button className={componentStyles.logout} onClick={handleLogout}>
             {isLoggedIn ? 'Logout' : 'Login'}
         </button>
     );

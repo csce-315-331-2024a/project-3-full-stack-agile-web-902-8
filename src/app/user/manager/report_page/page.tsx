@@ -1,28 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Heading from '@/components/Heading';
 import design from '@/app/user/manager/report_page/page.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
 import { format, startOfToday } from 'date-fns';
 
 export default function ReportPage() {
-    const Items = [
-        'Home',
-        'Menu',
-        'Inventory',
-        'Order History',
-        'Reports',
-        'Logout',
-    ];
-    const Links = [
-        '/manager',
-        '/manager',
-        '/manager/inventory',
-        '/manager',
-        '/manager/report_page',
-        '/',
-    ];
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [excessItems, setExcessItems] = useState<ExcessItem[]>([]);
     const [beginTimeString, setBeginTimeString] = useState<string>(

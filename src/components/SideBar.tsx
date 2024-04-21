@@ -14,14 +14,13 @@ function SideBar({ names, hrefs }: SideProp) {
         <nav className={styles.sidebar}>
             <ul>
                 {names.map((link, i) => (
-                    <li key={link}
+                    <li
+                        key={link}
                         className={
                             pathName === hrefs[i] ? styles.sidebarCurrent : ''
-                        }    
+                        }
                     >
-                        <Link href={hrefs[i]}>
-                            {link}
-                        </Link>
+                        <Link href={hrefs[i]}>{link}</Link>
                     </li>
                 ))}
             </ul>

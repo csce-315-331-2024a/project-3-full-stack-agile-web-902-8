@@ -3,13 +3,6 @@
 import SideBar from '@/components/SideBar';
 import React from 'react';
 
-function openMenuBoardsPages() {
-    window.open('/menuboards/Burgs', '_blank');
-    window.open('/menuboards/Meals_Limited', '_blank');
-    window.open('/menuboards/Misc', '_blank');
-    window.open('/menuboards/Sandwiches_Baskets', '_blank');
-}
-
 const names = [
     'Home',
     'Menu Manager',
@@ -33,7 +26,7 @@ export default function ManagerLayout({
     return (
         <>
             <SideBar names={names} hrefs={hrefs} />
-            { children }
+            {children}
         </>
     );
 }

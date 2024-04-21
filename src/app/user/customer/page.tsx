@@ -12,9 +12,6 @@ import {
 import { MenuItem, Seasonal } from '@/lib/models';
 import { useState, useEffect } from 'react';
 
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
-
 export default function Customer() {
     // set default category
     const [categories, setCategories] = useState<string[]>([]);
@@ -74,13 +71,6 @@ export default function Customer() {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
-
-    const openMenuBoardsPages = () => {
-        window.open('/menuboards/Burgs', '_blank');
-        window.open('/menuboards/Meals_Limited', '_blank');
-        window.open('/menuboards/Misc', '_blank');
-        window.open('/menuboards/Sandwiches_Baskets', '_blank');
-    };
 
     return (
         // TODO: Change to global styling
