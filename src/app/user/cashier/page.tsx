@@ -6,7 +6,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-import LogoutButton from '@/components/LogoutButton';
 import CashierCategoryBar from '@/components/CashierCategoryBar';
 import CashierItemGrid from '@/components/CashierItemGrid';
 import CashierOrderTable from '@/components/CashierOrderTable';
@@ -165,7 +164,6 @@ export default function Cashier() {
 
     return (
         <main className={componentStyles.cashierMain}>
-            <LogoutButton />
             <h1>Cashier</h1>
             <CashierCategoryBar
                 isFetchingMenuTypes={isFetchingMenuTypes}

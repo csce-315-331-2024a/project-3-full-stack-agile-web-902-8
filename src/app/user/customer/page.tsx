@@ -1,5 +1,5 @@
 'use client';
-import styles from '@/app/customer/page.module.css';
+import styles from '@/app/user/customer/page.module.css';
 
 import CustomerItemGrid from '@/components/CustomerItemGrid';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
