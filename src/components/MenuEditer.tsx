@@ -101,7 +101,7 @@ function MenuEditer() {
 
     useEffect(() => {
         fetchInventoryItems();
-    }, [itemNames]);
+    }, [selected, exists]);
 
     useEffect(() => {
         console.log(selected);
@@ -127,20 +127,32 @@ function MenuEditer() {
             }));
             setForm((form) => ({
                 ...form,
-                quantity: parseItem.price,
+                price: parseItem.price,
             }));
             setForm((form) => ({
                 ...form,
-                averageCost: parseItem.netPrice,
+                netPrice: parseItem.netPrice,
             }));
             setForm((form) => ({
                 ...form,
-                minQuantity: parseItem.popularity,
+                popularity: parseItem.popularity,
             }));
-            setForm((form) => ({
-                ...form,
-                maxQuantity: parseItem.seasonal,
-            }));
+            console.log(parseItem.seasonal.startDate);
+            console.log(parseItem.seasonal.startDate == undefined);
+            if(parseItem.seasonal.startDate != undefined)
+            {
+                setForm((form) => ({
+                    ...form,
+                    seasonal: true,
+                }));
+            }
+            else
+            {
+                setForm((form) => ({
+                    ...form,
+                    seasonal: false,
+                }));
+            }
         }
 
         if (selected == 'new') {
@@ -157,10 +169,6 @@ function MenuEditer() {
             setExists(true);
         }
     }, [selected, exists]);
-
-    /*useEffect(() => {
-        existsInInventory();
-    }, [form.name]);*/
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const itemName = e.target.value;
@@ -243,7 +251,7 @@ function MenuEditer() {
                         />
                     </label>
                     <label>
-                        Seasonal Info:
+                        Seasonal:
                         <input
                             type="checkbox"
                             checked={form.seasonal}
