@@ -9,7 +9,9 @@ import React, { useEffect, useState } from 'react';
 import CashierCategoryBar from '@/components/CashierCategoryBar';
 import CashierItemGrid from '@/components/CashierItemGrid';
 import CashierOrderTable from '@/components/CashierOrderTable';
+
 import componentStyles from '@/components/component.module.css';
+import styles from './page.module.css';
 
 import {
     MenuItem,
@@ -163,59 +165,70 @@ export default function Cashier() {
     }
 
     return (
-        <main className={componentStyles.cashierMain}>
-            <h1>Cashier</h1>
-            <CashierCategoryBar
-                isFetchingMenuTypes={isFetchingMenuTypes}
-                categories={categories}
-                category={category}
-                setCategory={setCategory}
-            />
-            <CashierItemGrid
-                isFetchingMenuItems={isFetchingMenuItems}
-                categoryItems={categoryItems}
-                currentOrder={currentOrder}
-                setCurrentOrder={setCurrentOrder}
-            />
-            <CashierOrderTable
-                isDiscounted={isDiscounted}
-                isTaxed={isTaxed}
-                discount={discount}
-                tax={tax}
-                total={total}
-                currentOrder={currentOrder}
-                setCurrentOrder={setCurrentOrder}
-            />
-            <button
-                className={
-                    componentStyles.placeOrder +
-                    ' ' +
-                    componentStyles.card +
-                    (isPlacingOrder ? ' ' + componentStyles.disabled : '')
-                }
-                onClick={() => placeOrder()}
-                disabled={isPlacingOrder}
-            >
-                Place Order
-            </button>
-            <div className={componentStyles.discountTaxButtons}>
+        <main className={styles.cashierMain}>
+            <div className={styles.itemColumn}>
+                <h1 className={componentStyles.mainHeader}>Cashier</h1>
+                <CashierCategoryBar
+                    isFetchingMenuTypes={isFetchingMenuTypes}
+                    categories={categories}
+                    category={category}
+                    setCategory={setCategory}
+                    className={styles.categoryBar}
+                />
+                <CashierItemGrid
+                    isFetchingMenuItems={isFetchingMenuItems}
+                    categoryItems={categoryItems}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                    className={styles.itemGrid}
+                />
+            </div>
+            <div className={styles.orderColumn}>
+                <CashierOrderTable
+                    isDiscounted={isDiscounted}
+                    isTaxed={isTaxed}
+                    discount={discount}
+                    tax={tax}
+                    total={total}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                    className={styles.orderTable}
+                />
+                <div className={styles.discountTaxButtons}>
+                    <button
+                        className={
+                            componentStyles.discountOrder +
+                            ' ' +
+                            componentStyles.card
+                        }
+                        onClick={() => setIsDiscounted(!isDiscounted)}
+                    >
+                        {isDiscounted ? 'Remove Discount' : 'Add Discount'}
+                    </button>
+                    <button
+                        className={
+                            componentStyles.noTaxOrder +
+                            ' ' +
+                            componentStyles.card
+                        }
+                        onClick={() => setIsTaxed(!isTaxed)}
+                    >
+                        {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                    </button>
+                </div>
                 <button
                     className={
-                        componentStyles.discountOrder +
+                        componentStyles.placeOrder +
                         ' ' +
-                        componentStyles.card
+                        styles.placeOrder +
+                        ' ' +
+                        componentStyles.card +
+                        (isPlacingOrder ? ' ' + componentStyles.disabled : '')
                     }
-                    onClick={() => setIsDiscounted(!isDiscounted)}
+                    onClick={() => placeOrder()}
+                    disabled={isPlacingOrder}
                 >
-                    {isDiscounted ? 'Remove Discount' : 'Add Discount'}
-                </button>
-                <button
-                    className={
-                        componentStyles.noTaxOrder + ' ' + componentStyles.card
-                    }
-                    onClick={() => setIsTaxed(!isTaxed)}
-                >
-                    {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                    Place Order
                 </button>
             </div>
         </main>

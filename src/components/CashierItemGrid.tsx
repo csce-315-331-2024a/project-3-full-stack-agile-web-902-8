@@ -10,6 +10,7 @@ interface CashierItemGridProps {
     categoryItems: MenuItem[];
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
+    className?: string;
 }
 
 interface CashierItemButtonProps {
@@ -23,10 +24,11 @@ function CashierItemGrid({
     categoryItems,
     currentOrder,
     setCurrentOrder,
+    className,
 }: CashierItemGridProps) {
     if (isFetchingMenuItems) {
         return (
-            <div className={componentStyles.itemGrid}>
+            <div className={componentStyles.itemGrid + ' ' + className}>
                 <button
                     className={
                         componentStyles.itemButton +
@@ -43,7 +45,7 @@ function CashierItemGrid({
         );
     }
     return (
-        <div className={componentStyles.itemGrid}>
+        <div className={componentStyles.itemGrid + ' ' + className}>
             {categoryItems.map((item) => (
                 <CashierItemButton
                     item={item}

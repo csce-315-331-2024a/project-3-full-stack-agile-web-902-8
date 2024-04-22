@@ -1,0 +1,68 @@
+/* TODO: Make the cashierMain grid responsive */
+
+.cashierMain {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.cashierMain h1 {
+    margin: 0 auto;
+}
+
+.itemColumn, .orderColumn{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 auto 0;
+}
+
+.itemColumn {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+.orderColumn {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+}
+
+.categoryBar {
+    margin: 0 auto;
+}
+
+.itemGrid {
+    margin: -1rem auto;
+    height: min-content;
+}
+
+.orderTable {
+    width: 100%;
+    margin-bottom: auto;
+}
+
+.discountTaxButtons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+}
+
+.discountTaxButtons button {
+    margin: 0 0 auto 0;
+}
+
+.discountTaxButtons button:first-child{
+    grid-column: 1 / 2;
+}
+
+.discountTaxButtons button:last-child{
+    grid-column: 2 / 3;
+}
+
+.placeOrder {
+    margin: auto;
+}

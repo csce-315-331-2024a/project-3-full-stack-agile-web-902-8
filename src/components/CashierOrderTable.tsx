@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import componentStyles from './component.module.css';
 import { MenuItem, Order } from '@/lib/models';
-import { OrderEntry } from '@/app/cashier/page';
+import { OrderEntry } from '@/app/user/cashier/page';
 import GlobalConfig from '@/lib/config';
 
 interface CashierOrderTableProps {
@@ -14,6 +14,7 @@ interface CashierOrderTableProps {
     total: number;
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
+    className?: string;
 }
 
 interface CashierOrderItemProps {
@@ -30,10 +31,11 @@ function CashierOrderTable({
     total,
     currentOrder,
     setCurrentOrder,
+    className,
 }: CashierOrderTableProps) {
     return (
         <div
-            className={componentStyles.orderTable + ' ' + componentStyles.card}
+            className={componentStyles.orderTable + ' ' + componentStyles.card + ' ' + className}
         >
             <h2>Current order</h2>
             <table>

@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import componentStyles from './component.module.css';
+import componentStyles from './component.module.css'; 
 
 interface CashierCategoryBarProps {
     isFetchingMenuTypes: boolean;
     categories: string[];
     category: string;
     setCategory: (category: string) => void;
+    className?: string;
 }
 
 interface CashierCategoryButtonProps {
@@ -21,12 +22,13 @@ function CashierCategoryBar({
     categories,
     category,
     setCategory,
+    className,
 }: CashierCategoryBarProps) {
     if (isFetchingMenuTypes) {
         return (
             <div
                 className={
-                    componentStyles.categoryBar + ' ' + componentStyles.loading
+                    componentStyles.categoryBar + ' ' + componentStyles.loading + ' ' + className
                 }
             >
                 <button
@@ -45,7 +47,7 @@ function CashierCategoryBar({
         );
     }
     return (
-        <div className={componentStyles.categoryBar}>
+        <div className={componentStyles.categoryBar + ' ' + className}>
             {categories.map((categoryName) => (
                 <CashierCategoryButton
                     categoryName={categoryName}
