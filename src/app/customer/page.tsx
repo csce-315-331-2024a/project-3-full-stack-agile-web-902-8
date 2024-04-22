@@ -110,7 +110,7 @@ export default function Customer() {
                         <h2>Recommendations</h2>
                         <CustomerRecommendedBar
                             isFetchingMenuItems={isFetchingMenuItems}
-                            menuItems={categoryItems.slice(0, 6)}
+                            menuItems={categoryItems.slice(0, 5)}
                             currentOrder={currentOrder}
                             setCurrentOrder={setCurrentOrder}
                         />
@@ -134,7 +134,10 @@ export default function Customer() {
                         setCurrentOrder={setCurrentOrder}
                     />
                 </div>
-                <CustomerOrderSidebar checkoutPage={'/customer/checkout'}>
+                <CustomerOrderSidebar 
+                    checkoutPage={'/customer/checkout'}
+                    currentOrder={currentOrder}
+                >
                     {currentOrder.map(({ item, qty }) => (
                         <CustomerOrderItem
                             key={item.id}

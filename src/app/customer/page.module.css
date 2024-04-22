@@ -164,6 +164,11 @@ table#item-summary th {
     font-size: 24pt;
 }
 
+#payment ul.buttons button:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
 #order-placed {
     height: 100vh;
     width: 100%;

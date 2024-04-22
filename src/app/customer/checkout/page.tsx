@@ -140,9 +140,9 @@ export default function CustomerCheckout() {
                         <table id={styles['item-summary']}>
                             <thead>
                                 <tr>
-                                    <th style={{ width: '70%' }}>item</th>
-                                    <th>quantity</th>
-                                    <th>price</th>
+                                    <th style={{ width: '70%' }}>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -181,7 +181,7 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder}
+                                    disabled={isPlacingOrder || currentOrder.length === 0}
                                 >
                                     {' '}
                                     Dining Dollars{' '}
@@ -190,7 +190,7 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder}
+                                    disabled={isPlacingOrder || currentOrder.length === 0}
                                 >
                                     {' '}
                                     Credit Card{' '}
@@ -199,7 +199,7 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder}
+                                    disabled={isPlacingOrder || currentOrder.length === 0}
                                 >
                                     {' '}
                                     Debit Card{' '}
@@ -208,7 +208,7 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder}
+                                    disabled={isPlacingOrder || currentOrder.length === 0}
                                 >
                                     {' '}
                                     Cash{' '}

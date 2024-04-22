@@ -18,6 +18,7 @@ export interface OrderItemProp {
 
 interface OrderSidebarProp {
     children: React.ReactNode;
+    currentOrder: OrderEntry[];
     checkoutPage: string;
 }
 
@@ -99,13 +100,17 @@ export function CustomerOrderItem({
 
 export function CustomerOrderSidebar({
     children,
+    currentOrder,
     checkoutPage,
 }: OrderSidebarProp) {
     return (
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
             <Link href={checkoutPage}>
-                <button className={styles['checkout']}>Checkout</button>
+                <button 
+                    className={styles['checkout']}
+                    disabled={currentOrder.length === 0}
+                >Checkout</button>
             </Link>
         </div>
     );

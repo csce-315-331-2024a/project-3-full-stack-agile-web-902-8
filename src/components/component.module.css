@@ -620,6 +620,10 @@ button.recommended-item.customer:hover {
     cursor: pointer;
 }
 
+.customer#order-sidebar button.checkout:disabled {
+    display: none;
+}
+
 .loading {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));
