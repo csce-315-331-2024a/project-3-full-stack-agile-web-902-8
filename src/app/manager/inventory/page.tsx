@@ -1,13 +1,14 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
-import OrderTable from '@/components/OrderTable';
-import styles from '../page.module.css';
+import styles from '@/app/page.module.css';
+import InventoryAdjuster from '@/components/InventoryAdjuster';
+import { InventoryItem } from '@/lib/models';
 
-export default function Manager() {
+export default function Inventory() {
     const openMenuBoardsPages = () => {
         window.open('/menuboards/Burgs', '_blank');
         window.open('/menuboards/Meals_Limited', '_blank');
@@ -32,13 +33,8 @@ export default function Manager() {
         '/',
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links2 = ['/manager', '/customer', '/cashier', '/manager'];
-
-    const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
-    const tableBody = [
-        ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
-        ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
-    ];
+    const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
+    const inventoryItem: InventoryItem = new InventoryItem(0, '', 0, 0, 0, 0);
 
     return (
         <main className={styles.main}>
@@ -55,16 +51,12 @@ export default function Manager() {
                                 onClick={openMenuBoardsPages}
                             />
                         }
-                        block2={
-                            <div>
-                                <h1>Manager Page</h1>
-                                <PageButton>Refresh</PageButton>
-                                <OrderTable
-                                    heading={tableHead}
-                                    rows={tableBody}
-                                />
-                            </div>
-                        }
+                        block2=<div>
+                            <h1>Manage Inventory</h1>
+
+                            <PageButton>Refresh</PageButton>
+                            <InventoryAdjuster />
+                        </div>
                     />
                 </div>
             </div>
