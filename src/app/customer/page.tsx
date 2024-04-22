@@ -1,63 +1,145 @@
-'use client'
-import styles from "@/app/page.module.css";
-import customerStyles from "@/app/customer/page.module.css";
-import CustomerMenuItem from "@/components/CustomerMenuItem";
-import CustomerNav from "@/app/customer/customer-nav";
-import React from "react";
+'use client';
+import styles from '@/app/customer/page.module.css';
+
+import CustomerItemGrid from '@/components/CustomerItemGrid';
+import CustomerCategoryBar from '@/components/CustomerCategoryBar';
+import CustomerRecommendedBar from '@/components/CustomerRecommendedBar';
+import {
+    OrderEntry,
+    CustomerOrderItem,
+    CustomerOrderSidebar,
+} from '@/components/CustomerOrderSidebar';
+import { MenuItem, Seasonal } from '@/lib/models';
+import { useState, useEffect } from 'react';
+
+import DoubleText from '@/components/DoubleText';
+import SideBar from '@/components/SideBar';
 
 export default function Customer() {
-    // TODO: Change from static to dynamic from database
-    let categoryNames: Array<string> = ["Burgers", "Drinks", "Sandwiches", "Baskets"];
-    // TODO: Change from static to dynamic from database
-    let menuItemsByCategory: Map<string, Array<string>> = new Map();
-    menuItemsByCategory.set("Burgers", ["Hamburger", "Cheeseburger", "Meal"]);
-    menuItemsByCategory.set("Drinks", ["Water", "Fountain Drink"]);
-    menuItemsByCategory.set("Sandwiches", ["Grilled Cheese", "Ham Sandwich"]);
-    menuItemsByCategory.set("Baskets", ["3 Tender Basket"]);
-    
     // set default category
-    let currCategory: string;
-    let changeCategory: Function;
-    [currCategory, changeCategory] = React.useState(categoryNames[0]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [category, setCategory] = useState('');
+    const [items, setItems] = useState<MenuItem[]>([]);
+    const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
+    const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
-    let showPopUp: boolean;
-    let setPopUp: Function;
-    [showPopUp, setPopUp] = React.useState(false);
+    const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
+    const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+
+    useEffect(() => {
+        async function fetchAllMenuTypes() {
+            setIsFetchingMenuTypes(true);
+            try {
+                const response = await fetch('/api/getAllMenuTypes');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuTypes = await response.json();
+                setCategories(menuTypes);
+            } finally {
+                setIsFetchingMenuTypes(false);
+            }
+        }
+        fetchAllMenuTypes();
+    }, []);
+
+    useEffect(() => {
+        if (categories.length > 0) {
+            setCategory(categories[0]);
+        }
+    }, [categories]);
+
+    useEffect(() => {
+        async function fetchAllMenuItems() {
+            setIsFetchingMenuItems(true);
+            try {
+                console.log(
+                    "Fetching menu items may take a while sometimes, especially if you're running locally."
+                );
+                const response = await fetch('/api/getMenuItemsInSeason');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuItems = await response.json();
+                setItems(menuItems);
+                console.log('Fetching should be done now.');
+            } finally {
+                setIsFetchingMenuItems(false);
+            }
+        }
+        fetchAllMenuItems();
+    }, []);
+
+    useEffect(() => {
+        const itemsInCategory = items.filter((item) => item.type === category);
+        setCategoryItems(itemsInCategory);
+    }, [category, items]);
+
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
+
+    const Items = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
+    const Links = ['/manager', '/customer', '/cashier', '/'];
 
     return (
-      // TODO: Change to global styling
-      <main className={customerStyles.main}>
-        <h1 className={customerStyles.pageTitle}>Customer</h1>
+        // TODO: Change to global styling
+        <main className={styles.main}>
+            <DoubleText
+                block1={
+                    <SideBar
+                        names={Items}
+                        hrefs={Links}
+                        onClick={openMenuBoardsPages}
+                    />
+                }
+                block2={undefined}
+            />
 
-        <CustomerNav/>
-        
-        <nav id={customerStyles["categories"]}>
-          <ul>
-            {categoryNames.map((name) => 
-              <li key={name}><button onClick={() => changeCategory(name)}>{name}</button></li>
-            )}
-          </ul>
-        </nav>
-        
-        {/* Menu items */}
-        <div id={customerStyles["menu-items"]}>
-          {menuItemsByCategory.get(currCategory)!.map((menuitem: string) =>
-            <CustomerMenuItem key={menuitem} name={menuitem} onClick={() => setPopUp(true)}/>
-          )}
-        </div>
-
-        {/* Pop up for adding to order */}
-        { showPopUp ? 
-            <section id={customerStyles["pop-up"]}>
-              {/* Exit button */}
-              <button 
-                className={customerStyles["exit-button"]} 
-                onClick={() => setPopUp(false)}
-                >
-                X
-              </button>
-            </section>
-        : null }
-      </main>
+            <div id={styles.menu}>
+                <h1>Menu</h1>
+                <div>
+                    <h2>Recommendations</h2>
+                    <CustomerRecommendedBar
+                        isFetchingMenuItems={isFetchingMenuItems}
+                        menuItems={categoryItems.slice(0, 6)}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                </div>
+                <div>
+                    <h2>Categories</h2>
+                    <div id={styles['menu-categories']}>
+                        <CustomerCategoryBar
+                            isFetchingMenuTypes={isFetchingMenuTypes}
+                            categories={categories}
+                            category={category}
+                            setCategory={setCategory}
+                        />
+                    </div>
+                </div>
+                {/* Menu items */}
+                <CustomerItemGrid
+                    isFetchingMenuItems={isFetchingMenuItems}
+                    categoryItems={categoryItems}
+                    currentOrder={currentOrder}
+                    setCurrentOrder={setCurrentOrder}
+                />
+            </div>
+            <CustomerOrderSidebar setCurrentOrder={setCurrentOrder}>
+                {currentOrder.map(({ item, qty }) => (
+                    <CustomerOrderItem
+                        key={item.id}
+                        item={item}
+                        qty={qty}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                ))}
+            </CustomerOrderSidebar>
+        </main>
     );
 }
