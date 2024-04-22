@@ -414,7 +414,7 @@ ul.bar.customer {
     width: 100%;
 
     font-family: var(--font);
-    font-size: 16pt;
+    font-size: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -452,15 +452,15 @@ button.menu-item.customer {
 }
 
 button.menu-item.customer img {
-    max-width: 200px;
+    max-width: 16em;
 }
 
 button.menu-item.customer .name {
-    font-size: 24pt;
+    font-size: 1.5em;
 }
 
 button.menu-item.customer .description {
-    font-size: 12pt;
+    font-size: 1em;
     padding: 0 30px;
     text-align: center;
 }
@@ -493,16 +493,17 @@ ul.customer.recommended-items li {
     border: none;
     display: block;
     text-align: center;
-    padding: 30px 20px;
+    padding: 1em;
     display: inline-block;
 }
 
 .customer.recommended-item img {
-    max-width: 150px;
+    max-width: 8em;
+    max-height: 8em;
 }
 
 .customer.recommended-item .name {
-    font-size: 16pt;
+    font-size: 1em;
 }
 
 .customer button.recommended-item:hover {
@@ -527,7 +528,7 @@ button.recommended-item.customer:hover {
     border-left: 1pt solid rgb(var(--text-rgb));
 
     height: 100%;
-    width: 300px;
+    width: 20em;
 }
 
 .customer #order-box {
@@ -537,7 +538,7 @@ button.recommended-item.customer:hover {
 }
 
 .customer.order-item {
-    height: 12em;
+    height: fit-content;
     padding: 10px 10px 20px 10px;
     border: 1pt solid rgb(var(--text-rgb));
 

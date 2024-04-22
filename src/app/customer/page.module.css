@@ -3,6 +3,7 @@
     color: rgb(var(--text-rgb));
 
     height: 100vh;
+    font-size: 16pt;
 }
 
 #topbar {
@@ -55,8 +56,12 @@
 /******************************************
  *                 Menu                   *
  ******************************************/
+#menu-page {
+    font-size: 0.75em;
+}
+
 #menu {
-    width: calc(100% - 300px);
+    width: calc(100% - 20em);
     padding: 20px;
 
     overflow-y: scroll;
@@ -79,7 +84,7 @@
     border: 1px solid rgb(var(--text-rgb));
     margin: 50px;
     margin-right: 0;
-    font-size: 16pt;
+    font-size: 1em;
     overflow-y: scroll;
 }
 
@@ -141,7 +146,7 @@ table#item-summary th {
 }
 
 #payment h2 {
-    font-size: 20pt;
+    font-size: 1.25em;
     flex-shrink: 0;
 }
 
@@ -161,7 +166,7 @@ table#item-summary th {
     height: 100%;
     color: rgb(var(--text-rgb));
     background-color: rgb(var(--background-rgb));
-    font-size: 24pt;
+    font-size: 1.5em;
 }
 
 #payment ul.buttons button:disabled {
@@ -176,4 +181,21 @@ table#item-summary th {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 999px) {
+    .main {
+        font-size: 10pt;
+    }
+}
+
+@media (max-width: 650px) {
+    #checkout-page {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #order-box {
+        margin-left: 0;
+    }
 }
