@@ -181,7 +181,10 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder || currentOrder.length === 0}
+                                    disabled={
+                                        isPlacingOrder ||
+                                        currentOrder.length === 0
+                                    }
                                 >
                                     {' '}
                                     Dining Dollars{' '}
@@ -190,7 +193,10 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder || currentOrder.length === 0}
+                                    disabled={
+                                        isPlacingOrder ||
+                                        currentOrder.length === 0
+                                    }
                                 >
                                     {' '}
                                     Credit Card{' '}
@@ -199,7 +205,10 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder || currentOrder.length === 0}
+                                    disabled={
+                                        isPlacingOrder ||
+                                        currentOrder.length === 0
+                                    }
                                 >
                                     {' '}
                                     Debit Card{' '}
@@ -208,7 +217,10 @@ export default function CustomerCheckout() {
                             <li>
                                 <button
                                     onClick={placeOrder}
-                                    disabled={isPlacingOrder || currentOrder.length === 0}
+                                    disabled={
+                                        isPlacingOrder ||
+                                        currentOrder.length === 0
+                                    }
                                 >
                                     {' '}
                                     Cash{' '}

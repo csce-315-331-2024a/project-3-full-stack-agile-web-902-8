@@ -107,10 +107,12 @@ export function CustomerOrderSidebar({
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
             <Link href={checkoutPage}>
-                <button 
+                <button
                     className={styles['checkout']}
                     disabled={currentOrder.length === 0}
-                >Checkout</button>
+                >
+                    Checkout
+                </button>
             </Link>
         </div>
     );

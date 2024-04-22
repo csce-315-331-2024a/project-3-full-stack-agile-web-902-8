@@ -134,7 +134,7 @@ export default function Customer() {
                         setCurrentOrder={setCurrentOrder}
                     />
                 </div>
-                <CustomerOrderSidebar 
+                <CustomerOrderSidebar
                     checkoutPage={'/customer/checkout'}
                     currentOrder={currentOrder}
                 >
