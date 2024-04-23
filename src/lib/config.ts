@@ -12,7 +12,7 @@ const rates = {
 };
 
 const openweather = {
-    key: process.env.WEATHER_KEY
+    key: process.env.WEATHER_KEY,
 };
 
 const GlobalConfig = {
