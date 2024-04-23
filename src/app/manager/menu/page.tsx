@@ -8,6 +8,13 @@ import styles from '@/app/page.module.css';
 import MenuEditer from '@/components/MenuEditer';
 
 export default function Manager() {
+    const openMenuBoardsPages = () => {
+        window.open('/menuboards/Burgs', '_blank');
+        window.open('/menuboards/Meals_Limited', '_blank');
+        window.open('/menuboards/Misc', '_blank');
+        window.open('/menuboards/Sandwiches_Baskets', '_blank');
+    };
+
     const Items = [
         'Home',
         'Menu',
@@ -40,7 +47,11 @@ export default function Manager() {
                 </div>
                 <div className={styles.body}>
                     <DoubleText
-                        block1=<SideBar names={Items2} hrefs={Links2} />
+                        block1=<SideBar
+                            names={Items2}
+                            hrefs={Links2}
+                            onClick={openMenuBoardsPages}
+                        />
                         block2=<div>
                             <h1>Manager Page</h1>
 
