@@ -13,8 +13,8 @@ export async function addOrder(o: Order, tsql = psql): Promise<boolean> {
         new Error('SQL Error in addOrder', undefined, o),
         async (isql, _) => {
             const orderInsertResult = await isql`
-                INSERT INTO orders (timestamp, discount, total) 
-                VALUES (${o.timestamp}, ${o.discount}, ${o.total}) 
+                INSERT INTO orders (timestamp, discount, total, status) 
+                VALUES (${o.timestamp}, ${o.discount}, ${o.total}, ${o.status}) 
                 RETURNING id;
             `;
             if (orderInsertResult.count === 0) {
