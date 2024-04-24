@@ -3,11 +3,10 @@
 import React from 'react';
 import componentStyles from '@/components/component.module.css';
 import { Order } from '@/lib/models';
-import { KitchenOrder } from '@/app/kitchen/page';
 import KitchenGridItem from './KitchenGridItem';
 
 interface KitchenGridProps {
-    orders: KitchenOrder[];
+    orders: Order[];
 }
 
 export default function KitchenGrid({ orders }: KitchenGridProps) {

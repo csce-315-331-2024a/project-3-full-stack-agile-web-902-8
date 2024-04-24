@@ -2,11 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import componentStyles from '@/components/component.module.css';
-import { KitchenOrder } from '@/app/kitchen/page';
 import { Order } from '@/lib/models';
 
 interface KitchenGridItemProps {
-    order: KitchenOrder;
+    order: Order;
 }
 
 export default function KitchenGridItem({ order }: KitchenGridItemProps) {
