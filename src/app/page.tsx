@@ -2,19 +2,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+export default function Home() {
+    const { push } = useRouter();
 
-import { getUserSession } from '@/lib/session'
-
-export default async function Home() {
-  const user = await getUserSession()
-  return <main className="">{JSON.stringify(user)}</main>
+    useEffect(() => {
+        push('/customer');
+    }, [push]);
+    return <main>Redirecting...</main>;
 }
-
-// export default function Home() {
-//     const { push } = useRouter();
-//
-//     useEffect(() => {
-//         push('/customer');
-//     }, [push]);
-//     return <main>Redirecting...</main>;
-// }

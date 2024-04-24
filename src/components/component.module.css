@@ -625,6 +625,17 @@ button.recommended-item.customer:hover {
     display: none;
 }
 
+.loginButton {
+    background: none;
+    font-size: 1.5em;
+    border: none;
+    color: rgb(var(--text-color));
+}
+
+.loginButton:hover {
+    cursor: pointer;
+}
+
 .loading {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));

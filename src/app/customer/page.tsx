@@ -9,6 +9,7 @@ import {
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
+import LoginButton from '@/components/LoginButton';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -96,9 +97,7 @@ export default function Customer() {
             <header id={styles.topbar}>
                 <ul className={styles['nav-right']}>
                     <li>
-                        <Link className={styles.login} href="/">
-                            Login
-                        </Link>
+                        <LoginButton/>
                     </li>
                 </ul>
             </header>
