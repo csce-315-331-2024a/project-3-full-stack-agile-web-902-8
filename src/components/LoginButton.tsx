@@ -3,14 +3,11 @@ import styles from './component.module.css';
 
 function LoginButton() {
     const handleClick = () => {
-        signIn("google");
-    }
+        signIn('google');
+    };
 
     return (
-        <button
-            onClick={handleClick}
-            className={styles.loginButton}
-        >
+        <button onClick={handleClick} className={styles.loginButton}>
             Login
         </button>
     );

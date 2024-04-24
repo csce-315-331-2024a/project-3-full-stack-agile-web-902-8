@@ -97,7 +97,7 @@ export default function Customer() {
             <header id={styles.topbar}>
                 <ul className={styles['nav-right']}>
                     <li>
-                        <LoginButton/>
+                        <LoginButton />
                     </li>
                 </ul>
             </header>
