@@ -27,7 +27,7 @@ export default function Manager() {
         '/manager',
         '/manager',
         '/manager/inventory',
-        '/manager',
+        '/manager/order_history',
         '/manager/report_page',
         '/',
     ];

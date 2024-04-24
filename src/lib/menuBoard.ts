@@ -12,41 +12,41 @@ import postgres from 'postgres';
  * @return A promise that resolves to an array of AggregateItems with their id, name, and quantity bought.
  */
 export async function aggregateMenuItems(
-    startDate: Date,
-    endDate: Date,
-    tsql = psql
+  startDate: number,
+  endDate: number,
+  tsql = psql
 ): Promise<AggregateItem[]> {
-    return transact<AggregateItem[], postgres.Error, any>(
-        tsql,
-        new Error('SQL Error in removeFromInventory', undefined, {
-            startDate,
-            endDate,
-        }),
-        async (isql, abort) => {
-            const items: AggregateItem[] = [];
-            const result = await isql`
-      SELECT
-        mi.id,
-        mi.name,
-        SUM(oi.quantity) AS qty
-      FROM
-        menu_items mi
-      JOIN
-        order_items oi ON mi.id = oi.menu_item_id
-      JOIN
-        orders o ON oi.order_id = o.id
-      WHERE
-        o.timestamp >= ${startDate.toISOString()} AND
-        o.timestamp <= ${endDate.toISOString()}
-      GROUP BY
-        mi.id;
-    `;
+  return transact<AggregateItem[], any, { startDate: number; endDate: number }>(
+      tsql,
+      new Error('SQL Error in aggregateMenuItems', undefined, {
+          startDate,
+          endDate,
+      }),
+      async (isql, _) => {
+          const result = await isql`
+              SELECT
+                  mi.id AS id,
+                  mi.name AS name,
+                  SUM(oi.qty) AS qty
+              FROM
+                  menu_items mi
+              JOIN
+                  order_items oi ON mi.id = oi.item_id
+              JOIN
+                  orders o ON oi.order_id = o.id
+              WHERE
+                  o.timestamp >= to_timestamp(${startDate} / 1000.0)
+                  AND o.timestamp <= to_timestamp(${endDate} / 1000.0)
+              GROUP BY
+                  mi.id;
+          `;
 
-            for (const row of result) {
-                items.push(new AggregateItem(row.id, row.name, row.qty));
-            }
+          const items: AggregateItem[] = [];
+          for (const row of result) {
+              items.push(new AggregateItem(row.id, row.name, row.qty));
+          }
 
-            return items;
-        }
-    );
+          return items;
+      }
+  );
 }

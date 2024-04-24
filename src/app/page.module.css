@@ -14,6 +14,16 @@
     font-size: medium;
 }
 
+.report-section {
+    margin-bottom: 1rem;
+  }
+  
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
 .description {
     display: inherit;
     justify-content: inherit;
