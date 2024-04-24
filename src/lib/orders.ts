@@ -1,7 +1,62 @@
 import psql, { transact } from '@/lib/database';
-import { Order } from '@/lib/models';
+import { Order, OrderItem } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
+
+/**
+ * Retrieves all pending orders with their items. 
+ * Does not retireve ingredients, popularity, or seasonality.
+ * @param tsql
+ * @returns
+ */
+export async function getPendingOrders(tsql = psql): Promise<Order[]> {
+    return transact<Order[], postgres.Error, any>(
+        tsql,
+        new Error('SQL Error in getPendingOrders', undefined),
+        async (isql, _) => {
+            const orders = await isql`
+                SELECT o.id, o.timestamp, o.discount, o.total, o.status,
+                       i.id AS item_id, i.name AS item_name, i.type AS item_type, 
+                       i.price AS item_price, oi.quantity AS item_quantity
+                FROM orders AS o
+                JOIN order_items AS oi ON o.id = oi.order_id
+                JOIN menu_items AS i ON oi.item_id = i.id
+                WHERE o.status = 'PENDING'
+            `;
+
+            const orderMap = new Map<number, Order>();
+
+            for (const row of orders) {
+                let order = orderMap.get(row.id);
+                if (!order) {
+                    order = new Order(
+                        row.id,
+                        new Date(row.timestamp),
+                        row.discount,
+                        row.total,
+                        [],
+                        row.status
+                    );
+                    orderMap.set(row.id, order);
+                }
+                order.items.push(
+                    new OrderItem(row.item_quantity, {
+                        id: row.item_id,
+                        name: row.item_name,
+                        type: row.item_type,
+                        price: row.item_price,
+                        netPrice: row.item_price,
+                        popularity: 0,
+                        ingredients: [],
+                        seasonal: null,
+                    })
+                );
+            }
+
+            return Array.from(orderMap.values());
+        }
+    );
+}
 
 /**
  * @param o The order to submit to the database.
