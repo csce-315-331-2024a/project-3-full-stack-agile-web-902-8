@@ -385,8 +385,109 @@
     color: rgb(var(--text-rgb));
 }
 
+/******************************************
+ *          Inventory Components          *
+ ******************************************/
 
+.inventoryAdjuster{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
 
+.inventorySelector{
+    background-color: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+}
+
+.inventorySelector:hover{
+    cursor: pointer;
+    background-color: rgb(var(--secondary-rgb), 0.5);
+}
+
+.inventorySelector option {
+    background-color: rgb(var(--secondary-rgb));
+    color: rgb(var(--text-rgb));
+    font-family: var(--font);
+}
+
+.inventoryForm{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: flex-start;
+    gap: 1rem;
+
+    border-left: .5rem solid rgb(var(--accent-rgb));
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    background-color: rgba(var(--secondary-rgb), 0.2);
+}
+
+.inventoryForm label{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.inventoryForm input{
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 1rem;
+    background-color: rgb(var(--text-rgb));
+    color: rgb(var(--background-rgb));
+}
+
+.inventoryForm input:active{
+    border: none;
+}
+
+.inventoryButtons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.inventoryForm button{
+    color: rgb(var(--background-rgb));
+    background-color: rgb(var(--primary-rgb));
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 1rem;
+}
+
+.inventoryForm button:hover{
+    cursor: pointer;
+    color: rgb(var(--text-rgb));
+    background-color: rgb(var(--primary-rgb), 0.67);
+    transition: 250ms;
+}
+
+.refreshButton { 
+    color: rgb(var(--text-rgb));
+    background-color: rgb(var(--secondary-rgb));
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 1rem;
+}
+
+.refreshButton:hover {
+    cursor: pointer;
+    background-color: rgba(var(--secondary-rgb), 0.5);
+    transition: 250ms;
+}
 
 .table {
     align-items: center;

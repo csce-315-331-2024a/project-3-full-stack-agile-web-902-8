@@ -18,10 +18,10 @@
     --h3: calc(var(--h4) * var(--font-scale));
     --h2: calc(var(--h3) * var(--font-scale));
     --h1: calc(var(--h2) * var(--font-scale));
-    --small: calc(var(--p) / var(--font-scale));
+    --small: calc(var(--p) / var(--font-scale)); /* Use with caution */
 }
 
-p, a, li, button{
+p, a, li, button, select, option, label{
     font-size: var(--p);
 }
 

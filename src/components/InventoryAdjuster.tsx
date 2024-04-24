@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import styles from './component.module.css';
+import componentStyles from './component.module.css';
 import { InventoryItem } from '@/lib/models';
 import { addOrUpdateInventoryItem } from '@/lib/inventory';
 import { POST } from '@/app/api/addOrUpdateInventoryItem/route';
 import { urlToHttpOptions } from 'url';
 import { warnOptionHasBeenDeprecated } from 'next/dist/server/config';
 
+interface InventoryAdjusterProps {
+    className?: string;
+}
+
 /**
  * Creates the component for adjusting the inventory
  * @returns the component for adjusting the inventory
  */
-function InventoryAdjuster() {
+function InventoryAdjuster({
+    className,
+}: InventoryAdjusterProps) {
     const [itemNames, setItemNames] = useState<string[]>([]);
     const [selected, setSelected] = useState<string>('');
     const [requesting, setRequesting] = useState<boolean>(false);
@@ -295,13 +301,13 @@ function InventoryAdjuster() {
     };
 
     return (
-        <div>
-            <select id="dropdown" value={selected} onChange={handleSelect}>
-                <option value="" disabled>
+        <div className={componentStyles.inventoryAdjuster + ' ' + className}>
+            <select className={componentStyles.inventorySelector + ' ' + componentStyles.card} id="dropdown" value={selected} onChange={handleSelect}>
+                <option className={componentStyles.card} value="" disabled>
                     Select an option
                 </option>
                 {itemNames.map((option, index) => (
-                    <option key={index} value={option}>
+                    <option className={componentStyles.card} key={index} value={option}>
                         {option}
                     </option>
                 ))}
@@ -309,7 +315,7 @@ function InventoryAdjuster() {
             </select>
 
             {visible && (
-                <form onSubmit={handleSubmit}>
+                <form className={componentStyles.inventoryForm} onSubmit={handleSubmit}>
                     <h2>{selected || ''}</h2>
                     {!exists && (
                         <label>
@@ -358,7 +364,7 @@ function InventoryAdjuster() {
                             onChange={handleChange}
                         />
                     </label>
-                    <div>
+                    <div className={componentStyles.inventoryButtons}>
                         <button type="submit">
                             {exists ? 'Save Changes' : 'Add Item'}
                         </button>
