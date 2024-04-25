@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import componentStyles from '@/components/component.module.css';
 import { Order } from '@/lib/models';
 
@@ -9,9 +9,19 @@ interface KitchenGridItemProps {
 }
 
 export default function KitchenGridItem({ order }: KitchenGridItemProps) {
-    const [timeElapsed, setTimeElapsed] = useState(
-        new Date(Date.now() - order.timestamp.getTime())
-    );
+    const calculateTimeElapsed = useCallback(() => {
+        const orderTime = new Date(order.timestamp).getTime();
+        const currentTime = Date.now();
+        const timeDifference = currentTime - orderTime;
+
+        const seconds = Math.floor((timeDifference / 1000) % 60);
+        const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+        const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+
+        return { hours, minutes, seconds };
+    }, [order.timestamp]);
+
+    const [timeElapsed, setTimeElapsed] = useState(calculateTimeElapsed());
     const [hurry, setHurry] = useState(false);
 
     function completeOrder() {
@@ -22,22 +32,17 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTimeElapsed(new Date(Date.now() - order.timestamp.getTime()));
+            setTimeElapsed(calculateTimeElapsed());
         }, 1000);
         return () => clearInterval(interval);
-    }, [order.timestamp]);
+    }, [calculateTimeElapsed]);
 
     useEffect(() => {
-        setHurry(timeElapsed.getTime() >= 5 * 60 * 1000); // 5 minutes
+        const milliseconds = timeElapsed.hours * 60 * 60 * 1000 + timeElapsed.minutes * 60 * 1000 + timeElapsed.seconds * 1000;
+        setHurry(milliseconds >= 5 * 60 * 1000); // 5 minutes
     }, [timeElapsed]);
 
-    const hoursElapsed = Math.floor(timeElapsed.getTime() / (1000 * 60 * 60));
-    const minutesElapsed = Math.floor(
-        (timeElapsed.getTime() / (1000 * 60)) % 60
-    );
-    const secondsElapsed = Math.floor((timeElapsed.getTime() / 1000) % 60);
-
-    const timeString = `${hoursElapsed.toString().padStart(2, '0')}:${minutesElapsed.toString().padStart(2, '0')}:${secondsElapsed.toString().padStart(2, '0')}`;
+    const timeString = `${timeElapsed.hours.toString().padStart(2, '0')}:${timeElapsed.minutes.toString().padStart(2, '0')}:${timeElapsed.seconds.toString().padStart(2, '0')}`;
 
     return (
         <div
