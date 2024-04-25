@@ -13,6 +13,8 @@ import componentStyles from '@/components/component.module.css';
 // - order status
 // - time elapsed since order was placed
 
+// TODO: Consider moving from polling to a more efficient method such as websockets or server-sent events
+
 export default function Kitchen() {
     const [orders, setOrders] = useState<Order[]>([]);
 
@@ -29,7 +31,10 @@ export default function Kitchen() {
                 console.error(err);
             }
         }
-        fetchOrders();
+        const interval = setInterval(() => {
+            fetchOrders();
+        }, 5000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
