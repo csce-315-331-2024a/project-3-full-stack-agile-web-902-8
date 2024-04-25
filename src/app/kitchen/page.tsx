@@ -9,6 +9,7 @@ import componentStyles from '@/components/component.module.css';
 
 export default function Kitchen() {
     const [orders, setOrders] = useState<Order[]>([]);
+    const [isInitializing, setIsInitializing] = useState(true);
 
     useEffect(() => {
         async function fetchOrders() {
@@ -19,10 +20,11 @@ export default function Kitchen() {
                 }
                 const orders = await response.json();
                 setOrders(orders);
-            } catch (err) {
-                console.error(err);
+            } finally {
+                setIsInitializing(false);
             }
         }
+        fetchOrders();
         const interval = setInterval(() => {
             fetchOrders();
         }, 5000);
@@ -32,7 +34,17 @@ export default function Kitchen() {
     return (
         <main className={componentStyles.kitchenMain}>
             <h1>Kitchen</h1>
-            <KitchenGrid orders={orders} />
+            {isInitializing ? (
+                <div
+                    className={
+                        componentStyles.loading + ' ' + componentStyles.card
+                    }
+                >
+                    Loading Orders...
+                </div>
+            ) : (
+                <KitchenGrid orders={orders} />
+            )}
         </main>
     );
 }
