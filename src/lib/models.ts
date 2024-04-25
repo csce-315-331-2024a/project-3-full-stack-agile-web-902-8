@@ -148,5 +148,4 @@ export class AggregateItem {
         this.name = name;
         this.qty = qty;
     }
-
 }

@@ -12,18 +12,22 @@ import postgres from 'postgres';
  * @return A promise that resolves to an array of AggregateItems with their id, name, and quantity bought.
  */
 export async function aggregateMenuItems(
-  startDate: number,
-  endDate: number,
-  tsql = psql
+    startDate: number,
+    endDate: number,
+    tsql = psql
 ): Promise<AggregateItem[]> {
-  return transact<AggregateItem[], any, { startDate: number; endDate: number }>(
-      tsql,
-      new Error('SQL Error in aggregateMenuItems', undefined, {
-          startDate,
-          endDate,
-      }),
-      async (isql, _) => {
-          const result = await isql`
+    return transact<
+        AggregateItem[],
+        any,
+        { startDate: number; endDate: number }
+    >(
+        tsql,
+        new Error('SQL Error in aggregateMenuItems', undefined, {
+            startDate,
+            endDate,
+        }),
+        async (isql, _) => {
+            const result = await isql`
               SELECT
                   mi.id AS id,
                   mi.name AS name,
@@ -41,12 +45,12 @@ export async function aggregateMenuItems(
                   mi.id;
           `;
 
-          const items: AggregateItem[] = [];
-          for (const row of result) {
-              items.push(new AggregateItem(row.id, row.name, row.qty));
-          }
+            const items: AggregateItem[] = [];
+            for (const row of result) {
+                items.push(new AggregateItem(row.id, row.name, row.qty));
+            }
 
-          return items;
-      }
-  );
+            return items;
+        }
+    );
 }
