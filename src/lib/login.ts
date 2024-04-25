@@ -3,13 +3,17 @@ import postgres from 'postgres';
 import Error from '@/lib/error';
 
 export const LOGIN_FAILED = Symbol('FAILED');
+export const LOGIN_ADMINISTRATOR = Symbol('ADMINISTRATOR');
 export const LOGIN_MANAGER = Symbol('MANAGER');
 export const LOGIN_CASHIER = Symbol('CASHIER');
+export const LOGIN_COOK = Symbol('COOK');
 export const LOGIN_CUSTOMER = Symbol('CUSTOMER');
 export type LoginResult =
     | typeof LOGIN_FAILED
+    | typeof LOGIN_ADMINISTRATOR
     | typeof LOGIN_MANAGER
     | typeof LOGIN_CASHIER
+    | typeof LOGIN_COOK
     | typeof LOGIN_CUSTOMER;
 
 /**
@@ -21,7 +25,7 @@ export type LoginResult =
  */
 export async function attemptLogin(
     username: string,
-    password: string,
+    password: string = 'NULL',
     tsql = psql
 ): Promise<LoginResult> {
     return transact<
@@ -36,15 +40,19 @@ export async function attemptLogin(
         }),
         async (isql, _) => {
             const rows =
-                await isql`SELECT password, manager FROM users WHERE username = ${username};`;
+                await isql`SELECT password, role FROM users WHERE username = ${username};`;
             if (rows.length === 0) return LOGIN_FAILED;
 
-            const [{ password: hashed, manager: isManager }] = rows;
+            const [{ password: hashed, role: role }] = rows;
 
-            if (!verify(password, hashed)) return LOGIN_FAILED as LoginResult;
+            
+            if (password != 'NULL' && !verify(password, hashed)) return LOGIN_FAILED as LoginResult;
 
-            if (isManager) return LOGIN_MANAGER as LoginResult;
-            else return LOGIN_CASHIER as LoginResult;
+            if (role == LOGIN_ADMINISTRATOR.description) return LOGIN_ADMINISTRATOR as LoginResult;
+            if (role == LOGIN_MANAGER.description) return LOGIN_MANAGER as LoginResult;
+            if (role == LOGIN_CASHIER.description) return LOGIN_CASHIER as LoginResult;
+            if (role == LOGIN_COOK.description) return LOGIN_COOK as LoginResult;
+            else return LOGIN_CUSTOMER as LoginResult;
         }
     );
 }
