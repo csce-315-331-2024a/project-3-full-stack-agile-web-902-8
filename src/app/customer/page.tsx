@@ -12,7 +12,6 @@ import {
 import LoginButton from '@/components/LoginButton';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 
 export default function Customer() {
     // set default category
@@ -26,7 +25,7 @@ export default function Customer() {
 
     const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
 
-    const [userRole, changeUserRole] = useState<string>("");
+    const [userRole, changeUserRole] = useState<string>('');
 
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
@@ -34,6 +33,7 @@ export default function Customer() {
         changeCurrentOrder(currentOrder);
     }
 
+    // get the user login
     useEffect(() => {
         async function loginUser() {
             const response = await fetch('/api/oauthLogin');
@@ -112,9 +112,7 @@ export default function Customer() {
         <main className={styles.main}>
             <header id={styles.topbar}>
                 <ul className={styles['nav-left']}>
-                    <li>
-                        {userRole}
-                    </li>
+                    <li>{userRole}</li>
                 </ul>
                 <ul className={styles['nav-right']}>
                     <li>

@@ -1,9 +1,9 @@
 import { attemptLogin, LoginResult } from '@/lib/login';
 import { NextResponse } from 'next/server';
 import { getUserSession } from '@/lib/session';
+
 /**
- * api route for the attemptLogin function
- * @param req the request
+ * api route for getting oauth session and getting permission level of user from db
  * @returns the result of the attemptLogin function
  */
 export async function GET() {
@@ -11,10 +11,7 @@ export async function GET() {
     try {
         const user = await getUserSession();
         const res: LoginResult = await attemptLogin(user.email as string);
-        return NextResponse.json(
-            res.description,
-            { status: 200 }
-        );
+        return NextResponse.json(res.description, { status: 200 });
     } catch (error: any) {
         return NextResponse.json(
             { error: `Error trying to login user: ${error.message}` },
@@ -22,4 +19,3 @@ export async function GET() {
         );
     }
 }
-
