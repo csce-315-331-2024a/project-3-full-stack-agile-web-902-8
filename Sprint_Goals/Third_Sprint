@@ -6,3 +6,11 @@ Sprint Backlog:
 -Implement Google Auth
 -Create Kitchen page with ability to view orders
 -Verify and Validate code
+
+Tasks: 12 + 9 + 3 = 24
+Points: 28 + 27 + 5 = 60
+
+Completed = 3
+Total = 5
+
+blocker is fixing our query functions
