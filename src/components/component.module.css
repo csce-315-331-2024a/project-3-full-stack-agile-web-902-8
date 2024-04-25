@@ -389,11 +389,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 1rem;
 }
 
 .kitchenMain h1 {
     font-family: var(--font);
     text-align: center;
+    padding-bottom: 1rem;
 }
 
 .completeOrder {
@@ -404,7 +406,10 @@
     justify-content: center;
     align-items: center;
     transition: 250ms;
-    margin: 0 auto;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .completeOrder:hover {
@@ -430,6 +435,8 @@
 .kitchenGridItem {
     background-color: rgba(var(--secondary-rgb), 0.5);
     font-family: var(--font);
+    position: relative;
+    padding-bottom: calc(1rem + 4rem);
 }
 
 .kitchenGridItem.hurry {
