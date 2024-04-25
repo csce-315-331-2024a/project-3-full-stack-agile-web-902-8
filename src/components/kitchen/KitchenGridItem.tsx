@@ -26,8 +26,6 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
     const [isCompletingOrder, setIsCompletingOrder] = useState(false);
 
     async function completeOrder() {
-        // Implement this function to update the order status to 'Completed'
-        // and remove it from the grid
         setIsCompletingOrder(true);
         try {
             const response = await fetch('/api/markOrderAsFilled', {
