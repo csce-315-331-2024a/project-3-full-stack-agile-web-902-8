@@ -23,11 +23,30 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
 
     const [timeElapsed, setTimeElapsed] = useState(calculateTimeElapsed());
     const [hurry, setHurry] = useState(false);
+    const [isCompletingOrder, setIsCompletingOrder] = useState(false);
 
-    function completeOrder() {
+    async function completeOrder() {
         // Implement this function to update the order status to 'Completed'
         // and remove it from the grid
-        console.log('Complete order', order.id);
+        setIsCompletingOrder(true);
+        try{
+            const response = await fetch('/api/markOrderAsFilled', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order.id),
+            });
+
+            if(!response.ok){
+                throw new Error('Error: ' + response.statusText);
+            }
+
+            console.log('Order completed:', order.id);
+        }
+        catch(err){ // Only free the button if an error occurs
+            setIsCompletingOrder(false);
+        }
     }
 
     useEffect(() => {
@@ -78,7 +97,7 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
             <p>Total: ${order.total}</p>
             <button
                 className={
-                    componentStyles.completeOrder + ' ' + componentStyles.card
+                    componentStyles.completeOrder + ' ' + componentStyles.card + (isCompletingOrder ? ' ' + componentStyles.disabled : '')
                 }
                 onClick={completeOrder}
             >
