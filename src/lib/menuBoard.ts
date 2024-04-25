@@ -5,7 +5,7 @@ import Error from '@/lib/error';
 import postgres from 'postgres';
 
 /**
- * Aggregates menu items sold within a specified time frame.
+ * Aggregates menu items sold within a specified time frames.
  * @param startDate The start of the time frame as a Date object.
  * @param endDate The end of the time frame as a Date object.
  * @param tsql The SQL transaction function, defaulting to psql.
