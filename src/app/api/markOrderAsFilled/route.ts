@@ -1,5 +1,5 @@
-import { markOrderAsFilled } from "@/lib/orders";
-import { NextRequest, NextResponse } from "next/server";
+import { markOrderAsFilled } from '@/lib/orders';
+import { NextRequest, NextResponse } from 'next/server';
 import Error from '@/lib/error';
 
 export async function POST(request: NextRequest) {
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
             { status: 201 }
         );
     } catch (error: unknown) {
-        if(!(error instanceof Error)) {
+        if (!(error instanceof Error)) {
             console.error('Unexpected error:', error);
             return NextResponse.json(
                 { error: 'Server error' },
@@ -21,9 +21,6 @@ export async function POST(request: NextRequest) {
         }
 
         console.log('Error marking order as filled:', error.toString());
-        return NextResponse.json(
-            { error: 'Server error'},
-            { status: 500 }
-        );
+        return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
 }

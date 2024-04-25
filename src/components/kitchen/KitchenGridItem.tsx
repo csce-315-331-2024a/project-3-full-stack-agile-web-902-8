@@ -29,7 +29,7 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
         // Implement this function to update the order status to 'Completed'
         // and remove it from the grid
         setIsCompletingOrder(true);
-        try{
+        try {
             const response = await fetch('/api/markOrderAsFilled', {
                 method: 'POST',
                 headers: {
@@ -38,13 +38,13 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
                 body: JSON.stringify(order.id),
             });
 
-            if(!response.ok){
+            if (!response.ok) {
                 throw new Error('Error: ' + response.statusText);
             }
 
             console.log('Order completed:', order.id);
-        }
-        catch(err){ // Only free the button if an error occurs
+        } catch (err) {
+            // Only free the button if an error occurs
             setIsCompletingOrder(false);
         }
     }
@@ -57,7 +57,10 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
     }, [calculateTimeElapsed]);
 
     useEffect(() => {
-        const milliseconds = timeElapsed.hours * 60 * 60 * 1000 + timeElapsed.minutes * 60 * 1000 + timeElapsed.seconds * 1000;
+        const milliseconds =
+            timeElapsed.hours * 60 * 60 * 1000 +
+            timeElapsed.minutes * 60 * 1000 +
+            timeElapsed.seconds * 1000;
         setHurry(milliseconds >= 5 * 60 * 1000); // 5 minutes
     }, [timeElapsed]);
 
@@ -97,7 +100,10 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
             <p>Total: ${order.total}</p>
             <button
                 className={
-                    componentStyles.completeOrder + ' ' + componentStyles.card + (isCompletingOrder ? ' ' + componentStyles.disabled : '')
+                    componentStyles.completeOrder +
+                    ' ' +
+                    componentStyles.card +
+                    (isCompletingOrder ? ' ' + componentStyles.disabled : '')
                 }
                 onClick={completeOrder}
             >
