@@ -20,7 +20,7 @@ export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
             const date = now.toISOString().split('T')[0];
             const result = await isql`
             SELECT
-                mi.id, mi.name, mi.type, mi.price, mi.net_price, mi.popularity,
+                mi.id, mi.name, mi.type, mi.description, mi.price, mi.net_price, mi.popularity,
                 si.start_date, si.end_date, si.recurring
             FROM
                 menu_items mi
@@ -47,6 +47,7 @@ export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
                         row.id,
                         row.name,
                         row.type,
+                        row.description,
                         row.price,
                         row.net_price,
                         row.popularity,
@@ -79,7 +80,7 @@ export async function getMenuItemByName(
         }),
         async (isql, _) => {
             const result = await isql`
-        SELECT mi.id, mi.name, mi.type, mi.price, mi.net_price, mi.popularity, 
+        SELECT mi.id, mi.name, mi.type, mi.description, mi.price, mi.net_price, mi.popularity, 
         si.start_date, si.end_date, si.recurring 
         FROM menu_items mi 
         LEFT JOIN seasonal_items si ON mi.id = si.item_id 
@@ -101,6 +102,7 @@ export async function getMenuItemByName(
                     item.id,
                     item.name,
                     item.type,
+                    item.description,
                     item.price,
                     item.net_price,
                     item.popularity,
@@ -198,25 +200,36 @@ export async function addMenuItem(
 ): Promise<boolean> {
     return transact<boolean, postgres.Error, any>(
         tsql,
-        new Error('SQL Error in addMenuItem', undefined, {
+        /*new Error('SQL Error in addMenuItem', undefined, {
             menuItem: menuItem,
-        }),
+        }),*/
+        new Error('SQL Error in addMenuItem', undefined, menuItem),
         async (isql, _) => {
+            console.log(menuItem);
+            console.log(menuItem.name);
+            console.log(menuItem.type);
+            console.log(menuItem.description);
+            console.log(menuItem.price);
+            console.log(menuItem.netPrice);
+            console.log(menuItem.popularity);
             const result = await isql`
-        INSERT INTO menu_items (name, type, price, net_price, popularity) 
-        VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity})`;
-
+        INSERT INTO menu_items (name, type, description, price, net_price, popularity) 
+        VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity})`;
+            console.log('Successfully added basic information');
             const addedId = result[0].id; //generates new id for menu item
             const addedMenuItem = new MenuItem(
                 addedId,
                 menuItem.name,
                 menuItem.type,
+                menuItem.description,
                 menuItem.price,
                 menuItem.netPrice,
                 menuItem.popularity,
                 menuItem.ingredients,
                 menuItem.seasonal
             ); //creates new menu item
+            console.log('Created added menu item');
+            console.log(addedMenuItem);
 
             if (
                 menuItem.seasonal != null &&
@@ -225,7 +238,9 @@ export async function addMenuItem(
                 //if it doesnt meet conditions
                 return false;
             }
+            console.log('Seasonal is fine');
 
+            console.log('About to add ingredients');
             return await addIngredients(addedMenuItem, tsql);
         }
     );
@@ -244,26 +259,34 @@ export async function addIngredients(
 ): Promise<boolean> {
     return transact<boolean, postgres.Error, any>(
         tsql,
-        new Error('SQL Error in addIngredients', undefined, {
+        /*new Error('SQL Error in addIngredients', undefined, {
             menuItem: menuItem,
-        }),
+        }),*/
+        new Error('SQL Error in addIngredients', undefined, menuItem),
         async (isql, _) => {
             for (const ingredient of menuItem.ingredients) {
+                console.log(ingredient);
                 const inventoryId = await findInventoryIdByName(
                     ingredient.inventoryItem.name,
                     isql
                 ); //if no inventory id is found
+                console.log('No issues yet');
+                console.log(inventoryId);
+                console.log(ingredient.amount);
                 if (inventoryId == -1) {
+                    console.log('Inventory item not found');
                     return false;
                 }
-
+                console.log('Adding ingredient');
                 const added = await addIngredient(
                     menuItem.id,
                     inventoryId,
                     ingredient.amount,
                     isql
                 ); //if add does not work
+                console.log('Finsihed add query');
                 if (!added) {
+                    console.log('Was not added');
                     return false;
                 }
             }
@@ -357,7 +380,7 @@ export async function updateMenuItem(
             }
 
             const result = await isql`
-        UPDATE menu_items SET type = ${menuItem.type}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
+        UPDATE menu_items SET type = ${menuItem.type}, description = ${menuItem.description}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
         WHERE id = ${itemId}`;
 
             if (result.length == 0) {
@@ -369,6 +392,7 @@ export async function updateMenuItem(
                 itemId,
                 menuItem.name,
                 menuItem.type,
+                menuItem.description,
                 menuItem.price,
                 menuItem.netPrice,
                 menuItem.popularity,
@@ -631,6 +655,7 @@ export async function deleteMenuItem(
                 itemId,
                 menuItem.name,
                 menuItem.type,
+                menuItem.description,
                 menuItem.price,
                 menuItem.netPrice,
                 menuItem.popularity,
@@ -755,6 +780,7 @@ export async function updateSeasonalItem(
                     return false;
                 }
             } else {
+                console.log('No current seasonal, adding now');
                 if (menuItem.seasonal != null) {
                     //add seasonal item entry
                     return addSeasonalItem(menuItem, isql);

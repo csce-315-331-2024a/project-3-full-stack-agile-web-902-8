@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { format, startOfToday } from 'date-fns';
 import styles from './component.module.css';
 import { Ingredient, InventoryItem, MenuItem, Seasonal } from '@/lib/models';
+import { updateSeasonalItem } from '@/lib/menu';
+import { start } from 'repl';
 
 function MenuEditer() {
     const [itemNames, setItemNames] = useState<string[]>([]);
@@ -10,8 +12,10 @@ function MenuEditer() {
     const [selectedIng, setSelectedIng] = useState<string>('');
     const [exists, setExists] = useState<boolean>(false);
     const [form, setForm] = useState({
+        id: 0,
         name: '',
         type: '',
+        description: '',
         price: 0,
         netPrice: 0,
         popularity: 0,
@@ -21,12 +25,8 @@ function MenuEditer() {
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [visible, setVisible] = useState<boolean>(false);
 
-    const [startDate, setStartDate] = useState<string | undefined>(
-        format(new Date(), "yyyy-MM-dd'T'HH:mm")
-    );
-    const [endDate, setEndDate] = useState<string | undefined>(
-        format(new Date(), "yyyy-MM-dd'T'HH:mm")
-    );
+    const [startDate, setStartDate] = useState<string>('');
+    const [endDate, setEndDate] = useState<string>('');
     const [recurring, setRecurring] = useState<boolean>(false);
     const [addingIngredient, setAddingIngredient] = useState<boolean>(false);
     const [newQuantity, setNewQuantity] = useState<number>(0);
@@ -42,7 +42,7 @@ function MenuEditer() {
             throw new Error(`Error: ${response.statusText}`);
         }
         const menuItemNames = await response.json();
-        console.log(menuItemNames);
+        //console.log(menuItemNames);
         const sortedNames = menuItemNames.sort((a: string, b: string) =>
             a.localeCompare(b)
         );
@@ -111,14 +111,21 @@ function MenuEditer() {
 
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const seasonal = new Seasonal(
-            Number(startDate),
-            Number(endDate),
-            recurring
-        );
+        //console.log(startDate);
+        //console.log(endDate);
+
+        const startObject = new Date(startDate);
+        const endObject = new Date(endDate);
+        const startTimestamp = Math.floor(startObject.getTime() / 1000);
+        const endTimeStamp = Math.floor(endObject.getTime() / 1000);
+
+        //console.log(startObject);
+        //console.log(endObject);
+        const seasonal = new Seasonal(startTimestamp, endTimeStamp, recurring);
+        const seasonal2 = new Seasonal(0, 0, recurring);
         console.log(ingredients);
-        const menuItem = new MenuItem(
-            0,
+        /*const menuItem = new MenuItem(
+            form.id,
             form.name,
             form.type,
             Number(form.price),
@@ -126,9 +133,21 @@ function MenuEditer() {
             Number(form.popularity),
             ingredients,
             seasonal
+        );*/
+
+        const menuItem = new MenuItem(
+            0,
+            form.name,
+            form.type,
+            form.description,
+            Number(form.price),
+            Number(form.netPrice),
+            Number(form.popularity),
+            ingredients,
+            null
         );
 
-        async function updateMenuItem() {
+        /*async function updateMenuItem() {
             const response = await fetch('/api/addOrUpdate', {
                 method: 'POST',
                 headers: {
@@ -139,7 +158,88 @@ function MenuEditer() {
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
+        }*/
+
+        async function addMenuItem() {
+            const response = await fetch('/api/addMenuItem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(menuItem),
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
         }
+
+        async function updateSeasonalItem() {
+            const response = await fetch('/api/updateSeasonalItem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(menuItem),
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+        }
+
+        async function updateIngredients() {
+            const response = await fetch('/api/updateIngredients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(menuItem),
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+        }
+
+        /*async function addIngredients() {
+            const response = await fetch('/api/addIngredients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(menuItem),
+            });
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+        }*/
+
+        /*async function updateMenuItem() {
+            if(form.seasonal)
+            {
+                const response = await fetch('/api/updateMenuItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuItem),
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            }
+            else
+            {
+                const response = await fetch('/api/updateMenuItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuItemAlt),
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            }
+        }*/
 
         if (
             Number(form.price) < 0 ||
@@ -154,11 +254,14 @@ function MenuEditer() {
                 );
                 if (confirm) {
                     //console.log('Creating new');
-                    //console.log(menuItem);
-                    updateMenuItem();
+                    console.log(menuItem);
+                    //updateMenuItem();
+                    addMenuItem();
                     setForm({
+                        id: 0,
                         name: '',
                         type: '',
+                        description: '',
                         price: 0,
                         netPrice: 0,
                         popularity: 0,
@@ -167,7 +270,8 @@ function MenuEditer() {
                 }
             } else {
                 console.log(menuItem);
-                updateMenuItem();
+                //updateMenuItem();
+                //updateIngredients();
             }
             fetchMenuItems();
         }
@@ -182,12 +286,12 @@ function MenuEditer() {
     }, [addingIngredient]);
 
     useEffect(() => {
-        if (!form.seasonal) {
-            setStartDate(undefined);
-            setEndDate(undefined);
+        if (form.seasonal && startDate == '' && endDate == '') {
+            setStartDate(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
+            setEndDate(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
             setRecurring(false);
         }
-    }, [form.seasonal]);
+    }, [form.seasonal, startDate, endDate]);
 
     useEffect(() => {
         console.log(selected);
@@ -204,6 +308,12 @@ function MenuEditer() {
             }
             const menuItem = await response.json();
             const parseItem = JSON.parse(menuItem);
+            console.log(menuItem);
+            console.log(parseItem);
+            setForm((form) => ({
+                ...form,
+                id: parseItem.id,
+            }));
             setForm((form) => ({
                 ...form,
                 name: parseItem.name,
@@ -211,6 +321,10 @@ function MenuEditer() {
             setForm((form) => ({
                 ...form,
                 type: parseItem.type,
+            }));
+            setForm((form) => ({
+                ...form,
+                type: parseItem.description,
             }));
             setForm((form) => ({
                 ...form,
@@ -238,6 +352,7 @@ function MenuEditer() {
                     ...form,
                     seasonal: true,
                 }));
+                //console.log(parseItem.seasonal.startDate);
                 setStartDate(
                     format(
                         new Date(parseItem.seasonal.startDate),
@@ -265,13 +380,16 @@ function MenuEditer() {
         if (selected == 'new') {
             setExists(false);
             setForm({
+                id: 0,
                 name: '',
                 type: '',
+                description: '',
                 price: 0,
                 netPrice: 0,
                 popularity: 0,
                 seasonal: false,
             });
+            setIngredients([]);
         } else if (selected != '') {
             getMenuItem();
             setExists(true);
@@ -492,6 +610,15 @@ function MenuEditer() {
                             type="text"
                             name="type"
                             value={form.type}
+                            onChange={handleChange}
+                        />
+                    </label>
+                    <label>
+                        Type:
+                        <input
+                            type="text"
+                            name="description"
+                            value={form.description}
                             onChange={handleChange}
                         />
                     </label>
