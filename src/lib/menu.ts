@@ -384,7 +384,7 @@ export async function updateMenuItem(
             const result = await isql`
         UPDATE menu_items SET type = ${menuItem.type}, description = ${menuItem.description}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
         WHERE id = ${itemId}`;
-        console.log("Successfully changed values");
+            console.log('Successfully changed values');
 
             /*if (result.length == 0) {
                 //if no param exists
@@ -404,18 +404,18 @@ export async function updateMenuItem(
                 menuItem.seasonal
             ); //update content
 
-            console.log("About to change seasonal");
+            console.log('About to change seasonal');
             const seasonalItemUpdated = await updateSeasonalItem(
                 updatedMenuItem,
                 isql
             );
-            console.log("About to change ingredients");
+            console.log('About to change ingredients');
             console.log(updatedMenuItem);
             const ingredientsUpdated = await updateIngredients(
                 updatedMenuItem,
                 isql
             );
-            console.log("Finsihed changing ingredients");
+            console.log('Finsihed changing ingredients');
 
             return seasonalItemUpdated && ingredientsUpdated; //if it meets requirements
         }
@@ -463,12 +463,12 @@ export async function updateIngredients(
         tsql,
         new Error('SQL Error in updateIngredients', undefined, menuItem),
         async (isql, _) => {
-            console.log("Getting ingredients");
+            console.log('Getting ingredients');
             const currentIngredients = await getIngredientsByMenuItemId(
                 menuItem.id,
                 tsql
             ); //gets all ingredients with menu item id
-            console.log("got ingredients");
+            console.log('got ingredients');
 
             for (const currentIngredient of currentIngredients) {
                 //iterate through all ingredients
@@ -795,7 +795,7 @@ export async function updateSeasonalItem(
                     //add seasonal item entry
                     return addSeasonalItem(menuItem, isql);
                 }
-                console.log("Finsihed adding seasonal")
+                console.log('Finsihed adding seasonal');
                 return true;
             }
         }
