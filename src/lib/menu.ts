@@ -216,7 +216,9 @@ export async function addMenuItem(
         INSERT INTO menu_items (name, type, description, price, net_price, popularity) 
         VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity})`;
             console.log('Successfully added basic information');
+            console.log('This is the length of result: ' + result.length);
             const addedId = result[0].id; //generates new id for menu item
+            console.log(addedId);
             const addedMenuItem = new MenuItem(
                 addedId,
                 menuItem.name,
@@ -382,11 +384,13 @@ export async function updateMenuItem(
             const result = await isql`
         UPDATE menu_items SET type = ${menuItem.type}, description = ${menuItem.description}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
         WHERE id = ${itemId}`;
+        console.log("Successfully changed values");
 
-            if (result.length == 0) {
+            /*if (result.length == 0) {
                 //if no param exists
+                console.log("No good");
                 return false;
-            }
+            }*/
 
             const updatedMenuItem = new MenuItem(
                 itemId,
@@ -400,14 +404,18 @@ export async function updateMenuItem(
                 menuItem.seasonal
             ); //update content
 
+            console.log("About to change seasonal");
             const seasonalItemUpdated = await updateSeasonalItem(
                 updatedMenuItem,
                 isql
             );
+            console.log("About to change ingredients");
+            console.log(updatedMenuItem);
             const ingredientsUpdated = await updateIngredients(
                 updatedMenuItem,
                 isql
             );
+            console.log("Finsihed changing ingredients");
 
             return seasonalItemUpdated && ingredientsUpdated; //if it meets requirements
         }
@@ -453,12 +461,14 @@ export async function updateIngredients(
 ): Promise<boolean> {
     return transact<boolean, postgres.Error, any>(
         tsql,
-        new Error('SQL Error in updateIngredients', undefined, { name: name }),
+        new Error('SQL Error in updateIngredients', undefined, menuItem),
         async (isql, _) => {
+            console.log("Getting ingredients");
             const currentIngredients = await getIngredientsByMenuItemId(
                 menuItem.id,
                 tsql
             ); //gets all ingredients with menu item id
+            console.log("got ingredients");
 
             for (const currentIngredient of currentIngredients) {
                 //iterate through all ingredients
@@ -785,6 +795,7 @@ export async function updateSeasonalItem(
                     //add seasonal item entry
                     return addSeasonalItem(menuItem, isql);
                 }
+                console.log("Finsihed adding seasonal")
                 return true;
             }
         }

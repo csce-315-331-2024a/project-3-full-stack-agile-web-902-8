@@ -30,11 +30,6 @@ function MenuEditer() {
     const [recurring, setRecurring] = useState<boolean>(false);
     const [addingIngredient, setAddingIngredient] = useState<boolean>(false);
     const [newQuantity, setNewQuantity] = useState<number>(0);
-    /*const [seasonalData, setSeasonalData] = useState({
-        startDate: '',
-        endDate: '',
-        recurring: false,
-    });*/
 
     async function fetchMenuItems() {
         const response = await fetch('/api/getAllMenuItemNames');
@@ -89,15 +84,6 @@ function MenuEditer() {
         setEndDate(e.target.value);
     };
 
-    /*const handleBeginTimeChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setSeasonalData((seasonalData) => ({
-            ...seasonalData,
-            [seasonalData.startDate]: e.target.value,
-        }));
-    };*/
-
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm((form) => ({
             ...form,
@@ -119,21 +105,7 @@ function MenuEditer() {
         const startTimestamp = Math.floor(startObject.getTime() / 1000);
         const endTimeStamp = Math.floor(endObject.getTime() / 1000);
 
-        //console.log(startObject);
-        //console.log(endObject);
-        const seasonal = new Seasonal(startTimestamp, endTimeStamp, recurring);
-        const seasonal2 = new Seasonal(0, 0, recurring);
         console.log(ingredients);
-        /*const menuItem = new MenuItem(
-            form.id,
-            form.name,
-            form.type,
-            Number(form.price),
-            Number(form.netPrice),
-            Number(form.popularity),
-            ingredients,
-            seasonal
-        );*/
 
         const menuItem = new MenuItem(
             0,
@@ -146,19 +118,6 @@ function MenuEditer() {
             ingredients,
             null
         );
-
-        /*async function updateMenuItem() {
-            const response = await fetch('/api/addOrUpdate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(menuItem),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-        }*/
 
         async function addMenuItem() {
             const response = await fetch('/api/addMenuItem', {
@@ -173,8 +132,8 @@ function MenuEditer() {
             }
         }
 
-        async function updateSeasonalItem() {
-            const response = await fetch('/api/updateSeasonalItem', {
+        async function updateMenuItem() {
+            const response = await fetch('/api/updateMenuItem', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -185,61 +144,6 @@ function MenuEditer() {
                 throw new Error(`Error: ${response.statusText}`);
             }
         }
-
-        async function updateIngredients() {
-            const response = await fetch('/api/updateIngredients', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(menuItem),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-        }
-
-        /*async function addIngredients() {
-            const response = await fetch('/api/addIngredients', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(menuItem),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-        }*/
-
-        /*async function updateMenuItem() {
-            if(form.seasonal)
-            {
-                const response = await fetch('/api/updateMenuItem', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(menuItem),
-                });
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-            }
-            else
-            {
-                const response = await fetch('/api/updateMenuItem', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(menuItemAlt),
-                });
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-            }
-        }*/
 
         if (
             Number(form.price) < 0 ||
@@ -270,7 +174,7 @@ function MenuEditer() {
                 }
             } else {
                 console.log(menuItem);
-                //updateMenuItem();
+                updateMenuItem();
                 //updateIngredients();
             }
             fetchMenuItems();
@@ -324,7 +228,7 @@ function MenuEditer() {
             }));
             setForm((form) => ({
                 ...form,
-                type: parseItem.description,
+                description: parseItem.description,
             }));
             setForm((form) => ({
                 ...form,
@@ -614,7 +518,7 @@ function MenuEditer() {
                         />
                     </label>
                     <label>
-                        Type:
+                        Description:
                         <input
                             type="text"
                             name="description"
