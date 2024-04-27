@@ -2,8 +2,9 @@
 
 'use client';
 // TODO: Consider separating client-side and server-side code for MUCH better performance
-// TODO: If the page is accessed as a manager, they should have a navbar with links to the other pages
 // TODO: The user should be notified if an order is in progress and if it is successfully placed
+
+// TODO: responsiveness
 
 import React, { useEffect, useState } from 'react';
 
