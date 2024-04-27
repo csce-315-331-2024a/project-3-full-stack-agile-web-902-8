@@ -30,6 +30,7 @@ function MenuEditer() {
     const [recurring, setRecurring] = useState<boolean>(false);
     const [addingIngredient, setAddingIngredient] = useState<boolean>(false);
     const [newQuantity, setNewQuantity] = useState<number>(0);
+    const [inFlux, setInFlux] = useState<boolean>(false);
 
     async function fetchMenuItems() {
         const response = await fetch('/api/getAllMenuItemNames');
@@ -68,6 +69,7 @@ function MenuEditer() {
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInFlux(true);
         const { name, value } = e.target;
 
         setForm((form) => ({
@@ -77,14 +79,17 @@ function MenuEditer() {
     };
 
     const handleChangeStart = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInFlux(true);
         setStartDate(e.target.value);
     };
 
     const handleChangeEnd = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInFlux(true);
         setEndDate(e.target.value);
     };
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInFlux(true);
         setForm((form) => ({
             ...form,
             seasonal: e.target.checked,
@@ -93,17 +98,21 @@ function MenuEditer() {
 
     const handleCheckRecurring = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRecurring(e.target.checked);
+        setInFlux(true);
     };
 
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //console.log(startDate);
-        //console.log(endDate);
+        console.log(ingredients);
+        console.log(startDate);
+        console.log(endDate);
 
         const startObject = new Date(startDate);
         const endObject = new Date(endDate);
-        const startTimestamp = Math.floor(startObject.getTime() / 1000);
-        const endTimeStamp = Math.floor(endObject.getTime() / 1000);
+        console.log(startObject);
+        console.log(endObject);
+        const startTimestamp = Math.floor(startObject.getTime());
+        const endTimeStamp = Math.floor(endObject.getTime());
 
         console.log(ingredients);
 
@@ -119,29 +128,67 @@ function MenuEditer() {
             null
         );
 
+        const menuItemAlt = new MenuItem(
+            0,
+            form.name,
+            form.type,
+            form.description,
+            Number(form.price),
+            Number(form.netPrice),
+            Number(form.popularity),
+            ingredients,
+            new Seasonal(startTimestamp, endTimeStamp, recurring)
+        );
+
         async function addMenuItem() {
-            const response = await fetch('/api/addMenuItem', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(menuItem),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+            if (!form.seasonal) {
+                const response = await fetch('/api/addMenuItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuItem),
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            } else {
+                const response = await fetch('/api/addMenuItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuItemAlt),
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
             }
         }
 
         async function updateMenuItem() {
-            const response = await fetch('/api/updateMenuItem', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(menuItem),
-            });
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
+            if (!form.seasonal) {
+                const response = await fetch('/api/updateMenuItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuItem),
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+            } else {
+                const response = await fetch('/api/updateMenuItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menuItemAlt),
+                });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
             }
         }
 
@@ -171,11 +218,19 @@ function MenuEditer() {
                         popularity: 0,
                         seasonal: false,
                     });
+                    setStartDate('');
+                    setEndDate('');
+                    setSelected('');
+                    setIngredients([]);
+                    setVisible(false);
+                    fetchMenuItems();
+                    fetchMenuItems();
+                    setInFlux(false);
                 }
             } else {
                 console.log(menuItem);
                 updateMenuItem();
-                //updateIngredients();
+                setInFlux(false);
             }
             fetchMenuItems();
         }
@@ -183,7 +238,7 @@ function MenuEditer() {
 
     useEffect(() => {
         fetchMenuItems();
-    }, [selected, exists]);
+    }, [selected, selectedIng, exists]);
 
     useEffect(() => {
         fetchInventoryItems();
@@ -256,7 +311,6 @@ function MenuEditer() {
                     ...form,
                     seasonal: true,
                 }));
-                //console.log(parseItem.seasonal.startDate);
                 setStartDate(
                     format(
                         new Date(parseItem.seasonal.startDate),
@@ -301,6 +355,7 @@ function MenuEditer() {
     }, [selected, exists]);
 
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setInFlux(false);
         const itemName = e.target.value;
         setSelected(itemName);
         setVisible(true);
@@ -324,15 +379,19 @@ function MenuEditer() {
         setSelected('');
         setVisible(false);
         setItemNames([]);
+        fetchMenuItems();
+        fetchMenuItems();
     };
 
     const handleRemoveIngredient = (i: number) => {
+        setInFlux(true);
         const removed = [...ingredients];
         removed.splice(i, 1);
         setIngredients(removed);
     };
 
     const handleChangeAmount = (i: number, quantity: number) => {
+        setInFlux(true);
         const changed = [...ingredients];
         if (quantity >= 1) {
             changed[i].amount = quantity;
@@ -359,6 +418,7 @@ function MenuEditer() {
     };
 
     const handleConfirmIngredient = () => {
+        setInFlux(true);
         async function getInventoryItem() {
             const response = await fetch('/api/getInventoryItemByName', {
                 method: 'POST',
@@ -598,9 +658,11 @@ function MenuEditer() {
                     )}
 
                     <div>
-                        <button type="submit">
-                            {exists ? 'Save Changes' : 'Add Item'}
-                        </button>
+                        {inFlux && (
+                            <button type="submit">
+                                {exists ? 'Save Changes' : 'Add Item'}
+                            </button>
+                        )}
                         {exists && (
                             <button onClick={handleRemove}>Delete Item</button>
                         )}

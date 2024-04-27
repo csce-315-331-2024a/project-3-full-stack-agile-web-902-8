@@ -214,7 +214,7 @@ export async function addMenuItem(
             console.log(menuItem.popularity);
             const result = await isql`
         INSERT INTO menu_items (name, type, description, price, net_price, popularity) 
-        VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity})`;
+        VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity}) RETURNING id`;
             console.log('Successfully added basic information');
             console.log('This is the length of result: ' + result.length);
             const addedId = result[0].id; //generates new id for menu item
@@ -235,7 +235,7 @@ export async function addMenuItem(
 
             if (
                 menuItem.seasonal != null &&
-                !(await addSeasonalItem(addedMenuItem, tsql))
+                !(await addSeasonalItem(addedMenuItem, isql))
             ) {
                 //if it doesnt meet conditions
                 return false;
@@ -243,7 +243,7 @@ export async function addMenuItem(
             console.log('Seasonal is fine');
 
             console.log('About to add ingredients');
-            return await addIngredients(addedMenuItem, tsql);
+            return await addIngredients(addedMenuItem, isql);
         }
     );
 }
@@ -279,7 +279,10 @@ export async function addIngredients(
                     console.log('Inventory item not found');
                     return false;
                 }
-                console.log('Adding ingredient');
+                console.log('Adding ingredient', inventoryId);
+                console.log(menuItem.id);
+                console.log(inventoryId);
+                console.log(ingredient.amount);
                 const added = await addIngredient(
                     menuItem.id,
                     inventoryId,
@@ -346,15 +349,23 @@ export async function addIngredient(
             amount: amount,
         }),
         async (isql, _) => {
-            const result = await isql`
-        INSERT INTO ingredients (item_id, inventory_id, amount) VALUES (${item_id}, ${inventory_id}, ${amount})`;
+            console.log('In add ingredient');
+            try {
+                const result = await isql`
+                INSERT INTO ingredients (item_id, inventory_id, amount) VALUES (${item_id}, ${inventory_id}, ${amount})`;
+            } catch (error) {
+                console.error(error);
+            }
 
-            if (result.length > 0) {
+            console.log('Inserted');
+
+            /*if (result.length > 0) {
                 //if at least a parameter exists
                 return true;
             }
 
-            return false;
+            return false;*/
+            return true;
         }
     );
 }
