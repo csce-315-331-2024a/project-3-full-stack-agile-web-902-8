@@ -108,7 +108,7 @@ function MenuEditer() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         const { name, value } = e.target;
-        console.log(name, value)
+        console.log(name, value);
 
         setForm((form) => ({
             ...form,
@@ -264,12 +264,13 @@ function MenuEditer() {
             Number(form.popularity) <= 0
         ) {
             alert('Cannot have negative or 0 values');
-        } 
-        else if(form.name == '' || form.description == '' || form.type == '')
-        {
-            alert("Nothing inputted");
-        }
-        else {
+        } else if (
+            form.name == '' ||
+            form.description == '' ||
+            form.type == ''
+        ) {
+            alert('Nothing inputted');
+        } else {
             if (selected == 'new') {
                 const confirm = window.confirm(
                     'Are you sure you want to add this item?'
