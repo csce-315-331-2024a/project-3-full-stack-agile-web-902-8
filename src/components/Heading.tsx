@@ -36,7 +36,7 @@ function Heading({
                 src={revsLogo}
                 alt="Rev's American Grill"
             />
-            <ul className="flex flex-row flex-wrap items-center justify-between w-full h-full">
+            <ul className="flex flex-row flex-wrap items-center justify-start w-full h-full">
                 {names.map((link, i) =>
                     link === 'Menu Board' ? (
                         <li

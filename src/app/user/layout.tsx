@@ -23,12 +23,14 @@ export default function UserLayout({
     const [headingNames, setHeadingNames] = useState<string[]>([
         'Customer',
         'Cashier',
+        'Kitchen',
         'Manager',
         'Menu Board',
     ]);
     const [headingHrefs, setHeadingHrefs] = useState<string[]>([
         '/user/customer',
         '/user/cashier',
+        '/user/kitchen',
         '/user/manager',
         '/user/manager',
     ]);
