@@ -324,6 +324,7 @@ function MenuEditer() {
                 ...form,
                 description: parseItem.description,
             }));
+            console.log(parseItem.weather);
             setForm((form) => ({
                 ...form,
                 weather: parseItem.weather,

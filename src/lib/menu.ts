@@ -80,7 +80,7 @@ export async function getMenuItemByName(
         }),
         async (isql, _) => {
             const result = await isql`
-        SELECT mi.id, mi.name, mi.type, mi.description, mi.price, mi.net_price, mi.popularity, 
+        SELECT mi.id, mi.name, mi.type, mi.description, mi.price, mi.net_price, mi.popularity, mi.weather,
         si.start_date, si.end_date, si.recurring 
         FROM menu_items mi 
         LEFT JOIN seasonal_items si ON mi.id = si.item_id 
@@ -91,7 +91,7 @@ export async function getMenuItemByName(
                 const ingredients = await getIngredientsByMenuItemId(
                     item.id,
                     isql
-                ); //gets ingredietns information
+                ); //gets ingredients information
                 const seasonal = new Seasonal(
                     item.start_date,
                     item.end_date,
@@ -107,7 +107,8 @@ export async function getMenuItemByName(
                     item.net_price,
                     item.popularity,
                     ingredients,
-                    seasonal
+                    seasonal,
+                    item.weather
                 );
             } else {
                 return null;
@@ -213,8 +214,8 @@ export async function addMenuItem(
             console.log(menuItem.netPrice);
             console.log(menuItem.popularity);*/
             const result = await isql`
-        INSERT INTO menu_items (name, type, description, price, net_price, popularity) 
-        VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity}) RETURNING id`;
+        INSERT INTO menu_items (name, type, description, weather, price, net_price, popularity) 
+        VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${String(menuItem.weather)}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity}) RETURNING id`;
             /*console.log('Successfully added basic information');
             console.log('This is the length of result: ' + result.length);*/
             const addedId = result[0].id; //generates new id for menu item
@@ -393,7 +394,7 @@ export async function updateMenuItem(
             }
 
             const result = await isql`
-        UPDATE menu_items SET type = ${menuItem.type}, description = ${menuItem.description}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
+        UPDATE menu_items SET type = ${menuItem.type}, description = ${menuItem.description}, weather = ${String(menuItem.weather)}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
         WHERE id = ${itemId}`;
             //console.log('Successfully changed values');
 
@@ -412,7 +413,8 @@ export async function updateMenuItem(
                 menuItem.netPrice,
                 menuItem.popularity,
                 menuItem.ingredients,
-                menuItem.seasonal
+                menuItem.seasonal,
+                menuItem.weather
             ); //update content
 
             //console.log('About to change seasonal');
@@ -683,7 +685,8 @@ export async function deleteMenuItem(
                 menuItem.netPrice,
                 menuItem.popularity,
                 menuItem.ingredients,
-                menuItem.seasonal
+                menuItem.seasonal,
+                menuItem.weather
             ); //creates listing for deleted menu item
 
             const result = await isql`
