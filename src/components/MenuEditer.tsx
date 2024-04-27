@@ -21,6 +21,7 @@ function MenuEditer() {
         name: '',
         type: '',
         description: '',
+        weather: '',
         price: 0,
         netPrice: 0,
         popularity: 0,
@@ -151,7 +152,8 @@ function MenuEditer() {
             Number(form.netPrice),
             Number(form.popularity),
             ingredients,
-            null
+            null,
+            form.weather
         );
 
         const menuItemAlt = new MenuItem(
@@ -163,7 +165,8 @@ function MenuEditer() {
             Number(form.netPrice),
             Number(form.popularity),
             ingredients,
-            new Seasonal(startTimestamp, endTimeStamp, recurring)
+            new Seasonal(startTimestamp, endTimeStamp, recurring),
+            form.weather
         );
 
         /**
@@ -232,6 +235,13 @@ function MenuEditer() {
             form.type == ''
         ) {
             alert('Name, description, and type cannot be empty');
+        } else if (
+            form.weather != 'hot' &&
+            form.weather != 'cold' &&
+            form.weather != 'wet' &&
+            form.weather != 'normal'
+        ) {
+            alert("Weather must be either 'hot', 'cold', 'wet', or 'normal'");
         } else {
             if (selected == 'new') {
                 const confirm = window.confirm(
@@ -243,6 +253,7 @@ function MenuEditer() {
                         id: 0,
                         name: '',
                         type: '',
+                        weather: '',
                         description: '',
                         price: 0,
                         netPrice: 0,
@@ -315,6 +326,10 @@ function MenuEditer() {
             }));
             setForm((form) => ({
                 ...form,
+                weather: parseItem.weather,
+            }));
+            setForm((form) => ({
+                ...form,
                 price: parseItem.price,
             }));
             setForm((form) => ({
@@ -369,6 +384,7 @@ function MenuEditer() {
                 id: 0,
                 name: '',
                 type: '',
+                weather: '',
                 description: '',
                 price: 0,
                 netPrice: 0,
@@ -640,6 +656,15 @@ function MenuEditer() {
                             type="text"
                             name="type"
                             value={form.type}
+                            onChange={handleChange}
+                        />
+                    </label>
+                    <label>
+                        Weather:
+                        <input
+                            type="text"
+                            name="weather"
+                            value={form.weather}
                             onChange={handleChange}
                         />
                     </label>

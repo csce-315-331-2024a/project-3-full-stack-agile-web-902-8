@@ -92,6 +92,7 @@ export class MenuItem {
     popularity: number;
     ingredients: Ingredient[];
     seasonal: Seasonal | null;
+    weather?: string;
 
     constructor(
         id: number,
@@ -102,7 +103,8 @@ export class MenuItem {
         netPrice: number,
         popularity: number,
         ingredients: Ingredient[],
-        seasonal: Seasonal | null
+        seasonal: Seasonal | null,
+        weather?: string
     ) {
         this.id = id;
         this.name = name;
@@ -113,6 +115,7 @@ export class MenuItem {
         this.popularity = popularity;
         this.ingredients = ingredients;
         this.seasonal = seasonal;
+        this.weather = weather;
     }
 }
 
