@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { format, startOfToday } from 'date-fns';
 import styles from './component.module.css';
 import { Ingredient, InventoryItem, MenuItem, Seasonal } from '@/lib/models';
@@ -55,6 +55,28 @@ function MenuEditer() {
     /**
      * Fetches the names of the inventory items
      */
+    /*const fetchInventoryItems = useCallback(async () => {
+        const response = await fetch('/api/getAllInventoryItemNames');
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const inventoryItemNames = await response.json();
+        const sortedNames = inventoryItemNames.sort((a: string, b: string) =>
+            a.localeCompare(b)
+        );
+        //console.log(sortedNames);
+        setInventoryNames(sortedNames);
+        const existingNames: string[] = [];
+        ingredients.forEach((element) => {
+            existingNames.push(element.inventoryItem.name);
+        });
+        //console.log(existingNames);
+        const filtered = sortedNames.filter(
+            (name: string) => !existingNames.includes(name)
+        );
+        //console.log(filtered);
+        setInventoryNames(filtered);
+    }, [ingredients]);*/
     async function fetchInventoryItems() {
         const response = await fetch('/api/getAllInventoryItemNames');
         if (!response.ok) {
@@ -143,6 +165,8 @@ function MenuEditer() {
 
         const startObject = new Date(startDate);
         const endObject = new Date(endDate);
+        startObject.setHours(startObject.getHours() - 5);
+        endObject.setHours(endObject.getHours() - 5);
         console.log(startObject);
         console.log(endObject);
         const startTimestamp = Math.floor(startObject.getTime());
@@ -283,7 +307,7 @@ function MenuEditer() {
 
     useEffect(() => {
         fetchInventoryItems();
-    }, [addingIngredient]);
+    }, [addingIngredient, fetchInventoryItems]);
 
     useEffect(() => {
         if (form.seasonal && startDate == '' && endDate == '') {
