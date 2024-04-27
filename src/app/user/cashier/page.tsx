@@ -133,7 +133,14 @@ export default function Cashier() {
                 (orderEntry) =>
                     new OrderItem(orderEntry.quantity, orderEntry.item)
             );
-            const order = new Order(id, timestamp, discount, total, items);
+            const order = new Order(
+                id,
+                timestamp,
+                discount,
+                total,
+                items,
+                'PENDING'
+            );
 
             const response = await fetch('/api/addOrder', {
                 method: 'POST',

@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import styles from '@/components/component.module.css';
 import { MenuItem } from '@/lib/models';
+import Link from 'next/link';
 
 export interface OrderEntry {
     item: MenuItem;
@@ -17,8 +18,8 @@ export interface OrderItemProp {
 
 interface OrderSidebarProp {
     children: React.ReactNode;
-    // TODO: Change from just empty order to send order
-    setCurrentOrder: (currentOrder: OrderEntry[]) => void;
+    currentOrder: OrderEntry[];
+    checkoutPage: string;
 }
 
 export function CustomerOrderItem({
@@ -64,8 +65,8 @@ export function CustomerOrderItem({
             <Image
                 src="/menuItemImages/Aggie_Chicken_Club.png"
                 alt={item.name}
-                width={100}
-                height={100}
+                width={200}
+                height={200}
             />
             <h3 className={styles.name}>{item.name}</h3>
             <p className={styles.description}>
@@ -75,7 +76,16 @@ export function CustomerOrderItem({
 
             <div className={styles['quantity']}>
                 <button onClick={() => changeQty(qty - 1)}>
-                    {qty == 1 ? 'x' : '-'}
+                    {qty == 1 ? (
+                        <Image
+                            src="/remove.svg"
+                            alt={'remove'}
+                            width={30}
+                            height={30}
+                        />
+                    ) : (
+                        '-'
+                    )}
                 </button>
                 {/* TODO: Add method for onChange */}
                 <p>{qty}</p>
@@ -90,18 +100,20 @@ export function CustomerOrderItem({
 
 export function CustomerOrderSidebar({
     children,
-    setCurrentOrder,
+    currentOrder,
+    checkoutPage,
 }: OrderSidebarProp) {
     return (
         <div id={styles['order-sidebar']} className={styles.customer}>
             <div id={styles['order-box']}>{children}</div>
-            <button
-                className={styles['checkout']}
-                // TODO: Change from just empty order to send order
-                onClick={() => setCurrentOrder([])}
-            >
-                Checkout
-            </button>
+            <Link href={checkoutPage}>
+                <button
+                    className={styles['checkout']}
+                    disabled={currentOrder.length === 0}
+                >
+                    Checkout
+                </button>
+            </Link>
         </div>
     );
 }

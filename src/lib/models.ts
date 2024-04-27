@@ -23,6 +23,8 @@ export class User {
     }
 }
 
+export type OrderStatus = 'FILLED' | 'PENDING' | 'CANCELED';
+
 export class OrderItem {
     quantity: number;
     item: MenuItem;
@@ -39,19 +41,22 @@ export class Order {
     discount: number;
     total: number;
     items: OrderItem[];
+    status: OrderStatus;
 
     constructor(
         id: number,
         timestamp: Date,
         discount: number,
         total: number,
-        items: OrderItem[]
+        items: OrderItem[],
+        status: OrderStatus
     ) {
         this.id = id;
         this.timestamp = timestamp;
         this.discount = discount;
         this.total = total;
         this.items = items;
+        this.status = status;
     }
 }
 

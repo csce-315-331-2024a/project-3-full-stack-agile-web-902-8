@@ -104,7 +104,7 @@ ul.bar.customer {
     width: 100%;
 
     font-family: var(--font);
-    font-size: 16pt;
+    font-size: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -142,15 +142,15 @@ button.menu-item.customer {
 }
 
 button.menu-item.customer img {
-    max-width: 200px;
+    max-width: 16em;
 }
 
 button.menu-item.customer .name {
-    font-size: 24pt;
+    font-size: 1.5em;
 }
 
 button.menu-item.customer .description {
-    font-size: 12pt;
+    font-size: 1em;
     padding: 0 30px;
     text-align: center;
 }
@@ -183,16 +183,17 @@ ul.customer.recommended-items li {
     border: none;
     display: block;
     text-align: center;
-    padding: 30px 20px;
+    padding: 1em;
     display: inline-block;
 }
 
 .customer.recommended-item img {
-    max-width: 150px;
+    max-width: 8em;
+    max-height: 8em;
 }
 
 .customer.recommended-item .name {
-    font-size: 16pt;
+    font-size: 1em;
 }
 
 .customer button.recommended-item:hover {
@@ -216,8 +217,8 @@ button.recommended-item.customer:hover {
     color: rgb(var(--text-rgb));
     border-left: 1pt solid rgb(var(--text-rgb));
 
-    height: 100vh;
-    width: 300px;
+    height: 100%;
+    width: 20em;
 }
 
 .customer #order-box {
@@ -227,12 +228,18 @@ button.recommended-item.customer:hover {
 }
 
 .customer.order-item {
-    height: 200px;
+    height: fit-content;
     padding: 10px 10px 20px 10px;
     border: 1pt solid rgb(var(--text-rgb));
 
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.customer.order-item img {
+    width: 6em;
+    height: 6em;
 }
 
 .customer.order-item .name {
@@ -240,28 +247,33 @@ button.recommended-item.customer:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    grid-column: 2 / span 2;
 }
 
 .customer.order-item .description {
-    font-size: 10pt;
-    grid-column: 1 / span 2;
+    font-size: 1em;
+    grid-column: 1 / span 3;
 }
 
 .customer.order-item .quantity {
     display: flex;
     justify-content: row;
     align-items: center;
-    flex: 1 1 33%;
+    grid-column: 1;
 }
 
 .customer.order-item .quantity * {
-    width: 25px;
-    height: 25px;
+    width: 1em;
+    height: 1em;
 
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.customer.order-item .quantity p {
+    padding: 1em;
 }
 
 .customer.order-item .quantity button {
@@ -270,16 +282,21 @@ button.recommended-item.customer:hover {
     border: 1pt solid rgb(var(--text-rgb));
 
     text-decoration: none;
-    font-size: 16pt;
-    margin: 4px 2px;
+    font-size: 1.5em;
+    margin: 0.25em 0.1em;
     cursor: pointer;
 }
 
+.customer.order-item .quantity button img {
+    padding: 3px;
+}
+
 .customer.order-item .price {
-    font-size: 16pt;
+    font-size: 1.5em;
     display: flex;
     justify-content: center;
     align-items: center;
+    grid-column: 3;
 }
 
 .customer#order-sidebar button.checkout {
@@ -289,9 +306,13 @@ button.recommended-item.customer:hover {
     background-color: rgb(var(--secondary-rgb));
     color: rgb(var(--text-rgb));
     border: 1pt solid rgb(var(--text-rgb));
-    font-size: 24pt;
+    font-size: 2em;
 
     cursor: pointer;
+}
+
+.customer#order-sidebar button.checkout:disabled {
+    display: none;
 }
 
 .loading {
