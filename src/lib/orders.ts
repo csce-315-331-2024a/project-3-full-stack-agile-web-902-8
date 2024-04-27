@@ -1,7 +1,87 @@
 import psql, { transact } from '@/lib/database';
-import { Order } from '@/lib/models';
+import { Order, OrderItem } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
+
+/**
+ * Retrieves all pending orders with their items.
+ * Does not retireve ingredients, popularity, or seasonality.
+ * @param tsql
+ * @returns A list of pending orders.
+ */
+export async function getPendingOrders(tsql = psql): Promise<Order[]> {
+    return transact<Order[], postgres.Error, any>(
+        tsql,
+        new Error('SQL Error in getPendingOrders', undefined),
+        async (isql, _) => {
+            const orders = await isql`
+                SELECT o.id, o.timestamp, o.discount, o.total, o.status,
+                       i.id AS item_id, i.name AS item_name, i.type AS item_type, 
+                       i.price AS item_price, oi.qty AS item_quantity
+                FROM orders AS o
+                JOIN order_items AS oi ON o.id = oi.order_id
+                JOIN menu_items AS i ON oi.item_id = i.id
+                WHERE o.status = 'PENDING'
+            `;
+
+            const orderMap = new Map<number, Order>();
+
+            for (const row of orders) {
+                let order = orderMap.get(row.id);
+                if (!order) {
+                    order = new Order(
+                        row.id,
+                        new Date(row.timestamp + 'Z'),
+                        row.discount,
+                        row.total,
+                        [],
+                        row.status
+                    );
+                    orderMap.set(row.id, order);
+                }
+                order.items.push(
+                    new OrderItem(row.item_quantity, {
+                        id: row.item_id,
+                        name: row.item_name,
+                        type: row.item_type,
+                        price: row.item_price,
+                        netPrice: row.item_price,
+                        popularity: 0,
+                        ingredients: [],
+                        seasonal: null,
+                    })
+                );
+            }
+
+            console.log('Pending orders: ', Array.from(orderMap.values()));
+            return Array.from(orderMap.values());
+        }
+    );
+}
+
+/**
+ * Marks an order as filled in the database.
+ * @param orderId The id of the order to mark as filled.
+ * @param tsql
+ * @returns If the order was successfully marked as filled.
+ */
+export async function markOrderAsFilled(
+    orderId: number,
+    tsql = psql
+): Promise<boolean> {
+    return transact<boolean, postgres.Error, { orderId: number }>(
+        tsql,
+        new Error('SQL Error in markOrderAsFilled', undefined, { orderId }),
+        async (isql, _) => {
+            const updateResult = await isql`
+                UPDATE orders 
+                SET status = 'FILLED' 
+                WHERE id = ${orderId};
+            `;
+            return updateResult.count === 1;
+        }
+    );
+}
 
 /**
  * @param o The order to submit to the database.
