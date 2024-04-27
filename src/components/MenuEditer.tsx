@@ -55,7 +55,7 @@ function MenuEditer() {
     /**
      * Fetches the names of the inventory items
      */
-    /*const fetchInventoryItems = useCallback(async () => {
+    const fetchInventoryItems = useCallback(async () => {
         const response = await fetch('/api/getAllInventoryItemNames');
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
@@ -76,8 +76,8 @@ function MenuEditer() {
         );
         //console.log(filtered);
         setInventoryNames(filtered);
-    }, [ingredients]);*/
-    async function fetchInventoryItems() {
+    }, [ingredients]);
+    /*async function fetchInventoryItems() {
         const response = await fetch('/api/getAllInventoryItemNames');
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
@@ -98,7 +98,7 @@ function MenuEditer() {
         );
         //console.log(filtered);
         setInventoryNames(filtered);
-    }
+    }*/
 
     /**
      * Handles any change in the form inputs
