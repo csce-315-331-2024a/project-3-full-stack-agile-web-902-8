@@ -605,11 +605,12 @@ export async function deleteIngredient(
             const result = await isql`
         DELETE FROM ingredients WHERE item_id = ${item_id} AND inventory_id = ${inventory_id}`;
 
-            if (result.length > 0) {
+            /*if (result.length > 0) {
                 //if at least a parameter exists
                 return true;
             }
-            return false;
+            return false;*/
+            return true;
         }
     );
 }
@@ -640,11 +641,12 @@ export async function updateIngredient(
             const result = await isql`
         UPDATE ingredients SET amount = ${amount} WHERE item_id = ${item_id} AND inventory_id = ${inventory_id}`;
 
-            if (result.length > 0) {
+            /*if (result.length > 0) {
                 //if at least a parameter exists
                 return true;
             }
-            return false;
+            return false;*/
+            return true;
         }
     );
 }
@@ -750,11 +752,12 @@ export async function addSeasonalItem(
         INSERT INTO seasonal_items (item_id, start_date, end_date, recurring) 
         VALUES (${menuItem.id}, ${menuItem.seasonal.startDate}, ${menuItem.seasonal.endDate}, ${menuItem.seasonal.recurring})`;
 
-            if (result.length > 0) {
+            /*if (result.length > 0) {
                 //if at least a parameter exists
                 return true;
             }
-            return false;
+            return false;*/
+            return true;
         }
     );
 }

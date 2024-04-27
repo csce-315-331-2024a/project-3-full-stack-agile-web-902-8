@@ -5,6 +5,10 @@ import { Ingredient, InventoryItem, MenuItem, Seasonal } from '@/lib/models';
 import { updateSeasonalItem } from '@/lib/menu';
 import { start } from 'repl';
 
+/**
+ * Creates the component for editing menu items
+ * @return the comopnent for editing menu items
+ */
 function MenuEditer() {
     const [itemNames, setItemNames] = useState<string[]>([]);
     const [inventoryNames, setInventoryNames] = useState<string[]>([]);
@@ -32,6 +36,9 @@ function MenuEditer() {
     const [newQuantity, setNewQuantity] = useState<number>(0);
     const [inFlux, setInFlux] = useState<boolean>(false);
 
+    /**
+     * Fetched the menu item names
+     */
     async function fetchMenuItems() {
         const response = await fetch('/api/getAllMenuItemNames');
         if (!response.ok) {
@@ -45,6 +52,9 @@ function MenuEditer() {
         setItemNames(sortedNames);
     }
 
+    /**
+     * Fetches the names of the inventory items
+     */
     async function fetchInventoryItems() {
         const response = await fetch('/api/getAllInventoryItemNames');
         if (!response.ok) {
@@ -68,6 +78,10 @@ function MenuEditer() {
         setInventoryNames(filtered);
     }
 
+    /**
+     * Handles any change in the form inputs
+     * @param e the input that changed
+     */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         const { name, value } = e.target;
@@ -78,16 +92,28 @@ function MenuEditer() {
         }));
     };
 
+    /**
+     * Handles any change in the startdate input
+     * @param e the input that changed
+     */
     const handleChangeStart = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         setStartDate(e.target.value);
     };
 
+    /**
+     * Handles any change in the enddate input
+     * @param e the input that changed
+     */
     const handleChangeEnd = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         setEndDate(e.target.value);
     };
 
+    /**
+     * Handles any change in the checkbox input for seasonal
+     * @param e the input that changed
+     */
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         setForm((form) => ({
@@ -96,11 +122,19 @@ function MenuEditer() {
         }));
     };
 
+    /**
+     * Handles any change in the checkbox input for recurring
+     * @param e the input that changed
+     */
     const handleCheckRecurring = (e: React.ChangeEvent<HTMLInputElement>) => {
         setRecurring(e.target.checked);
         setInFlux(true);
     };
 
+    /**
+     * Handles submitting the form
+     * @param e The form to be used for submission
+     */
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(ingredients);
@@ -140,6 +174,9 @@ function MenuEditer() {
             new Seasonal(startTimestamp, endTimeStamp, recurring)
         );
 
+        /**
+         * Adds a menu item using the api path
+         */
         async function addMenuItem() {
             if (!form.seasonal) {
                 const response = await fetch('/api/addMenuItem', {
@@ -166,6 +203,9 @@ function MenuEditer() {
             }
         }
 
+        /**
+         * Updates a menu item using the api path
+         */
         async function updateMenuItem() {
             if (!form.seasonal) {
                 const response = await fetch('/api/updateMenuItem', {
@@ -232,6 +272,7 @@ function MenuEditer() {
                 updateMenuItem();
                 setInFlux(false);
             }
+            fetchMenuItems();
             fetchMenuItems();
         }
     };
@@ -354,6 +395,10 @@ function MenuEditer() {
         }
     }, [selected, exists]);
 
+    /**
+     * Handles a change in selection from teh dropdown
+     * @param e The select element that changed
+     */
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setInFlux(false);
         const itemName = e.target.value;
@@ -362,6 +407,9 @@ function MenuEditer() {
         setAddingIngredient(false);
     };
 
+    /**
+     * Handles removing a menu item
+     */
     const handleRemove = () => {
         async function removeMenuItem() {
             const response = await fetch('/api/remove', {
@@ -383,6 +431,10 @@ function MenuEditer() {
         fetchMenuItems();
     };
 
+    /**
+     * Handles removing an ingredient
+     * @param i the index of the ingredient to remove
+     */
     const handleRemoveIngredient = (i: number) => {
         setInFlux(true);
         const removed = [...ingredients];
@@ -390,6 +442,11 @@ function MenuEditer() {
         setIngredients(removed);
     };
 
+    /**
+     * Handles changing the amount of an ingredient
+     * @param i the index of the ingredient to change
+     * @param quantity the quantity to update the ingredient amount with
+     */
     const handleChangeAmount = (i: number, quantity: number) => {
         setInFlux(true);
         const changed = [...ingredients];
@@ -399,15 +456,26 @@ function MenuEditer() {
         }
     };
 
+    /**
+     * Handles starting to add an ingredient
+     */
     const handleAddIngredient = () => {
         setAddingIngredient(true);
     };
 
+    /**
+     * Handles selecting a inventory item
+     * @param e the select element that changed
+     */
     const handleSelectIng = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const itemName = e.target.value;
         setSelectedIng(itemName);
     };
 
+    /**
+     * Handles changing the quantity of a new ingredient to add
+     * @param e the input element that changed
+     */
     const handleChangeNewQuantity = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -417,6 +485,9 @@ function MenuEditer() {
         }
     };
 
+    /**
+     * Handles confirming the adding of an ingredient
+     */
     const handleConfirmIngredient = () => {
         setInFlux(true);
         async function getInventoryItem() {
@@ -448,6 +519,9 @@ function MenuEditer() {
         }
     };
 
+    /**
+     * Handles canceling the add ingredient process
+     */
     const handleCancelIngredient = () => {
         setAddingIngredient(false);
         setNewQuantity(0);
