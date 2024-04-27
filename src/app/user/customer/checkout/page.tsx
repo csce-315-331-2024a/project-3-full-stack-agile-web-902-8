@@ -13,7 +13,7 @@ import {
     OrderItem,
 } from '@/lib/models';
 
-import styles from '@/app/customer/page.module.css';
+import styles from '@/app/user/customer/page.module.css';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -72,7 +72,7 @@ export default function CustomerCheckout() {
         }
 
         console.log('Redirecting user to customer menu page');
-        router.push('/customer/order-placed');
+        router.push('/user/customer/order-placed');
 
         setIsPlacingOrder(true);
         try {

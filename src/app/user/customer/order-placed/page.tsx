@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import styles from '@/app/customer/page.module.css';
+import styles from '@/app/user/customer/page.module.css';
 
 export default function OrderPlaced() {
     const router = useRouter();
@@ -10,7 +10,7 @@ export default function OrderPlaced() {
 
     useEffect(() => {
         if (redirectSeconds == 0) {
-            router.push('/customer');
+            router.push('/user/customer');
             return;
         }
 
