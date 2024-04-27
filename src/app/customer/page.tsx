@@ -21,6 +21,7 @@ export default function Customer() {
     const [category, setCategory] = useState('');
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
+    const [recommendedItems, setRecommendedItems] = useState<MenuItem[]>([]);
     const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
@@ -62,6 +63,12 @@ export default function Customer() {
                 }
                 const menuItems = await response.json();
                 setItems(menuItems);
+                const recommendationResponse = await fetch('/api/recommendedItems');
+                if (!recommendationResponse.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const recIds: number[] = await recommendationResponse.json();
+                setRecommendedItems(menuItems.filter((i: MenuItem) => recIds.includes(i.id)));
                 console.log('Fetching should be done now.');
             } finally {
                 setIsFetchingMenuItems(false);
@@ -105,7 +112,7 @@ export default function Customer() {
                     <h2>Recommendations</h2>
                     <CustomerRecommendedBar
                         isFetchingMenuItems={isFetchingMenuItems}
-                        menuItems={categoryItems.slice(0, 6)}
+                        menuItems={recommendedItems.filter((i) => i.type === category)}
                         currentOrder={currentOrder}
                         setCurrentOrder={setCurrentOrder}
                     />
