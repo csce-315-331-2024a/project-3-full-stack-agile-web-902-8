@@ -53,6 +53,7 @@ export async function getPendingOrders(tsql = psql): Promise<Order[]> {
                 );
             }
 
+            console.log('Pending orders: ', Array.from(orderMap.values()));
             return Array.from(orderMap.values());
         }
     );
