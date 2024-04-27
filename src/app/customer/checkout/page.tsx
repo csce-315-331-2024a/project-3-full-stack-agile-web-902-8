@@ -81,7 +81,7 @@ export default function CustomerCheckout() {
             const items = currentOrder.map(
                 (orderEntry) => new OrderItem(orderEntry.qty, orderEntry.item)
             );
-            const order = new Order(id, timestamp, 0, total, items);
+            const order = new Order(id, timestamp, 0, total, items, "PENDING");
 
             const response = await fetch('/api/addOrder', {
                 method: 'POST',
