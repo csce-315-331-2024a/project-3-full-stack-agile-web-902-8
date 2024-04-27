@@ -8,6 +8,13 @@ export async function GET(request: NextRequest) {
         const beginDate = Number(url.searchParams.get('start'));
         const endDate = Number(url.searchParams.get('end'));
 
+        /*console.log(
+            'GET /api/getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason with start:',
+            new Date(beginDate).toLocaleString(),
+            'and end:',
+            new Date(endDate).toLocaleString()
+        );*/
+
         // Check if the dates are valid
         if (isNaN(beginDate) || isNaN(endDate)) {
             return NextResponse.json(

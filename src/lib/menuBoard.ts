@@ -6,51 +6,56 @@ import postgres from 'postgres';
 
 /**
  * Aggregates menu items sold within a specified time frames.
- * @param startDate The start of the time frame as a Date object.
- * @param endDate The end of the time frame as a Date object.
+ * @param start The start of the time frame as a Date object.
+ * @param end The end of the time frame as a Date object.
  * @param tsql The SQL transaction function, defaulting to psql.
  * @return A promise that resolves to an array of AggregateItems with their id, name, and quantity bought.
  */
 export async function aggregateMenuItems(
-    startDate: number,
-    endDate: number,
+    start: number,
+    end: number,
     tsql = psql
 ): Promise<AggregateItem[]> {
     return transact<
         AggregateItem[],
         any,
-        { startDate: number; endDate: number }
+        { start: number; end: number }
     >(
         tsql,
         new Error('SQL Error in aggregateMenuItems', undefined, {
-            startDate,
-            endDate,
+            start: start,
+            end: end,
         }),
         async (isql, _) => {
+
             const result = await isql`
-              SELECT
-                  mi.id AS id,
-                  mi.name AS name,
-                  SUM(oi.qty) AS qty
-              FROM
-                  menu_items mi
-              JOIN
-                  order_items oi ON mi.id = oi.item_id
-              JOIN
-                  orders o ON oi.order_id = o.id
-              WHERE
-                  o.timestamp >= to_timestamp(${startDate})
-                  AND o.timestamp <= to_timestamp(${endDate})
-              GROUP BY
-                  mi.id;
-          `;
+            SELECT
+                menu_items.id,
+                menu_items.name,
+                SUM(qty) AS qty
+            FROM
+                menu_items,
+                order_items,
+                orders
+            WHERE
+                menu_items.id = order_items.item_id AND
+                order_items.order_id = orders.id AND
+                orders.timestamp >= ${start} AND
+                orders.timestamp <= ${end}
+            GROUP BY
+                menu_items.id;
+        `;
 
-            const items: AggregateItem[] = [];
-            for (const row of result) {
-                items.push(new AggregateItem(row.id, row.name, row.qty));
-            }
+          console.log(`Query results:`, result);
 
-            return items;
+          let res: AggregateItem[] = [];
+          for (const row of result) {    
+              const { id, name, qty } = row;
+              const aggregateItem = new AggregateItem(id, name, qty);
+              res.push(aggregateItem);
+          }
+
+          return res;
         }
     );
 }

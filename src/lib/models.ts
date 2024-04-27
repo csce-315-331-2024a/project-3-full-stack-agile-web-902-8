@@ -163,13 +163,13 @@ export class aggregateInventoryItem {
 }
 
 export class frequentlySoldPairs {
-    name1: string;
-    name2: string;
+    item1Name: string;
+    item2Name: string;
     frequency: number;
 
-    constructor(name1: string, name2: string, frequency: number) {
-        this.name1 = name1;
-        this.name2 = name2;
+    constructor(item1Name: string, item2Name: string, frequency: number) {
+        this.item1Name = item1Name;
+        this.item2Name = item2Name;
         this.frequency = frequency;
     }
 }

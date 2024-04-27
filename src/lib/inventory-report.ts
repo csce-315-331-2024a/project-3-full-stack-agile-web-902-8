@@ -145,6 +145,7 @@ export async function aggregateInventory(
             end: end,
         }),
         async (isql, _) => {
+
             const rows = await isql`
             SELECT
                 inventory.id,
@@ -178,6 +179,7 @@ export async function aggregateInventory(
                 inventory.id = aggregate_ingredients.inventory_id
             GROUP BY
                 inventory.id;`;
+            console.log(`Query results:`, rows);
             let res: aggregateInventoryItem[] = [];
             for (const { id: id, name: name, qty: qty } of rows) {
                 res.push(new aggregateInventoryItem(id, name, qty));

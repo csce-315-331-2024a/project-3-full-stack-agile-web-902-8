@@ -8,12 +8,12 @@ export async function GET(request: NextRequest) {
         const startTime = Number(url.searchParams.get('start'));
         const endTime = Number(url.searchParams.get('end') || Date.now());
 
-        console.log(
+        /*console.log(
             'GET /api/aggregateInventory with start:',
-            new Date(startTime).toISOString(),
+            new Date(startTime).toLocaleString(),
             'and end:',
-            new Date(endTime).toISOString()
-        );
+            new Date(endTime).toLocaleString()
+        );*/
 
         // Check if the timestamps are valid numbers
         if (isNaN(startTime) || isNaN(endTime)) {

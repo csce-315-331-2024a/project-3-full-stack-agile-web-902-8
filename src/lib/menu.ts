@@ -1044,24 +1044,24 @@ export async function getMenuItemNamesByTypeAndInSeason(
 /**
  * Retrieves pairs of frequently sold menu item names of a specific type and in season within a given time range from the database.
  *
- * @param begin - The start date of the time range.
+ * @param start - The start date of the time range.
  * @param end - The end date of the time range.
  * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of objects representing pairs of menu item names along with their frequency of being sold.
  */
 export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
-    begin: number, // Changed to number to accept timestamps
-    end: number, // Changed to number to accept timestamps
+    start: number, 
+    end: number, 
     tsql = psql
 ): Promise<frequentlySoldPairs[]> {
     return transact<frequentlySoldPairs[], postgres.Error, any>(
         tsql,
         new Error('SQL Error in getMenuItemNamesByTypeAndInSeason', undefined, {
-            begin,
+            start,
             end,
         }),
         async (isql, _) => {
-            // The query now uses to_timestamp to convert milliseconds to a Postgres timestamp
+            
             const result = await isql`
             SELECT mi1.name AS item1Name, mi2.name AS item2Name, COUNT(*) AS frequency
             FROM order_items oi1
@@ -1069,22 +1069,18 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             JOIN orders o ON oi1.order_id = o.id
             JOIN menu_items mi1 ON oi1.item_id = mi1.id
             JOIN menu_items mi2 ON oi2.item_id = mi2.id
-            WHERE o.timestamp BETWEEN to_timestamp(${begin}) AND to_timestamp(${end})
+            WHERE o.timestamp BETWEEN ${start} AND ${end}
             GROUP BY mi1.name, mi2.name
             ORDER BY frequency DESC`;
 
-            const itemNames: frequentlySoldPairs[] = [];
+            
 
-            // Returns pairs that sell frequently
-            for (const {
-                name1: item1Name,
-                name2: item2Name,
-                frequency: frequency,
-            } of result) {
-                itemNames.push(
-                    new frequentlySoldPairs(item1Name, item2Name, frequency)
-                );
-            }
+            let itemNames: frequentlySoldPairs[] = [];
+            for (const row of result) {
+                const { item1name, item2name, frequency } = row;
+                console.log(`Name1: ${item1name}, Name2: ${item2name}, Frequency: ${frequency}`);
+                itemNames.push(new frequentlySoldPairs(item1name, item2name, frequency));
+              }
             return itemNames;
         }
     );

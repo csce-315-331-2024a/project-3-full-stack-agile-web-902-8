@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import { frequentlySoldPairs } from '@/lib/models';
 
@@ -19,42 +18,44 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
         margin: '0.5rem 0',
     };
 
+    // Enhanced styling for headers
+    const headerStyle: React.CSSProperties = {
+        backgroundColor: '#a05a2c', // Adjust the color to match your design
+        color: 'white',
+        padding: '10px',
+        textAlign: 'left',
+    };
+
+    // Enhanced styling for the title for darker appearance
+    const titleStyle: React.CSSProperties = {
+        backgroundColor: '#804000', // Darker shade for the title background
+        color: 'white',
+        padding: '10px',
+        textAlign: 'center',
+        fontSize: '1.5rem',
+        borderTopLeftRadius: '10px', // Optional for rounded corners
+        borderTopRightRadius: '10px', // Optional for rounded corners
+    };
+
     return (
         <div style={listStyle}>
-            <h2>{title}</h2>
+            <div style={titleStyle}>{title}</div>
             <table>
                 <thead>
                     <tr>
-                        <th>First Item</th>
-                        <th>Second Item</th>
-                        <th>Frequency</th>
+                        <th style={headerStyle}>Item 1</th>
+                        <th style={headerStyle}>Item 2</th>
+                        <th style={headerStyle}>Frequency</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map(
-                        (
-                            getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason,
-                            index
-                        ) => (
-                            <tr key={index}>
-                                <td>
-                                    {
-                                        getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason.name1
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason.name2
-                                    }
-                                </td>
-                                <td>
-                                    {
-                                        getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason.frequency
-                                    }
-                                </td>
-                            </tr>
-                        )
-                    )}
+                    {items.map((item, index) => (
+                        <tr key={index}>
+                            <td>{item.item1Name}</td> 
+                            <td>{item.item2Name}</td>
+                            <td>{item.frequency}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
