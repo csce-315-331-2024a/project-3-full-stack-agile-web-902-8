@@ -119,3 +119,38 @@
     background-color: rgb(var(--text-rgb));
     cursor: wait;
 }
+
+.navbarFlex {
+    display: inline-flex;
+  }
+  
+  .navbarButton {
+    background-color: #ccc;
+    color: #333;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .navbarButton:first-child {
+    border-radius: 0.25rem 0 0 0.25rem;
+  }
+  
+  .navbarButton:last-child {
+    border-radius: 0 0.25rem 0.25rem 0;
+  }
+  
+  .navbarButton:hover {
+    background-color: #bbb;
+  }
+  
+  .navbarButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .navbarButton.bg-gray-400 {
+    background-color: #bbb;
+  }
+  

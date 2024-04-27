@@ -3,20 +3,32 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
     try {
-        // Get the begin time and end time from the request URL
+        console.log('Entering GET function.');
+
         const url = new URL(request.url);
         const beginTime = Number(url.searchParams.get('beginTime'));
         const endTime = Number(url.searchParams.get('endTime'));
 
-        // Convert timestamps to date strings
-        const beginDate = new Date(beginTime).toLocaleString();
-        const endDate = new Date(endTime).toLocaleString();
+        const dateFormatOptions: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZone: 'America/Chicago', 
+        };
+
+        const beginDate = new Intl.DateTimeFormat('en-US', dateFormatOptions)
+            .format(new Date(beginTime));
+        const endDate = new Intl.DateTimeFormat('en-US', dateFormatOptions)
+            .format(new Date(endTime));
 
         console.log(
-            'GET /api/getExcessReport with beginTime:',
-            beginDate,
+            'GET /api/getorderHistory with beginTime:',
+            beginDate, beginTime,
             'and endTime:',
-            endDate
+            endDate, endTime
         );
 
         if (isNaN(beginTime) || isNaN(endTime)) {
@@ -26,7 +38,6 @@ export async function GET(request: Request) {
             );
         }
 
-        // Check if begin time is greater than end time
         if (beginTime > endTime) {
             return NextResponse.json(
                 {
@@ -37,10 +48,17 @@ export async function GET(request: Request) {
         }
 
         const res = await orderHistory(beginTime, endTime);
-        return NextResponse.json(res, { status: 200 });
+
+        const orders = res.map(order => {
+            const localTime = new Intl.DateTimeFormat('en-US', dateFormatOptions)
+                .format(new Date(order.timestamp));
+            return { ...order, timestamp: localTime };
+        });
+
+        return NextResponse.json(orders, { status: 200 });
     } catch (error: any) {
         return NextResponse.json(
-            { error: `Error fetching excess report: ${error.message}` },
+            { error: `Error fetching order history: ${error.message}` },
             { status: 500 }
         );
     }
