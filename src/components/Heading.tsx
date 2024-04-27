@@ -1,10 +1,10 @@
+// DONE
 'use client';
 
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import styles from './component.module.css';
 import revsLogo from '../../public/RLogo.ico';
 import LogoutButton from './LogoutButton';
 
@@ -13,6 +13,7 @@ type HeadingProp = {
     hrefs: string[];
     isLoggedIn: boolean;
     openMenuBoardPages: () => void;
+    className?: string;
 };
 
 function Heading({
@@ -20,27 +21,39 @@ function Heading({
     hrefs,
     isLoggedIn,
     openMenuBoardPages,
+    className,
 }: HeadingProp) {
     const pathName = usePathname();
     return (
-        <nav className={styles.navbar}>
-            <Image src={revsLogo} alt="Rev's American Grill" />
-            <ul>
+        <nav
+            className={
+                'w-full z-50 flex flex-row justify-between items-center bg-background shadow-xl ' +
+                className
+            }
+        >
+            <Image
+                className="h-12 w-auto mx-4"
+                src={revsLogo}
+                alt="Rev's American Grill"
+            />
+            <ul className="flex flex-row flex-wrap items-center justify-between w-full h-full">
                 {names.map((link, i) =>
                     link === 'Menu Board' ? (
-                        <li key={link} onClick={openMenuBoardPages}>
-                            <a>{link}</a>
+                        <li
+                            className="flex h-full"
+                            key={link}
+                            onClick={openMenuBoardPages}
+                        >
+                            <a className="px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink">{link}</a>
                         </li>
                     ) : (
                         <li
                             key={link}
-                            className={
-                                pathName === hrefs[i]
-                                    ? styles.navbarCurrent
-                                    : ''
-                            }
+                            className='flex h-full'
                         >
-                            <Link href={hrefs[i]}>{link}</Link>
+                            <Link className={'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink' + (pathName === hrefs[i]
+                                    ? ' current'
+                                    : '')} href={hrefs[i]}>{link}</Link>
                         </li>
                     )
                 )}

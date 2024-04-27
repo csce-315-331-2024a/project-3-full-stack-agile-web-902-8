@@ -1,6 +1,7 @@
+// DONE
+
 'use client';
 import React from 'react';
-import componentStyles from './component.module.css';
 
 interface LogoutButtonProps {
     isLoggedIn: boolean;
@@ -13,7 +14,7 @@ function LogoutButton({ isLoggedIn }: LogoutButtonProps) {
     };
 
     return (
-        <button className={componentStyles.logout} onClick={handleLogout}>
+        <button className='p-3 mx-4 rounded-2xl m-auto bg-secondary duration-200 hover:bg-secondary/50' onClick={handleLogout}>
             {isLoggedIn ? 'Logout' : 'Login'}
         </button>
     );

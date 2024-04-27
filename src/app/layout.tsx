@@ -1,8 +1,23 @@
+// DONE
+
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+import { Poppins, Roboto_Mono } from 'next/font/google';
+
+const poppins = Poppins({
+    weight: ['400', '700'],
+    style: ['normal'],
+    subsets: ['latin'],
+    variable: '--font-poppins',
+    display: 'swap',
+});
+
+const robotoMono = Roboto_Mono({
+    subsets: ['latin'],
+    variable: '--font-roboto-mono',
+    display: 'swap',
+});
 
 export const metadata: Metadata = {
     title: "Rev's American Grill",
@@ -15,11 +30,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={`${poppins.variable} ${robotoMono.variable}`}>
             <head>
                 <link rel="icon" href="/RLogo.ico" />
             </head>
-            <body className={inter.className}>{children}</body>
+            <body>{children}</body>
         </html>
     );
 }

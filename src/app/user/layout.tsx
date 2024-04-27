@@ -1,8 +1,9 @@
+// DONE
+
 'use client';
 
 import Heading from '@/components/Heading';
 import React, { useState } from 'react';
-import componentStyles from '@/components/component.module.css';
 
 function openMenuBoardPages() {
     window.open('/menuboards/Burgs', '_blank');
@@ -18,7 +19,6 @@ export default function UserLayout({
 }) {
     // TODO: In the future, the links presented will be determined by the user's position in Rev's
     // TODO: Manage the user's login status
-    // TODO: Re-implement menu boards
 
     const [headingNames, setHeadingNames] = useState<string[]>([
         'Customer',
@@ -35,12 +35,13 @@ export default function UserLayout({
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     return (
-        <div className={componentStyles.layoutDiv}>
+        <div className='w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]'>
             <Heading
                 names={headingNames}
                 hrefs={headingHrefs}
                 isLoggedIn={isLoggedIn}
                 openMenuBoardPages={openMenuBoardPages}
+                className='col-span-2 row-span-1'
             />
             {children}
         </div>
