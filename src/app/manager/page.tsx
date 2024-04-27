@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import Heading from '@/components/Heading';
-import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
 import OrderTable from '@/components/OrderTable';
@@ -19,7 +18,7 @@ export default function Manager() {
         'Home',
         'Menu',
         'Inventory',
-        'Order History',
+        'Product Data',
         'Reports',
         'Logout',
     ];
@@ -31,6 +30,7 @@ export default function Manager() {
         '/manager/report_page',
         '/',
     ];
+
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
     const Links2 = ['/manager', '/customer', '/cashier', '/manager'];
 
@@ -57,12 +57,8 @@ export default function Manager() {
                         }
                         block2={
                             <div>
-                                <h1>Manager Page</h1>
-                                <PageButton>Refresh</PageButton>
-                                <OrderTable
-                                    heading={tableHead}
-                                    rows={tableBody}
-                                />
+                                <h1>Order History</h1>
+                                <OrderTable />
                             </div>
                         }
                     />
