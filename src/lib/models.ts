@@ -149,3 +149,27 @@ export class AggregateItem {
         this.qty = qty;
     }
 }
+
+export class aggregateInventoryItem {
+    id: number;
+    name: string;
+    qty: number;
+
+    constructor(id: number, name: string, qty: number) {
+        this.id = id;
+        this.name = name;
+        this.qty = qty;
+    }
+}
+
+export class frequentlySoldPairs {
+    name1: string;
+    name2: string;
+    frequency: number;
+
+    constructor(name1: string, name2: string, frequency: number) {
+        this.name1 = name1;
+        this.name2 = name2;
+        this.frequency = frequency;
+    }
+}

@@ -39,8 +39,8 @@ export async function aggregateMenuItems(
               JOIN
                   orders o ON oi.order_id = o.id
               WHERE
-                  o.timestamp >= to_timestamp(${startDate} / 1000.0)
-                  AND o.timestamp <= to_timestamp(${endDate} / 1000.0)
+                  o.timestamp >= to_timestamp(${startDate})
+                  AND o.timestamp <= to_timestamp(${endDate})
               GROUP BY
                   mi.id;
           `;

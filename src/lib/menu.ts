@@ -8,7 +8,7 @@ import {
 } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
-
+import { frequentlySoldPairs } from '@/lib/models';
 //go back and fix the affecterows
 
 export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
@@ -1050,17 +1050,18 @@ export async function getMenuItemNamesByTypeAndInSeason(
  * @returns A Promise resolving to an array of objects representing pairs of menu item names along with their frequency of being sold.
  */
 export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
-    begin: Date,
-    end: Date,
+    begin: number, // Changed to number to accept timestamps
+    end: number, // Changed to number to accept timestamps
     tsql = psql
-): Promise<[string, string, number][]> {
-    return transact<[string, string, number][], postgres.Error, any>(
+): Promise<frequentlySoldPairs[]> {
+    return transact<frequentlySoldPairs[], postgres.Error, any>(
         tsql,
         new Error('SQL Error in getMenuItemNamesByTypeAndInSeason', undefined, {
-            begin: begin,
-            end: end,
+            begin,
+            end,
         }),
         async (isql, _) => {
+            // The query now uses to_timestamp to convert milliseconds to a Postgres timestamp
             const result = await isql`
             SELECT mi1.name AS item1Name, mi2.name AS item2Name, COUNT(*) AS frequency
             FROM order_items oi1
@@ -1068,15 +1069,21 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             JOIN orders o ON oi1.order_id = o.id
             JOIN menu_items mi1 ON oi1.item_id = mi1.id
             JOIN menu_items mi2 ON oi2.item_id = mi2.id
-            WHERE o.timestamp BETWEEN ${begin} AND ${end}
+            WHERE o.timestamp BETWEEN to_timestamp(${begin}) AND to_timestamp(${end})
             GROUP BY mi1.name, mi2.name
             ORDER BY frequency DESC`;
 
-            const itemNames: [string, string, number][] = [];
+            const itemNames: frequentlySoldPairs[] = [];
 
-            //returns pair that sell frequently
-            for (const row of result) {
-                itemNames.push([row.item1Name, row.item2Name, row.frequency]);
+            // Returns pairs that sell frequently
+            for (const {
+                name1: item1Name,
+                name2: item2Name,
+                frequency: frequency,
+            } of result) {
+                itemNames.push(
+                    new frequentlySoldPairs(item1Name, item2Name, frequency)
+                );
             }
             return itemNames;
         }

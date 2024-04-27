@@ -5,11 +5,11 @@ export async function GET(request: NextRequest) {
     try {
         // Parse the URL parameters
         const url = new URL(request.url);
-        const beginDate = new Date(url.searchParams.get('begin') || '');
-        const endDate = new Date(url.searchParams.get('end') || '');
+        const beginDate = Number(url.searchParams.get('start'));
+        const endDate = Number(url.searchParams.get('end'));
 
         // Check if the dates are valid
-        if (isNaN(beginDate.getTime()) || isNaN(endDate.getTime())) {
+        if (isNaN(beginDate) || isNaN(endDate)) {
             return NextResponse.json(
                 { error: 'Invalid date parameters' },
                 { status: 400 }

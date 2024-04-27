@@ -1,14 +1,9 @@
 'use client';
 import React from 'react';
-
-type ListItem = {
-    firstItem: string;
-    secondItem: string;
-    frequency: number;
-};
+import { frequentlySoldPairs } from '@/lib/models';
 
 type ScrollableListProps = {
-    items: ListItem[];
+    items: frequentlySoldPairs[];
     title: string;
 };
 
@@ -36,13 +31,30 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((item: ListItem, index: number) => (
-                        <tr key={index}>
-                            <td>{item.firstItem}</td>
-                            <td>{item.secondItem}</td>
-                            <td>{item.frequency}</td>
-                        </tr>
-                    ))}
+                    {items.map(
+                        (
+                            getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason,
+                            index
+                        ) => (
+                            <tr key={index}>
+                                <td>
+                                    {
+                                        getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason.name1
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason.name2
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason.frequency
+                                    }
+                                </td>
+                            </tr>
+                        )
+                    )}
                 </tbody>
             </table>
         </div>
