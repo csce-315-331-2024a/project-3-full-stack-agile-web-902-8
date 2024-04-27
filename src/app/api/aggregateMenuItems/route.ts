@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
         const startTime = Number(url.searchParams.get('start'));
         const endTime = Number(url.searchParams.get('end'));
 
-       /* console.log(
+        /* console.log(
             'GET /api/aggregateMenu with start:',
             new Date(startTime).toLocaleString(),
             'and end:',

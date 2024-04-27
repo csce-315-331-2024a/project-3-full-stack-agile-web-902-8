@@ -51,7 +51,7 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
                 <tbody>
                     {items.map((item, index) => (
                         <tr key={index}>
-                            <td>{item.item1Name}</td> 
+                            <td>{item.item1Name}</td>
                             <td>{item.item2Name}</td>
                             <td>{item.frequency}</td>
                         </tr>

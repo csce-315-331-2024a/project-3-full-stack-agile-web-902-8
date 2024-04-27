@@ -16,18 +16,13 @@ export async function aggregateMenuItems(
     end: number,
     tsql = psql
 ): Promise<AggregateItem[]> {
-    return transact<
-        AggregateItem[],
-        any,
-        { start: number; end: number }
-    >(
+    return transact<AggregateItem[], any, { start: number; end: number }>(
         tsql,
         new Error('SQL Error in aggregateMenuItems', undefined, {
             start: start,
             end: end,
         }),
         async (isql, _) => {
-
             const result = await isql`
             SELECT
                 menu_items.id,
@@ -46,16 +41,16 @@ export async function aggregateMenuItems(
                 menu_items.id;
         `;
 
-          console.log(`Query results:`, result);
+            console.log(`Query results:`, result);
 
-          let res: AggregateItem[] = [];
-          for (const row of result) {    
-              const { id, name, qty } = row;
-              const aggregateItem = new AggregateItem(id, name, qty);
-              res.push(aggregateItem);
-          }
+            let res: AggregateItem[] = [];
+            for (const row of result) {
+                const { id, name, qty } = row;
+                const aggregateItem = new AggregateItem(id, name, qty);
+                res.push(aggregateItem);
+            }
 
-          return res;
+            return res;
         }
     );
 }

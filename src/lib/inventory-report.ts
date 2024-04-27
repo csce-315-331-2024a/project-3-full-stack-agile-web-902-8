@@ -145,7 +145,6 @@ export async function aggregateInventory(
             end: end,
         }),
         async (isql, _) => {
-
             const rows = await isql`
             SELECT
                 inventory.id,

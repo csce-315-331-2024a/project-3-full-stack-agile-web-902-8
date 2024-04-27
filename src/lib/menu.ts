@@ -1050,8 +1050,8 @@ export async function getMenuItemNamesByTypeAndInSeason(
  * @returns A Promise resolving to an array of objects representing pairs of menu item names along with their frequency of being sold.
  */
 export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
-    start: number, 
-    end: number, 
+    start: number,
+    end: number,
     tsql = psql
 ): Promise<frequentlySoldPairs[]> {
     return transact<frequentlySoldPairs[], postgres.Error, any>(
@@ -1061,7 +1061,6 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             end,
         }),
         async (isql, _) => {
-            
             const result = await isql`
             SELECT mi1.name AS item1Name, mi2.name AS item2Name, COUNT(*) AS frequency
             FROM order_items oi1
@@ -1073,14 +1072,16 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             GROUP BY mi1.name, mi2.name
             ORDER BY frequency DESC`;
 
-            
-
             let itemNames: frequentlySoldPairs[] = [];
             for (const row of result) {
                 const { item1name, item2name, frequency } = row;
-                console.log(`Name1: ${item1name}, Name2: ${item2name}, Frequency: ${frequency}`);
-                itemNames.push(new frequentlySoldPairs(item1name, item2name, frequency));
-              }
+                console.log(
+                    `Name1: ${item1name}, Name2: ${item2name}, Frequency: ${frequency}`
+                );
+                itemNames.push(
+                    new frequentlySoldPairs(item1name, item2name, frequency)
+                );
+            }
             return itemNames;
         }
     );

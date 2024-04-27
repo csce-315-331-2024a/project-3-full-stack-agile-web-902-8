@@ -17,14 +17,14 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     setEndDate,
 }) => {
     // Function to handle date changes, including seconds
-    const handleDateChange = (
-        dateSetter: (date: Date) => void
-    ) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        dateSetter(new Date(event.target.value));
-    };
+    const handleDateChange =
+        (dateSetter: (date: Date) => void) =>
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            dateSetter(new Date(event.target.value));
+        };
 
     // Generate ISO string with seconds
-    const toDateTimeLocal = (date: Date) => 
+    const toDateTimeLocal = (date: Date) =>
         formatISO(date, { representation: 'complete' }).slice(0, 19);
 
     return (
