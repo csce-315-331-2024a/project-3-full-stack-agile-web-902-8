@@ -69,6 +69,105 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+
+/******************************************
+ *           Kitchen Components           *
+ ******************************************/
+
+.kitchenMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.kitchenMain h1 {
+    font-family: var(--font);
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.completeOrder {
+    color: rgb(var(--background-rgb));
+    background-color: rgb(var(--primary-rgb));
+    font-family: var(--font);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 250ms;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.completeOrder:hover {
+    cursor: pointer;
+    background-color: rgb(var(--primary-rgb), 0.67);
+    color: rgb(var(--text-rgb));
+}
+
+.completeOrder.disabled {
+    cursor: wait;
+    background-color: rgb(var(--primary-rgb), 0.33);
+    color: rgb(var(--text-rgb));
+}
+
+.kitchenGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.kitchenGridItem {
+    background-color: rgba(var(--secondary-rgb), 0.5);
+    font-family: var(--font);
+    position: relative;
+    padding-bottom: calc(1rem + 4rem);
+}
+
+.kitchenGridItem.hurry {
+    background-color: rgba(var(--accent-rgb), 0.25);
+}
+
+.kitchenGridTimer {
+    background-color: rgb(var(--secondary-rgb));
+    margin: 0 auto 0 0;
+    width: fit-content;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 0.5rem;
+}
+
+.kitchenGridTimer.hurry {
+    color: rgb(var(--background-rgb));
+    background-color: rgb(var(--accent-rgb));
+}
+
+.kitchenGridItem ul {
+    list-style-type: none;
+}
+
+.kitchenGridItem li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kitchenGridQuantity {
+    width: 2rem;
+    text-align: right;
+    margin-right: 1rem;
+}
+
+.kitchenGridItemName {
+    flex-grow: 1;
+    text-align: left;
+}
+
 /******************************************
  *           Customer Components          *
  ******************************************/
