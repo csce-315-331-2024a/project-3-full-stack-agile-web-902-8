@@ -205,20 +205,20 @@ export async function addMenuItem(
         }),*/
         new Error('SQL Error in addMenuItem', undefined, menuItem),
         async (isql, _) => {
-            console.log(menuItem);
+            /*console.log(menuItem);
             console.log(menuItem.name);
             console.log(menuItem.type);
             console.log(menuItem.description);
             console.log(menuItem.price);
             console.log(menuItem.netPrice);
-            console.log(menuItem.popularity);
+            console.log(menuItem.popularity);*/
             const result = await isql`
         INSERT INTO menu_items (name, type, description, price, net_price, popularity) 
         VALUES (${menuItem.name}, ${menuItem.type}, ${menuItem.description}, ${menuItem.price}, ${menuItem.netPrice}, ${menuItem.popularity}) RETURNING id`;
-            console.log('Successfully added basic information');
-            console.log('This is the length of result: ' + result.length);
+            /*console.log('Successfully added basic information');
+            console.log('This is the length of result: ' + result.length);*/
             const addedId = result[0].id; //generates new id for menu item
-            console.log(addedId);
+            //console.log(addedId);
             const addedMenuItem = new MenuItem(
                 addedId,
                 menuItem.name,
@@ -230,8 +230,8 @@ export async function addMenuItem(
                 menuItem.ingredients,
                 menuItem.seasonal
             ); //creates new menu item
-            console.log('Created added menu item');
-            console.log(addedMenuItem);
+            //console.log('Created added menu item');
+            //console.log(addedMenuItem);
 
             if (
                 menuItem.seasonal != null &&
@@ -240,9 +240,9 @@ export async function addMenuItem(
                 //if it doesnt meet conditions
                 return false;
             }
-            console.log('Seasonal is fine');
+            //console.log('Seasonal is fine');
 
-            console.log('About to add ingredients');
+            //console.log('About to add ingredients');
             return await addIngredients(addedMenuItem, isql);
         }
     );
@@ -267,31 +267,31 @@ export async function addIngredients(
         new Error('SQL Error in addIngredients', undefined, menuItem),
         async (isql, _) => {
             for (const ingredient of menuItem.ingredients) {
-                console.log(ingredient);
+                //console.log(ingredient);
                 const inventoryId = await findInventoryIdByName(
                     ingredient.inventoryItem.name,
                     isql
                 ); //if no inventory id is found
-                console.log('No issues yet');
+                /*console.log('No issues yet');
                 console.log(inventoryId);
-                console.log(ingredient.amount);
+                console.log(ingredient.amount);*/
                 if (inventoryId == -1) {
                     console.log('Inventory item not found');
                     return false;
                 }
-                console.log('Adding ingredient', inventoryId);
+                /*console.log('Adding ingredient', inventoryId);
                 console.log(menuItem.id);
                 console.log(inventoryId);
-                console.log(ingredient.amount);
+                console.log(ingredient.amount);*/
                 const added = await addIngredient(
                     menuItem.id,
                     inventoryId,
                     ingredient.amount,
                     isql
                 ); //if add does not work
-                console.log('Finsihed add query');
+                //console.log('Finsihed add query');
                 if (!added) {
-                    console.log('Was not added');
+                    //console.log('Was not added');
                     return false;
                 }
             }
@@ -349,7 +349,7 @@ export async function addIngredient(
             amount: amount,
         }),
         async (isql, _) => {
-            console.log('In add ingredient');
+            //console.log('In add ingredient');
             try {
                 const result = await isql`
                 INSERT INTO ingredients (item_id, inventory_id, amount) VALUES (${item_id}, ${inventory_id}, ${amount})`;
@@ -357,7 +357,7 @@ export async function addIngredient(
                 console.error(error);
             }
 
-            console.log('Inserted');
+            //console.log('Inserted');
 
             /*if (result.length > 0) {
                 //if at least a parameter exists
@@ -395,7 +395,7 @@ export async function updateMenuItem(
             const result = await isql`
         UPDATE menu_items SET type = ${menuItem.type}, description = ${menuItem.description}, price = ${menuItem.price}, net_price = ${menuItem.netPrice}, popularity = ${menuItem.popularity} 
         WHERE id = ${itemId}`;
-            console.log('Successfully changed values');
+            //console.log('Successfully changed values');
 
             /*if (result.length == 0) {
                 //if no param exists
@@ -415,18 +415,18 @@ export async function updateMenuItem(
                 menuItem.seasonal
             ); //update content
 
-            console.log('About to change seasonal');
+            //console.log('About to change seasonal');
             const seasonalItemUpdated = await updateSeasonalItem(
                 updatedMenuItem,
                 isql
             );
-            console.log('About to change ingredients');
-            console.log(updatedMenuItem);
+            /*console.log('About to change ingredients');
+            console.log(updatedMenuItem);*/
             const ingredientsUpdated = await updateIngredients(
                 updatedMenuItem,
                 isql
             );
-            console.log('Finsihed changing ingredients');
+            //console.log('Finsihed changing ingredients');
 
             return seasonalItemUpdated && ingredientsUpdated; //if it meets requirements
         }
@@ -474,12 +474,12 @@ export async function updateIngredients(
         tsql,
         new Error('SQL Error in updateIngredients', undefined, menuItem),
         async (isql, _) => {
-            console.log('Getting ingredients');
+            //console.log('Getting ingredients');
             const currentIngredients = await getIngredientsByMenuItemId(
                 menuItem.id,
                 tsql
             ); //gets all ingredients with menu item id
-            console.log('got ingredients');
+            //console.log('got ingredients');
 
             for (const currentIngredient of currentIngredients) {
                 //iterate through all ingredients
@@ -804,12 +804,12 @@ export async function updateSeasonalItem(
                     return false;
                 }
             } else {
-                console.log('No current seasonal, adding now');
+                //console.log('No current seasonal, adding now');
                 if (menuItem.seasonal != null) {
                     //add seasonal item entry
                     return addSeasonalItem(menuItem, isql);
                 }
-                console.log('Finsihed adding seasonal');
+                //console.log('Finsihed adding seasonal');
                 return true;
             }
         }

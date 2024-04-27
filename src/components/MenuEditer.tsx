@@ -46,7 +46,6 @@ function MenuEditer() {
             throw new Error(`Error: ${response.statusText}`);
         }
         const menuItemNames = await response.json();
-        //console.log(menuItemNames);
         const sortedNames = menuItemNames.sort((a: string, b: string) =>
             a.localeCompare(b)
         );
@@ -65,41 +64,16 @@ function MenuEditer() {
         const sortedNames = inventoryItemNames.sort((a: string, b: string) =>
             a.localeCompare(b)
         );
-        //console.log(sortedNames);
         setInventoryNames(sortedNames);
         const existingNames: string[] = [];
         ingredients.forEach((element) => {
             existingNames.push(element.inventoryItem.name);
         });
-        //console.log(existingNames);
         const filtered = sortedNames.filter(
             (name: string) => !existingNames.includes(name)
         );
-        //console.log(filtered);
         setInventoryNames(filtered);
     }, [ingredients]);
-    /*async function fetchInventoryItems() {
-        const response = await fetch('/api/getAllInventoryItemNames');
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        const inventoryItemNames = await response.json();
-        const sortedNames = inventoryItemNames.sort((a: string, b: string) =>
-            a.localeCompare(b)
-        );
-        //console.log(sortedNames);
-        setInventoryNames(sortedNames);
-        const existingNames: string[] = [];
-        ingredients.forEach((element) => {
-            existingNames.push(element.inventoryItem.name);
-        });
-        //console.log(existingNames);
-        const filtered = sortedNames.filter(
-            (name: string) => !existingNames.includes(name)
-        );
-        //console.log(filtered);
-        setInventoryNames(filtered);
-    }*/
 
     /**
      * Handles any change in the form inputs
@@ -108,7 +82,6 @@ function MenuEditer() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         const { name, value } = e.target;
-        console.log(name, value);
 
         setForm((form) => ({
             ...form,
@@ -161,20 +134,13 @@ function MenuEditer() {
      */
     const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(ingredients);
-        console.log(startDate);
-        console.log(endDate);
 
         const startObject = new Date(startDate);
         const endObject = new Date(endDate);
         startObject.setHours(startObject.getHours() - 5);
         endObject.setHours(endObject.getHours() - 5);
-        console.log(startObject);
-        console.log(endObject);
         const startTimestamp = Math.floor(startObject.getTime());
         const endTimeStamp = Math.floor(endObject.getTime());
-
-        console.log(ingredients);
 
         const menuItem = new MenuItem(
             0,
@@ -258,27 +224,20 @@ function MenuEditer() {
             }
         }
 
-        if (
-            Number(form.price) <= 0 ||
-            Number(form.netPrice) <= 0 ||
-            Number(form.popularity) <= 0
-        ) {
-            alert('Cannot have negative or 0 values');
+        if (Number(form.price) <= 0 || Number(form.popularity) <= 0) {
+            alert('Cannot have negative or 0 values for price or popularity');
         } else if (
             form.name == '' ||
             form.description == '' ||
             form.type == ''
         ) {
-            alert('Nothing inputted');
+            alert('Name, description, and type cannot be empty');
         } else {
             if (selected == 'new') {
                 const confirm = window.confirm(
                     'Are you sure you want to add this item?'
                 );
                 if (confirm) {
-                    //console.log('Creating new');
-                    console.log(menuItem);
-                    //updateMenuItem();
                     addMenuItem();
                     setForm({
                         id: 0,
@@ -300,7 +259,6 @@ function MenuEditer() {
                     setInFlux(false);
                 }
             } else {
-                console.log(menuItem);
                 updateMenuItem();
                 setInFlux(false);
             }
@@ -326,7 +284,6 @@ function MenuEditer() {
     }, [form.seasonal, startDate, endDate]);
 
     useEffect(() => {
-        console.log(selected);
         async function getMenuItem() {
             const response = await fetch('/api/getMenuItemByName', {
                 method: 'POST',
@@ -340,8 +297,6 @@ function MenuEditer() {
             }
             const menuItem = await response.json();
             const parseItem = JSON.parse(menuItem);
-            console.log(menuItem);
-            console.log(parseItem);
             setForm((form) => ({
                 ...form,
                 id: parseItem.id,
@@ -455,12 +410,18 @@ function MenuEditer() {
                 throw new Error(`Error: ${response.statusText}`);
             }
         }
-        removeMenuItem();
-        setSelected('');
-        setVisible(false);
-        setItemNames([]);
-        fetchMenuItems();
-        fetchMenuItems();
+
+        const confirm = window.confirm(
+            'Are you sure you want to remove this item'
+        );
+        if (confirm) {
+            removeMenuItem();
+            setSelected('');
+            setVisible(false);
+            setItemNames([]);
+            fetchMenuItems();
+            fetchMenuItems();
+        }
     };
 
     /**
@@ -537,7 +498,6 @@ function MenuEditer() {
             const parseItem = JSON.parse(inventoryItem);
             const newIngredient = new Ingredient(parseItem, newQuantity);
             setIngredients([...ingredients, newIngredient]);
-            console.log(ingredients);
         }
         if (Number(newQuantity) < 1) {
             alert('Invalid quantity');
