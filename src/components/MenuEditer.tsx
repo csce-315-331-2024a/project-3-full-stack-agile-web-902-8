@@ -4,6 +4,7 @@ import styles from './component.module.css';
 import { Ingredient, InventoryItem, MenuItem, Seasonal } from '@/lib/models';
 import { updateSeasonalItem } from '@/lib/menu';
 import { start } from 'repl';
+import { fromCamel } from 'postgres';
 
 /**
  * Creates the component for editing menu items
@@ -107,6 +108,7 @@ function MenuEditer() {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInFlux(true);
         const { name, value } = e.target;
+        console.log(name, value)
 
         setForm((form) => ({
             ...form,
@@ -257,12 +259,17 @@ function MenuEditer() {
         }
 
         if (
-            Number(form.price) < 0 ||
-            Number(form.netPrice) < 0 ||
-            Number(form.popularity) < 0
+            Number(form.price) <= 0 ||
+            Number(form.netPrice) <= 0 ||
+            Number(form.popularity) <= 0
         ) {
-            alert('Cannot have negative values');
-        } else {
+            alert('Cannot have negative or 0 values');
+        } 
+        else if(form.name == '' || form.description == '' || form.type == '')
+        {
+            alert("Nothing inputted");
+        }
+        else {
             if (selected == 'new') {
                 const confirm = window.confirm(
                     'Are you sure you want to add this item?'
