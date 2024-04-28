@@ -471,7 +471,8 @@ export async function updateIngredients(
                                 !(await updateIngredient(
                                     menuItem.id,
                                     await findInventoryIdByName(
-                                        newIngredient.inventoryItem.name
+                                        newIngredient.inventoryItem.name,
+                                        isql
                                     ),
                                     newIngredient.amount,
                                     isql
@@ -491,7 +492,8 @@ export async function updateIngredients(
                             await findInventoryIdByName(
                                 currentIngredient.inventoryItem.name,
                                 isql
-                            )
+                            ),
+                            isql
                         ))
                     ) {
                         return false;
@@ -1079,6 +1081,33 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
                 itemNames.push([row.item1Name, row.item2Name, row.frequency]);
             }
             return itemNames;
+        }
+    );
+}
+
+/**
+ * Retrieves the menu items that match a particular weather situation.
+ *
+ * @param situation - The weather situation to match.
+ * @param tsql - The object representing an existing database connection or transaction.
+ * @returns a list of recommended ids.
+ */
+export async function getWeatherRecommendations(
+    situation: string,
+    tsql = psql
+): Promise<number[]> {
+    return await transact<number[], any, { situation: string }>(
+        tsql,
+        new Error('SQL Error in getWeatherRecommendations', undefined, {
+            situation: situation,
+        }),
+        async (isql, _) => {
+            let rows = await isql`
+            SELECT id
+            FROM menu_items
+            WHERE weather = ${situation};
+            `;
+            return rows.map((row) => row.id);
         }
     );
 }
