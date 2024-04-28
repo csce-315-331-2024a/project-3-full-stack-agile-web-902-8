@@ -60,10 +60,10 @@ function CashierOrderTable({
                     })}
                     {currentOrder.length === 0 && (
                         <tr className='h-10'>
-                            <td></td>
-                            <td className='text-left'>No items in order</td>
-                            <td className='text-right font-mono'></td>
-                            <td className='text-right font-mono pr-4'></td>
+                            <td className='rounded-[1rem_0_0_1rem] bg-secondary/50'></td>
+                            <td className='text-left bg-secondary/50'>No items in order</td>
+                            <td className='text-right font-mono bg-secondary/50'></td>
+                            <td className='text-right font-mono pr-4 rounded-[0_1rem_1rem_0] bg-secondary/50'></td>
                         </tr>
                     )}
                     {currentOrder.length > 0 && isDiscounted && (
