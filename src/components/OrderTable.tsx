@@ -163,6 +163,7 @@ function OrderTable() {
                             <option value={orderHistory.length}>All</option>
                         </select>
                     </div>
+
                     <div className={design.paginationControls}>
                         {totalPages > 1 && (
                             <>
@@ -222,13 +223,18 @@ function OrderTable() {
                                         >
                                             {currentPage}
                                         </button>
-                                        {currentPage < totalPages - 1 && (
+                                        {currentPage < totalPages && (
                                             <>
-                                                <span
-                                                    className={design.ellipsis}
-                                                >
-                                                    ...
-                                                </span>
+                                                {currentPage <
+                                                    totalPages - 1 && (
+                                                    <span
+                                                        className={
+                                                            design.ellipsis
+                                                        }
+                                                    >
+                                                        ...
+                                                    </span>
+                                                )}
                                                 <button
                                                     onClick={() =>
                                                         handlePageChange(
@@ -245,7 +251,6 @@ function OrderTable() {
                                         )}
                                     </>
                                 )}
-
                                 {currentPage < totalPages && (
                                     <button
                                         onClick={() =>
