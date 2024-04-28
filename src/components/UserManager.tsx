@@ -46,6 +46,8 @@ function UserManager() {
             setHasRun(true);
         }
         if (needsRefresh) {
+            console.log('Fetching again');
+            fetchUsers();
             fetchUsers();
         }
         //setNeedsRefresh(false);
@@ -77,8 +79,7 @@ function UserManager() {
             removed.splice(i, 1);
             setUsers(removed);
             removeUser(users[i].user.username);
-            refresh();
-            refresh();
+            handleRefresh();
         }
     };
 
@@ -188,9 +189,8 @@ function UserManager() {
                     dUser.user.hours
                 );
                 updateUser(updatedUser);
-                refresh();
+                handleRefresh();
                 dUser.flux = false;
-                refresh();
             }
         }
     };
@@ -214,7 +214,8 @@ function UserManager() {
     /**
      * Handles refreshing the users list
      */
-    const refresh = () => {
+    const handleRefresh = () => {
+        console.log('Refreshing');
         setNeedsRefresh(true);
         setInFlux(false);
         setNeedsRefresh(false);
@@ -222,7 +223,7 @@ function UserManager() {
 
     return (
         <div>
-            <button type="button" onClick={refresh}>
+            <button type="button" onClick={handleRefresh}>
                 Refresh
             </button>
 
