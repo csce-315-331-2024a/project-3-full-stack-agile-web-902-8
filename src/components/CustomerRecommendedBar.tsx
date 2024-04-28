@@ -21,7 +21,7 @@ function CustomerRecommendedBar({
         return (
             <div>
                 <button
-                    className='text-background bg-text flex justify-center items-center duration-200 m-4 rounded-2xl p-4 hover:cursor-wait'
+                    className="text-background bg-text flex justify-center items-center duration-200 m-4 rounded-2xl p-4 hover:cursor-wait"
                     disabled={true}
                 >
                     Loading Menu Items...
@@ -31,11 +31,12 @@ function CustomerRecommendedBar({
     }
 
     return (
-        <ul
-            className='bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl px-4 grid h-fit grid-cols-[repeat(6,1fr)] gap-2'
-        >
+        <ul className="bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl px-4 grid h-fit grid-cols-[repeat(6,1fr)] gap-2">
             {menuItems.map((menuItem: MenuItem) => (
-                <li className='w-full h-fit flex justify-center items-center' key={menuItem.id}>
+                <li
+                    className="w-full h-fit flex justify-center items-center"
+                    key={menuItem.id}
+                >
                     <CustomerRecommendedItem
                         item={menuItem}
                         currentOrder={currentOrder}

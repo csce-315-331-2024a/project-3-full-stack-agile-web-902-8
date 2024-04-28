@@ -21,9 +21,8 @@ li {
 }
 
 @layer components {
-
     /* Navbar */
-    .navLink::before{
+    .navLink::before {
         content: '';
         position: absolute;
         left: 0;
@@ -52,7 +51,7 @@ li {
         z-index: 52;
         @apply bg-primary;
     }
-    
+
     .navLink:hover::after {
         transform: translateY(0);
     }
@@ -88,7 +87,7 @@ li {
         z-index: 42;
         @apply bg-primary;
     }
-    
+
     .sideLink:hover::after {
         transform: translateX(0);
     }

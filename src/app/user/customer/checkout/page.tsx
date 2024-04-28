@@ -105,8 +105,8 @@ export default function CustomerCheckout() {
     }
 
     return (
-        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row'>
-            <div className='w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll'>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row">
+            <div className="w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll">
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem
                         key={item.id}
@@ -117,95 +117,113 @@ export default function CustomerCheckout() {
                     />
                 ))}
             </div>
-            <div className='w-[70%] m-12'>
-                <div className='h-[75%] overflow-y-scroll'>
-                    <table className='w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg'>
-                        <thead className='h-16 top-0 sticky z-1'>
+            <div className="w-[70%] m-12">
+                <div className="h-[75%] overflow-y-scroll">
+                    <table className="w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg">
+                        <thead className="h-16 top-0 sticky z-1">
                             <tr>
-                                <th className='text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Item</th>
-                                <th className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Quantity</th>
-                                <th className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Price</th>
+                                <th className="text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    Item
+                                </th>
+                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    Quantity
+                                </th>
+                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    Price
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrder.map(({ item, qty }) => (
                                 <tr key={item.id}>
-                                    <td className='text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text'>{item.name}</td>
-                                    <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>x{qty}</td>
-                                    <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>
+                                    <td className="text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        {item.name}
+                                    </td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        x{qty}
+                                    </td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
                                         ${(item.price * qty).toFixed(2)}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
-                        <tfoot className='bg-background bottom-0 sticky z-1'>
+                        <tfoot className="bg-background bottom-0 sticky z-1">
                             <tr>
-                                <td className='py-1 px-3 border-b-[1px] border-b-solid border-b-text'></td>
-                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Subtotal</td>
-                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>${subTotal.toFixed(2)}</td>
+                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    Subtotal
+                                </td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    ${subTotal.toFixed(2)}
+                                </td>
                             </tr>
                             <tr>
-                                <td className='py-1 px-3 border-b-[1px] border-b-solid border-b-text'></td>
-                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Tax</td>
-                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>${tax.toFixed(2)}</td>
+                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    Tax
+                                </td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    ${tax.toFixed(2)}
+                                </td>
                             </tr>
                             <tr>
-                                <td className='py-1 px-3 border-b-[1px] border-b-solid border-b-text'></td>
-                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Total</td>
-                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>${total.toFixed(2)}</td>
+                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    Total
+                                </td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    ${total.toFixed(2)}
+                                </td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-                <section className='w-full h-[25%] flex flex-col'>
-                    <h2 className='text-xl flex-shrink-0'>Payment Method</h2>
-                    <ul className='flex-grow grid grid-cols-[repeat(4,1fr)]'>
-                        <li className='h-full'>
+                <section className="w-full h-[25%] flex flex-col">
+                    <h2 className="text-xl flex-shrink-0">Payment Method</h2>
+                    <ul className="flex-grow grid grid-cols-[repeat(4,1fr)]">
+                        <li className="h-full">
                             <button
-                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
                                 onClick={placeOrder}
                                 disabled={
-                                    isPlacingOrder ||
-                                    currentOrder.length === 0
+                                    isPlacingOrder || currentOrder.length === 0
                                 }
                             >
                                 {' '}
                                 Dining Dollars{' '}
                             </button>
                         </li>
-                        <li className='h-full'>
+                        <li className="h-full">
                             <button
-                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
                                 onClick={placeOrder}
                                 disabled={
-                                    isPlacingOrder ||
-                                    currentOrder.length === 0
+                                    isPlacingOrder || currentOrder.length === 0
                                 }
                             >
                                 {' '}
                                 Credit Card{' '}
                             </button>
                         </li>
-                        <li className='h-full'>
+                        <li className="h-full">
                             <button
-                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
                                 onClick={placeOrder}
                                 disabled={
-                                    isPlacingOrder ||
-                                    currentOrder.length === 0
+                                    isPlacingOrder || currentOrder.length === 0
                                 }
                             >
                                 {' '}
                                 Debit Card{' '}
                             </button>
                         </li>
-                        <li className='h-full'>
+                        <li className="h-full">
                             <button
-                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
                                 onClick={placeOrder}
                                 disabled={
-                                    isPlacingOrder ||
-                                    currentOrder.length === 0
+                                    isPlacingOrder || currentOrder.length === 0
                                 }
                             >
                                 {' '}

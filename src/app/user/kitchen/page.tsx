@@ -31,23 +31,21 @@ export default function Kitchen() {
     }, []);
 
     return (
-        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-col items-center justify-start p-4'>
-            <h1 className='text-[4rem] font-bold relative mainHeader mb-4'>Kitchen</h1>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-col items-center justify-start p-4">
+            <h1 className="text-[4rem] font-bold relative mainHeader mb-4">
+                Kitchen
+            </h1>
             {isInitializing ? (
-                <div
-                    className='p-4 rounded-2xl text-background bg-text hover:cursor-wait'
-                >
+                <div className="p-4 rounded-2xl text-background bg-text hover:cursor-wait">
                     Loading Orders...
                 </div>
-            ) : (orders.length === 0 ? (
-                <div
-                    className='p-4 rounded-2xl text-background bg-text'
-                >
+            ) : orders.length === 0 ? (
+                <div className="p-4 rounded-2xl text-background bg-text">
                     No Orders
                 </div>
             ) : (
                 <KitchenGrid orders={orders} />
-            ))}
+            )}
         </main>
     );
 }

@@ -23,7 +23,7 @@ function CustomerItemGrid({
         return (
             <div>
                 <button
-                    className='text-background bg-text flex justify-center items-center duration-200 m-4 p-4 rounded-2xl hover:cursor-wait'
+                    className="text-background bg-text flex justify-center items-center duration-200 m-4 p-4 rounded-2xl hover:cursor-wait"
                     disabled={true}
                 >
                     Loading Menu Items...
@@ -33,7 +33,7 @@ function CustomerItemGrid({
     }
 
     return (
-        <div className='grid w-full h-fit grid-cols-[repeat(4,1fr)] gap-2'>
+        <div className="grid w-full h-fit grid-cols-[repeat(4,1fr)] gap-2">
             {categoryItems.map((menuitem: MenuItem) => (
                 <CustomerMenuItem
                     key={menuitem.id}

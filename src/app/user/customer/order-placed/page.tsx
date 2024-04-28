@@ -19,7 +19,7 @@ export default function OrderPlaced() {
     }, [redirectSeconds, router]);
 
     return (
-        <div className='h-full w-full flex flex-col justify-center align-center'>
+        <div className="h-full w-full flex flex-col justify-center align-center">
             <h1>Order has been placed</h1>
             <p>Redirecting back to menu...</p>
         </div>

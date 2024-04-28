@@ -29,9 +29,11 @@ function CashierItemGrid({
 }: CashierItemGridProps) {
     if (isFetchingMenuItems) {
         return (
-            <div className={'flex flex-row flex-wrap justify-start ' + className}>
+            <div
+                className={'flex flex-row flex-wrap justify-start ' + className}
+            >
                 <button
-                    className='text-background bg-text flex justify-center items-center m-4 w-fit h-fit rounded-2xl p-4 cursor-wait'
+                    className="text-background bg-text flex justify-center items-center m-4 w-fit h-fit rounded-2xl p-4 cursor-wait"
                     disabled={true}
                 >
                     Loading Menu Items...
@@ -40,7 +42,11 @@ function CashierItemGrid({
         );
     }
     return (
-        <div className={'flex flex-row flex-wrap justify-start gap-4 ' + className}>
+        <div
+            className={
+                'flex flex-row flex-wrap justify-start gap-4 ' + className
+            }
+        >
             {categoryItems.map((item) => (
                 <CashierItemButton
                     item={item}
@@ -82,7 +88,10 @@ function CashierItemButton({
 
     return (
         <button
-            className={'text-background bg-accent flex justify-center items-center duration-200 w-fit h-fit rounded-2xl p-4 hover:text-text hover:bg-accent/50 ' + className}
+            className={
+                'text-background bg-accent flex justify-center items-center duration-200 w-fit h-fit rounded-2xl p-4 hover:text-text hover:bg-accent/50 ' +
+                className
+            }
             onClick={handleClick}
         >
             {item.name}

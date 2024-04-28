@@ -89,11 +89,13 @@ export default function Customer() {
 
     return (
         // TODO: Change to global styling
-        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row'>
-            <div className='w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4'>
-                <h1 className='text-[4rem] font-bold relative mainHeader w-fit'>Menu</h1>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
+            <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
+                <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                    Menu
+                </h1>
                 <div>
-                    <h2 className='text-2xl font-bold'>Recommendations</h2>
+                    <h2 className="text-2xl font-bold">Recommendations</h2>
                     <CustomerRecommendedBar
                         isFetchingMenuItems={isFetchingMenuItems}
                         menuItems={categoryItems.slice(0, 5)}
@@ -102,7 +104,7 @@ export default function Customer() {
                     />
                 </div>
                 <div>
-                    <h2 className='text-2xl font-bold'>Categories</h2>
+                    <h2 className="text-2xl font-bold">Categories</h2>
                     <CustomerCategoryBar
                         isFetchingMenuTypes={isFetchingMenuTypes}
                         categories={categories}

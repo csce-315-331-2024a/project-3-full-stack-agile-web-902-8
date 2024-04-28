@@ -37,13 +37,13 @@ export default function UserLayout({
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     return (
-        <div className='w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]'>
+        <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">
             <Heading
                 names={headingNames}
                 hrefs={headingHrefs}
                 isLoggedIn={isLoggedIn}
                 openMenuBoardPages={openMenuBoardPages}
-                className='col-span-2 row-span-1'
+                className="col-span-2 row-span-1"
             />
             {children}
         </div>

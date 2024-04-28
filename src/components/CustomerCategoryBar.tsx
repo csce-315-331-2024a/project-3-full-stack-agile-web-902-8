@@ -25,11 +25,9 @@ function CustomerCategoryBar({
 }: CustomerCategoryBarProps) {
     if (isFetchingMenuTypes) {
         return (
-            <ul
-                className='w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-center items-center text-background bg-text hover:cursor-wait'
-            >
+            <ul className="w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-center items-center text-background bg-text hover:cursor-wait">
                 <button
-                    className='bg-text text-background p-4 rounded-2xl hover:cursor-wait'
+                    className="bg-text text-background p-4 rounded-2xl hover:cursor-wait"
                     disabled={true}
                 >
                     Loading Menu Categories...
@@ -39,9 +37,7 @@ function CustomerCategoryBar({
     }
 
     return (
-        <ul
-            className='bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-stretch items-stretch'
-        >
+        <ul className="bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-stretch items-stretch">
             {categories.map((categoryName) => (
                 <li key={categoryName}>
                     <CustomerCategoryButton
@@ -66,7 +62,10 @@ function CustomerCategoryButton({
 
     return (
         <button
-            className={'w-full bg-secondary h-full flex justify-center items-center duration-200 p-4 active:bg-background/50' + (categoryName === category ? ' active:bg-background/50' : '')}
+            className={
+                'w-full bg-secondary h-full flex justify-center items-center duration-200 p-4 active:bg-background/50' +
+                (categoryName === category ? ' active:bg-background/50' : '')
+            }
             onClick={handleClick}
         >
             {categoryName}

@@ -30,7 +30,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={`${poppins.variable} ${robotoMono.variable}`}>
+        <html
+            lang="en"
+            className={`${poppins.variable} ${robotoMono.variable}`}
+        >
             <head>
                 <link rel="icon" href="/RLogo.ico" />
             </head>

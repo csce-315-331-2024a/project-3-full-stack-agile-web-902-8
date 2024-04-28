@@ -44,16 +44,21 @@ function Heading({
                             key={link}
                             onClick={openMenuBoardPages}
                         >
-                            <a className="px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink">{link}</a>
+                            <a className="px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink">
+                                {link}
+                            </a>
                         </li>
                     ) : (
-                        <li
-                            key={link}
-                            className='flex h-full'
-                        >
-                            <Link className={'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink' + (pathName === hrefs[i]
-                                    ? ' current'
-                                    : '')} href={hrefs[i]}>{link}</Link>
+                        <li key={link} className="flex h-full">
+                            <Link
+                                className={
+                                    'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink' +
+                                    (pathName === hrefs[i] ? ' current' : '')
+                                }
+                                href={hrefs[i]}
+                            >
+                                {link}
+                            </Link>
                         </li>
                     )
                 )}

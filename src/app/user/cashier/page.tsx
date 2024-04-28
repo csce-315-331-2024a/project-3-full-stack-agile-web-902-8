@@ -12,11 +12,7 @@ import CashierCategoryBar from '@/components/CashierCategoryBar';
 import CashierItemGrid from '@/components/CashierItemGrid';
 import CashierOrderTable from '@/components/CashierOrderTable';
 
-import {
-    MenuItem,
-    Order,
-    OrderItem,
-} from '@/lib/models';
+import { MenuItem, Order, OrderItem } from '@/lib/models';
 import GlobalConfig from '@/lib/config';
 
 export interface OrderEntry {
@@ -168,25 +164,27 @@ export default function Cashier() {
     }
 
     return (
-        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4'>
-            <div className='col-start-1 col-end-2 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto'>
-                <h1 className='text-[4rem] font-bold relative mainHeader'>Cashier</h1>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4">
+            <div className="col-start-1 col-end-2 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
+                <h1 className="text-[4rem] font-bold relative mainHeader">
+                    Cashier
+                </h1>
                 <CashierCategoryBar
                     isFetchingMenuTypes={isFetchingMenuTypes}
                     categories={categories}
                     category={category}
                     setCategory={setCategory}
-                    className='mx-auto'
+                    className="mx-auto"
                 />
                 <CashierItemGrid
                     isFetchingMenuItems={isFetchingMenuItems}
                     categoryItems={categoryItems}
                     currentOrder={currentOrder}
                     setCurrentOrder={setCurrentOrder}
-                    className='h-min'
+                    className="h-min"
                 />
             </div>
-            <div className='col-start-2 col-end-3 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto'>
+            <div className="col-start-2 col-end-3 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
                 <CashierOrderTable
                     isDiscounted={isDiscounted}
                     isTaxed={isTaxed}
@@ -195,17 +193,17 @@ export default function Cashier() {
                     total={total}
                     currentOrder={currentOrder}
                     setCurrentOrder={setCurrentOrder}
-                    className='w-full mb-auto'
+                    className="w-full mb-auto"
                 />
-                <div className='grid grid-cols-[1fr_1fr] gap-4 w-full'>
+                <div className="grid grid-cols-[1fr_1fr] gap-4 w-full">
                     <button
-                        className='mb-auto col-start-1 col-end-2 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text'
+                        className="mb-auto col-start-1 col-end-2 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text"
                         onClick={() => setIsDiscounted(!isDiscounted)}
                     >
                         {isDiscounted ? 'Remove Discount' : 'Add Discount'}
                     </button>
                     <button
-                        className='mb-auto col-start-2 col-end-3 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text'
+                        className="mb-auto col-start-2 col-end-3 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text"
                         onClick={() => setIsTaxed(!isTaxed)}
                     >
                         {isTaxed ? 'Remove Tax' : 'Add Tax'}
@@ -214,7 +212,9 @@ export default function Cashier() {
                 <button
                     className={
                         'text-background bg-primary text-2xl flex justify-center items-center duration-200 w-full h-fit m-auto rounded-2xl p-4 hover:bg-primary/70 hover:text-text' +
-                        (isPlacingOrder ? ' cursor-wait bg-primary/30 text-text hover:bg-primary/30 hover:text-text' : '')
+                        (isPlacingOrder
+                            ? ' cursor-wait bg-primary/30 text-text hover:bg-primary/30 hover:text-text'
+                            : '')
                     }
                     onClick={() => placeOrder()}
                     disabled={isPlacingOrder}

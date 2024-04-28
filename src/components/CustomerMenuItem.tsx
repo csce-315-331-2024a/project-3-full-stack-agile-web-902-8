@@ -55,22 +55,22 @@ export function CustomerMenuItem({
 
     return (
         <button
-            className='h-fit bg-transparent block text-center py-4 mx-4 active:bg-secondary/50'
+            className="h-fit bg-transparent block text-center py-4 mx-4 active:bg-secondary/50"
             onClick={() => addToOrder(item)}
         >
             <Image
-                className='max-w-64 mx-auto'
+                className="max-w-64 mx-auto"
                 src="/menuItemImages/Aggie_Chicken_Club.png"
                 alt={item.name}
                 width={200}
                 height={200}
             />
-            <p className='text-2xl'>{item.name}</p>
-            <p className='px-8 text-center'>
+            <p className="text-2xl">{item.name}</p>
+            <p className="px-8 text-center">
                 {/* TODO: Description */}
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
             </p>
-            <p className='text-2xl flex justify-center items-center'>
+            <p className="text-2xl flex justify-center items-center">
                 ${item.price.toLocaleString('en-US', options)}
             </p>
         </button>
@@ -114,11 +114,11 @@ export function CustomerRecommendedItem({
 
     return (
         <button
-            className='h-fit bg-transparent text-center p-4 inline-block active:bg-background/50'
+            className="h-fit bg-transparent text-center p-4 inline-block active:bg-background/50"
             onClick={() => addToOrder(item)}
         >
             <Image
-                className='max-w-32 max-h-32'
+                className="max-w-32 max-h-32"
                 src="/menuItemImages/Aggie_Chicken_Club.png"
                 alt={item.name}
                 width={150}
