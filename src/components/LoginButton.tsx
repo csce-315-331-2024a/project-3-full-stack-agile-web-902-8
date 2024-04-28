@@ -8,13 +8,14 @@ interface LoginButtonProps {
 }
 
 
-function LoginButton({isLoggedIn}: LoginButtonProps) {
+function LoginButton({ isLoggedIn }: LoginButtonProps) {
+
     const handleLogin = () => {
         signIn('google');
     };
 
     const handleLogout = () => {
-        signOut();
+        signOut({ callbackUrl: '/customer', redirect: true});
     }
 
     return (

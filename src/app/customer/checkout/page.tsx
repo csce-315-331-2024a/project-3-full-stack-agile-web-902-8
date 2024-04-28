@@ -16,7 +16,7 @@ import {
 import styles from '@/app/customer/page.module.css';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import Heading from '@/components/Heading';
 
 import GlobalConfig from '@/lib/config';
 
@@ -109,19 +109,9 @@ export default function CustomerCheckout() {
 
     return (
         <main className={styles.main}>
+
             <header id={styles.topbar}>
-                <ul className={styles['nav-left']}>
-                    <li>
-                        <Link href="/customer">Menu</Link>
-                    </li>
-                </ul>
-                <ul className={styles['nav-right']}>
-                    <li>
-                        <Link className={styles.login} href="/">
-                            Login
-                        </Link>
-                    </li>
-                </ul>
+                <Heading names={["Menu"]} hrefs={["/customer"]}/>
             </header>
 
             <div id={styles['checkout-page']}>

@@ -9,9 +9,9 @@ import {
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
-import LoginButton from '@/components/LoginButton';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
+import Heading from '@/components/Heading';
 
 export default function Customer() {
     // set default category
@@ -25,28 +25,11 @@ export default function Customer() {
 
     const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
 
-    const [userRole, changeUserRole] = useState<string>('');
-
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
         localStorage.setItem('customer-order', JSON.stringify(currentOrder));
         changeCurrentOrder(currentOrder);
     }
-
-    // get the user login
-    useEffect(() => {
-        async function loginUser() {
-            const response = await fetch('/api/oauthLogin');
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const type = await response.json();
-            changeUserRole(type);
-        }
-        loginUser();
-    }, []);
 
     useEffect(() => {
         // grab the order from local storage if it exists
@@ -110,15 +93,9 @@ export default function Customer() {
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
+            
             <header id={styles.topbar}>
-                <ul className={styles['nav-left']}>
-                    <li>{userRole}</li>
-                </ul>
-                <ul className={styles['nav-right']}>
-                    <li>
-                        <LoginButton />
-                    </li>
-                </ul>
+                <Heading names={[]} hrefs={[]}/>
             </header>
 
             <div id={styles['menu-page']}>
