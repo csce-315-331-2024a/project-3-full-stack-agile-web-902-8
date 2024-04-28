@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './component.module.css';
 
 type TableProp = {
     heading: string[];
@@ -8,12 +7,12 @@ type TableProp = {
 
 function OrderTable({ heading, rows }: TableProp) {
     return (
-        <div className={styles.container}>
-            <table className={styles.table}>
+        <div className='p-4 bg-primary/50 rounded-2xl'>
+            <table className='w-full border-collapse'>
                 <thead>
                     <tr>
                         {heading.map((item, index) => (
-                            <th key={index}>{item}</th>
+                            <th className='border-2 border-text p-2' key={index}>{item}</th>
                         ))}
                     </tr>
                 </thead>
@@ -21,7 +20,7 @@ function OrderTable({ heading, rows }: TableProp) {
                     {rows.map((item, index) => (
                         <tr key={index}>
                             {item.map((subItem, subIndex) => (
-                                <td key={subIndex}>{subItem}</td>
+                                <td className='border-2 border-text p-2' key={subIndex}>{subItem}</td>
                             ))}
                         </tr>
                     ))}
