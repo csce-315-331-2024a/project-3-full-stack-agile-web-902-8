@@ -121,9 +121,7 @@ export default function Customer() {
                         <h2>Recommendations</h2>
                         <CustomerRecommendedBar
                             isFetchingMenuItems={isFetchingMenuItems}
-                            menuItems={recommendedItems.filter(
-                                (i) => i.type === category
-                            )}
+                            menuItems={recommendedItems}
                             currentOrder={currentOrder}
                             setCurrentOrder={setCurrentOrder}
                         />
