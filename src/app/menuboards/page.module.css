@@ -1,0 +1,24 @@
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main h1 {
+    height: 50px;
+}
+
+.menu-item-grid {
+    display: flex;
+    height: calc(100vh - 50px);
+    width: 100%;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.menu-item-grid>* {
+    margin-bottom: auto;
+}

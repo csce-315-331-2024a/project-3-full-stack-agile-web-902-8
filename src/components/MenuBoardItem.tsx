@@ -27,14 +27,15 @@ export function MenuBoardItem({
                 width={200}
                 height={200}
             />
-            <p className={styles['name']}>{item.name}</p>
-            <p className={styles['description']}>
-                {/* TODO: Description */}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-            </p>
-            <p className={styles.price}>
-                ${item.price.toLocaleString('en-US', options)}
-            </p>
+            <div>
+                <h3 className={styles['name']}>{item.name}</h3>
+                <p className={styles['description']}>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                </p>
+            </div>
+            <div className={styles.price}>
+                <p>${item.price.toLocaleString('en-US', options)}</p>
+            </div>
         </div>
     );
 }

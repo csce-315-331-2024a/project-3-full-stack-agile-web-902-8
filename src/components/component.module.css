@@ -724,6 +724,34 @@ button.recommended-item.customer:hover {
     display: none;
 }
 
+.menu-board.menu-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.menu-board.menu-item img {
+    max-width: 15em;
+}
+
+.menu-board.menu-item h3.name {
+    font-size: 2em;
+}
+
+.menu-board.menu-item .description {
+    font-size: 1.25em;
+}
+
+.menu-board.menu-board .price {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2em;
+}
+
+
+
 .loading {
     color: rgb(var(--background-rgb));
     background-color: rgb(var(--text-rgb));
