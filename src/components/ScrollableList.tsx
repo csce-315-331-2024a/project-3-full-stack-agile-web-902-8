@@ -23,7 +23,7 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
         backgroundColor: '#a05a2c', // Assuming this is a valid color string
         color: 'white', // Also should be a valid color string
         padding: '10px',
-        textAlign: 'left' as 'left', 
+        textAlign: 'left' as 'left',
     };
     const rowStyle = {
         color: '#333', // dark text color for rows

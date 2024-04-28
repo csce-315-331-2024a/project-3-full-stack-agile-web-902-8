@@ -11,7 +11,6 @@ import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 
 const DataPage = () => {
-
     const Items = [
         'Home',
         'Menu',
@@ -128,7 +127,6 @@ const DataPage = () => {
         setError('');
     };
 
-
     const resetButtonStyle: React.CSSProperties = {
         fontSize: '16px', // Ensure this is a string with a valid unit like 'px'
         fontWeight: 'bold' as 'bold', // Use 'bold' or a number value
@@ -140,70 +138,77 @@ const DataPage = () => {
     };
 
     return (
-    <main>
-        <Heading names={Items} hrefs={Links} />
-        
-        <div style={{ width: '100%', maxWidth: '1200px', margin: 'auto', padding: '1rem', position: 'relative', paddingTop: '60px' }}>
-            <DateRangePicker
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-            />
+        <main>
+            <Heading names={Items} hrefs={Links} />
 
-            <button onClick={handleGenerateSalesReport}>
-                Generate Sales Report
-            </button>
-            <button onClick={handleGenerateProductUsageReport}>
-                Generate Product Usage Report
-            </button>
-            <button onClick={handleGenerateWhatSellsTogetherReport}>
-                Generate What Sells Together Report
-            </button>
-            
-            {/* Reset button with enhanced styles */}
-            <button style={resetButtonStyle} onClick={handleReset}>
-                Reset
-            </button>
+            <div
+                style={{
+                    width: '100%',
+                    maxWidth: '1200px',
+                    margin: 'auto',
+                    padding: '1rem',
+                    position: 'relative',
+                    paddingTop: '60px',
+                }}
+            >
+                <DateRangePicker
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                />
 
-            {isLoading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {!isLoading && !error && (
-                <>
-                    <div className="report-section">
-                        <ScrollableBarGraph
-                            data={menuData.map((item) => ({
-                                label: item.name,
-                                value: item.qty,
-                                color: 'rgba(255,99,132,1)',
-                            }))}
-                            title="Sales Report"
-                        />
-                    </div>
+                <button onClick={handleGenerateSalesReport}>
+                    Generate Sales Report
+                </button>
+                <button onClick={handleGenerateProductUsageReport}>
+                    Generate Product Usage Report
+                </button>
+                <button onClick={handleGenerateWhatSellsTogetherReport}>
+                    Generate What Sells Together Report
+                </button>
 
-                    <div className="report-section">
-                        <ScrollableBarGraph
-                            data={inventoryData.map((item) => ({
-                                label: item.name,
-                                value: item.qty,
-                                color: 'rgba(255,99,132,1)',
-                            }))}
-                            title="Product Usage"
-                        />
-                    </div>
+                {/* Reset button with enhanced styles */}
+                <button style={resetButtonStyle} onClick={handleReset}>
+                    Reset
+                </button>
 
-                    <div className="report-section">
-                        <ScrollableList
-                            items={frequentlySoldPairsData}
-                            title="What Sells Together"
-                        />
-                    </div>
-                    
-                </>
-                
-            )}
-        </div>
-    </main>
+                {isLoading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
+                {!isLoading && !error && (
+                    <>
+                        <div className="report-section">
+                            <ScrollableBarGraph
+                                data={menuData.map((item) => ({
+                                    label: item.name,
+                                    value: item.qty,
+                                    color: 'rgba(255,99,132,1)',
+                                }))}
+                                title="Sales Report"
+                            />
+                        </div>
+
+                        <div className="report-section">
+                            <ScrollableBarGraph
+                                data={inventoryData.map((item) => ({
+                                    label: item.name,
+                                    value: item.qty,
+                                    color: 'rgba(255,99,132,1)',
+                                }))}
+                                title="Product Usage"
+                            />
+                        </div>
+
+                        <div className="report-section">
+                            <ScrollableList
+                                items={frequentlySoldPairsData}
+                                title="What Sells Together"
+                            />
+                        </div>
+                    </>
+                )}
+            </div>
+        </main>
     );
 };
 
