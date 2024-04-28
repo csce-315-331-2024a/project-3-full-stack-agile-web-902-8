@@ -135,7 +135,7 @@ export class AggregateItem {
 }
 
 /**
- * @param begin the start of the interval to check
+ * @param begin the start of the interval to checks
  * @param end the end of the interval to run the statistic on.
  * @return a list of AggregateItems describing all items that were used in the time interval, and their usage amount.
  */
