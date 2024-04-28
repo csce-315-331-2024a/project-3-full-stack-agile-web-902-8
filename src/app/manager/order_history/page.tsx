@@ -138,6 +138,9 @@ const DataPage = () => {
         cursor: 'pointer',
     };
 
+    const sortedMenuData = menuData.sort((a, b) => b.qty - a.qty);
+    const sortedInventoryData = inventoryData.sort((a, b) => b.qty - a.qty);
+
     return (
         <main>
             <Heading names={Items} hrefs={Links} />
@@ -192,7 +195,7 @@ const DataPage = () => {
                     <>
                         <div className="report-section">
                             <ScrollableBarGraph
-                                data={menuData.map((item) => ({
+                                data={sortedMenuData.map((item) => ({
                                     label: item.name,
                                     value: item.qty,
                                     color: 'rgba(205, 50, 75, 1)',
@@ -203,7 +206,7 @@ const DataPage = () => {
 
                         <div className="report-section">
                             <ScrollableBarGraph
-                                data={inventoryData.map((item) => ({
+                                data={sortedInventoryData.map((item) => ({
                                     label: item.name,
                                     value: item.qty,
                                     color: 'rgba(205, 50, 75, 1)',

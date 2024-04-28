@@ -41,7 +41,7 @@ export async function aggregateMenuItems(
                 menu_items.id;
         `;
 
-            console.log(`Query results:`, result);
+            
 
             let res: AggregateItem[] = [];
             for (const row of result) {
