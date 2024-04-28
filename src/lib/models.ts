@@ -86,30 +86,36 @@ export class MenuItem {
     id: number;
     name: string;
     type: string;
+    description: string;
     price: number;
     netPrice: number;
     popularity: number;
     ingredients: Ingredient[];
     seasonal: Seasonal | null;
+    weather?: string;
 
     constructor(
         id: number,
         name: string,
         type: string,
+        description: string,
         price: number,
         netPrice: number,
         popularity: number,
         ingredients: Ingredient[],
-        seasonal: Seasonal | null
+        seasonal: Seasonal | null,
+        weather?: string
     ) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.description = description;
         this.price = price;
         this.netPrice = netPrice;
         this.popularity = popularity;
         this.ingredients = ingredients;
         this.seasonal = seasonal;
+        this.weather = weather;
     }
 }
 
