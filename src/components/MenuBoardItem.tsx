@@ -30,7 +30,7 @@ export function MenuBoardItem({
             <div>
                 <h3 className={styles['name']}>{item.name}</h3>
                 <p className={styles['description']}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                    Sample text
                 </p>
             </div>
             <div className={styles.price}>

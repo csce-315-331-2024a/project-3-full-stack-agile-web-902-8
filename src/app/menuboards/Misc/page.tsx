@@ -1,60 +1,83 @@
-import React from 'react';
-import Heading from '@/components/Heading';
-import PageButton from '@/components/PageButton';
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
+'use client';
+
 import styles from '@/app/page.module.css';
+import pageStyles from '@/app/menuboards/page.module.css';
+import componentStyles from '@/components/component.module.css';
+import MenuBoardItem from '@/components/MenuBoardItem';
+import { useState, useEffect } from 'react';
+import { MenuItem } from '@/lib/models';
 
-export default function MenuBoard() {
-    const items = ['Home', 'Logout'];
-    const links = ['/', '/', '/', '/', '/', '/'];
-    const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
+export default function MenuBoardSandwiches() {
+    const categories = ['Sides', 'Beverages', 'Shakes & More'];
+    const NUMSHOWN = 3;
+    const TIMEINTERVAL = 5000; // ms
 
-    const renderCategory = (category: string) => (
-        <div className={styles.category}>
-            <h2>{category}</h2>
-            {/* Placeholder for the menu items in this category */}
-            <div className={styles.menuItems}>
-                <p>Description of food item ... Price</p>
-                {/* More items can be added here */}
-            </div>
-        </div>
-    );
+    const [items, setItems] = useState<MenuItem[]>([]);
+    const [itemsShown, setItemsShown] = useState<MenuItem[]>([]);
+    const [indexShown, setIndexShown] = useState<number>(0);
 
-    const handleRefresh = () => {
-        console.log('Refresh button clicked'); // Placeholder for actual logic
-    };
+    const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
+
+    useEffect(() => {
+        async function fetchAllMenuItems() {
+            setIsFetchingMenuItems(true);
+            try {
+                console.log(
+                    "Fetching menu items may take a while sometimes, especially if you're running locally."
+                );
+                const response = await fetch('/api/getMenuItemsInSeason');
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const menuItems: MenuItem[] = await response.json();
+                const itemsInCategory = menuItems.filter((item) => categories.indexOf(item.type) > -1);
+                setItems(itemsInCategory);
+                console.log('Fetching should be done now.');
+            } finally {
+                setIsFetchingMenuItems(false);
+            }
+        }
+        fetchAllMenuItems();
+    }, []);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setItemsShown(items.slice(indexShown, indexShown + NUMSHOWN));
+        let newIndex = indexShown + NUMSHOWN >= items.length ? 0 : indexShown + NUMSHOWN;
+        setIndexShown(newIndex);
+      }, TIMEINTERVAL);
+      return () => {
+        clearInterval(interval);
+      };
+    }, [items, indexShown]);
 
     return (
-        <main className={styles.main}>
-            <div className={styles.description}>
-                {/* Render the heading with navigation items */}
-                <Heading names={items} hrefs={links} />
+        <main className={pageStyles.main}>
+            <h1>Sides, Beverages, and Desserts</h1>
 
-                {/* Render the body of the page */}
-                <div className={styles.body}>
-                    <DoubleText
-                        block1={
-                            <div>
-                                <h1></h1>
-                            </div>
+            <div className={pageStyles["menu-item-grid"]}>
+            {isFetchingMenuItems ? 
+                <div className={componentStyles.itemGrid}>
+                    <button
+                        className={
+                            componentStyles.itemButton +
+                            ' ' +
+                            componentStyles.card +
+                            ' ' +
+                            componentStyles.loading
                         }
-                        block2={
-                            <div>
-                                <h1>Beverages, Sides, and Desserts</h1>
+                        disabled={true}
+                    >
+                        Loading Menu Items...
+                    </button>
+                </div> : 
 
-                                {/* Render categories */}
-                                {categories.map(renderCategory)}
-                                {/* Placeholder for Limited Time Offers */}
-                                <div className={styles.limitedTimeOffers}>
-                                    <h2>Limited Time Offers</h2>
-                                    {/* Limited time offers items will go here */}
-                                </div>
-                            </div>
-                        }
-                    />
-                </div>
+                itemsShown.map((item) =>
+                    <MenuBoardItem key={item.id} item={item}/>
+                )
+            }
             </div>
         </main>
     );
 }
+
