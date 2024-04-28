@@ -726,6 +726,7 @@ button.recommended-item.customer:hover {
 
 .menu-board.menu-item {
     display: grid;
+    width: 80%;
     grid-template-columns: 1fr 2fr 1fr;
 }
 
