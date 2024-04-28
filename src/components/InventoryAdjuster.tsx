@@ -40,23 +40,6 @@ function InventoryAdjuster() {
         setItemNames(sortedNames);
     }
 
-    /*async function existsInInventory() {
-        console.log(form.name);
-        const response = await fetch('/api/existsInInventory', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(form.name),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        const existing = await response.json();
-        console.log(existing);
-        setExists(existing);
-    }*/
-
     /**
      * Handles change in any of the form input elements
      * @param e the input element changed

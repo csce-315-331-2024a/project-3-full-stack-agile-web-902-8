@@ -1,11 +1,11 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
-import OrderTable from '@/components/OrderTable';
-import styles from '../page.module.css';
+import styles from '@/app/page.module.css';
+import MenuEditer from '@/components/MenuEditer';
 
 export default function Manager() {
     const openMenuBoardsPages = () => {
@@ -25,15 +25,14 @@ export default function Manager() {
     ];
     const Links = [
         '/manager',
-        '/manager/menu',
-        '/manager/inventory',
         '/manager',
-        '/manager/report_page',
         '/manager',
+        '/manager',
+        '/manager',
+        '/',
     ];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links2 = ['/manager', '/customer', '/cashier', '/manager'];
-
+    const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
     const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
     const tableBody = [
         ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
@@ -48,23 +47,17 @@ export default function Manager() {
                 </div>
                 <div className={styles.body}>
                     <DoubleText
-                        block1={
-                            <SideBar
-                                names={Items2}
-                                hrefs={Links2}
-                                onClick={openMenuBoardsPages}
-                            />
-                        }
-                        block2={
-                            <div>
-                                <h1>Manager Page</h1>
-                                <PageButton>Refresh</PageButton>
-                                <OrderTable
-                                    heading={tableHead}
-                                    rows={tableBody}
-                                />
-                            </div>
-                        }
+                        block1=<SideBar
+                            names={Items2}
+                            hrefs={Links2}
+                            onClick={openMenuBoardsPages}
+                        />
+                        block2=<div>
+                            <h1>Manager Page</h1>
+
+                            <PageButton>Refresh</PageButton>
+                            <MenuEditer />
+                        </div>
                     />
                 </div>
             </div>
