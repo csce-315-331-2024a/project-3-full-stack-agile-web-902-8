@@ -2,7 +2,7 @@ export class User {
     id: number;
     username: string;
     password: string;
-    role: number;
+    role: string;
     hourlySalary: number;
     hours: number;
 
@@ -10,7 +10,7 @@ export class User {
         id: number,
         username: string,
         password: string,
-        role: number,
+        role: string,
         hourlySalary: number,
         hours: number
     ) {
