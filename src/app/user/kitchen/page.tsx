@@ -39,9 +39,15 @@ export default function Kitchen() {
                 >
                     Loading Orders...
                 </div>
+            ) : (orders.length === 0 ? (
+                <div
+                    className='p-4 rounded-2xl text-background bg-text'
+                >
+                    No Orders
+                </div>
             ) : (
                 <KitchenGrid orders={orders} />
-            )}
+            ))}
         </main>
     );
 }
