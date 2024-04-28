@@ -166,7 +166,9 @@ function UserManager() {
                 );
                 return;
             } else if (dUser.user.hourlySalary < 7.25) {
-                alert('Cannot have a salary below minimum wage which is 7.25 $/hr');
+                alert(
+                    'Cannot have a salary below minimum wage which is 7.25 $/hr'
+                );
                 return;
             } else if (dUser.user.hours < 0) {
                 alert('Cannot have negative hours');
