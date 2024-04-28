@@ -142,19 +142,19 @@ export default function ReportPage() {
                     <table className="w-full border-collapse mt-5 text-sm">
                         <thead>
                             <tr>
-                                <th className="bg-accent text-background font-bold text-left py-3 px-4 border-b-text border-b-2 rounded-tl-2xl">
+                                <th className="bg-accent text-background font-bold text-left py-3 px-4 rounded-tl-2xl">
                                     Inventory
                                 </th>
-                                <th className="bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2">
+                                <th className="bg-accent text-background font-bold text-right py-3 px-4">
                                     Quantity used
                                 </th>
-                                <th className="bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2">
+                                <th className="bg-accent text-background font-bold text-right py-3 px-4">
                                     Quantity in store
                                 </th>
-                                <th className="bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2">
+                                <th className="bg-accent text-background font-bold text-right py-3 px-4">
                                     Minimum quantity
                                 </th>
-                                <th className="bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2 rounded-tr-2xl">
+                                <th className="bg-accent text-background font-bold text-right py-3 px-4 rounded-tr-2xl">
                                     Maximum quantity
                                 </th>
                             </tr>
@@ -214,13 +214,13 @@ export default function ReportPage() {
                     <table className="w-full border-collapse mt-5 text-sm">
                         <thead>
                             <tr>
-                                <th className="bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2 rounded-tl-2xl">
+                                <th className="bg-accent text-background font-bold text-right py-3 px-4 rounded-tl-2xl">
                                     ID
                                 </th>
-                                <th className="bg-accent text-background font-bold text-left py-3 px-4 border-b-text border-b-2">
+                                <th className="bg-accent text-background font-bold text-left py-3 px-4">
                                     Name
                                 </th>
-                                <th className="bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2 rounded-tr-2xl">
+                                <th className="bg-accent text-background font-bold text-right py-3 px-4 rounded-tr-2xl">
                                     Quantity
                                 </th>
                             </tr>
