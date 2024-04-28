@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import componentStyles from '@/components/component.module.css';
 import { Order } from '@/lib/models';
 import KitchenGridItem from './KitchenGridItem';
 
@@ -11,7 +10,7 @@ interface KitchenGridProps {
 
 export default function KitchenGrid({ orders }: KitchenGridProps) {
     return (
-        <div className={componentStyles.kitchenGrid}>
+        <div className='grid grid-cols-4 gap-4 w-full'>
             {orders.map((order) => (
                 <KitchenGridItem order={order} key={order.id} />
             ))}
