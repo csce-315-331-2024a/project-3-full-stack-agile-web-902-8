@@ -37,6 +37,7 @@ function UserManager() {
             dUsers.push(currentUser);
         }
         setUsers(dUsers);
+        console.log('inside fetch');
         console.log(dUsers);
     }
 
@@ -48,7 +49,7 @@ function UserManager() {
         if (needsRefresh) {
             console.log('Fetching again');
             fetchUsers();
-            fetchUsers();
+            setNeedsRefresh(false);
         }
         //setNeedsRefresh(false);
     }, [needsRefresh, hasRun]);
@@ -190,6 +191,7 @@ function UserManager() {
                 );
                 updateUser(updatedUser);
                 handleRefresh();
+                handleRefresh();
                 dUser.flux = false;
             }
         }
@@ -217,8 +219,10 @@ function UserManager() {
     const handleRefresh = () => {
         console.log('Refreshing');
         setNeedsRefresh(true);
+        console.log(needsRefresh);
         setInFlux(false);
-        setNeedsRefresh(false);
+        //setNeedsRefresh(false);
+        fetchUsers();
     };
 
     return (
