@@ -19,9 +19,12 @@ export default function Customer() {
     const [category, setCategory] = useState('');
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
+    const [recommendedItems, setRecommendedItems] = useState<MenuItem[]>([]);
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+    const [isFetchingRecommendations, setIsFetchingRecommendations] =
+        useState(false);
 
     const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
 
@@ -63,6 +66,41 @@ export default function Customer() {
             setCategory(categories[0]);
         }
     }, [categories]);
+
+    useEffect(() => {
+        setIsFetchingRecommendations(true);
+        if (isFetchingMenuItems || items.length === 0) return;
+        (async () => {
+            try {
+                const geoloc: [number, number] | null = await new Promise(
+                    (R) => {
+                        // console.log("Asking for location");
+                        navigator.geolocation.getCurrentPosition(
+                            (p) => R([p.coords.latitude, p.coords.longitude]),
+                            () => R(null)
+                        );
+                    }
+                );
+                // console.log("got location", geoloc);
+                const response = await fetch(
+                    '/api/recommendedItems' +
+                        (geoloc !== null
+                            ? `?lat=${geoloc[0]}&lon=${geoloc[1]}`
+                            : '')
+                );
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const recIds: number[] = await response.json();
+                // console.log("recieved recommendations:", recIds);
+                setRecommendedItems(
+                    items.filter((i: MenuItem) => recIds.includes(i.id))
+                );
+            } finally {
+                setIsFetchingRecommendations(false);
+            }
+        })();
+    }, [items, isFetchingMenuItems]);
 
     useEffect(() => {
         async function fetchAllMenuItems() {
@@ -108,9 +146,10 @@ export default function Customer() {
                     <h1>Menu</h1>
                     <div>
                         <h2>Recommendations</h2>
+                        <p>Based on the current weather</p>
                         <CustomerRecommendedBar
-                            isFetchingMenuItems={isFetchingMenuItems}
-                            menuItems={categoryItems.slice(0, 5)}
+                            isFetchingMenuItems={isFetchingRecommendations}
+                            menuItems={recommendedItems}
                             currentOrder={currentOrder}
                             setCurrentOrder={setCurrentOrder}
                         />

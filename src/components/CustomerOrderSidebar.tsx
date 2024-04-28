@@ -63,7 +63,7 @@ export function CustomerOrderItem({
     return (
         <div className={styles['order-item'] + ' ' + styles.customer}>
             <Image
-                src="/menuItemImages/Aggie_Chicken_Club.png"
+                src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
                 height={200}
