@@ -28,8 +28,6 @@ const ScrollableBarGraph = ({
     return (
         <div style={graphStyle}>
             <BarGraph data={data} title={title} />
-            <button onClick={onGenerateGraph}>Generate Graph</button>
-            <button onClick={onRefresh}>Refresh</button>
         </div>
     );
 };

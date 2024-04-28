@@ -1,17 +1,33 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import BarGraph, { BarData } from '@/components/BarGraph';
+import Heading from '@/components/Heading';
 import ScrollableList from '@/components/ScrollableList';
 import ScrollableBarGraph from '@/components/ScrollableBarGraph';
 import DateRangePicker from '@/components/DatePicker';
 
-// Assuming these types are defined in the respective modules
 import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 
 const DataPage = () => {
+
+    const Items = [
+        'Home',
+        'Menu',
+        'Inventory',
+        'Order History',
+        'Reports',
+        'Logout',
+    ];
+    const Links = [
+        '/manager',
+        '/manager',
+        '/manager/inventory',
+        '/manager',
+        '/manager/report_page',
+        '/',
+    ];
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [frequentlySoldPairsData, setFrequentlySoldPairsData] = useState<
@@ -112,15 +128,22 @@ const DataPage = () => {
         setError('');
     };
 
+
+    const resetButtonStyle: React.CSSProperties = {
+        fontSize: '16px', // Ensure this is a string with a valid unit like 'px'
+        fontWeight: 'bold' as 'bold', // Use 'bold' or a number value
+        position: 'absolute' as 'absolute', // Cast this string to the specific value you need
+        right: '10px', // Ensure this has a unit
+        margin: '10px', // Ensure this has a unit
+        padding: '10px', // Ensure this has a unit
+        cursor: 'pointer' as 'pointer', // Cast this string to the specific value you need
+    };
+
     return (
-        <div
-            style={{
-                width: '100%',
-                maxWidth: '1200px',
-                margin: 'auto',
-                padding: '1rem',
-            }}
-        >
+    <main>
+        <Heading names={Items} hrefs={Links} />
+        
+        <div style={{ width: '100%', maxWidth: '1200px', margin: 'auto', padding: '1rem', position: 'relative', paddingTop: '60px' }}>
             <DateRangePicker
                 startDate={startDate}
                 endDate={endDate}
@@ -137,7 +160,11 @@ const DataPage = () => {
             <button onClick={handleGenerateWhatSellsTogetherReport}>
                 Generate What Sells Together Report
             </button>
-            <button onClick={handleReset}>Reset</button>
+            
+            {/* Reset button with enhanced styles */}
+            <button style={resetButtonStyle} onClick={handleReset}>
+                Reset
+            </button>
 
             {isLoading && <p>Loading...</p>}
             {error && <p>{error}</p>}
@@ -171,9 +198,12 @@ const DataPage = () => {
                             title="What Sells Together"
                         />
                     </div>
+                    
                 </>
+                
             )}
         </div>
+    </main>
     );
 };
 

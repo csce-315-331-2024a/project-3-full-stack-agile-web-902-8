@@ -20,27 +20,21 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
 
     // Enhanced styling for headers
     const headerStyle: React.CSSProperties = {
-        backgroundColor: '#a05a2c', // Adjust the color to match your design
-        color: 'white',
+        backgroundColor: '#a05a2c', // Assuming this is a valid color string
+        color: 'white', // Also should be a valid color string
         padding: '10px',
-        textAlign: 'left',
+        textAlign: 'left' as 'left', 
     };
-
-    // Enhanced styling for the title for darker appearance
-    const titleStyle: React.CSSProperties = {
-        backgroundColor: '#804000', // Darker shade for the title background
-        color: 'white',
-        padding: '10px',
-        textAlign: 'center',
-        fontSize: '1.5rem',
-        borderTopLeftRadius: '10px', // Optional for rounded corners
-        borderTopRightRadius: '10px', // Optional for rounded corners
+    const rowStyle = {
+        color: '#333', // dark text color for rows
+        backgroundColor: '#f9f9f9', // light background for rows, for contrast
+        borderBottom: '1px solid #ddd', // if you want borders between rows
     };
 
     return (
         <div style={listStyle}>
-            <div style={titleStyle}>{title}</div>
-            <table>
+            <h2 style={{ color: '#333' }}>{title}</h2> {/* Darker title text */}
+            <table style={{ width: '100%' }}>
                 <thead>
                     <tr>
                         <th style={headerStyle}>Item 1</th>
@@ -50,7 +44,7 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
                 </thead>
                 <tbody>
                     {items.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={index} style={rowStyle}>
                             <td>{item.item1Name}</td>
                             <td>{item.item2Name}</td>
                             <td>{item.frequency}</td>
