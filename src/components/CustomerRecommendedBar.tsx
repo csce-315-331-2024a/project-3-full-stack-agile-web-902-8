@@ -29,7 +29,7 @@ function CustomerRecommendedBar({
                     }
                     disabled={true}
                 >
-                    Loading Menu Items...
+                    Loading Recommendations...
                 </button>
             </div>
         );
