@@ -180,11 +180,11 @@ export default function CustomerCheckout() {
                     </table>
                 </div>
                 <section className="w-full h-[25%] flex flex-col">
-                    <h2 className="text-xl flex-shrink-0">Payment Method</h2>
-                    <ul className="flex-grow grid grid-cols-[repeat(4,1fr)]">
+                    <h2 className="text-2xl font-bold">Payment Method</h2>
+                    <ul className="grid grid-cols-[repeat(4,1fr)]">
                         <li className="h-full">
                             <button
-                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
+                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem_0_0_1rem] border-background border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -196,7 +196,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
+                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -208,7 +208,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
+                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -220,7 +220,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed"
+                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[0_1rem_1rem_0] border-background border-l-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0

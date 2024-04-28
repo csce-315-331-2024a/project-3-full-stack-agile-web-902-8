@@ -301,7 +301,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
-            {/*TODO: figure out select hover effect. Consider a custom dropdown, since the built-in is so garbage*/}
+            {/*TODO: figure out select hover effect.*/}
             <select
                 className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
                 id="dropdown"
@@ -442,7 +442,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                             className="text-text bg-secondary rounded-2xl p-4 duration-200 hover:text-text hover:bg-secondary/30"
                             onClick={handleCloseRequest}
                         >
-                            Nevermind
+                            Cancel
                         </button>
                     </div>
                 </div>
