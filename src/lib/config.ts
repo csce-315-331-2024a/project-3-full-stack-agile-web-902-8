@@ -11,10 +11,15 @@ const rates = {
     tax: 0.0825, // College Station sales tax rate
 };
 
+const openweather = {
+    key: process.env.WEATHER_KEY,
+};
+
 const GlobalConfig = {
     db: db,
     dev: process.env.NODE_ENV === 'development',
     rates: rates,
+    weather: openweather,
 };
 
 export default GlobalConfig;
