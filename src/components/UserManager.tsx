@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User } from "@/lib/models";
+import { User } from '@/lib/models';
 
 interface dynamicUser {
     user: User;
@@ -16,37 +16,33 @@ function UserManager() {
     const [needsRefresh, setNeedsRefresh] = useState<boolean>(false);
     const [hasRun, setHasRun] = useState<boolean>(false);
 
-     /**
+    /**
      * Fetches the list of users from the api route
      */
-     async function fetchUsers() {
+    async function fetchUsers() {
         const response = await fetch('/api/getAllUsers');
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
         }
         const userList = await response.json();
         const dUsers: dynamicUser[] = [];
-        for (const user of userList)
-        {
+        for (const user of userList) {
             const currentUser: dynamicUser = {
                 user,
                 flux: false,
-            }
+            };
             dUsers.push(currentUser);
         }
         setUsers(dUsers);
         console.log(dUsers);
     }
 
-
     useEffect(() => {
-        if(!hasRun)
-        {
+        if (!hasRun) {
             fetchUsers();
             setHasRun(true);
         }
-        if(needsRefresh)
-        {
+        if (needsRefresh) {
             fetchUsers();
         }
         //setNeedsRefresh(false);
@@ -57,7 +53,6 @@ function UserManager() {
      * @param i the index of the user
      */
     const handleRemoveUser = (i: number) => {
-
         async function removeUser(passedUsername: string) {
             const response = await fetch('/api/removeUser', {
                 method: 'POST',
@@ -71,9 +66,10 @@ function UserManager() {
             }
         }
 
-        const confirm = window.confirm("Are you sure you want to remove this user?")
-        if(confirm)
-        {
+        const confirm = window.confirm(
+            'Are you sure you want to remove this user?'
+        );
+        if (confirm) {
             const removed = [...users];
             removed.splice(i, 1);
             setUsers(removed);
@@ -81,7 +77,7 @@ function UserManager() {
             refresh();
             refresh();
         }
-    }
+    };
 
     /**
      * Handles changing the username of a user
@@ -93,8 +89,8 @@ function UserManager() {
         const changed = [...users];
         changed[i].user.username = newUsername;
         changed[i].flux = true;
-        setUsers(changed);  
-    }
+        setUsers(changed);
+    };
 
     /**
      * Handles changing the role of a user
@@ -107,7 +103,7 @@ function UserManager() {
         changed[i].user.role = newRole;
         changed[i].flux = true;
         setUsers(changed);
-    }
+    };
 
     /**
      * Handles changing the salary of a user
@@ -120,7 +116,7 @@ function UserManager() {
         changed[i].user.hourlySalary = newSalary;
         changed[i].flux = true;
         setUsers(changed);
-    }
+    };
 
     /**
      * Handles changing the hours of a user
@@ -133,13 +129,12 @@ function UserManager() {
         changed[i].user.hours = newHours;
         changed[i].flux = true;
         setUsers(changed);
-    }
+    };
 
     /**
      * Handles submitting the adjusted users
      */
     const handleSubmit = () => {
-
         async function updateUser(passedUser: User) {
             const response = await fetch('/api/addOrUpdateUser', {
                 method: 'POST',
@@ -153,43 +148,47 @@ function UserManager() {
             }
         }
 
-
-        for (const dUser of users){
-            if(dUser.user.username == '')
-            {
-                alert("Username cannot be empty")
+        for (const dUser of users) {
+            if (dUser.user.username == '') {
+                alert('Username cannot be empty');
                 return;
-            }
-            else if(dUser.user.role != 'ADMINISTRATOR' && dUser.user.role != 'MANAGER' && dUser.user.role != 'COOK' && dUser.user.role != 'CASHIER')
-            {
-                alert("Role must be one of the following: 'ADMINISTRATOR', 'MANAGER', 'COOK', 'CASHIER'");
+            } else if (
+                dUser.user.role != 'ADMINISTRATOR' &&
+                dUser.user.role != 'MANAGER' &&
+                dUser.user.role != 'COOK' &&
+                dUser.user.role != 'CASHIER'
+            ) {
+                alert(
+                    "Role must be one of the following: 'ADMINISTRATOR', 'MANAGER', 'COOK', 'CASHIER'"
+                );
                 return;
-            }
-            else if (dUser.user.hourlySalary < 7.25)
-            {
-                alert("Cannot have a salary below minimum wage");
+            } else if (dUser.user.hourlySalary < 7.25) {
+                alert('Cannot have a salary below minimum wage');
                 return;
-            }
-            else if (dUser.user.hours < 0)
-            {
-                alert("Cannot have negative hours");
+            } else if (dUser.user.hours < 0) {
+                alert('Cannot have negative hours');
                 return;
             }
         }
 
-        for (const dUser of users)
-        {
+        for (const dUser of users) {
             setInFlux(false);
-            if(dUser.flux)
-            {
-                const updatedUser = new User(0, dUser.user.username, "", dUser.user.role, dUser.user.hourlySalary, dUser.user.hours);
+            if (dUser.flux) {
+                const updatedUser = new User(
+                    0,
+                    dUser.user.username,
+                    '',
+                    dUser.user.role,
+                    dUser.user.hourlySalary,
+                    dUser.user.hours
+                );
                 updateUser(updatedUser);
                 refresh();
                 dUser.flux = false;
                 refresh();
-            }   
+            }
         }
-    }
+    };
 
     /**
      * Handles adding a new user
@@ -198,14 +197,14 @@ function UserManager() {
         setInFlux(true);
         const add = [...users];
         const newUser: dynamicUser = {
-            user: new User(0, "", "", "", 0, 0),
+            user: new User(0, '', '', '', 0, 0),
             flux: true,
-        }
+        };
         console.log(newUser);
         add.push(newUser);
         setUsers(add);
         console.log(add);
-    }
+    };
 
     /**
      * Handles refreshing the users list
@@ -214,12 +213,13 @@ function UserManager() {
         setNeedsRefresh(true);
         setInFlux(false);
         setNeedsRefresh(false);
-    }
+    };
 
-    return(
+    return (
         <div>
-
-            <button type="button" onClick={refresh}>Refresh</button>
+            <button type="button" onClick={refresh}>
+                Refresh
+            </button>
 
             <table>
                 <thead>
@@ -236,9 +236,7 @@ function UserManager() {
                         <tr key={index}>
                             <td>
                                 <button
-                                    onClick={() =>
-                                        handleRemoveUser(index)
-                                    }
+                                    onClick={() => handleRemoveUser(index)}
                                     type="button"
                                 >
                                     X
@@ -261,10 +259,7 @@ function UserManager() {
                                     type="text"
                                     value={entry.user.role}
                                     onChange={(e) =>
-                                        handleChangeRole(
-                                            index,
-                                            e.target.value
-                                        )
+                                        handleChangeRole(index, e.target.value)
                                     }
                                 />
                             </td>
@@ -297,9 +292,11 @@ function UserManager() {
                 </tbody>
             </table>
 
-            {inFlux && (<button type="button" onClick={handleSubmit}>
-                Save Changes
-            </button>)}
+            {inFlux && (
+                <button type="button" onClick={handleSubmit}>
+                    Save Changes
+                </button>
+            )}
             <button type="button" onClick={handleAdd}>
                 Add a user
             </button>

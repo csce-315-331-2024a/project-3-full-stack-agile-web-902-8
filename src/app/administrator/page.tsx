@@ -18,12 +18,8 @@ export default function Administrator() {
         window.open('/menuboards/Sandwiches_Baskets', '_blank');
     };
 
-    const Items = [
-        'Home',
-    ];
-    const Links = [
-        '/administrator',
-    ];
+    const Items = ['Home'];
+    const Links = ['/administrator'];
     const Items2 = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
     const Links2 = ['/manager', '/customer', '/cashier', '/menuboards'];
 
@@ -44,7 +40,7 @@ export default function Administrator() {
                         }
                         block2=<div>
                             <h1>Manage Inventory</h1>
-                            <UserManager/>
+                            <UserManager />
                         </div>
                     />
                 </div>

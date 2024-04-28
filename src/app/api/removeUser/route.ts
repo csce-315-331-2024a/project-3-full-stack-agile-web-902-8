@@ -1,4 +1,4 @@
-import { removeUser } from "@/lib/user";
+import { removeUser } from '@/lib/user';
 import { NextRequest, NextResponse } from 'next/server';
 /**
  * api route for the removeUser function

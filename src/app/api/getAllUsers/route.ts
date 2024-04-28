@@ -1,4 +1,4 @@
-import { getAllUsers } from "@/lib/user";
+import { getAllUsers } from '@/lib/user';
 import { NextResponse } from 'next/server';
 /**
  * api route for the getAllUsers function
@@ -17,4 +17,4 @@ export async function GET() {
     }
 }
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
