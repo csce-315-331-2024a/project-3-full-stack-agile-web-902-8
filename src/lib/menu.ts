@@ -9,6 +9,34 @@ import {
 import Error from '@/lib/error';
 import postgres from 'postgres';
 
+/**
+ * Retrieves the image for a menu item sepcified by id.
+ *
+ * @param id - The id of the menu item whose image should be returned.
+ * @param tsql - The object representing an existing database connection or transaction.
+ *
+ * @returns A Promise resolving to a the bytes of the image if found, or null if not found.
+ */
+export async function getMenuItemImage(id: number, tsql = psql): Promise<Uint8Array | null> {
+    return transact<Uint8Array | null, postgres.Error, any>(
+        tsql,
+        new Error('SQL Error in getMenuItemImage', undefined),
+        async (isql, _) => {
+            const res = await isql`
+            SELECT
+                image
+            FROM
+                menu_items
+            WHERE
+                id = ${id}
+            ;`;
+            if (res.length === 0)
+                return null;
+            return res[0].image;
+        }
+    );
+}
+
 //go back and fix the affecterows
 
 export async function getMenuItemsInSeason(tsql = psql): Promise<MenuItem[]> {
