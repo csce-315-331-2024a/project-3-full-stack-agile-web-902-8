@@ -11,8 +11,12 @@ export default function Manager() {
 
     return (
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start">
-            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">Manager</h1>
-            <button className='bg-secondary duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:hover:cursor-wait p-4 rounded-2xl w-fit'>Refresh</button>
+            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                Manager
+            </h1>
+            <button className="bg-secondary duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:hover:cursor-wait p-4 rounded-2xl w-fit">
+                Refresh
+            </button>
             <OrderTable heading={tableHead} rows={tableBody} />
         </main>
     );
