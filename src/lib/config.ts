@@ -20,11 +20,16 @@ export enum loginLevels {
     LOGIN_CUSTOMER = 'CUSTOMER',
 }
 
+const openweather = {
+    key: process.env.WEATHER_KEY,
+};
+
 const GlobalConfig = {
     db: db,
     dev: process.env.NODE_ENV === 'development',
     rates: rates,
     loginLevels: loginLevels,
+    weather: openweather,
 };
 
 export default GlobalConfig;

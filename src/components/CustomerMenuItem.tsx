@@ -58,7 +58,7 @@ export function CustomerMenuItem({
             onClick={() => addToOrder(item)}
         >
             <Image
-                src="/menuItemImages/Aggie_Chicken_Club.png"
+                src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
                 height={200}
@@ -116,7 +116,7 @@ export function CustomerRecommendedItem({
             onClick={() => addToOrder(item)}
         >
             <Image
-                src="/menuItemImages/Aggie_Chicken_Club.png"
+                src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={150}
                 height={150}
