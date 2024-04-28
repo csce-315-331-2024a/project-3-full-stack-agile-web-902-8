@@ -19,7 +19,7 @@ export default function Manager() {
         'Home',
         'Menu',
         'Inventory',
-        'Order History',
+        'Manager Data',
         'Reports',
         'Logout',
     ];

@@ -20,7 +20,7 @@ export default function Inventory() {
         'Home',
         'Menu',
         'Inventory',
-        'Order History',
+        'Manager Data',
         'Reports',
         'Logout',
     ];
@@ -28,7 +28,7 @@ export default function Inventory() {
         '/manager',
         '/manager',
         '/manager/inventory',
-        '/manager',
+        '/manager/order_history',
         '/manager/report_page',
         '/',
     ];

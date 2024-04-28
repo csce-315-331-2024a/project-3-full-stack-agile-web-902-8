@@ -16,7 +16,7 @@ const DataPage = () => {
         'Home',
         'Menu',
         'Inventory',
-        'Order History',
+        'Manager Data',
         'Reports',
         'Logout',
     ];
