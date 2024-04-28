@@ -20,7 +20,7 @@ export default function OrderPlaced() {
 
     return (
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center">
-            <h1 className="text-[4rem] font-bold">Order has been placed</h1>
+            <h1 className="text-[4rem] font-bold">Your order has been placed</h1>
             <p>Redirecting back to menu...</p>
         </main>
     );

@@ -15,6 +15,7 @@ import {
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 import GlobalConfig from '@/lib/config';
 
@@ -179,12 +180,17 @@ export default function CustomerCheckout() {
                         </tfoot>
                     </table>
                 </div>
-                <section className="w-full h-[25%] flex flex-col">
-                    <h2 className="text-2xl font-bold">Payment Method</h2>
+                <section className="w-full h-fit flex flex-col">
+                    <div className='w-full flex flex-row justify-between items-center p-4'>
+                        <h2 className="text-2xl font-bold w-fit h-fit">Payment Method</h2>
+                        <Link className='bg-secondary duration-200 hover:bg-secondary/70 w-fit p-4 rounded-2xl' href='user/customer/'>
+                            Back to menu
+                        </Link>
+                    </div>
                     <ul className="grid grid-cols-[repeat(4,1fr)]">
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem_0_0_1rem] border-background border-r-2"
+                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem_0_0_1rem] border-background border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -196,7 +202,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
+                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -208,7 +214,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
+                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -220,7 +226,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-10 text-2xl hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[0_1rem_1rem_0] border-background border-l-2"
+                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[0_1rem_1rem_0] border-background border-l-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
