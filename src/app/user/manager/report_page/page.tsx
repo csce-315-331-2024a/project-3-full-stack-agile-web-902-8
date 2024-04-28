@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import design from '@/app/user/manager/report_page/page.module.css';
 import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
 import { format, startOfToday } from 'date-fns';
@@ -91,120 +90,118 @@ export default function ReportPage() {
     };
 
     return (
-        <main>
-            <div className={design.reportContainer}>
-                <div className={design.excessReport}>
-                    <h1>Excess Report:</h1>
+        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[3fr_1fr] grid-rows-[min-content_1fr] p-4 gap-4'>
+            <h1 className='col-[1/3] row-[1/2] text-[4rem] font-bold relative mainHeader w-fit h-fit'>Reports</h1>
+            <div className='col-[1/2] row-[2/3]'>
+                <h2 className='text-2xl font-bold'>Excess Report:</h2>
+                <div>
+                    <label htmlFor="beginTime">
+                        Select a starting date:{' '}
+                    </label>
+                    <input
+                        type="datetime-local"
+                        id="beginTime"
+                        value={beginTimeString}
+                        onChange={handleBeginTimeChange}
+                        className='bg-secondary py-2 px-3 rounded-xl text-sm mr-[10px] mt-[10px] hover:cursor-pointer hover:bg-secondary/70'
+                    />
+                    <label htmlFor="endTime">Select an end date: </label>
+                    <input
+                        type="datetime-local"
+                        id="endTime"
+                        value={endTimeString}
+                        onChange={handleEndTimeChange}
+                        className='bg-secondary py-2 px-3 rounded-xl text-sm mr-[10px] mt-[10px] hover:cursor-pointer hover:bg-secondary/70'
+                    />
+                    <button
+                        onClick={handleGenerateExcessReport}
+                        className='bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70'
+                    >
+                        Generate Excess Report
+                    </button>
+                    <button
+                        onClick={handleReset}
+                        className='bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70'
+                    >
+                        Reset
+                    </button>
+                </div>
 
-                    <div>
-                        <label htmlFor="beginTime">
-                            Select a starting date:{' '}
-                        </label>
-                        <input
-                            type="datetime-local"
-                            id="beginTime"
-                            value={beginTimeString}
-                            onChange={handleBeginTimeChange}
-                            className={design.dateInput}
-                        />
-                        <label htmlFor="endTime">Select an end date: </label>
-                        <input
-                            type="datetime-local"
-                            id="endTime"
-                            value={endTimeString}
-                            onChange={handleEndTimeChange}
-                            className={design.dateInput}
-                        />
-                        <button
-                            onClick={handleGenerateExcessReport}
-                            className={design.genresbutton}
-                        >
-                            Generate Excess Report
-                        </button>
-                        <button
-                            onClick={handleReset}
-                            className={design.genresbutton}
-                        >
-                            Reset
+                {error && <div className='mt-5'>{error}</div>}
+
+                {isLoading ? (
+                    <div className='flex justify-center items-center h-[300px] mt-8'>
+                        <button className='text-background bg-text hover:cursor-wait py-4 px-8 text-xl rounded-2xl' disabled>
+                            Loading...
                         </button>
                     </div>
-
-                    {error && <div className={design.error}>{error}</div>}
-
-                    {isLoading ? (
-                        <div className={design.loadingContainer}>
-                            <button className={`${design.loading}`} disabled>
-                                Loading...
-                            </button>
-                        </div>
-                    ) : (
-                        <table className={design.reportTable}>
-                            <thead>
-                                <tr>
-                                    <th>Inventory</th>
-                                    <th>Quantity used</th>
-                                    <th>Quantity in store</th>
-                                    <th>Minimum quantity</th>
-                                    <th>Maximum quantity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {excessItems && excessItems.length > 0 ? (
-                                    excessItems.map((excessItem, index) => (
-                                        <tr key={index}>
-                                            <td>{excessItem.item.name}</td>
-                                            <td>{excessItem.qtyUsed}</td>
-                                            <td>{excessItem.item.quantity}</td>
-                                            <td>
-                                                {excessItem.item.minQuantity}
-                                            </td>
-                                            <td>
-                                                {excessItem.item.maxQuantity}
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={5}>
-                                            {' '}
-                                            No excess items found{' '}
+                ) : (
+                    <table className='w-full border-collapse mt-5 text-sm'>
+                        <thead>
+                            <tr>
+                                <th className='bg-accent text-background font-bold text-left py-3 px-4 border-b-text border-b-2 rounded-tl-2xl'>Inventory</th>
+                                <th className='bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2'>Quantity used</th>
+                                <th className='bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2'>Quantity in store</th>
+                                <th className='bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2'>Minimum quantity</th>
+                                <th className='bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2 rounded-tr-2xl'>Maximum quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {excessItems && excessItems.length > 0 ? (
+                                excessItems.map((excessItem, index) => (
+                                    <tr className='hover:bg-secondary/70' key={index}>
+                                        <td className='py-3 px-4 border-b-text border-b-[1px]'>{excessItem.item.name}</td>
+                                        <td className='text-right font-mono py-3 px-4 border-b-text border-b-[1px]'>{excessItem.qtyUsed}</td>
+                                        <td className='text-right font-mono py-3 px-4 border-b-text border-b-[1px]'>{excessItem.item.quantity}</td>
+                                        <td className='text-right font-mono py-3 px-4 border-b-text border-b-[1px]'>
+                                            {excessItem.item.minQuantity}
+                                        </td>
+                                        <td className='text-right font-mono py-3 px-4 border-b-text border-b-[1px]'>
+                                            {excessItem.item.maxQuantity}
                                         </td>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
-
-                <div className={design.restockReport}>
-                    <h1>Restock Report:</h1>
-                    {isRestockReportLoading ? (
-                        <div className={design.loadingContainer}>
-                            <button className={`${design.loading}`} disabled>
-                                Loading...
-                            </button>
-                        </div>
-                    ) : (
-                        <table className={design.reportTable}>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Quantity</th>
+                                ))
+                            ) : (
+                                <tr className='hover:bg-secondary/70'>
+                                    <td className='py-3 px-4 border-b-text border-b-[1px]' colSpan={5}>
+                                        {' '}
+                                        No excess items found{' '}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {inventoryItems.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.quantity}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    )}
-                </div>
+                            )}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+
+            <div className='col-[2/3] row-[2/3]'>
+                <h2 className='text-2xl font-bold'>Restock Report:</h2>
+                {isRestockReportLoading ? (
+                    <div className='flex justify-center items-center h-[300px] mt-8'>
+                        <button className='text-background bg-text hover:cursor-wait py-4 px-8 text-xl rounded-2xl' disabled>
+                            Loading...
+                        </button>
+                    </div>
+                ) : (
+                    <table className='w-full border-collapse mt-5 text-sm'>
+                        <thead>
+                            <tr>
+                                <th className='bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2 rounded-tl-2xl'>ID</th>
+                                <th className='bg-accent text-background font-bold text-left py-3 px-4 border-b-text border-b-2'>Name</th>
+                                <th className='bg-accent text-background font-bold text-right py-3 px-4 border-b-text border-b-2 rounded-tr-2xl'>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {inventoryItems.map((item, index) => (
+                                <tr className='hover:bg-secondary/70' key={index}>
+                                    <td className='text-right font-mono py-3 px-4 border-b-text border-b-[1px]'>{item.id}</td>
+                                    <td className='py-3 px-4 border-b-text border-b-[1px]'>{item.name}</td>
+                                    <td className='text-right font-mono py-3 px-4 border-b-text border-b-[1px]'>{item.quantity}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </main>
     );
