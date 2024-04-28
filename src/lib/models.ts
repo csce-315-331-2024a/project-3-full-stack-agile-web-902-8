@@ -139,7 +139,6 @@ export class InventoryItem {
 }
 
 export class AggregateItem {
-<<<<<<< HEAD
     id: number;
     name: string;
     qty: number;
@@ -174,27 +173,3 @@ export class frequentlySoldPairs {
         this.frequency = frequency;
     }
 }
-=======
-    private id: number;
-    private name: string;
-    private qty: number;
-  
-    constructor(id: number, name: string, qty: number) {
-      this.id = id;
-      this.name = name;
-      this.qty = qty;
-    }
-  
-    public getId(): number {
-      return this.id;
-    }
-  
-    public getName(): string {
-      return this.name;
-    }
-  
-    public getQty(): number {
-      return this.qty;
-    }
-  }
->>>>>>> 52588cc (Added the AggregateItem class to use)

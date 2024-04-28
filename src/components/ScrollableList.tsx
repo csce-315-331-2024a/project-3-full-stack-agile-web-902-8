@@ -21,7 +21,7 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
     // Enhanced styling for headers
     const headerStyle: React.CSSProperties = {
         backgroundColor: '#a05a2c', // Assuming this is a valid color string
-        color: '#333', // Also should be a valid color string
+        color: 'white', // Also should be a valid color string
         padding: '10px',
         textAlign: 'left' as 'left',
     };
