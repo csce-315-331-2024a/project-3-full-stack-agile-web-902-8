@@ -146,6 +146,7 @@ export default function Customer() {
                     <h1>Menu</h1>
                     <div>
                         <h2>Recommendations</h2>
+                        <p>Based on the current weather</p>
                         <CustomerRecommendedBar
                             isFetchingMenuItems={isFetchingRecommendations}
                             menuItems={recommendedItems}
