@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { User } from '@/lib/models';
 
+/**
+ * Interface for dynamicUser which contains the user and whether that user needs to be updated
+ */
 interface dynamicUser {
     user: User;
     flux: boolean;
