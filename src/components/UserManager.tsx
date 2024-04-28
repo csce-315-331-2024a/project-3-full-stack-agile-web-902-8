@@ -35,6 +35,7 @@ function UserManager() {
             dUsers.push(currentUser);
         }
         setUsers(dUsers);
+        console.log(dUsers);
     }
 
 
@@ -42,7 +43,7 @@ function UserManager() {
         if(!hasRun)
         {
             fetchUsers();
-            setHasRun(false);
+            setHasRun(true);
         }
         if(needsRefresh)
         {
@@ -77,7 +78,7 @@ function UserManager() {
             removed.splice(i, 1);
             setUsers(removed);
             removeUser(users[i].user.username);
-            fetchUsers();
+            refresh();
             refresh();
         }
     }
@@ -91,6 +92,7 @@ function UserManager() {
         setInFlux(true);
         const changed = [...users];
         changed[i].user.username = newUsername;
+        changed[i].flux = true;
         setUsers(changed);  
     }
 
@@ -102,7 +104,8 @@ function UserManager() {
     const handleChangeRole = (i: number, newRole: string) => {
         setInFlux(true);
         const changed = [...users];
-        changed[i].user.role= newRole;
+        changed[i].user.role = newRole;
+        changed[i].flux = true;
         setUsers(changed);
     }
 
@@ -115,6 +118,7 @@ function UserManager() {
         setInFlux(true);
         const changed = [...users];
         changed[i].user.hourlySalary = newSalary;
+        changed[i].flux = true;
         setUsers(changed);
     }
 
@@ -127,6 +131,7 @@ function UserManager() {
         setInFlux(true);
         const changed = [...users];
         changed[i].user.hours = newHours;
+        changed[i].flux = true;
         setUsers(changed);
     }
 
@@ -179,7 +184,8 @@ function UserManager() {
             {
                 const updatedUser = new User(0, dUser.user.username, "", dUser.user.role, dUser.user.hourlySalary, dUser.user.hours);
                 updateUser(updatedUser);
-                fetchUsers();
+                refresh();
+                dUser.flux = false;
                 refresh();
             }   
         }
@@ -195,8 +201,10 @@ function UserManager() {
             user: new User(0, "", "", "", 0, 0),
             flux: true,
         }
+        console.log(newUser);
         add.push(newUser);
         setUsers(add);
+        console.log(add);
     }
 
     /**
