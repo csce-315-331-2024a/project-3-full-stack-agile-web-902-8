@@ -1,16 +1,21 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import design from '@/app/manager/report_page/page.module.css';
 import { format, startOfToday } from 'date-fns';
 import { Order, OrderItem } from '@/lib/models';
 
 function OrderTable() {
     const [orderHistory, setOrderHistory] = useState<Order[]>([]);
-    const [isOrderHistoryGenerated, setIsOrderHistoryGenerated] = useState(false);
+    const [isOrderHistoryGenerated, setIsOrderHistoryGenerated] =
+        useState(false);
     const [generateClicked, setGenerateClicked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [beginTimeString, setBeginTimeString] = useState<string>(format(startOfToday(), "yyyy-MM-dd'T'00:00"));
-    const [endTimeString, setEndTimeString] = useState<string>(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
+    const [beginTimeString, setBeginTimeString] = useState<string>(
+        format(startOfToday(), "yyyy-MM-dd'T'00:00")
+    );
+    const [endTimeString, setEndTimeString] = useState<string>(
+        format(new Date(), "yyyy-MM-dd'T'HH:mm")
+    );
     const [, setBeginTime] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -19,18 +24,25 @@ function OrderTable() {
     // Pagination logic
     const indexOfLastRow = currentPage * rowsPerPage;
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-    const currentRows = rowsPerPage === 0 ? orderHistory : orderHistory.slice(indexOfFirstRow, indexOfLastRow);
+    const currentRows =
+        rowsPerPage === 0
+            ? orderHistory
+            : orderHistory.slice(indexOfFirstRow, indexOfLastRow);
     const totalPages = Math.ceil(orderHistory.length / rowsPerPage) || 1;
 
-    const handleBeginTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBeginTimeChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         setBeginTimeString(event.target.value);
     };
 
-    const handleEndTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleEndTimeChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         setEndTimeString(event.target.value);
     };
 
-    const handleGenerateOrderHistory = async () => {
+    const handleGenerateOrderHistory = useCallback(async () => {
         setGenerateClicked(true);
         setIsLoading(true);
         const selectedBeginDate = new Date(beginTimeString);
@@ -38,7 +50,9 @@ function OrderTable() {
         const beginTimeNumber = selectedBeginDate.getTime();
         const endTimeNumber = selectedEndDate.getTime();
 
-        const response = await fetch(`/api/getOrderHistory?beginTime=${beginTimeNumber}&endTime=${endTimeNumber}`);
+        const response = await fetch(
+            `/api/getOrderHistory?beginTime=${beginTimeNumber}&endTime=${endTimeNumber}`
+        );
         if (!response.ok) {
             const errorData = await response.json();
             setError(errorData.error);
@@ -56,7 +70,7 @@ function OrderTable() {
         setIsLoading(false);
         setCurrentPage(1); // Reset to first page
         setRowsPerPage(res.length); // Set rows per page to all rows by default
-    };
+    }, [beginTimeString, endTimeString]);
 
     const handleReset = () => {
         setBeginTimeString(format(startOfToday(), "yyyy-MM-dd'T'00:00"));
@@ -71,13 +85,15 @@ function OrderTable() {
 
     useEffect(() => {
         handleGenerateOrderHistory();
-    }, []);
+    }, [handleGenerateOrderHistory]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
 
-    const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleRowsPerPageChange = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
         const newRowsPerPage = parseInt(event.target.value, 10);
         setRowsPerPage(newRowsPerPage);
         setCurrentPage(1); // Reset to first page when changing rows per page
@@ -87,7 +103,7 @@ function OrderTable() {
         <div className={design.excessReport}>
             <div>
                 <div>
-                    <label htmlFor="beginTime">Select a starting date:</label>
+                    Select a starting date:
                     <input
                         type="datetime-local"
                         id="beginTime"
@@ -96,8 +112,9 @@ function OrderTable() {
                         className={design.dateInput}
                     />
                 </div>
+
                 <div>
-                    <label htmlFor="endTime">Select an end date:</label>
+                    Select an end date:
                     <input
                         type="datetime-local"
                         id="endTime"
@@ -107,14 +124,21 @@ function OrderTable() {
                     />
                 </div>
                 <div>
-                    <button onClick={handleGenerateOrderHistory} className={design.genresbutton}>
+                    <button
+                        onClick={handleGenerateOrderHistory}
+                        className={design.genresbutton}
+                    >
                         Generate Order History
                     </button>
-                    <button onClick={handleReset} className={design.genresbutton}>
+                    <button
+                        onClick={handleReset}
+                        className={design.genresbutton}
+                    >
                         Reset
                     </button>
                 </div>
             </div>
+
             {error && <div className={design.error}>{error}</div>}
             {isLoading ? (
                 <div className={design.loadingContainer}>
@@ -124,9 +148,14 @@ function OrderTable() {
                 </div>
             ) : (
                 <>
-                    <div>
-                        <label htmlFor="rowsPerPage">Rows per page:</label>
-                        <select id="rowsPerPage" value={rowsPerPage} onChange={handleRowsPerPageChange} className={design.genresbutton}>
+                    <div className={design.tableControls}>
+                        Rows per page:
+                        <select
+                            id="rowsPerPage"
+                            value={rowsPerPage}
+                            onChange={handleRowsPerPageChange}
+                            className={design.dropdown}
+                        >
                             <option value={10}>10</option>
                             <option value={20}>20</option>
                             <option value={50}>50</option>
@@ -134,6 +163,103 @@ function OrderTable() {
                             <option value={orderHistory.length}>All</option>
                         </select>
                     </div>
+                    <div className={design.paginationControls}>
+                        {totalPages > 1 && (
+                            <>
+                                {currentPage > 1 && (
+                                    <button
+                                        onClick={() =>
+                                            handlePageChange(currentPage - 1)
+                                        }
+                                        className={`${design.navbarbutton} ${design.prevButton}`}
+                                    >
+                                        Previous
+                                    </button>
+                                )}
+
+                                {currentPage === 1 ? (
+                                    <>
+                                        <button
+                                            onClick={() => handlePageChange(1)}
+                                            disabled={true}
+                                            className={`${design.navbarbutton} ${design.currentButton}`}
+                                        >
+                                            1
+                                        </button>
+                                        {totalPages > 2 && (
+                                            <span className={design.ellipsis}>
+                                                ...
+                                            </span>
+                                        )}
+                                        <button
+                                            onClick={() =>
+                                                handlePageChange(totalPages)
+                                            }
+                                            className={design.navbarbutton}
+                                        >
+                                            {totalPages}
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button
+                                            onClick={() => handlePageChange(1)}
+                                            className={design.navbarbutton}
+                                        >
+                                            1
+                                        </button>
+                                        {currentPage > 2 && (
+                                            <span className={design.ellipsis}>
+                                                ...
+                                            </span>
+                                        )}
+                                        <button
+                                            onClick={() =>
+                                                handlePageChange(currentPage)
+                                            }
+                                            disabled={true}
+                                            className={`${design.navbarbutton} ${design.currentButton}`}
+                                        >
+                                            {currentPage}
+                                        </button>
+                                        {currentPage < totalPages - 1 && (
+                                            <>
+                                                <span
+                                                    className={design.ellipsis}
+                                                >
+                                                    ...
+                                                </span>
+                                                <button
+                                                    onClick={() =>
+                                                        handlePageChange(
+                                                            totalPages
+                                                        )
+                                                    }
+                                                    className={
+                                                        design.navbarbutton
+                                                    }
+                                                >
+                                                    {totalPages}
+                                                </button>
+                                            </>
+                                        )}
+                                    </>
+                                )}
+
+                                {currentPage < totalPages && (
+                                    <button
+                                        onClick={() =>
+                                            handlePageChange(currentPage + 1)
+                                        }
+                                        className={`${design.navbarbutton} ${design.nextButton}`}
+                                    >
+                                        Next
+                                    </button>
+                                )}
+                            </>
+                        )}
+                    </div>
+
                     <table className={design.reportTable}>
                         <thead>
                             <tr>
@@ -150,18 +276,28 @@ function OrderTable() {
                                 currentRows.map((order, index) => (
                                     <tr key={index}>
                                         <td>{order.id}</td>
-                                        <td>{order.timestamp.toLocaleString()}</td>
-                                        <td>{order.discount !== 0 ? order.discount : 'N/A'}</td>                                        
+                                        <td>
+                                            {order.timestamp.toLocaleString()}
+                                        </td>
+                                        <td>
+                                            {order.discount !== 0
+                                                ? order.discount
+                                                : 'N/A'}
+                                        </td>
                                         <td>{order.total}</td>
                                         <td>
-                                            {order.items.map((item, itemIndex) => (
-                                                <div key={itemIndex}>
-                                                    Item ID: {item.item.name}, Quantity: {item.quantity}
-                                                </div>
-                                            ))}
+                                            {order.items.map(
+                                                (item, itemIndex) => (
+                                                    <div key={itemIndex}>
+                                                        Item ID:{' '}
+                                                        {item.item.name},
+                                                        Quantity:{' '}
+                                                        {item.quantity}
+                                                    </div>
+                                                )
+                                            )}
                                         </td>
                                         <td>{order.status}</td>
-
                                     </tr>
                                 ))
                             ) : (
@@ -171,32 +307,10 @@ function OrderTable() {
                             )}
                         </tbody>
                     </table>
-                    <div>
-                        {currentPage > 1 && (
-                            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className={design.genresbutton}>
-                                Previous
-                            </button>
-                        )}
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-                            <button
-                                key={pageNumber}
-                                onClick={() => handlePageChange(pageNumber)}
-                                disabled={pageNumber === currentPage}
-                                className={design.genresbutton}
-                            >
-                                {pageNumber}
-                            </button>
-                        ))}
-                        {currentPage < totalPages && (
-                            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className={design.genresbutton}>
-                                Next
-                            </button>
-                        )}
-                    </div>
                 </>
             )}
         </div>
     );
 }
 
-export default OrderTable
+export default OrderTable;

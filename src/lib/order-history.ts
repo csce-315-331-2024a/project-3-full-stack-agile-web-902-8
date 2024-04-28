@@ -9,8 +9,8 @@ export async function orderHistory(
     tsql = psql
 ): Promise<Order[]> {
     // Subtract 5 hours (in milliseconds) from begin and end timestamps
-    const beginAdjusted = begin - (5 * 60 * 60 * 1000);
-    const endAdjusted = end - (5 * 60 * 60 * 1000);
+    const beginAdjusted = begin - 5 * 60 * 60 * 1000;
+    const endAdjusted = end - 5 * 60 * 60 * 1000;
 
     return transact<Order[], postgres.Error, any>(
         tsql,
@@ -33,13 +33,13 @@ export async function orderHistory(
                 WHERE timestamp >= ${beginAdjusted}
                   AND timestamp <= ${endAdjusted}
                 ORDER BY timestamp DESC
-                Limit 15;
+                ;
             `) {
-                if(items&&items.length>0){
-                res.push(
-                    new Order(id, timestamp, discount, total, items, status)
-                );
-            }
+                if (items && items.length > 0) {
+                    res.push(
+                        new Order(id, timestamp, discount, total, items, status)
+                    );
+                }
             }
             return res;
         }

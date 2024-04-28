@@ -16,19 +16,25 @@ export async function GET(request: Request) {
             hour: 'numeric',
             minute: 'numeric',
             second: 'numeric',
-            timeZone: 'America/Chicago', 
+            timeZone: 'America/Chicago',
         };
 
-        const beginDate = new Intl.DateTimeFormat('en-US', dateFormatOptions)
-            .format(new Date(beginTime));
-        const endDate = new Intl.DateTimeFormat('en-US', dateFormatOptions)
-            .format(new Date(endTime));
+        const beginDate = new Intl.DateTimeFormat(
+            'en-US',
+            dateFormatOptions
+        ).format(new Date(beginTime));
+        const endDate = new Intl.DateTimeFormat(
+            'en-US',
+            dateFormatOptions
+        ).format(new Date(endTime));
 
         console.log(
             'GET /api/getorderHistory with beginTime:',
-            beginDate, beginTime,
+            beginDate,
+            beginTime,
             'and endTime:',
-            endDate, endTime
+            endDate,
+            endTime
         );
 
         if (isNaN(beginTime) || isNaN(endTime)) {
@@ -49,9 +55,11 @@ export async function GET(request: Request) {
 
         const res = await orderHistory(beginTime, endTime);
 
-        const orders = res.map(order => {
-            const localTime = new Intl.DateTimeFormat('en-US', dateFormatOptions)
-                .format(new Date(order.timestamp));
+        const orders = res.map((order) => {
+            const localTime = new Intl.DateTimeFormat(
+                'en-US',
+                dateFormatOptions
+            ).format(new Date(order.timestamp));
             return { ...order, timestamp: localTime };
         });
 
