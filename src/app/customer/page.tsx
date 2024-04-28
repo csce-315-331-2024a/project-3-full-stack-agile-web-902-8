@@ -23,6 +23,7 @@ export default function Customer() {
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+    const [isFetchingRecommendations, setIsFetchingRecommendations] = useState(false);
 
     const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
 
@@ -66,6 +67,34 @@ export default function Customer() {
     }, [categories]);
 
     useEffect(() => {
+            setIsFetchingRecommendations(true);
+        if (isFetchingMenuItems || items.length === 0)
+            return;
+        (async () => {
+            try {
+         const geoloc: [number, number] | null = await new Promise((R) => {
+             // console.log("Asking for location");
+             navigator.geolocation.getCurrentPosition((p) => R([p.coords.latitude, p.coords.longitude]), () => R(null));
+             });
+         // console.log("got location", geoloc);
+         const response = await fetch(
+                 '/api/recommendedItems' + ((geoloc !== null)? `?lat=${geoloc[0]}&lon=${geoloc[1]}` : '')
+                 );
+         if (!response.ok) {
+             throw new Error(`Error: ${response.statusText}`);
+         }
+         const recIds: number[] = await response.json();
+         // console.log("recieved recommendations:", recIds);
+         setRecommendedItems(
+                 items.filter((i: MenuItem) => recIds.includes(i.id))
+                 );
+            } finally {
+                setIsFetchingRecommendations(false);
+            }
+        })();
+    }, [items, isFetchingMenuItems]);
+
+    useEffect(() => {
         async function fetchAllMenuItems() {
             setIsFetchingMenuItems(true);
             try {
@@ -78,16 +107,6 @@ export default function Customer() {
                 }
                 const menuItems = await response.json();
                 setItems(menuItems);
-                const recommendationResponse = await fetch(
-                    '/api/recommendedItems'
-                );
-                if (!recommendationResponse.ok) {
-                    throw new Error(`Error: ${response.statusText}`);
-                }
-                const recIds: number[] = await recommendationResponse.json();
-                setRecommendedItems(
-                    menuItems.filter((i: MenuItem) => recIds.includes(i.id))
-                );
                 console.log('Fetching should be done now.');
             } finally {
                 setIsFetchingMenuItems(false);
@@ -120,7 +139,7 @@ export default function Customer() {
                     <div>
                         <h2>Recommendations</h2>
                         <CustomerRecommendedBar
-                            isFetchingMenuItems={isFetchingMenuItems}
+                            isFetchingMenuItems={isFetchingRecommendations}
                             menuItems={recommendedItems}
                             currentOrder={currentOrder}
                             setCurrentOrder={setCurrentOrder}
