@@ -13,10 +13,8 @@ import {
     OrderItem,
 } from '@/lib/models';
 
-import styles from '@/app/user/customer/page.module.css';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 
 import GlobalConfig from '@/lib/config';
 
@@ -107,128 +105,115 @@ export default function CustomerCheckout() {
     }
 
     return (
-        <main className={styles.main}>
-            <header id={styles.topbar}>
-                <ul className={styles['nav-left']}>
-                    <li>
-                        <Link href="/customer">Menu</Link>
-                    </li>
-                </ul>
-                <ul className={styles['nav-right']}>
-                    <li>
-                        <Link className={styles.login} href="/">
-                            Login
-                        </Link>
-                    </li>
-                </ul>
-            </header>
-
-            <div id={styles['checkout-page']}>
-                <div id={styles['order-box']}>
-                    {currentOrder.map(({ item, qty }) => (
-                        <CustomerOrderItem
-                            key={item.id}
-                            item={item}
-                            qty={qty}
-                            currentOrder={currentOrder}
-                            setCurrentOrder={setCurrentOrder}
-                        />
-                    ))}
+        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row'>
+            <div className='w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll'>
+                {currentOrder.map(({ item, qty }) => (
+                    <CustomerOrderItem
+                        key={item.id}
+                        item={item}
+                        qty={qty}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                ))}
+            </div>
+            <div className='w-[70%] m-12'>
+                <div className='h-[75%] overflow-y-scroll'>
+                    <table className='w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg'>
+                        <thead className='h-16 top-0 sticky z-1'>
+                            <tr>
+                                <th className='text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Item</th>
+                                <th className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Quantity</th>
+                                <th className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentOrder.map(({ item, qty }) => (
+                                <tr key={item.id}>
+                                    <td className='text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text'>{item.name}</td>
+                                    <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>x{qty}</td>
+                                    <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>
+                                        ${(item.price * qty).toFixed(2)}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot className='bg-background bottom-0 sticky z-1'>
+                            <tr>
+                                <td className='py-1 px-3 border-b-[1px] border-b-solid border-b-text'></td>
+                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Subtotal</td>
+                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>${subTotal.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td className='py-1 px-3 border-b-[1px] border-b-solid border-b-text'></td>
+                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Tax</td>
+                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>${tax.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td className='py-1 px-3 border-b-[1px] border-b-solid border-b-text'></td>
+                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>Total</td>
+                                <td className='text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text'>${total.toFixed(2)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-                <div id={styles['checkout']}>
-                    <div id={styles['checkout-summary']}>
-                        <table id={styles['item-summary']}>
-                            <thead>
-                                <tr>
-                                    <th style={{ width: '70%' }}>Item</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {currentOrder.map(({ item, qty }) => (
-                                    <tr key={item.id}>
-                                        <td>{item.name}</td>
-                                        <td>x{qty}</td>
-                                        <td>
-                                            ${(item.price * qty).toFixed(2)}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td>Subtotal</td>
-                                    <td>${subTotal.toFixed(2)}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Tax</td>
-                                    <td>${tax.toFixed(2)}</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>Total</td>
-                                    <td>${total.toFixed(2)}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <section id={styles.payment}>
-                        <h2>Payment Method</h2>
-                        <ul className={styles.buttons}>
-                            <li>
-                                <button
-                                    onClick={placeOrder}
-                                    disabled={
-                                        isPlacingOrder ||
-                                        currentOrder.length === 0
-                                    }
-                                >
-                                    {' '}
-                                    Dining Dollars{' '}
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    onClick={placeOrder}
-                                    disabled={
-                                        isPlacingOrder ||
-                                        currentOrder.length === 0
-                                    }
-                                >
-                                    {' '}
-                                    Credit Card{' '}
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    onClick={placeOrder}
-                                    disabled={
-                                        isPlacingOrder ||
-                                        currentOrder.length === 0
-                                    }
-                                >
-                                    {' '}
-                                    Debit Card{' '}
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    onClick={placeOrder}
-                                    disabled={
-                                        isPlacingOrder ||
-                                        currentOrder.length === 0
-                                    }
-                                >
-                                    {' '}
-                                    Cash{' '}
-                                </button>
-                            </li>
-                        </ul>
-                    </section>
-                </div>
+                <section className='w-full h-[25%] flex flex-col'>
+                    <h2 className='text-xl flex-shrink-0'>Payment Method</h2>
+                    <ul className='flex-grow grid grid-cols-[repeat(4,1fr)]'>
+                        <li className='h-full'>
+                            <button
+                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                onClick={placeOrder}
+                                disabled={
+                                    isPlacingOrder ||
+                                    currentOrder.length === 0
+                                }
+                            >
+                                {' '}
+                                Dining Dollars{' '}
+                            </button>
+                        </li>
+                        <li className='h-full'>
+                            <button
+                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                onClick={placeOrder}
+                                disabled={
+                                    isPlacingOrder ||
+                                    currentOrder.length === 0
+                                }
+                            >
+                                {' '}
+                                Credit Card{' '}
+                            </button>
+                        </li>
+                        <li className='h-full'>
+                            <button
+                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                onClick={placeOrder}
+                                disabled={
+                                    isPlacingOrder ||
+                                    currentOrder.length === 0
+                                }
+                            >
+                                {' '}
+                                Debit Card{' '}
+                            </button>
+                        </li>
+                        <li className='h-full'>
+                            <button
+                                className='bg-background w-full h-full text-2xl disabled:bg-[#666] disabled:cursor-not-allowed'
+                                onClick={placeOrder}
+                                disabled={
+                                    isPlacingOrder ||
+                                    currentOrder.length === 0
+                                }
+                            >
+                                {' '}
+                                Cash{' '}
+                            </button>
+                        </li>
+                    </ul>
+                </section>
             </div>
         </main>
     );

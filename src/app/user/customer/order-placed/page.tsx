@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import styles from '@/app/user/customer/page.module.css';
 
 export default function OrderPlaced() {
     const router = useRouter();
@@ -20,7 +19,7 @@ export default function OrderPlaced() {
     }, [redirectSeconds, router]);
 
     return (
-        <div id={styles['order-placed']}>
+        <div className='h-full w-full flex flex-col justify-center align-center'>
             <h1>Order has been placed</h1>
             <p>Redirecting back to menu...</p>
         </div>

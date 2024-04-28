@@ -1,7 +1,8 @@
+// ALL TAILWIND
+
 'use client';
 
 import React from 'react';
-import styles from '@/components/component.module.css';
 
 interface CustomerCategoryBarProps {
     isFetchingMenuTypes: boolean;
@@ -25,23 +26,10 @@ function CustomerCategoryBar({
     if (isFetchingMenuTypes) {
         return (
             <ul
-                className={
-                    styles.bar + ' ' + styles.customer + ' ' + styles.loading
-                }
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
+                className='w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-center items-center text-background bg-text hover:cursor-wait'
             >
                 <button
-                    className={
-                        styles.categoryButton +
-                        ' ' +
-                        styles.card +
-                        ' ' +
-                        styles.loading
-                    }
+                    className='bg-text text-background p-4 rounded-2xl hover:cursor-wait'
                     disabled={true}
                 >
                     Loading Menu Categories...
@@ -52,8 +40,7 @@ function CustomerCategoryBar({
 
     return (
         <ul
-            className={styles.bar + ' ' + styles.customer}
-            id={styles.categories}
+            className='bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-stretch items-stretch'
         >
             {categories.map((categoryName) => (
                 <li key={categoryName}>
@@ -77,14 +64,9 @@ function CustomerCategoryButton({
         setCategory(categoryName);
     }
 
-    const isActive = categoryName === category;
-    const buttonStyles = isActive
-        ? styles['category-button'] + ' ' + styles.active
-        : styles['category-button'];
-
     return (
         <button
-            className={buttonStyles + ' ' + styles.customer}
+            className={'w-full bg-secondary h-full flex justify-center items-center duration-200 p-4 active:bg-background/50' + (categoryName === category ? ' active:bg-background/50' : '')}
             onClick={handleClick}
         >
             {categoryName}

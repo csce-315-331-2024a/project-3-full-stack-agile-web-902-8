@@ -1,5 +1,4 @@
 'use client';
-import styles from '@/app/user/customer/page.module.css';
 
 import CustomerItemGrid from '@/components/CustomerItemGrid';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
@@ -11,8 +10,6 @@ import {
 } from '@/components/CustomerOrderSidebar';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
-
-import Link from 'next/link';
 
 export default function Customer() {
     // set default category
@@ -92,63 +89,49 @@ export default function Customer() {
 
     return (
         // TODO: Change to global styling
-        <main className={styles.main}>
-                        <header id={styles.topbar}>
-                <ul className={styles['nav-right']}>
-                    <li>
-                        <Link className={styles.login} href="/">
-                            Login
-                        </Link>
-                    </li>
-                </ul>
-            </header>
-
-            <div id={styles['menu-page']}>
-                <div id={styles.menu}>
-                    <h1>Menu</h1>
-                    <div>
-                        <h2>Recommendations</h2>
-                        <CustomerRecommendedBar
-                            isFetchingMenuItems={isFetchingMenuItems}
-                            menuItems={categoryItems.slice(0, 5)}
-                            currentOrder={currentOrder}
-                            setCurrentOrder={setCurrentOrder}
-                        />
-                    </div>
-                    <div>
-                        <h2>Categories</h2>
-                        <div id={styles['menu-categories']}>
-                            <CustomerCategoryBar
-                                isFetchingMenuTypes={isFetchingMenuTypes}
-                                categories={categories}
-                                category={category}
-                                setCategory={setCategory}
-                            />
-                        </div>
-                    </div>
-                    {/* Menu items */}
-                    <CustomerItemGrid
+        <main className='col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row'>
+            <div className='w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4'>
+                <h1 className='text-[4rem] font-bold relative mainHeader w-fit'>Menu</h1>
+                <div>
+                    <h2 className='text-2xl font-bold'>Recommendations</h2>
+                    <CustomerRecommendedBar
                         isFetchingMenuItems={isFetchingMenuItems}
-                        categoryItems={categoryItems}
+                        menuItems={categoryItems.slice(0, 5)}
                         currentOrder={currentOrder}
                         setCurrentOrder={setCurrentOrder}
                     />
                 </div>
-                <CustomerOrderSidebar
-                    checkoutPage={'/user/customer/checkout'}
+                <div>
+                    <h2 className='text-2xl font-bold'>Categories</h2>
+                    <CustomerCategoryBar
+                        isFetchingMenuTypes={isFetchingMenuTypes}
+                        categories={categories}
+                        category={category}
+                        setCategory={setCategory}
+                    />
+                </div>
+                {/* Menu items */}
+                <CustomerItemGrid
+                    isFetchingMenuItems={isFetchingMenuItems}
+                    categoryItems={categoryItems}
                     currentOrder={currentOrder}
-                >
-                    {currentOrder.map(({ item, qty }) => (
-                        <CustomerOrderItem
-                            key={item.id}
-                            item={item}
-                            qty={qty}
-                            currentOrder={currentOrder}
-                            setCurrentOrder={setCurrentOrder}
-                        />
-                    ))}
-                </CustomerOrderSidebar>
+                    setCurrentOrder={setCurrentOrder}
+                />
             </div>
+            <CustomerOrderSidebar
+                checkoutPage={'/user/customer/checkout'}
+                currentOrder={currentOrder}
+            >
+                {currentOrder.map(({ item, qty }) => (
+                    <CustomerOrderItem
+                        key={item.id}
+                        item={item}
+                        qty={qty}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                ))}
+            </CustomerOrderSidebar>
         </main>
     );
 }
