@@ -109,9 +109,8 @@ export default function CustomerCheckout() {
 
     return (
         <main className={styles.main}>
-
             <header id={styles.topbar}>
-                <Heading names={["Menu"]} hrefs={["/customer"]}/>
+                <Heading names={['Menu']} hrefs={['/customer']} />
             </header>
 
             <div id={styles['checkout-page']}>

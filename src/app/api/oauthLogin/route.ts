@@ -11,7 +11,7 @@ export async function GET() {
     console.log('GET /api/oauthLogin');
     try {
         const user = await getUserSession();
-        if(user === undefined) {
+        if (user === undefined) {
             return NextResponse.json(loginLevels.LOGIN_FAILED, { status: 200 });
         }
 

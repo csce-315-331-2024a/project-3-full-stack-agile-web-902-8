@@ -11,24 +11,23 @@ type HeadingProp = {
 };
 
 function Heading({ names, hrefs }: HeadingProp) {
-
     const [userRole, changeUserRole] = useState<string>('');
 
     // get the user login
     useEffect(() => {
         async function loginUser() {
             const response = await fetch('/api/oauthLogin');
-    
+
             if (!response.ok) {
                 throw new Error(`Error: ${response.statusText}`);
             }
-    
+
             const type = await response.json();
             changeUserRole(type);
         }
         loginUser();
     }, []);
-    
+
     return (
         <nav className={styles.navbar}>
             <ul>
@@ -38,11 +37,13 @@ function Heading({ names, hrefs }: HeadingProp) {
                     </li>
                 ))}
                 <li>
-                    <LoginButton isLoggedIn={
-                        userRole != '' &&
-                        userRole != loginLevels.LOGIN_FAILED &&
-                        userRole != loginLevels.LOGIN_CUSTOMER
-                    }/>
+                    <LoginButton
+                        isLoggedIn={
+                            userRole != '' &&
+                            userRole != loginLevels.LOGIN_FAILED &&
+                            userRole != loginLevels.LOGIN_CUSTOMER
+                        }
+                    />
                 </li>
                 <li>{userRole}</li>
             </ul>

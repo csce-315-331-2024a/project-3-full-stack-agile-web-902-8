@@ -93,9 +93,8 @@ export default function Customer() {
     return (
         // TODO: Change to global styling
         <main className={styles.main}>
-            
             <header id={styles.topbar}>
-                <Heading names={[]} hrefs={[]}/>
+                <Heading names={[]} hrefs={[]} />
             </header>
 
             <div id={styles['menu-page']}>
