@@ -5,7 +5,7 @@ import Heading from '@/components/Heading';
 import ScrollableList from '@/components/ScrollableList';
 import ScrollableBarGraph from '@/components/ScrollableBarGraph';
 import DateRangePicker from '@/components/DatePicker';
-
+import design from '@/app/manager/report_page/page.module.css';
 import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
@@ -158,18 +158,31 @@ const DataPage = () => {
                     setEndDate={setEndDate}
                 />
 
-                <button onClick={handleGenerateSalesReport}>
+                <button
+                    onClick={handleGenerateSalesReport}
+                    className={design.genresbutton}
+                >
                     Generate Sales Report
                 </button>
-                <button onClick={handleGenerateProductUsageReport}>
+                <button
+                    onClick={handleGenerateProductUsageReport}
+                    className={design.genresbutton}
+                >
                     Generate Product Usage Report
                 </button>
-                <button onClick={handleGenerateWhatSellsTogetherReport}>
+                <button
+                    onClick={handleGenerateWhatSellsTogetherReport}
+                    className={design.genresbutton}
+                >
                     Generate What Sells Together Report
                 </button>
 
                 {/* Reset button with enhanced styles */}
-                <button style={resetButtonStyle} onClick={handleReset}>
+                <button
+                    style={resetButtonStyle}
+                    onClick={handleReset}
+                    className={design.genresbutton}
+                >
                     Reset
                 </button>
 
@@ -182,7 +195,7 @@ const DataPage = () => {
                                 data={menuData.map((item) => ({
                                     label: item.name,
                                     value: item.qty,
-                                    color: 'rgba(255,99,132,1)',
+                                    color: 'rgba(205, 50, 75, 1)',
                                 }))}
                                 title="Sales Report"
                             />
@@ -193,7 +206,7 @@ const DataPage = () => {
                                 data={inventoryData.map((item) => ({
                                     label: item.name,
                                     value: item.qty,
-                                    color: 'rgba(255,99,132,1)',
+                                    color: 'rgba(205, 50, 75, 1)',
                                 }))}
                                 title="Product Usage"
                             />

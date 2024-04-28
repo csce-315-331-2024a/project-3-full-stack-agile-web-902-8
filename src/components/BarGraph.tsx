@@ -34,7 +34,7 @@ export type BarGraphProps = {
 
 const BarGraph = ({ data, title }: BarGraphProps) => {
     const options = {
-        indexAxis: 'y' as const, // Correctly typed as 'y' for horizontal bar chart
+        indexAxis: 'y' as const, // 'as const' narrows the string type to the literal 'y'
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -43,7 +43,9 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
                 text: title,
                 font: {
                     size: 24,
+                    weight: 'bold' as const, // 'as const' narrows the string type to the literal 'bold'
                 },
+                color: '#333', // Define the color for the title
             },
             legend: {
                 display: false, // Since you don't need a legend
@@ -60,10 +62,13 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
                     text: 'Frequency',
                     font: {
                         size: 18,
+                        weight: 'bold' as const, // 'as const' narrows the string type to the literal 'bold'
                     },
+                    color: '#333', // Define the color for the axis title
                 },
-                // Removing any max value or suggestedMax option
-                // This allows Chart.js to dynamically scale the axis based on the data
+                ticks: {
+                    color: '#333', // Darker axis labels
+                },
             },
             y: {
                 title: {
@@ -71,7 +76,12 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
                     text: 'Items', // This is the title for your items axis
                     font: {
                         size: 18,
+                        weight: 'bold' as const, // 'as const' narrows the string type to the literal 'bold'
                     },
+                    color: '#333', // Define the color for the axis title
+                },
+                ticks: {
+                    color: '#333', // Darker axis labels
                 },
             },
         },
@@ -85,8 +95,7 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
         },
         elements: {
             bar: {
-                borderWidth: 1, // The border width of the bars
-                // barThickness: 'flex' is not a valid property, you can remove it or adjust it to a number or 'flexible'
+                borderWidth: 1,
             },
         },
         animation: {

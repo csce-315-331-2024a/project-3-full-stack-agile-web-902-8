@@ -20,7 +20,7 @@ const ScrollableBarGraph = ({
         overflowX: 'auto',
         padding: '1rem',
         height: '500px',
-        backgroundColor: '#fff', // Assuming a white background
+        backgroundColor: 'indianred', // Assuming a white background
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Example shadow, adjust as necessary
         margin: '0.5rem 0', // Adds margin to the top and bottom
     };

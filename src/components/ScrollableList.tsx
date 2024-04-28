@@ -11,7 +11,7 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
     const listStyle: React.CSSProperties = {
         overflowY: 'scroll',
         maxHeight: '400px',
-        backgroundColor: '#fff',
+        backgroundColor: 'indianred',
         border: '1px solid #ddd',
         padding: '1rem',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
@@ -21,13 +21,13 @@ const ScrollableList = ({ items, title }: ScrollableListProps) => {
     // Enhanced styling for headers
     const headerStyle: React.CSSProperties = {
         backgroundColor: '#a05a2c', // Assuming this is a valid color string
-        color: 'white', // Also should be a valid color string
+        color: '#333', // Also should be a valid color string
         padding: '10px',
         textAlign: 'left' as 'left',
     };
     const rowStyle = {
         color: '#333', // dark text color for rows
-        backgroundColor: '#f9f9f9', // light background for rows, for contrast
+        backgroundColor: 'indianred', // light background for rows, for contrast
         borderBottom: '1px solid #ddd', // if you want borders between rows
     };
 
