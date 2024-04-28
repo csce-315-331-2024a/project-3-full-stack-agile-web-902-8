@@ -7,11 +7,13 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
     console.log('GET /api/recommendedItems');
     try {
-        const lat = request.nextUrl.searchParams.get("lat");
-        const lon = request.nextUrl.searchParams.get("lon");
+        const lat = request.nextUrl.searchParams.get('lat');
+        const lon = request.nextUrl.searchParams.get('lon');
         if ((lat === null) !== (lon === null)) {
             return NextResponse.json(
-                { error: 'Must include both parts of the coordinate or neither.' },
+                {
+                    error: 'Must include both parts of the coordinate or neither.',
+                },
                 { status: 400 }
             );
         }

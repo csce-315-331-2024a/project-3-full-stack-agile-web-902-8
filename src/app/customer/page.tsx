@@ -23,7 +23,8 @@ export default function Customer() {
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
-    const [isFetchingRecommendations, setIsFetchingRecommendations] = useState(false);
+    const [isFetchingRecommendations, setIsFetchingRecommendations] =
+        useState(false);
 
     const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
 
@@ -67,27 +68,34 @@ export default function Customer() {
     }, [categories]);
 
     useEffect(() => {
-            setIsFetchingRecommendations(true);
-        if (isFetchingMenuItems || items.length === 0)
-            return;
+        setIsFetchingRecommendations(true);
+        if (isFetchingMenuItems || items.length === 0) return;
         (async () => {
             try {
-         const geoloc: [number, number] | null = await new Promise((R) => {
-             // console.log("Asking for location");
-             navigator.geolocation.getCurrentPosition((p) => R([p.coords.latitude, p.coords.longitude]), () => R(null));
-             });
-         // console.log("got location", geoloc);
-         const response = await fetch(
-                 '/api/recommendedItems' + ((geoloc !== null)? `?lat=${geoloc[0]}&lon=${geoloc[1]}` : '')
-                 );
-         if (!response.ok) {
-             throw new Error(`Error: ${response.statusText}`);
-         }
-         const recIds: number[] = await response.json();
-         // console.log("recieved recommendations:", recIds);
-         setRecommendedItems(
-                 items.filter((i: MenuItem) => recIds.includes(i.id))
-                 );
+                const geoloc: [number, number] | null = await new Promise(
+                    (R) => {
+                        // console.log("Asking for location");
+                        navigator.geolocation.getCurrentPosition(
+                            (p) => R([p.coords.latitude, p.coords.longitude]),
+                            () => R(null)
+                        );
+                    }
+                );
+                // console.log("got location", geoloc);
+                const response = await fetch(
+                    '/api/recommendedItems' +
+                        (geoloc !== null
+                            ? `?lat=${geoloc[0]}&lon=${geoloc[1]}`
+                            : '')
+                );
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const recIds: number[] = await response.json();
+                // console.log("recieved recommendations:", recIds);
+                setRecommendedItems(
+                    items.filter((i: MenuItem) => recIds.includes(i.id))
+                );
             } finally {
                 setIsFetchingRecommendations(false);
             }

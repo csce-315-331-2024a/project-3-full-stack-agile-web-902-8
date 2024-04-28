@@ -11,7 +11,9 @@ export type WeatherCondition = {
     situation: Situation;
 };
 
-export async function getWeatherData([ lat, lon ]: [number, number] = [30.612408154672494,-96.34166678693717]): Promise<WeatherCondition> {
+export async function getWeatherData(
+    [lat, lon]: [number, number] = [30.612408154672494, -96.34166678693717]
+): Promise<WeatherCondition> {
     // console.log("looking for weather at", lat, lon);
     let data = await (
         await fetch(
@@ -32,7 +34,7 @@ export async function getWeatherData([ lat, lon ]: [number, number] = [30.612408
             icon: data.weather[0].icon,
             situation: 'normal',
         };
-    } catch(e) {
+    } catch (e) {
         throw new Error('Incomplete data from weather api', data, { lat, lon });
     }
 
