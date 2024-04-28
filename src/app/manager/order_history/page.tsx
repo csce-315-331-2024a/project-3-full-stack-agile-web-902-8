@@ -9,6 +9,7 @@ import design from '@/app/manager/report_page/page.module.css';
 import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
+import { format, startOfToday } from 'date-fns';
 
 const DataPage = () => {
     const Items = [
@@ -27,7 +28,7 @@ const DataPage = () => {
         '/manager/report_page',
         '/',
     ];
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
     const [frequentlySoldPairsData, setFrequentlySoldPairsData] = useState<
         frequentlySoldPairs[]
@@ -109,8 +110,8 @@ const DataPage = () => {
         if (fetchedData) {
             setFrequentlySoldPairsData(
                 fetchedData.map((pair: PairType) => ({
-                    item1Name: pair.item1Name, // replace with actual property name from the response
-                    item2Name: pair.item2Name, // replace with actual property name from the response
+                    item1Name: pair.item1Name,
+                    item2Name: pair.item2Name,
                     frequency: pair.frequency,
                 }))
             );
@@ -119,7 +120,7 @@ const DataPage = () => {
     };
 
     const handleReset = () => {
-        setStartDate(new Date());
+        setStartDate(startOfToday());
         setEndDate(new Date());
         setFrequentlySoldPairsData([]);
         setMenuData([]);
@@ -128,13 +129,13 @@ const DataPage = () => {
     };
 
     const resetButtonStyle: React.CSSProperties = {
-        fontSize: '16px', // Ensure this is a string with a valid unit like 'px'
-        fontWeight: 'bold' as 'bold', // Use 'bold' or a number value
-        position: 'absolute' as 'absolute', // Cast this string to the specific value you need
-        right: '10px', // Ensure this has a unit
-        margin: '10px', // Ensure this has a unit
-        padding: '10px', // Ensure this has a unit
-        cursor: 'pointer' as 'pointer', // Cast this string to the specific value you need
+        fontSize: '16px',
+        fontWeight: 'bold',
+        position: 'absolute',
+        right: '10px',
+        margin: '10px',
+        padding: '10px',
+        cursor: 'pointer',
     };
 
     return (
@@ -177,7 +178,6 @@ const DataPage = () => {
                     Generate What Sells Together Report
                 </button>
 
-                {/* Reset button with enhanced styles */}
                 <button
                     style={resetButtonStyle}
                     onClick={handleReset}
