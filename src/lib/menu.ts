@@ -1159,7 +1159,6 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             GROUP BY mi1.name, mi2.name
             ORDER BY frequency DESC`;
 
-            
             let itemNames: frequentlySoldPairs[] = [];
             for (const row of result) {
                 const { item1name, item2name, frequency } = row;
