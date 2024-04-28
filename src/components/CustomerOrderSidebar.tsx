@@ -65,7 +65,7 @@ export function CustomerOrderItem({
         <div className="h-fit p-[0.75rem_0.75rem_1.50rem_0.75rem] border-2 border-solid border-text grid grid-cols-[repeat(3,1fr)] gap-1">
             <Image
                 className="w-24 h-24"
-                src="/menuItemImages/Aggie_Chicken_Club.png"
+                src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
                 height={200}

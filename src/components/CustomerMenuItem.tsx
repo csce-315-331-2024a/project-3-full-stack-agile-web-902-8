@@ -60,7 +60,7 @@ export function CustomerMenuItem({
         >
             <Image
                 className="max-w-64 mx-auto"
-                src="/menuItemImages/Aggie_Chicken_Club.png"
+                src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
                 height={200}
@@ -119,7 +119,7 @@ export function CustomerRecommendedItem({
         >
             <Image
                 className="max-w-32 max-h-32"
-                src="/menuItemImages/Aggie_Chicken_Club.png"
+                src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={150}
                 height={150}
