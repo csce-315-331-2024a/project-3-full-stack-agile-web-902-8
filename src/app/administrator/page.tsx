@@ -1,15 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Heading from '@/components/Heading';
-import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
 import styles from '@/app/page.module.css';
-import InventoryAdjuster from '@/components/InventoryAdjuster';
-import { InventoryItem } from '@/lib/models';
 import UserManager from '@/components/UserManager';
 
-export default function Inventory() {
+/**
+ * Creates the page for the administrator
+ * @returns the page for the administrator
+ */
+export default function Administrator() {
     const openMenuBoardsPages = () => {
         window.open('/menuboards/Burgs', '_blank');
         window.open('/menuboards/Meals_Limited', '_blank');

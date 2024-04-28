@@ -3,6 +3,12 @@ import { InventoryItem, User } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
 
+/**
+ * Gets all users from the database
+ *
+ * @param tsql - The object representing an existing database connection or transaction.
+ * @returns A Promise resolving to an array of all Users from the database
+ */
 export async function getAllUsers(
     tsql = psql
 ): Promise<User[]> {
@@ -22,6 +28,13 @@ export async function getAllUsers(
     );
 }
 
+/**
+ * Adds or Updates a user in the database
+ *
+ * @param user The user to add or update in the database
+ * @param tsql - The object representing an existing database connection or transaction.
+ * @returns A Promise resolving to an array of all Users from the database
+ */
 export async function addOrUpdateUser(
     user: User,
     tsql = psql
@@ -32,12 +45,9 @@ export async function addOrUpdateUser(
         async (isql, _) => {
             const result =
             await isql`SELECT * FROM users WHERE username = ${user.username}`;
-            console.log("Is in database: ", result.length > 0);
         if (result.length > 0) {
-            console.log("About to update");
             const subResult =
                 await isql`UPDATE users SET role = ${user.role}, hourly_salary = ${user.hourlySalary}, hours = ${user.hours} WHERE username = ${user.username}`;
-            console.log("Updated");
             return subResult.length > 0;
         } else {
             const subResult =
@@ -48,6 +58,12 @@ export async function addOrUpdateUser(
     );
 }
 
+/**
+ * Removes a user from the database
+ *
+ * @param tsql - The object representing an existing database connection or transaction.
+ * @returns A Promise resolving to a boolean containing whether or not the user was deleted
+ */
 export async function removeUser(
     username: string,
     tsql = psql

@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { User } from "@/lib/models";
 
+interface dynamicUser {
+    user: User;
+    flux: boolean;
+}
 
+/**
+ * Creates the component for managing users
+ * @returns the component for managing users
+ */
 function UserManager() {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<dynamicUser[]>([]);
     const [inFlux, setInFlux] = useState<boolean>(false);
     const [needsRefresh, setNeedsRefresh] = useState<boolean>(false);
+    const [hasRun, setHasRun] = useState<boolean>(false);
 
      /**
      * Fetches the list of users from the api route
@@ -16,19 +25,39 @@ function UserManager() {
             throw new Error(`Error: ${response.statusText}`);
         }
         const userList = await response.json();
-        setUsers(userList);
+        const dUsers: dynamicUser[] = [];
+        for (const user of userList)
+        {
+            const currentUser: dynamicUser = {
+                user,
+                flux: false,
+            }
+            dUsers.push(currentUser);
+        }
+        setUsers(dUsers);
     }
 
 
     useEffect(() => {
-        fetchUsers();
-        setNeedsRefresh(false);
-    }, [needsRefresh]);
+        if(!hasRun)
+        {
+            fetchUsers();
+            setHasRun(false);
+        }
+        if(needsRefresh)
+        {
+            fetchUsers();
+        }
+        //setNeedsRefresh(false);
+    }, [needsRefresh, hasRun]);
 
+    /**
+     * Handles remvoving a user
+     * @param i the index of the user
+     */
     const handleRemoveUser = (i: number) => {
 
         async function removeUser(passedUsername: string) {
-            console.log(passedUsername);
             const response = await fetch('/api/removeUser', {
                 method: 'POST',
                 headers: {
@@ -47,44 +76,66 @@ function UserManager() {
             const removed = [...users];
             removed.splice(i, 1);
             setUsers(removed);
-            removeUser(users[i].username);
+            removeUser(users[i].user.username);
             fetchUsers();
-            setNeedsRefresh(true);
+            refresh();
         }
     }
 
+    /**
+     * Handles changing the username of a user
+     * @param i the index of the user
+     * @param newUsername the new username for the user
+     */
     const handleChangeUsername = (i: number, newUsername: string) => {
         setInFlux(true);
         const changed = [...users];
-        changed[i].username = newUsername;
+        changed[i].user.username = newUsername;
         setUsers(changed);  
     }
 
+    /**
+     * Handles changing the role of a user
+     * @param i the index of the user
+     * @param newUsername the new role for the user
+     */
     const handleChangeRole = (i: number, newRole: string) => {
         setInFlux(true);
         const changed = [...users];
-        changed[i].role= newRole;
+        changed[i].user.role= newRole;
         setUsers(changed);
     }
 
+    /**
+     * Handles changing the salary of a user
+     * @param i the index of the user
+     * @param newUsername the new salary for the user
+     */
     const handleChangeHourlySalary = (i: number, newSalary: number) => {
         setInFlux(true);
         const changed = [...users];
-        changed[i].hourlySalary = newSalary;
+        changed[i].user.hourlySalary = newSalary;
         setUsers(changed);
     }
 
+    /**
+     * Handles changing the hours of a user
+     * @param i the index of the user
+     * @param newUsername the new hours for the user
+     */
     const handleChangeHours = (i: number, newHours: number) => {
         setInFlux(true);
         const changed = [...users];
-        changed[i].hours = newHours;
+        changed[i].user.hours = newHours;
         setUsers(changed);
     }
 
+    /**
+     * Handles submitting the adjusted users
+     */
     const handleSubmit = () => {
 
         async function updateUser(passedUser: User) {
-            console.log(passedUser);
             const response = await fetch('/api/addOrUpdateUser', {
                 method: 'POST',
                 headers: {
@@ -98,49 +149,63 @@ function UserManager() {
         }
 
 
-        for (const user of users){
-            if(user.username == '')
+        for (const dUser of users){
+            if(dUser.user.username == '')
             {
                 alert("Username cannot be empty")
                 return;
             }
-            else if(user.role != 'ADMINISTRATOR' && user.role != 'MANAGER' && user.role != 'COOK' && user.role != 'CASHIER')
+            else if(dUser.user.role != 'ADMINISTRATOR' && dUser.user.role != 'MANAGER' && dUser.user.role != 'COOK' && dUser.user.role != 'CASHIER')
             {
                 alert("Role must be one of the following: 'ADMINISTRATOR', 'MANAGER', 'COOK', 'CASHIER'");
                 return;
             }
-            else if (user.hourlySalary < 7.25)
+            else if (dUser.user.hourlySalary < 7.25)
             {
                 alert("Cannot have a salary below minimum wage");
                 return;
             }
-            else if (user.hours < 0)
+            else if (dUser.user.hours < 0)
             {
                 alert("Cannot have negative hours");
                 return;
             }
         }
 
-        for (const user of users)
+        for (const dUser of users)
         {
             setInFlux(false);
-            const updatedUser = new User(0, user.username, "", user.role, user.hourlySalary, user.hours);
-            updateUser(updatedUser);
-            fetchUsers();
-            setNeedsRefresh(true);
+            if(dUser.flux)
+            {
+                const updatedUser = new User(0, dUser.user.username, "", dUser.user.role, dUser.user.hourlySalary, dUser.user.hours);
+                updateUser(updatedUser);
+                fetchUsers();
+                refresh();
+            }   
         }
     }
 
+    /**
+     * Handles adding a new user
+     */
     const handleAdd = () => {
         setInFlux(true);
         const add = [...users];
-        add.push(new User(0, "", "", "", 0, 0));
+        const newUser: dynamicUser = {
+            user: new User(0, "", "", "", 0, 0),
+            flux: true,
+        }
+        add.push(newUser);
         setUsers(add);
     }
 
+    /**
+     * Handles refreshing the users list
+     */
     const refresh = () => {
         setNeedsRefresh(true);
         setInFlux(false);
+        setNeedsRefresh(false);
     }
 
     return(
@@ -174,7 +239,7 @@ function UserManager() {
                             <td>
                                 <input
                                     type="text"
-                                    value={entry.username}
+                                    value={entry.user.username}
                                     onChange={(e) =>
                                         handleChangeUsername(
                                             index,
@@ -186,7 +251,7 @@ function UserManager() {
                             <td>
                                 <input
                                     type="text"
-                                    value={entry.role}
+                                    value={entry.user.role}
                                     onChange={(e) =>
                                         handleChangeRole(
                                             index,
@@ -198,7 +263,7 @@ function UserManager() {
                             <td>
                                 <input
                                     type="number"
-                                    value={entry.hourlySalary}
+                                    value={entry.user.hourlySalary}
                                     onChange={(e) =>
                                         handleChangeHourlySalary(
                                             index,
@@ -210,7 +275,7 @@ function UserManager() {
                             <td>
                                 <input
                                     type="number"
-                                    value={entry.hours}
+                                    value={entry.user.hours}
                                     onChange={(e) =>
                                         handleChangeHours(
                                             index,
