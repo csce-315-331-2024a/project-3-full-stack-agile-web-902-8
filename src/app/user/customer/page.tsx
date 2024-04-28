@@ -22,7 +22,6 @@ export default function Customer() {
 
     const [recommendedItems, setRecommendedItems] = useState<MenuItem[]>([]);
 
-
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
     const [isFetchingRecommendations, setIsFetchingRecommendations] =
@@ -136,14 +135,14 @@ export default function Customer() {
                 </h1>
                 <div>
                     <h2 className="text-2xl font-bold">Recommendations</h2>
-                        <p>Based on the current weather</p>
-                        <CustomerRecommendedBar
-                            isFetchingMenuItems={isFetchingRecommendations}
-                            menuItems={recommendedItems}
-                            currentOrder={currentOrder}
-                            setCurrentOrder={setCurrentOrder}
-                        />
-                    </div>
+                    <p>Based on the current weather</p>
+                    <CustomerRecommendedBar
+                        isFetchingMenuItems={isFetchingRecommendations}
+                        menuItems={recommendedItems}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                    />
+                </div>
                 <div>
                     <h2 className="text-2xl font-bold">Categories</h2>
                     <CustomerCategoryBar
