@@ -11,10 +11,20 @@ const rates = {
     tax: 0.0825, // College Station sales tax rate
 };
 
+export enum loginLevels {
+    LOGIN_FAILED = 'FAILED',
+    LOGIN_ADMINISTRATOR = 'ADMINISTRATOR',
+    LOGIN_MANAGER = 'MANAGER',
+    LOGIN_CASHIER = 'CASHIER',
+    LOGIN_COOK = 'COOK',
+    LOGIN_CUSTOMER = 'CUSTOMER',
+}
+
 const GlobalConfig = {
     db: db,
     dev: process.env.NODE_ENV === 'development',
     rates: rates,
+    loginLevels: loginLevels,
 };
 
 export default GlobalConfig;

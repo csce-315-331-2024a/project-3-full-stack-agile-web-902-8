@@ -1,20 +1,9 @@
 import psql, { transact } from '@/lib/database';
 import postgres from 'postgres';
 import Error from '@/lib/error';
+import { loginLevels } from '@/lib/config';
 
-export const LOGIN_FAILED = Symbol('FAILED');
-export const LOGIN_ADMINISTRATOR = Symbol('ADMINISTRATOR');
-export const LOGIN_MANAGER = Symbol('MANAGER');
-export const LOGIN_CASHIER = Symbol('CASHIER');
-export const LOGIN_COOK = Symbol('COOK');
-export const LOGIN_CUSTOMER = Symbol('CUSTOMER');
-export type LoginResult =
-    | typeof LOGIN_FAILED
-    | typeof LOGIN_ADMINISTRATOR
-    | typeof LOGIN_MANAGER
-    | typeof LOGIN_CASHIER
-    | typeof LOGIN_COOK
-    | typeof LOGIN_CUSTOMER;
+export type LoginResult = loginLevels;
 
 /**
  * Tries to login the user represented by username with password and returns their role or login failure.
@@ -41,22 +30,14 @@ export async function attemptLogin(
         async (isql, _) => {
             const rows =
                 await isql`SELECT password, role FROM users WHERE username = ${username};`;
-            if (rows.length === 0) return LOGIN_CUSTOMER;
+            if (rows.length === 0) return loginLevels.LOGIN_CUSTOMER;
 
             const [{ password: hashed, role: role }] = rows;
 
             if (password != 'NULL' && !verify(password, hashed))
-                return LOGIN_FAILED as LoginResult;
+                return loginLevels.LOGIN_FAILED as LoginResult;
 
-            if (role == LOGIN_ADMINISTRATOR.description)
-                return LOGIN_ADMINISTRATOR as LoginResult;
-            if (role == LOGIN_MANAGER.description)
-                return LOGIN_MANAGER as LoginResult;
-            if (role == LOGIN_CASHIER.description)
-                return LOGIN_CASHIER as LoginResult;
-            if (role == LOGIN_COOK.description)
-                return LOGIN_COOK as LoginResult;
-            else return LOGIN_CUSTOMER as LoginResult;
+            return role as LoginResult;
         }
     );
 }

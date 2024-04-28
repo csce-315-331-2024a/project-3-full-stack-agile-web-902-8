@@ -11,7 +11,7 @@ export async function GET() {
     try {
         const user = await getUserSession();
         const res: LoginResult = await attemptLogin(user.email as string);
-        return NextResponse.json(res.description, { status: 200 });
+        return NextResponse.json(res, { status: 200 });
     } catch (error: any) {
         return NextResponse.json(
             { error: `Error trying to login user: ${error.message}` },

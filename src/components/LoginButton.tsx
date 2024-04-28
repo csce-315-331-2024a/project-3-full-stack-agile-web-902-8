@@ -1,15 +1,34 @@
-import { signIn } from 'next-auth/react';
+'use client';
+
+import { signIn, signOut } from 'next-auth/react';
 import styles from './component.module.css';
 
-function LoginButton() {
-    const handleClick = () => {
+interface LoginButtonProps {
+    isLoggedIn: boolean
+}
+
+
+function LoginButton({isLoggedIn}: LoginButtonProps) {
+    const handleLogin = () => {
         signIn('google');
     };
 
+    const handleLogout = () => {
+        signOut();
+    }
+
     return (
-        <button onClick={handleClick} className={styles.loginButton}>
-            Login
-        </button>
+        <>
+        {isLoggedIn ? (
+            <button onClick={handleLogout} className={styles.loginButton}>
+                Logout
+            </button>
+        ) : (
+            <button onClick={handleLogin} className={styles.loginButton}>
+                Login
+            </button>
+        )}
+        </>
     );
 }
 
