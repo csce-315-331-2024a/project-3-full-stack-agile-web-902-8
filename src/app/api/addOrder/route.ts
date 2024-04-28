@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        order.total = Math.round(order.total * 100) / 100;
+
         await addOrder(order);
         return NextResponse.json(
             { message: 'Successfully added order' },

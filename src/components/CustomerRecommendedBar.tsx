@@ -24,7 +24,7 @@ function CustomerRecommendedBar({
                     className="text-background bg-text flex justify-center items-center duration-200 m-4 rounded-2xl p-4 hover:cursor-wait"
                     disabled={true}
                 >
-                    Loading Menu Items...
+                    Loading Recommendations...
                 </button>
             </div>
         );

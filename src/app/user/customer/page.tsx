@@ -17,10 +17,16 @@ export default function Customer() {
     const [category, setCategory] = useState('');
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
+
     const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
+
+    const [recommendedItems, setRecommendedItems] = useState<MenuItem[]>([]);
+
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+    const [isFetchingRecommendations, setIsFetchingRecommendations] =
+        useState(false);
 
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
@@ -62,6 +68,41 @@ export default function Customer() {
     }, [categories]);
 
     useEffect(() => {
+        setIsFetchingRecommendations(true);
+        if (isFetchingMenuItems || items.length === 0) return;
+        (async () => {
+            try {
+                const geoloc: [number, number] | null = await new Promise(
+                    (R) => {
+                        // console.log("Asking for location");
+                        navigator.geolocation.getCurrentPosition(
+                            (p) => R([p.coords.latitude, p.coords.longitude]),
+                            () => R(null)
+                        );
+                    }
+                );
+                // console.log("got location", geoloc);
+                const response = await fetch(
+                    '/api/recommendedItems' +
+                        (geoloc !== null
+                            ? `?lat=${geoloc[0]}&lon=${geoloc[1]}`
+                            : '')
+                );
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const recIds: number[] = await response.json();
+                // console.log("recieved recommendations:", recIds);
+                setRecommendedItems(
+                    items.filter((i: MenuItem) => recIds.includes(i.id))
+                );
+            } finally {
+                setIsFetchingRecommendations(false);
+            }
+        })();
+    }, [items, isFetchingMenuItems]);
+
+    useEffect(() => {
         async function fetchAllMenuItems() {
             setIsFetchingMenuItems(true);
             try {
@@ -88,7 +129,6 @@ export default function Customer() {
     }, [category, items]);
 
     return (
-        // TODO: Change to global styling
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
             <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
                 <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
@@ -96,13 +136,14 @@ export default function Customer() {
                 </h1>
                 <div>
                     <h2 className="text-2xl font-bold">Recommendations</h2>
-                    <CustomerRecommendedBar
-                        isFetchingMenuItems={isFetchingMenuItems}
-                        menuItems={categoryItems.slice(0, 5)}
-                        currentOrder={currentOrder}
-                        setCurrentOrder={setCurrentOrder}
-                    />
-                </div>
+                        <p>Based on the current weather</p>
+                        <CustomerRecommendedBar
+                            isFetchingMenuItems={isFetchingRecommendations}
+                            menuItems={recommendedItems}
+                            currentOrder={currentOrder}
+                            setCurrentOrder={setCurrentOrder}
+                        />
+                    </div>
                 <div>
                     <h2 className="text-2xl font-bold">Categories</h2>
                     <CustomerCategoryBar
