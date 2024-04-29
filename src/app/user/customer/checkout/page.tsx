@@ -181,9 +181,14 @@ export default function CustomerCheckout() {
                     </table>
                 </div>
                 <section className="w-full h-fit flex flex-col">
-                    <div className='w-full flex flex-row justify-between items-center p-4'>
-                        <h2 className="text-2xl font-bold w-fit h-fit">Payment Method</h2>
-                        <Link className='bg-secondary duration-200 hover:bg-secondary/70 w-fit p-4 rounded-2xl' href='user/customer/'>
+                    <div className="w-full flex flex-row justify-between items-center p-4">
+                        <h2 className="text-2xl font-bold w-fit h-fit">
+                            Payment Method
+                        </h2>
+                        <Link
+                            className="bg-secondary duration-200 hover:bg-secondary/70 w-fit p-4 rounded-2xl"
+                            href="user/customer/"
+                        >
                             Back to menu
                         </Link>
                     </div>
