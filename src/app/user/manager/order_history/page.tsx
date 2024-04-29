@@ -12,22 +12,7 @@ import { frequentlySoldPairs } from '@/lib/models';
 import { format, startOfToday } from 'date-fns';
 
 const DataPage = () => {
-    const Items = [
-        'Home',
-        'Menu',
-        'Inventory',
-        'Manager Data',
-        'Reports',
-        'Logout',
-    ];
-    const Links = [
-        '/manager',
-        '/manager',
-        '/manager/inventory',
-        '/manager',
-        '/manager/report_page',
-        '/',
-    ];
+    
     const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
     const [frequentlySoldPairsData, setFrequentlySoldPairsData] = useState<
@@ -143,8 +128,6 @@ const DataPage = () => {
 
     return (
         <main>
-            <Heading names={Items} hrefs={Links} />
-
             <div
                 style={{
                     width: '100%',
