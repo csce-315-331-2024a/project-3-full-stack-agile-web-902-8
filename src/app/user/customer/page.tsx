@@ -10,6 +10,13 @@ import {
 } from '@/components/CustomerOrderSidebar';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client';
 
 export default function Customer() {
     // set default category
@@ -126,54 +133,81 @@ export default function Customer() {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
-
+    const { scale, setScale } = useScale();
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
-            <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
-                <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
-                    Menu
-                </h1>
-                <div>
-                    <h2 className="text-2xl font-bold">Recommendations</h2>
-                    <p>Based on the current weather</p>
-                    <CustomerRecommendedBar
-                        isFetchingMenuItems={isFetchingRecommendations}
-                        menuItems={recommendedItems}
+        <ScaleProvider initialScale={1}>
+            {/* Scaled content */}
+            <div
+                id="scaled-content"
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'center center',
+                    overflow: 'auto',
+                }}
+            ></div>
+            <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
+                <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
+                    <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                        Menu
+                    </h1>
+                    <div>
+                        <h2 className="text-2xl font-bold">Recommendations</h2>
+                        <p>Based on the current weather</p>
+                        <CustomerRecommendedBar
+                            isFetchingMenuItems={isFetchingRecommendations}
+                            menuItems={recommendedItems}
+                            currentOrder={currentOrder}
+                            setCurrentOrder={setCurrentOrder}
+                        />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl font-bold">Categories</h2>
+                        <CustomerCategoryBar
+                            isFetchingMenuTypes={isFetchingMenuTypes}
+                            categories={categories}
+                            category={category}
+                            setCategory={setCategory}
+                        />
+                    </div>
+                    {/* Menu items */}
+                    <CustomerItemGrid
+                        isFetchingMenuItems={isFetchingMenuItems}
+                        categoryItems={categoryItems}
                         currentOrder={currentOrder}
                         setCurrentOrder={setCurrentOrder}
                     />
                 </div>
-                <div>
-                    <h2 className="text-2xl font-bold">Categories</h2>
-                    <CustomerCategoryBar
-                        isFetchingMenuTypes={isFetchingMenuTypes}
-                        categories={categories}
-                        category={category}
-                        setCategory={setCategory}
-                    />
-                </div>
-                {/* Menu items */}
-                <CustomerItemGrid
-                    isFetchingMenuItems={isFetchingMenuItems}
-                    categoryItems={categoryItems}
+                <CustomerOrderSidebar
+                    checkoutPage={'/user/customer/checkout'}
                     currentOrder={currentOrder}
-                    setCurrentOrder={setCurrentOrder}
-                />
-            </div>
-            <CustomerOrderSidebar
-                checkoutPage={'/user/customer/checkout'}
-                currentOrder={currentOrder}
+                >
+                    {currentOrder.map(({ item, qty }) => (
+                        <CustomerOrderItem
+                            key={item.id}
+                            item={item}
+                            qty={qty}
+                            currentOrder={currentOrder}
+                            setCurrentOrder={setCurrentOrder}
+                        />
+                    ))}
+                </CustomerOrderSidebar>
+            </main>
+            {/* Fixed-position zoom controls */}
+            <div
+                id="zoom-controls"
+                style={{
+                    position: 'fixed',
+                    top: '70px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1001, // Above scaled content
+                    textAlign: 'center',
+                }}
             >
-                {currentOrder.map(({ item, qty }) => (
-                    <CustomerOrderItem
-                        key={item.id}
-                        item={item}
-                        qty={qty}
-                        currentOrder={currentOrder}
-                        setCurrentOrder={setCurrentOrder}
-                    />
-                ))}
-            </CustomerOrderSidebar>
-        </main>
+                <ZoomIn />
+                <ZoomOut />
+                <ResetZoom />
+            </div>
+        </ScaleProvider>
     );
 }
