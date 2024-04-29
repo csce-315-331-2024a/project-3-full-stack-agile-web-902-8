@@ -5,14 +5,13 @@ import Heading from '@/components/Heading';
 import ScrollableList from '@/components/ScrollableList';
 import ScrollableBarGraph from '@/components/ScrollableBarGraph';
 import DateRangePicker from '@/components/DatePicker';
-import design from '@/app/manager/report_page/page.module.css';
+//import design from '@/app/manager/report_page/page.module.css';
 import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 import { format, startOfToday } from 'date-fns';
 
 const DataPage = () => {
-    
     const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
     const [frequentlySoldPairsData, setFrequentlySoldPairsData] = useState<
@@ -147,19 +146,22 @@ const DataPage = () => {
 
                 <button
                     onClick={handleGenerateSalesReport}
-                    className={design.genresbutton}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                 >
                     Generate Sales Report
                 </button>
                 <button
                     onClick={handleGenerateProductUsageReport}
-                    className={design.genresbutton}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                 >
                     Generate Product Usage Report
                 </button>
                 <button
                     onClick={handleGenerateWhatSellsTogetherReport}
-                    className={design.genresbutton}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                 >
                     Generate What Sells Together Report
                 </button>
@@ -167,7 +169,8 @@ const DataPage = () => {
                 <button
                     style={resetButtonStyle}
                     onClick={handleReset}
-                    className={design.genresbutton}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                 >
                     Reset
                 </button>

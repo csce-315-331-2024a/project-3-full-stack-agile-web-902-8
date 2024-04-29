@@ -2,7 +2,7 @@
 // DateRangePicker.tsx
 import React from 'react';
 import { formatISO } from 'date-fns';
-import design from '@/app/manager/report_page/page.module.css';
+//import design from '@/app/manager/report_page/page.module.css';
 
 type DateRangePickerProps = {
     startDate: Date;
@@ -35,14 +35,16 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 value={toDateTimeLocal(startDate)}
                 onChange={handleDateChange(setStartDate)}
                 step="1" // Allows for second precision
-                className={design.dateInput}
+                //className={design.dateInput}
+                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
             />
             <input
                 type="datetime-local"
                 value={toDateTimeLocal(endDate)}
                 onChange={handleDateChange(setEndDate)}
                 step="1" // Allows for second precision
-                className={design.dateInput}
+                //className={design.dateInput}
+                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
             />
         </div>
     );
