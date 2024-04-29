@@ -33,6 +33,7 @@ export async function orderHistory(
                 WHERE timestamp >= ${beginAdjusted}
                   AND timestamp <= ${endAdjusted}
                 ORDER BY timestamp DESC
+                limit 15;
                 ;
             `) {
                 if (items && items.length > 0) {
@@ -79,9 +80,9 @@ export async function getOrderItemsByOrderId(
                         price: 0,
                         netPrice: 0,
                         popularity: 0,
-                        ingredients:[],
+                        ingredients: [],
                         seasonal: null,
-                        weather: ' '
+                        weather: ' ',
                     })
                 );
             }
