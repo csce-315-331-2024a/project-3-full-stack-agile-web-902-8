@@ -1,5 +1,4 @@
 'use client';
-import styles from '@/app/customer/page.module.css';
 
 import CustomerItemGrid from '@/components/CustomerItemGrid';
 import CustomerCategoryBar from '@/components/CustomerCategoryBar';
@@ -9,11 +8,8 @@ import {
     CustomerOrderItem,
     CustomerOrderSidebar,
 } from '@/components/CustomerOrderSidebar';
-import { MenuItem, Seasonal } from '@/lib/models';
+import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
-
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
 
 export default function Customer() {
     // set default category
@@ -21,10 +17,31 @@ export default function Customer() {
     const [category, setCategory] = useState('');
     const [items, setItems] = useState<MenuItem[]>([]);
     const [categoryItems, setCategoryItems] = useState<MenuItem[]>([]);
-    const [currentOrder, setCurrentOrder] = useState<OrderEntry[]>([]);
+
+    const [currentOrder, changeCurrentOrder] = useState<OrderEntry[]>([]);
+
+    const [recommendedItems, setRecommendedItems] = useState<MenuItem[]>([]);
 
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
+    const [isFetchingRecommendations, setIsFetchingRecommendations] =
+        useState(false);
+
+    // wrapper around setting the current order
+    function setCurrentOrder(currentOrder: OrderEntry[]) {
+        localStorage.setItem('customer-order', JSON.stringify(currentOrder));
+        changeCurrentOrder(currentOrder);
+    }
+
+    useEffect(() => {
+        // grab the order from local storage if it exists
+        let serializedOrder = localStorage.getItem('customer-order');
+        let order = [];
+        if (serializedOrder != null) {
+            order = JSON.parse(serializedOrder);
+        }
+        changeCurrentOrder(order);
+    }, []);
 
     useEffect(() => {
         async function fetchAllMenuTypes() {
@@ -48,6 +65,41 @@ export default function Customer() {
             setCategory(categories[0]);
         }
     }, [categories]);
+
+    useEffect(() => {
+        setIsFetchingRecommendations(true);
+        if (isFetchingMenuItems || items.length === 0) return;
+        (async () => {
+            try {
+                const geoloc: [number, number] | null = await new Promise(
+                    (R) => {
+                        // console.log("Asking for location");
+                        navigator.geolocation.getCurrentPosition(
+                            (p) => R([p.coords.latitude, p.coords.longitude]),
+                            () => R(null)
+                        );
+                    }
+                );
+                // console.log("got location", geoloc);
+                const response = await fetch(
+                    '/api/recommendedItems' +
+                        (geoloc !== null
+                            ? `?lat=${geoloc[0]}&lon=${geoloc[1]}`
+                            : '')
+                );
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const recIds: number[] = await response.json();
+                // console.log("recieved recommendations:", recIds);
+                setRecommendedItems(
+                    items.filter((i: MenuItem) => recIds.includes(i.id))
+                );
+            } finally {
+                setIsFetchingRecommendations(false);
+            }
+        })();
+    }, [items, isFetchingMenuItems]);
 
     useEffect(() => {
         async function fetchAllMenuItems() {
@@ -75,51 +127,30 @@ export default function Customer() {
         setCategoryItems(itemsInCategory);
     }, [category, items]);
 
-    const openMenuBoardsPages = () => {
-        window.open('/menuboards/Burgs', '_blank');
-        window.open('/menuboards/Meals_Limited', '_blank');
-        window.open('/menuboards/Misc', '_blank');
-        window.open('/menuboards/Sandwiches_Baskets', '_blank');
-    };
-
-    const Items = ['Manager', 'Customer', 'Cashier', 'MenuBoard'];
-    const Links = ['/manager', '/customer', '/cashier', '/'];
-
     return (
-        // TODO: Change to global styling
-        <main className={styles.main}>
-            <DoubleText
-                block1={
-                    <SideBar
-                        names={Items}
-                        hrefs={Links}
-                        onClick={openMenuBoardsPages}
-                    />
-                }
-                block2={undefined}
-            />
-
-            <div id={styles.menu}>
-                <h1>Menu</h1>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
+            <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
+                <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                    Menu
+                </h1>
                 <div>
-                    <h2>Recommendations</h2>
+                    <h2 className="text-2xl font-bold">Recommendations</h2>
+                    <p>Based on the current weather</p>
                     <CustomerRecommendedBar
-                        isFetchingMenuItems={isFetchingMenuItems}
-                        menuItems={categoryItems.slice(0, 6)}
+                        isFetchingMenuItems={isFetchingRecommendations}
+                        menuItems={recommendedItems}
                         currentOrder={currentOrder}
                         setCurrentOrder={setCurrentOrder}
                     />
                 </div>
                 <div>
-                    <h2>Categories</h2>
-                    <div id={styles['menu-categories']}>
-                        <CustomerCategoryBar
-                            isFetchingMenuTypes={isFetchingMenuTypes}
-                            categories={categories}
-                            category={category}
-                            setCategory={setCategory}
-                        />
-                    </div>
+                    <h2 className="text-2xl font-bold">Categories</h2>
+                    <CustomerCategoryBar
+                        isFetchingMenuTypes={isFetchingMenuTypes}
+                        categories={categories}
+                        category={category}
+                        setCategory={setCategory}
+                    />
                 </div>
                 {/* Menu items */}
                 <CustomerItemGrid
@@ -129,7 +160,10 @@ export default function Customer() {
                     setCurrentOrder={setCurrentOrder}
                 />
             </div>
-            <CustomerOrderSidebar setCurrentOrder={setCurrentOrder}>
+            <CustomerOrderSidebar
+                checkoutPage={'/user/customer/checkout'}
+                currentOrder={currentOrder}
+            >
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem
                         key={item.id}

@@ -1,3 +1,5 @@
+// This should just be a button. Please replace it wherever you find it being used.
+
 import React, { ReactNode } from 'react';
 
 type ButtonProp = {
