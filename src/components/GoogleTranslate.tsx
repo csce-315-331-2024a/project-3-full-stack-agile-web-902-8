@@ -7,12 +7,15 @@ const GoogleTranslate: React.FC = () => {
     // This function initializes the Google Translate widget
     const googleTranslateElementInit = () => {
       // Create a new instance of the Google Translate widget
+      if ((window as any).customx_google_translate_watcher)
+          return;
       new (window as any).google.translate.TranslateElement(
         {
           pageLanguage: "en", // Set the page language to English
         },
         "google_translate_element" // Specify the HTML element where the widget should be rendered
       );
+      (window as any).customx_google_translate_watcher = true;
     };
 
     // Create a script element to load the Google Translate API
