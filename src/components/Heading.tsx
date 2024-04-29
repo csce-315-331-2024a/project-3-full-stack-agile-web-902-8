@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import revsLogo from '../../public/RLogo.ico';
 import LoginButton from './LoginButton';
+import GoogleTranslate from './GoogleTranslate';
 
 type HeadingProp = {
     names: string[];
@@ -65,6 +66,7 @@ function Heading({
                     )
                 )}
             </ul>
+            <GoogleTranslate></GoogleTranslate>
             <LoginButton isLoggedIn={isLoggedIn} />
         </nav>
     );
