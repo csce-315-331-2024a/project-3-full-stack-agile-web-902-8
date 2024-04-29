@@ -15,6 +15,7 @@ import CashierOrderTable from '@/components/CashierOrderTable';
 import { MenuItem, Order, OrderItem } from '@/lib/models';
 import GlobalConfig from '@/lib/config';
 
+import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client';
 export interface OrderEntry {
     item: MenuItem;
     quantity: number;
@@ -37,8 +38,9 @@ export default function Cashier() {
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
     const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
-
+    const { scale, setScale } = useScale();
     useEffect(() => {
+        
         async function fetchAllMenuTypes() {
             setIsFetchingMenuTypes(true);
             try {
@@ -164,6 +166,16 @@ export default function Cashier() {
     }
 
     return (
+        <ScaleProvider initialScale={1}>
+        {/* Scaled content */}
+        <div
+            id="scaled-content"
+            style={{
+                transform: `scale(${scale})`,
+                transformOrigin: 'center center',
+                overflow: 'auto',
+            }}
+        ></div>
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4">
             <div className="col-start-1 col-end-2 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
                 <h1 className="text-[4rem] font-bold relative mainHeader">
@@ -223,5 +235,27 @@ export default function Cashier() {
                 </button>
             </div>
         </main>
+     {/* Fixed-position zoom controls */}
+     <div
+                id="zoom-controls"
+                style={{
+                    position: 'fixed',
+                    bottom: '10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1001, // Above scaled content
+                    textAlign: 'center',
+                }}
+            >
+                <ZoomIn />
+                <ZoomOut />
+                <ResetZoom />
+            </div>
+        </ScaleProvider>
     );
 }
+
+
+
+
+
