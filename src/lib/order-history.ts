@@ -57,21 +57,23 @@ export async function getOrderItemsByOrderId(
         }),
         async (isql, _) => {
             const result = await isql`
-          SELECT item_id, qty
-          FROM order_items
-          WHERE order_id = ${orderId}
+            SELECT 
+              menu_items.name,
+              order_items.qty
+            FROM
+              menu_items
+            JOIN
+              order_items ON menu_items.id = order_items.item_id
+            WHERE
+              order_id=${orderId};
         `;
 
             const orderItems: OrderItem[] = [];
             for (const row of result) {
-                const itemName = await getMenuItemNameByItemId(
-                    row.item_id,
-                    isql
-                );
                 orderItems.push(
                     new OrderItem(row.qty, {
                         id: row.item_id,
-                        name: itemName,
+                        name: row.name,
                         type: '',
                         description: '',
                         price: 0,
@@ -85,26 +87,6 @@ export async function getOrderItemsByOrderId(
             }
 
             return orderItems;
-        }
-    );
-}
-
-export async function getMenuItemNameByItemId(
-    itemId: number,
-    tsql = psql
-): Promise<string> {
-    return transact<string, postgres.Error, any>(
-        tsql,
-        new Error('SQL Error in Menu Item Name Query', undefined, {
-            itemId: itemId,
-        }),
-        async (isql, _) => {
-            const result = await isql`
-                SELECT name
-                FROM menu_items 
-                WHERE id = ${itemId};
-            `;
-            return result[0].name;
         }
     );
 }
