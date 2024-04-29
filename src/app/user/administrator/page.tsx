@@ -24,14 +24,14 @@ export default function Administrator() {
                     overflow: 'auto',
                 }}
             ></div>
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start">
-            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
-                User Manager
-            </h1>
-            <UserManager />
-        </main>
-     {/* Fixed-position zoom controls */}
-     <div
+            <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start">
+                <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                    User Manager
+                </h1>
+                <UserManager />
+            </main>
+            {/* Fixed-position zoom controls */}
+            <div
                 id="zoom-controls"
                 style={{
                     position: 'fixed',
@@ -49,4 +49,3 @@ export default function Administrator() {
         </ScaleProvider>
     );
 }
-
