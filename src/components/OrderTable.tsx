@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
-import design from '@/app/manager/report_page/page.module.css';
 import { format, startOfToday } from 'date-fns';
 import { Order, OrderItem } from '@/lib/models';
 
@@ -104,7 +103,7 @@ function OrderTable({ heading }: TableProp) {
 
     return (
         <div>
-            <div style = {{marginBottom: '10px'}}>
+            <div style={{ marginBottom: '10px' }}>
                 <div>
                     Select a starting date:
                     <input
@@ -116,7 +115,7 @@ function OrderTable({ heading }: TableProp) {
                     />
                 </div>
 
-                <div >
+                <div>
                     Select an end date:
                     <input
                         type="datetime-local"
@@ -142,10 +141,10 @@ function OrderTable({ heading }: TableProp) {
                 </div>
             </div>
 
-            {error && <div className={design.error}>{error}</div>}
+            {error && <div>{error}</div>}
             {isLoading ? (
-                <div className={design.loadingContainer}>
-                    <button className={`${design.loading}`} disabled>
+                <div >
+                    <button  disabled>
                         Loading...
                     </button>
                 </div>
@@ -225,8 +224,8 @@ function OrderTable({ heading }: TableProp) {
 
 export default OrderTable;
 
-
-{/* <div className={design.tableControls}>
+{
+    /* <div className={design.tableControls}>
                         Rows per page:
                         <select
                             id="rowsPerPage"
@@ -341,4 +340,5 @@ export default OrderTable;
                                 )}
                             </>
                         )}
-                    </div> */}
+                    </div> */
+}
