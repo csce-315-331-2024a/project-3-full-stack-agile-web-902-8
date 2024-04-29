@@ -1,7 +1,6 @@
-import React from 'react';
 import Image from 'next/image';
 import { MenuItem } from '@/lib/models';
-import styles from '@/components/component.module.css';
+import styles from './component.module.css';
 
 interface MenuItemProp {
     item: MenuItem;

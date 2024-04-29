@@ -1,0 +1,62 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main h1 {
+    height: 50px;
+}
+
+.menu-item-grid {
+    display: grid;
+    height: calc(100vh - 50px);
+    width: 80%;
+    margin: 0 auto;
+
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.menu-board.menu-item {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 10px;
+}
+
+.menu-board.menu-item img {
+    max-width: 10em;
+    max-height: 10em;
+}
+
+.menu-board.menu-item h3.name {
+    font-size: 2em;
+}
+
+.menu-board.menu-item .description {
+    font-size: 1.25em;
+}
+
+.menu-board.menu-board .price {
+    display: flex;
+
+    padding-top: 10px;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    font-size: 2em;
+}
+
+@media (max-width: 1000px) {
+    .main {
+        font-size: 10pt;
+    }
+}
+
+@media (max-width: 600px) {
+    .main {
+        font-size: 8pt;
+    }
+}
