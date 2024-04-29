@@ -16,7 +16,7 @@ export async function getPendingOrders(tsql = psql): Promise<Order[]> {
         async (isql, _) => {
             const orders = await isql`
                 SELECT o.id, o.timestamp, o.discount, o.total, o.status,
-                       i.id AS item_id, i.name AS item_name, i.type AS item_type, 
+                       i.id AS item_id, i.name AS item_name, i.type AS item_type, i.description AS item_description,
                        i.price AS item_price, oi.qty AS item_quantity
                 FROM orders AS o
                 JOIN order_items AS oi ON o.id = oi.order_id
@@ -44,6 +44,7 @@ export async function getPendingOrders(tsql = psql): Promise<Order[]> {
                         id: row.item_id,
                         name: row.item_name,
                         type: row.item_type,
+                        description: row.item_description,
                         price: row.item_price,
                         netPrice: row.item_price,
                         popularity: 0,
