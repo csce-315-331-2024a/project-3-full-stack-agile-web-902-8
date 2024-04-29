@@ -197,7 +197,7 @@ export default function Customer() {
                 id="zoom-controls"
                 style={{
                     position: 'fixed',
-                    top: '10px',
+                    top: '40px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 1001, // Above scaled content
