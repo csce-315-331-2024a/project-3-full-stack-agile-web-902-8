@@ -2,7 +2,7 @@ export class User {
     id: number;
     username: string;
     password: string;
-    role: number;
+    role: string;
     hourlySalary: number;
     hours: number;
 
@@ -10,7 +10,7 @@ export class User {
         id: number,
         username: string,
         password: string,
-        role: number,
+        role: string,
         hourlySalary: number,
         hours: number
     ) {
@@ -86,30 +86,36 @@ export class MenuItem {
     id: number;
     name: string;
     type: string;
+    description: string;
     price: number;
     netPrice: number;
     popularity: number;
     ingredients: Ingredient[];
     seasonal: Seasonal | null;
+    weather?: string;
 
     constructor(
         id: number,
         name: string,
         type: string,
+        description: string,
         price: number,
         netPrice: number,
         popularity: number,
         ingredients: Ingredient[],
-        seasonal: Seasonal | null
+        seasonal: Seasonal | null,
+        weather?: string
     ) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.description = description;
         this.price = price;
         this.netPrice = netPrice;
         this.popularity = popularity;
         this.ingredients = ingredients;
         this.seasonal = seasonal;
+        this.weather = weather;
     }
 }
 
@@ -139,25 +145,37 @@ export class InventoryItem {
 }
 
 export class AggregateItem {
-    private id: number;
-    private name: string;
-    private qty: number;
+    id: number;
+    name: string;
+    qty: number;
 
     constructor(id: number, name: string, qty: number) {
         this.id = id;
         this.name = name;
         this.qty = qty;
     }
+}
 
-    public getId(): number {
-        return this.id;
+export class aggregateInventoryItem {
+    id: number;
+    name: string;
+    qty: number;
+
+    constructor(id: number, name: string, qty: number) {
+        this.id = id;
+        this.name = name;
+        this.qty = qty;
     }
+}
 
-    public getName(): string {
-        return this.name;
-    }
+export class frequentlySoldPairs {
+    item1Name: string;
+    item2Name: string;
+    frequency: number;
 
-    public getQty(): number {
-        return this.qty;
+    constructor(item1Name: string, item2Name: string, frequency: number) {
+        this.item1Name = item1Name;
+        this.item2Name = item2Name;
+        this.frequency = frequency;
     }
 }

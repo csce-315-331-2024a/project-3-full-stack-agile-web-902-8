@@ -1,21 +1,23 @@
+// DONE
 'use client';
 
 import React from 'react';
-import componentStyles from './component.module.css';
 import { MenuItem } from '@/lib/models';
-import { OrderEntry } from '@/app/cashier/page';
+import { OrderEntry } from '@/app/user/cashier/page';
 
 interface CashierItemGridProps {
     isFetchingMenuItems: boolean;
     categoryItems: MenuItem[];
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
+    className?: string;
 }
 
 interface CashierItemButtonProps {
     item: MenuItem;
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
+    className?: string;
 }
 
 function CashierItemGrid({
@@ -23,18 +25,15 @@ function CashierItemGrid({
     categoryItems,
     currentOrder,
     setCurrentOrder,
+    className,
 }: CashierItemGridProps) {
     if (isFetchingMenuItems) {
         return (
-            <div className={componentStyles.itemGrid}>
+            <div
+                className={'flex flex-row flex-wrap justify-start ' + className}
+            >
                 <button
-                    className={
-                        componentStyles.itemButton +
-                        ' ' +
-                        componentStyles.card +
-                        ' ' +
-                        componentStyles.loading
-                    }
+                    className="text-background bg-text flex justify-center items-center m-4 w-fit h-fit rounded-2xl p-4 cursor-wait"
                     disabled={true}
                 >
                     Loading Menu Items...
@@ -43,7 +42,11 @@ function CashierItemGrid({
         );
     }
     return (
-        <div className={componentStyles.itemGrid}>
+        <div
+            className={
+                'flex flex-row flex-wrap justify-start gap-4 ' + className
+            }
+        >
             {categoryItems.map((item) => (
                 <CashierItemButton
                     item={item}
@@ -60,6 +63,7 @@ function CashierItemButton({
     item,
     currentOrder,
     setCurrentOrder,
+    className,
 }: CashierItemButtonProps) {
     function handleClick() {
         const orderEntryIndex = currentOrder.findIndex(
@@ -84,7 +88,10 @@ function CashierItemButton({
 
     return (
         <button
-            className={componentStyles.itemButton + ' ' + componentStyles.card}
+            className={
+                'text-background bg-accent flex justify-center items-center duration-200 w-fit h-fit rounded-2xl p-4 hover:text-text hover:bg-accent/50 ' +
+                className
+            }
             onClick={handleClick}
         >
             {item.name}

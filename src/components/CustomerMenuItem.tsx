@@ -1,8 +1,9 @@
+// ALL TAILWIND
+
 import React from 'react';
 import Image from 'next/image';
 import { MenuItem } from '@/lib/models';
 import { OrderEntry } from '@/components/CustomerOrderSidebar';
-import styles from '@/components/component.module.css';
 
 interface MenuItemProp {
     item: MenuItem;
@@ -54,21 +55,19 @@ export function CustomerMenuItem({
 
     return (
         <button
-            className={styles['menu-item'] + ' ' + styles.customer}
+            className="h-fit bg-transparent block text-center py-4 mx-4 active:bg-secondary/50"
             onClick={() => addToOrder(item)}
         >
             <Image
+                className="max-w-64 mx-auto"
                 src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
                 height={200}
             />
-            <p className={styles['name']}>{item.name}</p>
-            <p className={styles['description']}>
-                {/* TODO: Description */}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-            </p>
-            <p className={styles.price}>
+            <p className="text-2xl">{item.name}</p>
+            <p className="px-8 text-center">{item.description}</p>
+            <p className="text-2xl flex justify-center items-center">
                 ${item.price.toLocaleString('en-US', options)}
             </p>
         </button>
@@ -112,16 +111,17 @@ export function CustomerRecommendedItem({
 
     return (
         <button
-            className={styles['recommended-item'] + ' ' + styles.customer}
+            className="h-fit bg-transparent text-center p-4 inline-block active:bg-background/50"
             onClick={() => addToOrder(item)}
         >
             <Image
+                className="max-w-32 max-h-32"
                 src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={150}
                 height={150}
             />
-            <p className={styles['name']}>{item.name}</p>
+            <p>{item.name}</p>
         </button>
     );
 }
