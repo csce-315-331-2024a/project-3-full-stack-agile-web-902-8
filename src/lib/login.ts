@@ -1,16 +1,9 @@
 import psql, { transact } from '@/lib/database';
 import postgres from 'postgres';
 import Error from '@/lib/error';
+import { loginLevels } from '@/lib/config';
 
-export const LOGIN_FAILED = Symbol('FAILED');
-export const LOGIN_MANAGER = Symbol('MANAGER');
-export const LOGIN_CASHIER = Symbol('CASHIER');
-export const LOGIN_CUSTOMER = Symbol('CUSTOMER');
-export type LoginResult =
-    | typeof LOGIN_FAILED
-    | typeof LOGIN_MANAGER
-    | typeof LOGIN_CASHIER
-    | typeof LOGIN_CUSTOMER;
+export type LoginResult = loginLevels;
 
 /**
  * Tries to login the user represented by username with password and returns their role or login failure.
@@ -21,7 +14,7 @@ export type LoginResult =
  */
 export async function attemptLogin(
     username: string,
-    password: string,
+    password: string = 'NULL',
     tsql = psql
 ): Promise<LoginResult> {
     return transact<
@@ -36,15 +29,15 @@ export async function attemptLogin(
         }),
         async (isql, _) => {
             const rows =
-                await isql`SELECT password, manager FROM users WHERE username = ${username};`;
-            if (rows.length === 0) return LOGIN_FAILED;
+                await isql`SELECT password, role FROM users WHERE username = ${username};`;
+            if (rows.length === 0) return loginLevels.LOGIN_CUSTOMER;
 
-            const [{ password: hashed, manager: isManager }] = rows;
+            const [{ password: hashed, role: role }] = rows;
 
-            if (!verify(password, hashed)) return LOGIN_FAILED as LoginResult;
+            if (password != 'NULL' && !verify(password, hashed))
+                return loginLevels.LOGIN_FAILED as LoginResult;
 
-            if (isManager) return LOGIN_MANAGER as LoginResult;
-            else return LOGIN_CASHIER as LoginResult;
+            return role as LoginResult;
         }
     );
 }
