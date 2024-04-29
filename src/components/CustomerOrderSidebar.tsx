@@ -70,8 +70,7 @@ export function CustomerOrderItem({
             />
             <h3 className={styles.name}>{item.name}</h3>
             <p className={styles.description}>
-                {/* TODO: Description*/}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                {item.description}
             </p>
 
             <div className={styles['quantity']}>

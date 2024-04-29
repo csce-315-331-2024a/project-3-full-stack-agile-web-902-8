@@ -26,8 +26,8 @@
 }
 
 .menu-board.menu-item img {
-    max-width: 10em;
-    max-height: 10em;
+    width: 10em;
+    height: 10em;
 }
 
 .menu-board.menu-item h3.name {

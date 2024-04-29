@@ -65,8 +65,7 @@ export function CustomerMenuItem({
             />
             <p className={styles['name']}>{item.name}</p>
             <p className={styles['description']}>
-                {/* TODO: Description */}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                {item.description}
             </p>
             <p className={styles.price}>
                 ${item.price.toLocaleString('en-US', options)}

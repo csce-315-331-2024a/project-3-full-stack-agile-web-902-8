@@ -551,7 +551,7 @@ button.menu-item.customer {
 }
 
 button.menu-item.customer img {
-    max-width: 16em;
+    width: 16em;
 }
 
 button.menu-item.customer .name {
