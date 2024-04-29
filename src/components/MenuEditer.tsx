@@ -607,6 +607,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                                 >
                                     <td className="px-4 py-2 border-b-text border-b-2">
                                         <button
+                                        className="rounded-2xl bg-text h-6 w-6 text-background duration-200 hover:bg-background hover:text-text"
                                             onClick={() =>
                                                 handleRemoveIngredient(index)
                                             }
@@ -633,6 +634,15 @@ function MenuEditer({ className }: MenuEditerProps) {
                                     </td>
                                 </tr>
                             ))}
+                            {ingredients.length === 0 && (
+                                <tr className="hover:bg-secondary/70">
+                                    <td className="px-4 py-2 border-b-text border-b-2">
+                                        No ingredients
+                                    </td>
+                                    <td className="px-4 py-2 border-b-text border-b-2"></td>
+                                    <td className="px-4 py-2 border-b-text border-b-2"></td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                     <button
