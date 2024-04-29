@@ -52,7 +52,9 @@ function Heading({
                             <Link
                                 className={
                                     'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink' +
-                                    (pathName.startsWith(hrefs[i]) ? ' current' : '')
+                                    (pathName.startsWith(hrefs[i])
+                                        ? ' current'
+                                        : '')
                                 }
                                 href={hrefs[i]}
                             >
