@@ -12,7 +12,7 @@ function LoginButton({ isLoggedIn }: LoginButtonProps) {
     };
 
     const handleLogout = () => {
-        signOut({ callbackUrl: '/customer', redirect: true });
+        signOut({ callbackUrl: '/user/customer', redirect: true });
     };
 
     return (
