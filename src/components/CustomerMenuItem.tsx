@@ -64,9 +64,7 @@ export function CustomerMenuItem({
                 height={200}
             />
             <p className={styles['name']}>{item.name}</p>
-            <p className={styles['description']}>
-                {item.description}
-            </p>
+            <p className={styles['description']}>{item.description}</p>
             <p className={styles.price}>
                 ${item.price.toLocaleString('en-US', options)}
             </p>

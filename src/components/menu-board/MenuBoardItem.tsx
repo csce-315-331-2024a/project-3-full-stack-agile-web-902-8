@@ -6,9 +6,7 @@ interface MenuItemProp {
     item: MenuItem;
 }
 
-export function MenuBoardItem({
-    item,
-}: MenuItemProp) {
+export function MenuBoardItem({ item }: MenuItemProp) {
     // Specifying options for formatting
     const options = {
         style: 'decimal',
@@ -17,9 +15,7 @@ export function MenuBoardItem({
     };
 
     return (
-        <div
-            className={styles['menu-item'] + ' ' + styles["menu-board"]}
-        >
+        <div className={styles['menu-item'] + ' ' + styles['menu-board']}>
             <Image
                 src={`/api/menuImages/${item.id}`}
                 alt={item.name}
@@ -28,9 +24,7 @@ export function MenuBoardItem({
             />
             <div>
                 <h3 className={styles['name']}>{item.name}</h3>
-                <p className={styles['description']}>
-                    {item.description}
-                </p>
+                <p className={styles['description']}>{item.description}</p>
             </div>
             <div className={styles.price}>
                 <p>${item.price.toLocaleString('en-US', options)}</p>

@@ -69,9 +69,7 @@ export function CustomerOrderItem({
                 height={200}
             />
             <h3 className={styles.name}>{item.name}</h3>
-            <p className={styles.description}>
-                {item.description}
-            </p>
+            <p className={styles.description}>{item.description}</p>
 
             <div className={styles['quantity']}>
                 <button onClick={() => changeQty(qty - 1)}>

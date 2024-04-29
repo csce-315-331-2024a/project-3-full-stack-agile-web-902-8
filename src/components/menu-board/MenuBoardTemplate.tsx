@@ -7,11 +7,11 @@ import { useState, useEffect } from 'react';
 import { MenuItem } from '@/lib/models';
 
 interface MenuBoardProps {
-    title: string,
-    categories: string[]
+    title: string;
+    categories: string[];
 }
 
-function MenuBoardTemplate({title, categories}: MenuBoardProps) {
+function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
     const NUMSHOWN = 3;
     const TIMEINTERVAL = 5000; // ms
 
@@ -33,7 +33,9 @@ function MenuBoardTemplate({title, categories}: MenuBoardProps) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
                 const menuItems: MenuItem[] = await response.json();
-                const itemsInCategory = menuItems.filter((item) => categories.indexOf(item.type) > -1);
+                const itemsInCategory = menuItems.filter(
+                    (item) => categories.indexOf(item.type) > -1
+                );
                 setItems(itemsInCategory);
                 console.log('Fetching should be done now.');
             } finally {
@@ -41,48 +43,50 @@ function MenuBoardTemplate({title, categories}: MenuBoardProps) {
             }
         }
         fetchAllMenuItems();
-    }, []);
+    }, [categories]);
 
     useEffect(() => {
-      const interval = setInterval(() => {
-        setItemsShown(items.slice(indexShown, indexShown + NUMSHOWN));
-        let newIndex = indexShown + NUMSHOWN >= items.length ? 0 : indexShown + NUMSHOWN;
-        setIndexShown(newIndex);
-      }, TIMEINTERVAL);
-      return () => {
-        clearInterval(interval);
-      };
+        const interval = setInterval(() => {
+            setItemsShown(items.slice(indexShown, indexShown + NUMSHOWN));
+            let newIndex =
+                indexShown + NUMSHOWN >= items.length
+                    ? 0
+                    : indexShown + NUMSHOWN;
+            setIndexShown(newIndex);
+        }, TIMEINTERVAL);
+        return () => {
+            clearInterval(interval);
+        };
     }, [items, indexShown]);
 
     return (
         <main className={styles.main}>
             <h1>{title}</h1>
 
-            <div className={styles["menu-item-grid"]}>
-            {isFetchingMenuItems ? 
-                <div className={componentStyles.itemGrid}>
-                    <button
-                        className={
-                            componentStyles.itemButton +
-                            ' ' +
-                            componentStyles.card +
-                            ' ' +
-                            componentStyles.loading
-                        }
-                        disabled={true}
-                    >
-                        Loading Menu Items...
-                    </button>
-                </div> : 
-
-                itemsShown.map((item) =>
-                    <MenuBoardItem key={item.id} item={item}/>
-                )
-            }
+            <div className={styles['menu-item-grid']}>
+                {isFetchingMenuItems ? (
+                    <div className={componentStyles.itemGrid}>
+                        <button
+                            className={
+                                componentStyles.itemButton +
+                                ' ' +
+                                componentStyles.card +
+                                ' ' +
+                                componentStyles.loading
+                            }
+                            disabled={true}
+                        >
+                            Loading Menu Items...
+                        </button>
+                    </div>
+                ) : (
+                    itemsShown.map((item) => (
+                        <MenuBoardItem key={item.id} item={item} />
+                    ))
+                )}
             </div>
         </main>
     );
 }
-
 
 export default MenuBoardTemplate;
