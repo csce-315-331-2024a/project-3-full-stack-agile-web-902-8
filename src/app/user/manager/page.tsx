@@ -3,10 +3,13 @@ import React from 'react';
 import OrderTable from '@/components/OrderTable';
 
 export default function Manager() {
-    const tableHead = ['TimeStamp', 'Order_Id', 'Discount', 'Total'];
-    const tableBody = [
-        ['Sample time 1', 'Sample id 1', 'Sample Discount 1', 'Sample Total 1'],
-        ['Sample time 2', 'Sample id 2', 'Sample Discount 2', 'Sample Total 2'],
+    const tableHead = [
+        'Order ID',
+        'Timestamp',
+        'Discount',
+        'Total',
+        'Ordered Items',
+        'Status',
     ];
 
     return (
@@ -14,10 +17,7 @@ export default function Manager() {
             <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
                 Manager
             </h1>
-            <button className="bg-secondary duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:hover:cursor-wait p-4 rounded-2xl w-fit">
-                Refresh
-            </button>
-            <OrderTable heading={tableHead} rows={tableBody} />
+            <OrderTable heading={tableHead} />
         </main>
     );
 }
