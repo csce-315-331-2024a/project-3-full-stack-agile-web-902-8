@@ -30,7 +30,7 @@ export default function Administrator() {
                 </h1>
                 <UserManager />
             </main>
-            {/* Fixed-position zoom controls */}
+            {/* Fixed-position zoom control */}
             <div
                 id="zoom-controls"
                 style={{
