@@ -38,7 +38,7 @@ export default function Administrator() {
                     top: '40px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    zIndex: 1001, 
+                    zIndex: 1001,
                     textAlign: 'center',
                 }}
             >
