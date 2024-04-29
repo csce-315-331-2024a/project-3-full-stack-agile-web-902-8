@@ -664,7 +664,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                                     onChange={handleSelectIng}
                                 >
                                     <option
-                                        className="bg-text text-background text-text font-sans"
+                                        className="bg-text text-background font-sans"
                                         value=""
                                         disabled
                                     >
@@ -672,7 +672,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                                     </option>
                                     {inventoryNames.map((option, index) => (
                                         <option
-                                            className="bg-text text-background text-text font-sans"
+                                            className="bg-text text-background font-sans"
                                             key={index}
                                             value={option}
                                         >
