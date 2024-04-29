@@ -8,6 +8,7 @@ import {
 } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
+import { frequentlySoldPairs } from '@/lib/models';
 
 /**
  * Retrieves the image for a menu item sepcified by id.
@@ -1130,21 +1131,21 @@ export async function getMenuItemNamesByTypeAndInSeason(
 /**
  * Retrieves pairs of frequently sold menu item names of a specific type and in season within a given time range from the database.
  *
- * @param begin - The start date of the time range.
+ * @param start - The start date of the time range.
  * @param end - The end date of the time range.
  * @param tsql - The object representing an existing database connection or transaction.
  * @returns A Promise resolving to an array of objects representing pairs of menu item names along with their frequency of being sold.
  */
 export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
-    begin: Date,
-    end: Date,
+    start: number,
+    end: number,
     tsql = psql
-): Promise<[string, string, number][]> {
-    return transact<[string, string, number][], postgres.Error, any>(
+): Promise<frequentlySoldPairs[]> {
+    return transact<frequentlySoldPairs[], postgres.Error, any>(
         tsql,
         new Error('SQL Error in getMenuItemNamesByTypeAndInSeason', undefined, {
-            begin: begin,
-            end: end,
+            start,
+            end,
         }),
         async (isql, _) => {
             const result = await isql`
@@ -1154,15 +1155,17 @@ export async function getMenuIgetFrequentlySoldPairstemNamesByTypeAndInSeason(
             JOIN orders o ON oi1.order_id = o.id
             JOIN menu_items mi1 ON oi1.item_id = mi1.id
             JOIN menu_items mi2 ON oi2.item_id = mi2.id
-            WHERE o.timestamp BETWEEN ${begin} AND ${end}
+            WHERE o.timestamp BETWEEN ${start} AND ${end}
             GROUP BY mi1.name, mi2.name
             ORDER BY frequency DESC`;
 
-            const itemNames: [string, string, number][] = [];
-
-            //returns pair that sell frequently
+            let itemNames: frequentlySoldPairs[] = [];
             for (const row of result) {
-                itemNames.push([row.item1Name, row.item2Name, row.frequency]);
+                const { item1name, item2name, frequency } = row;
+
+                itemNames.push(
+                    new frequentlySoldPairs(item1name, item2name, frequency)
+                );
             }
             return itemNames;
         }
