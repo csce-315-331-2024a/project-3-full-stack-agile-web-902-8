@@ -1,10 +1,9 @@
+// DONE
+
 'use client';
 
-import React, { useEffect } from 'react';
-import componentStyles from './component.module.css';
-import { MenuItem, Order } from '@/lib/models';
-import { OrderEntry } from '@/app/cashier/page';
-import GlobalConfig from '@/lib/config';
+import React from 'react';
+import { OrderEntry } from '@/app/user/cashier/page';
 
 interface CashierOrderTableProps {
     isDiscounted: boolean;
@@ -14,12 +13,15 @@ interface CashierOrderTableProps {
     total: number;
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
+    className?: string;
 }
 
 interface CashierOrderItemProps {
     orderEntry: OrderEntry;
     currentOrder: OrderEntry[];
     setCurrentOrder: (order: OrderEntry[]) => void;
+    isEven: boolean;
+    className?: string;
 }
 
 function CashierOrderTable({
@@ -30,63 +32,71 @@ function CashierOrderTable({
     total,
     currentOrder,
     setCurrentOrder,
+    className,
 }: CashierOrderTableProps) {
     return (
-        <div
-            className={componentStyles.orderTable + ' ' + componentStyles.card}
-        >
-            <h2>Current order</h2>
-            <table>
+        <div className={'bg-secondary/50 rounded-2xl p-4 ' + className}>
+            <h2 className="text-center text-2xl font-bold">Current order</h2>
+            <table className="w-full border-collapse">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                        <th className="w-10 h-10"></th>
+                        <th className="text-left">Name</th>
+                        <th className="text-right">Price</th>
+                        <th className="text-right pr-4">Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {currentOrder.map((orderEntry) => {
+                    {currentOrder.map((orderEntry, index) => {
                         return (
                             <CashierOrderItem
                                 orderEntry={orderEntry}
                                 currentOrder={currentOrder}
                                 setCurrentOrder={setCurrentOrder}
                                 key={orderEntry.item.id}
+                                isEven={index % 2 === 0}
                             />
                         );
                     })}
                     {currentOrder.length === 0 && (
-                        <tr>
-                            <td></td>
-                            <td>No items in order</td>
-                            <td></td>
-                            <td></td>
+                        <tr className="h-10">
+                            <td className="rounded-[1rem_0_0_1rem] bg-secondary/50"></td>
+                            <td className="text-left bg-secondary/50">
+                                No items in order
+                            </td>
+                            <td className="text-right font-mono bg-secondary/50"></td>
+                            <td className="text-right font-mono pr-4 rounded-[0_1rem_1rem_0] bg-secondary/50"></td>
                         </tr>
                     )}
                     {currentOrder.length > 0 && isDiscounted && (
-                        <tr>
+                        <tr className="h-10">
                             <td></td>
-                            <td>Discount:</td>
-                            <td>{'-' + discount.toFixed(2)}</td>
-                            <td></td>
+                            <td className="text-left">Discount:</td>
+                            <td className="text-right font-mono">
+                                {'-' + discount.toFixed(2)}
+                            </td>
+                            <td className="text-right font-mono pr-4"></td>
                         </tr>
                     )}
                     {currentOrder.length > 0 && isTaxed && (
-                        <tr>
+                        <tr className="h-10">
                             <td></td>
-                            <td>Tax:</td>
-                            <td>{tax.toFixed(2)}</td>
-                            <td></td>
+                            <td className="text-left">Tax:</td>
+                            <td className="text-right font-mono">
+                                {tax.toFixed(2)}
+                            </td>
+                            <td className="text-right font-mono pr-4"></td>
                         </tr>
                     )}
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <tr className="h-10">
                         <td></td>
-                        <td>Total:</td>
-                        <td>{total.toFixed(2)}</td>
-                        <td></td>
+                        <td className="text-left">Total:</td>
+                        <td className="text-right font-mono">
+                            {total.toFixed(2)}
+                        </td>
+                        <td className="text-right font-mono pr-4"></td>
                     </tr>
                 </tfoot>
             </table>
@@ -98,6 +108,8 @@ function CashierOrderItem({
     orderEntry,
     currentOrder,
     setCurrentOrder,
+    isEven,
+    className,
 }: CashierOrderItemProps) {
     function handleClick() {
         const updatedOrder = currentOrder
@@ -118,19 +130,42 @@ function CashierOrderItem({
     }
 
     return (
-        <tr className={componentStyles.orderEntry}>
-            <td>
-                <button onClick={handleClick}>X</button>
+        <tr className={'h-10 ' + className}>
+            <td
+                className={
+                    'rounded-[1rem_0_0_1rem]' +
+                    (isEven ? ' bg-secondary/50' : '')
+                }
+            >
+                <button
+                    className="rounded-2xl bg-text text-background duration-200 w-6 h-6 m-2 hover:bg-background hover:text-text"
+                    onClick={handleClick}
+                >
+                    X
+                </button>
             </td>
-            <td>{orderEntry.item.name}</td>
-            <td>
+            <td className={'text-left ' + (isEven ? ' bg-secondary/50' : '')}>
+                {orderEntry.item.name}
+            </td>
+            <td
+                className={
+                    'text-right font-mono ' + (isEven ? ' bg-secondary/50' : '')
+                }
+            >
                 {(
                     Math.round(
                         orderEntry.item.price * orderEntry.quantity * 100
                     ) / 100
                 ).toFixed(2)}
             </td>
-            <td>{orderEntry.quantity}</td>
+            <td
+                className={
+                    'text-right font-mono pr-4 rounded-[0_1rem_1rem_0]' +
+                    (isEven ? ' bg-secondary/50' : '')
+                }
+            >
+                {orderEntry.quantity}
+            </td>
         </tr>
     );
 }

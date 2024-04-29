@@ -1,16 +1,17 @@
+// DONE
+
 import React, { useEffect, useState } from 'react';
-import styles from './component.module.css';
 import { InventoryItem } from '@/lib/models';
-import { addOrUpdateInventoryItem } from '@/lib/inventory';
-import { POST } from '@/app/api/addOrUpdateInventoryItem/route';
-import { urlToHttpOptions } from 'url';
-import { warnOptionHasBeenDeprecated } from 'next/dist/server/config';
+
+interface InventoryAdjusterProps {
+    className?: string;
+}
 
 /**
  * Creates the component for adjusting the inventory
  * @returns the component for adjusting the inventory
  */
-function InventoryAdjuster() {
+function InventoryAdjuster({ className }: InventoryAdjusterProps) {
     const [itemNames, setItemNames] = useState<string[]>([]);
     const [selected, setSelected] = useState<string>('');
     const [requesting, setRequesting] = useState<boolean>(false);
@@ -39,23 +40,6 @@ function InventoryAdjuster() {
         );
         setItemNames(sortedNames);
     }
-
-    /*async function existsInInventory() {
-        console.log(form.name);
-        const response = await fetch('/api/existsInInventory', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(form.name),
-        });
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        const existing = await response.json();
-        console.log(existing);
-        setExists(existing);
-    }*/
 
     /**
      * Handles change in any of the form input elements
@@ -114,7 +98,7 @@ function InventoryAdjuster() {
         ) {
             alert('Exceeds max or min bounds for quantity');
         } else {
-            if (selected == 'new') {
+            if (selected === 'new') {
                 const confirm = window.confirm(
                     'Are you sure you want to add this item?'
                 );
@@ -295,26 +279,55 @@ function InventoryAdjuster() {
     };
 
     return (
-        <div>
-            <select id="dropdown" value={selected} onChange={handleSelect}>
-                <option value="" disabled>
+        <div
+            className={
+                'flex flex-col items-center justify-start gap-4 ' + className
+            }
+        >
+            {/*TODO: figure out select hover effect.*/}
+            <select
+                className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
+                id="dropdown"
+                value={selected}
+                onChange={handleSelect}
+            >
+                <option
+                    className="bg-secondary text-text font-sans"
+                    value=""
+                    disabled
+                >
                     Select an option
                 </option>
                 {itemNames.map((option, index) => (
-                    <option key={index} value={option}>
+                    <option
+                        className="bg-secondary text-text font-sans"
+                        key={index}
+                        value={option}
+                    >
                         {option}
                     </option>
                 ))}
-                <option value="new">Add an Inventory Item</option>
+                <option
+                    className="bg-secondary text-text font-sans"
+                    value="new"
+                >
+                    Add an Inventory Item
+                </option>
             </select>
 
             {visible && (
-                <form onSubmit={handleSubmit}>
-                    <h2>{selected || ''}</h2>
+                <form
+                    className="flex flex-col items-left justify-start gap-4 rounded-2xl border-l-[0.5rem] border-l-accent p-4 bg-secondary/20"
+                    onSubmit={handleSubmit}
+                >
+                    <h2 className="text-[2rem] font-bold">
+                        {selected === 'new' ? 'New Item' : selected}
+                    </h2>
                     {!exists && (
-                        <label>
+                        <label className="flex flex-row items-center justify-between gap-4">
                             Name:
                             <input
+                                className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                                 type="text"
                                 name="name"
                                 value={form.name}
@@ -322,51 +335,66 @@ function InventoryAdjuster() {
                             />
                         </label>
                     )}
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Current Quantity:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="quantity"
                             value={form.quantity}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Average Price Per Pound:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="averageCost"
                             value={form.averageCost}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Minimum Quantity:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="minQuantity"
                             value={form.minQuantity}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Maximum Quantity:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="maxQuantity"
                             value={form.maxQuantity}
                             onChange={handleChange}
                         />
                     </label>
-                    <div>
-                        <button type="submit">
+                    <div className="flex flex-row items-center justify-center gap-4">
+                        <button
+                            className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                            type="submit"
+                        >
                             {exists ? 'Save Changes' : 'Add Item'}
                         </button>
                         {exists && (
-                            <button onClick={handleRemove}>Delete Item</button>
+                            <button
+                                className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                onClick={handleRemove}
+                            >
+                                Delete Item
+                            </button>
                         )}
                         {exists && (
-                            <button onClick={handleReqClick}>
+                            <button
+                                className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                onClick={handleReqClick}
+                            >
                                 Request Item
                             </button>
                         )}
@@ -375,18 +403,31 @@ function InventoryAdjuster() {
             )}
 
             {requesting && (
-                <div>
-                    <label>
+                <div className="flex flex-col items-left justify-start gap-4 rounded-2xl border-l-[0.5rem] border-l-accent p-4 bg-secondary/20">
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Quantity to Request:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="reqQuantity"
                             value={adjustedRequest}
                             onChange={handleReqChange}
                         />
                     </label>
-                    <button onClick={handleRequest}>Submit Request</button>
-                    <button onClick={handleCloseRequest}>Nevermind</button>
+                    <div className="flex flex-row items-center justify-center gap-4">
+                        <button
+                            className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                            onClick={handleRequest}
+                        >
+                            Submit Request
+                        </button>
+                        <button
+                            className="text-text bg-secondary rounded-2xl p-4 duration-200 hover:text-text hover:bg-secondary/30"
+                            onClick={handleCloseRequest}
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
