@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import styles from '@/app/customer/page.module.css';
 
 export default function OrderPlaced() {
     const router = useRouter();
@@ -10,7 +9,7 @@ export default function OrderPlaced() {
 
     useEffect(() => {
         if (redirectSeconds == 0) {
-            router.push('/customer');
+            router.push('/user/customer');
             return;
         }
 
@@ -20,9 +19,11 @@ export default function OrderPlaced() {
     }, [redirectSeconds, router]);
 
     return (
-        <div id={styles['order-placed']}>
-            <h1>Order has been placed</h1>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-col justify-center items-center">
+            <h1 className="text-[4rem] font-bold">
+                Your order has been placed
+            </h1>
             <p>Redirecting back to menu...</p>
-        </div>
+        </main>
     );
 }
