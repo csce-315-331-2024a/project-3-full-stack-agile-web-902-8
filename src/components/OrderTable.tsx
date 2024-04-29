@@ -4,7 +4,11 @@ import design from '@/app/manager/report_page/page.module.css';
 import { format, startOfToday } from 'date-fns';
 import { Order, OrderItem } from '@/lib/models';
 
-function OrderTable() {
+type TableProp = {
+    heading: string[];
+};
+
+function OrderTable({ heading }: TableProp) {
     const [orderHistory, setOrderHistory] = useState<Order[]>([]);
     const [isOrderHistoryGenerated, setIsOrderHistoryGenerated] =
         useState(false);
@@ -21,7 +25,6 @@ function OrderTable() {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState<number>(0);
 
-    // Pagination logic
     const indexOfLastRow = currentPage * rowsPerPage;
     const indexOfFirstRow = indexOfLastRow - rowsPerPage;
     const currentRows =
@@ -100,8 +103,8 @@ function OrderTable() {
     };
 
     return (
-        <div className={design.excessReport}>
-            <div>
+        <div>
+            <div style = {{marginBottom: '10px'}}>
                 <div>
                     Select a starting date:
                     <input
@@ -109,30 +112,30 @@ function OrderTable() {
                         id="beginTime"
                         value={beginTimeString}
                         onChange={handleBeginTimeChange}
-                        className={design.dateInput}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                     />
                 </div>
 
-                <div>
+                <div >
                     Select an end date:
                     <input
                         type="datetime-local"
                         id="endTime"
                         value={endTimeString}
                         onChange={handleEndTimeChange}
-                        className={design.dateInput}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                     />
                 </div>
                 <div>
                     <button
                         onClick={handleGenerateOrderHistory}
-                        className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                     >
                         Generate Order History
                     </button>
                     <button
                         onClick={handleReset}
-                        className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                     >
                         Reset
                     </button>
@@ -148,7 +151,82 @@ function OrderTable() {
                 </div>
             ) : (
                 <>
-                    <div className={design.tableControls}>
+                    <table className="w-full border-collapse text-sm">
+                        <thead>
+                            <tr>
+                                {heading.map((item, index) => (
+                                    <th
+                                        className={
+                                            'bg-primary text-background text-left px-4 py-2' +
+                                            (index === 0
+                                                ? ' rounded-tl-2xl'
+                                                : '') +
+                                            (index === heading.length - 1
+                                                ? ' rounded-tr-2xl'
+                                                : '')
+                                        }
+                                        key={index}
+                                    >
+                                        {item}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {currentRows && currentRows.length > 0 ? (
+                                currentRows.map((order, index) => (
+                                    <tr
+                                        className="hover:bg-secondary/70"
+                                        key={index}
+                                    >
+                                        <td className="px-4 py-2 border-b-text border-b-2">
+                                            {order.id}
+                                        </td>
+                                        <td className="px-4 py-2 border-b-text border-b-2">
+                                            {order.timestamp.toLocaleString()}
+                                        </td>
+                                        <td className="px-4 py-2 border-b-text border-b-2">
+                                            {order.discount !== 0
+                                                ? order.discount
+                                                : 'N/A'}
+                                        </td>
+                                        <td className="px-4 py-2 border-b-text border-b-2">
+                                            {order.total}
+                                        </td>
+                                        <td className="px-4 py-2 border-b-text border-b-2">
+                                            {order.items.map(
+                                                (item, itemIndex) => (
+                                                    <div key={itemIndex}>
+                                                        Item ID:{' '}
+                                                        {item.item.name},
+                                                        Quantity:{' '}
+                                                        {item.quantity}
+                                                    </div>
+                                                )
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-2 border-b-text border-b-2">
+                                            {order.status}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={6}>No Order History found</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </>
+            )}
+        </div>
+    );
+}
+
+export default OrderTable;
+
+
+{/* <div className={design.tableControls}>
                         Rows per page:
                         <select
                             id="rowsPerPage"
@@ -263,59 +341,4 @@ function OrderTable() {
                                 )}
                             </>
                         )}
-                    </div>
-
-                    <table className={design.reportTable}>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Timestamp</th>
-                                <th>Discount</th>
-                                <th>Total</th>
-                                <th>Ordered Items</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentRows && currentRows.length > 0 ? (
-                                currentRows.map((order, index) => (
-                                    <tr key={index}>
-                                        <td>{order.id}</td>
-                                        <td>
-                                            {order.timestamp.toLocaleString()}
-                                        </td>
-                                        <td>
-                                            {order.discount !== 0
-                                                ? order.discount
-                                                : 'N/A'}
-                                        </td>
-                                        <td>{order.total}</td>
-                                        <td>
-                                            {order.items.map(
-                                                (item, itemIndex) => (
-                                                    <div key={itemIndex}>
-                                                        Item ID:{' '}
-                                                        {item.item.name},
-                                                        Quantity:{' '}
-                                                        {item.quantity}
-                                                    </div>
-                                                )
-                                            )}
-                                        </td>
-                                        <td>{order.status}</td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan={6}>No Order History found</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </>
-            )}
-        </div>
-    );
-}
-
-export default OrderTable;
+                    </div> */}
