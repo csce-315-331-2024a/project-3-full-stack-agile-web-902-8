@@ -607,7 +607,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                                 >
                                     <td className="px-4 py-2 border-b-text border-b-2">
                                         <button
-                                        className="rounded-2xl bg-text h-6 w-6 text-background duration-200 hover:bg-background hover:text-text"
+                                            className="rounded-2xl bg-text h-6 w-6 text-background duration-200 hover:bg-background hover:text-text"
                                             onClick={() =>
                                                 handleRemoveIngredient(index)
                                             }
