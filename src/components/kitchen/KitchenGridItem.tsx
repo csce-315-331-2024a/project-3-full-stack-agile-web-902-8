@@ -118,7 +118,7 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
                 ))}
             </ul>
             <p>Total: ${order.total}</p>
-            <div className='absolute bottom-4 left-1/2 translate-x-[-50%] flex flex-row gap-4 justify-center items-center'>
+            <div className="absolute bottom-4 left-1/2 translate-x-[-50%] flex flex-row gap-4 justify-center items-center">
                 <button
                     className={
                         'text-background bg-primary flex justify-center items-center duration-200 p-4 rounded-2xl hover:bg-primary/70 hover:text-text' +
