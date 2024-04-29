@@ -1,7 +1,13 @@
 'use client';
 import React from 'react';
 import OrderTable from '@/components/OrderTable';
-import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client'; // Ensure the path is correct
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client'; // Ensure the path is correct
 
 export default function Manager() {
     const { scale, setScale } = useScale(); // use the scale from context
@@ -37,7 +43,7 @@ export default function Manager() {
                     <button className="bg-secondary duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:hover:cursor-wait p-4 rounded-2xl w-fit">
                         Refresh
                     </button>
-                    <OrderTable heading={tableHead}  />
+                    <OrderTable heading={tableHead} />
                 </main>
             </div>
             {/* Fixed-position zoom controls */}
@@ -67,5 +73,3 @@ export default function Manager() {
         </main>
     );
 }
-
-

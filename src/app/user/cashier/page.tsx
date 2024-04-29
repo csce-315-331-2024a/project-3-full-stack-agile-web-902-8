@@ -15,7 +15,13 @@ import CashierOrderTable from '@/components/CashierOrderTable';
 import { MenuItem, Order, OrderItem } from '@/lib/models';
 import GlobalConfig from '@/lib/config';
 
-import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client';
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client';
 export interface OrderEntry {
     item: MenuItem;
     quantity: number;
@@ -40,7 +46,6 @@ export default function Cashier() {
     const [isFetchingMenuTypes, setIsFetchingMenuTypes] = useState(false);
     const { scale, setScale } = useScale();
     useEffect(() => {
-        
         async function fetchAllMenuTypes() {
             setIsFetchingMenuTypes(true);
             try {
@@ -167,76 +172,76 @@ export default function Cashier() {
 
     return (
         <ScaleProvider initialScale={1}>
-        {/* Scaled content */}
-        <div
-            id="scaled-content"
-            style={{
-                transform: `scale(${scale})`,
-                transformOrigin: 'center center',
-                overflow: 'auto',
-            }}
-        ></div>
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4">
-            <div className="col-start-1 col-end-2 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
-                <h1 className="text-[4rem] font-bold relative mainHeader">
-                    Cashier
-                </h1>
-                <CashierCategoryBar
-                    isFetchingMenuTypes={isFetchingMenuTypes}
-                    categories={categories}
-                    category={category}
-                    setCategory={setCategory}
-                    className="mx-auto"
-                />
-                <CashierItemGrid
-                    isFetchingMenuItems={isFetchingMenuItems}
-                    categoryItems={categoryItems}
-                    currentOrder={currentOrder}
-                    setCurrentOrder={setCurrentOrder}
-                    className="h-min"
-                />
-            </div>
-            <div className="col-start-2 col-end-3 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
-                <CashierOrderTable
-                    isDiscounted={isDiscounted}
-                    isTaxed={isTaxed}
-                    discount={discount}
-                    tax={tax}
-                    total={total}
-                    currentOrder={currentOrder}
-                    setCurrentOrder={setCurrentOrder}
-                    className="w-full mb-auto"
-                />
-                <div className="grid grid-cols-[1fr_1fr] gap-4 w-full">
+            {/* Scaled content */}
+            <div
+                id="scaled-content"
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'center center',
+                    overflow: 'auto',
+                }}
+            ></div>
+            <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4">
+                <div className="col-start-1 col-end-2 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
+                    <h1 className="text-[4rem] font-bold relative mainHeader">
+                        Cashier
+                    </h1>
+                    <CashierCategoryBar
+                        isFetchingMenuTypes={isFetchingMenuTypes}
+                        categories={categories}
+                        category={category}
+                        setCategory={setCategory}
+                        className="mx-auto"
+                    />
+                    <CashierItemGrid
+                        isFetchingMenuItems={isFetchingMenuItems}
+                        categoryItems={categoryItems}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                        className="h-min"
+                    />
+                </div>
+                <div className="col-start-2 col-end-3 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
+                    <CashierOrderTable
+                        isDiscounted={isDiscounted}
+                        isTaxed={isTaxed}
+                        discount={discount}
+                        tax={tax}
+                        total={total}
+                        currentOrder={currentOrder}
+                        setCurrentOrder={setCurrentOrder}
+                        className="w-full mb-auto"
+                    />
+                    <div className="grid grid-cols-[1fr_1fr] gap-4 w-full">
+                        <button
+                            className="mb-auto col-start-1 col-end-2 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text"
+                            onClick={() => setIsDiscounted(!isDiscounted)}
+                        >
+                            {isDiscounted ? 'Remove Discount' : 'Add Discount'}
+                        </button>
+                        <button
+                            className="mb-auto col-start-2 col-end-3 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text"
+                            onClick={() => setIsTaxed(!isTaxed)}
+                        >
+                            {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                        </button>
+                    </div>
                     <button
-                        className="mb-auto col-start-1 col-end-2 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text"
-                        onClick={() => setIsDiscounted(!isDiscounted)}
+                        className={
+                            'text-background bg-primary text-2xl flex justify-center items-center duration-200 w-full h-fit m-auto rounded-2xl p-4 hover:bg-primary/70 hover:text-text' +
+                            (isPlacingOrder
+                                ? ' cursor-wait bg-primary/30 text-text hover:bg-primary/30 hover:text-text'
+                                : '')
+                        }
+                        onClick={() => placeOrder()}
+                        disabled={isPlacingOrder}
                     >
-                        {isDiscounted ? 'Remove Discount' : 'Add Discount'}
-                    </button>
-                    <button
-                        className="mb-auto col-start-2 col-end-3 text-background bg-accent flex justify-center items-center duration-200 w-full h-fit rounded-2xl p-4 hover:bg-accent/50 hover:text-text"
-                        onClick={() => setIsTaxed(!isTaxed)}
-                    >
-                        {isTaxed ? 'Remove Tax' : 'Add Tax'}
+                        Place Order
                     </button>
                 </div>
-                <button
-                    className={
-                        'text-background bg-primary text-2xl flex justify-center items-center duration-200 w-full h-fit m-auto rounded-2xl p-4 hover:bg-primary/70 hover:text-text' +
-                        (isPlacingOrder
-                            ? ' cursor-wait bg-primary/30 text-text hover:bg-primary/30 hover:text-text'
-                            : '')
-                    }
-                    onClick={() => placeOrder()}
-                    disabled={isPlacingOrder}
-                >
-                    Place Order
-                </button>
-            </div>
-        </main>
-     {/* Fixed-position zoom controls */}
-     <div
+            </main>
+            {/* Fixed-position zoom controls */}
+            <div
                 id="zoom-controls"
                 style={{
                     position: 'fixed',
@@ -254,8 +259,3 @@ export default function Cashier() {
         </ScaleProvider>
     );
 }
-
-
-
-
-

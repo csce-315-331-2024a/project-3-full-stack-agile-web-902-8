@@ -10,7 +10,13 @@ import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 import { format, startOfToday } from 'date-fns';
-import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client';
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client';
 const DataPage = () => {
     const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
@@ -129,95 +135,95 @@ const DataPage = () => {
 
     return (
         <ScaleProvider initialScale={1}>
-        {/* Scaled content */}
-        
-        <main>
+            {/* Scaled content */}
+
+            <main>
+                <div
+                    style={{
+                        width: '100%',
+                        maxWidth: '1200px',
+                        margin: 'auto',
+                        padding: '1rem',
+                        position: 'relative',
+                        paddingTop: '60px',
+                    }}
+                >
+                    <DateRangePicker
+                        startDate={startDate}
+                        endDate={endDate}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                    />
+
+                    <button
+                        onClick={handleGenerateSalesReport}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                    >
+                        Generate Sales Report
+                    </button>
+                    <button
+                        onClick={handleGenerateProductUsageReport}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                    >
+                        Generate Product Usage Report
+                    </button>
+                    <button
+                        onClick={handleGenerateWhatSellsTogetherReport}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                    >
+                        Generate What Sells Together Report
+                    </button>
+
+                    <button
+                        style={resetButtonStyle}
+                        onClick={handleReset}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                    >
+                        Reset
+                    </button>
+
+                    {isLoading && <p>Loading...</p>}
+                    {error && <p>{error}</p>}
+                    {!isLoading && !error && (
+                        <>
+                            <div className="report-section">
+                                <ScrollableBarGraph
+                                    data={sortedMenuData.map((item) => ({
+                                        label: item.name,
+                                        value: item.qty,
+                                        color: 'rgba(205, 50, 75, 1)',
+                                    }))}
+                                    title="Sales Report"
+                                />
+                            </div>
+
+                            <div className="report-section">
+                                <ScrollableBarGraph
+                                    data={sortedInventoryData.map((item) => ({
+                                        label: item.name,
+                                        value: item.qty,
+                                        color: 'rgba(205, 50, 75, 1)',
+                                    }))}
+                                    title="Product Usage"
+                                />
+                            </div>
+
+                            <div className="report-section">
+                                <ScrollableList
+                                    items={frequentlySoldPairsData}
+                                    title="What Sells Together"
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
+            </main>
+            {/* Fixed-position zoom controls */}
             <div
-                style={{
-                    width: '100%',
-                    maxWidth: '1200px',
-                    margin: 'auto',
-                    padding: '1rem',
-                    position: 'relative',
-                    paddingTop: '60px',
-                }}
-            >
-                <DateRangePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    setStartDate={setStartDate}
-                    setEndDate={setEndDate}
-                />
-
-                <button
-                    onClick={handleGenerateSalesReport}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Generate Sales Report
-                </button>
-                <button
-                    onClick={handleGenerateProductUsageReport}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Generate Product Usage Report
-                </button>
-                <button
-                    onClick={handleGenerateWhatSellsTogetherReport}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Generate What Sells Together Report
-                </button>
-
-                <button
-                    style={resetButtonStyle}
-                    onClick={handleReset}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Reset
-                </button>
-
-                {isLoading && <p>Loading...</p>}
-                {error && <p>{error}</p>}
-                {!isLoading && !error && (
-                    <>
-                        <div className="report-section">
-                            <ScrollableBarGraph
-                                data={sortedMenuData.map((item) => ({
-                                    label: item.name,
-                                    value: item.qty,
-                                    color: 'rgba(205, 50, 75, 1)',
-                                }))}
-                                title="Sales Report"
-                            />
-                        </div>
-
-                        <div className="report-section">
-                            <ScrollableBarGraph
-                                data={sortedInventoryData.map((item) => ({
-                                    label: item.name,
-                                    value: item.qty,
-                                    color: 'rgba(205, 50, 75, 1)',
-                                }))}
-                                title="Product Usage"
-                            />
-                        </div>
-
-                        <div className="report-section">
-                            <ScrollableList
-                                items={frequentlySoldPairsData}
-                                title="What Sells Together"
-                            />
-                        </div>
-                    </>
-                )}
-            </div>
-        </main>
-     {/* Fixed-position zoom controls */}
-     <div
                 id="zoom-controls"
                 style={{
                     position: 'fixed',
@@ -234,10 +240,6 @@ const DataPage = () => {
             </div>
         </ScaleProvider>
     );
-}
-
-
-
-
+};
 
 export default DataPage;
