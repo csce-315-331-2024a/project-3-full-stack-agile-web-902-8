@@ -10,7 +10,7 @@ import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 import { format, startOfToday } from 'date-fns';
-
+import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client';
 const DataPage = () => {
     const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
@@ -125,7 +125,12 @@ const DataPage = () => {
     const sortedMenuData = menuData.sort((a, b) => b.qty - a.qty);
     const sortedInventoryData = inventoryData.sort((a, b) => b.qty - a.qty);
 
+    const { scale, setScale } = useScale();
+
     return (
+        <ScaleProvider initialScale={1}>
+        {/* Scaled content */}
+        
         <main>
             <div
                 style={{
@@ -211,7 +216,28 @@ const DataPage = () => {
                 )}
             </div>
         </main>
+     {/* Fixed-position zoom controls */}
+     <div
+                id="zoom-controls"
+                style={{
+                    position: 'fixed',
+                    top: '40px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1001, // Above scaled content
+                    textAlign: 'center',
+                }}
+            >
+                <ZoomIn />
+                <ZoomOut />
+                <ResetZoom />
+            </div>
+        </ScaleProvider>
     );
-};
+}
+
+
+
+
 
 export default DataPage;

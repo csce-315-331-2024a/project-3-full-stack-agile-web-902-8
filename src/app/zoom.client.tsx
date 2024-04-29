@@ -32,11 +32,17 @@ export const ScaleProvider = ({
     const [scale, setScale] = useState<number>(initialScale);
 
     useEffect(() => {
+        // Calculate the scaled dimensions.
+        const scaledWidth = `${document.documentElement.clientWidth / scale}px`;
+        const scaledHeight = `${document.documentElement.clientHeight / scale}px`;
+    
+        // Apply the transformation.
         document.body.style.transform = `scale(${scale})`;
         document.body.style.transformOrigin = 'top left';
-        document.body.style.width = `${document.documentElement.clientWidth / scale}px`;
-        document.body.style.height = `${document.documentElement.clientHeight / scale}px`;
-        document.body.style.overflow = 'hidden'; // To prevent any scrolling caused by transformation
+        document.body.style.width = scaledWidth;
+        document.body.style.height = scaledHeight;
+        document.body.style.overflowX = 'auto'; // Allow horizontal scrolling.
+        document.body.style.overflowY = 'auto'; // Allow vertical scrolling if needed.
     }, [scale]);
 
     return (
@@ -49,20 +55,23 @@ export const ScaleProvider = ({
 export const ZoomIn = () => {
     const { scale, setScale } = useScale();
     return <button onClick={() => setScale(scale * 1.1)}
-        className={design.genresbutton}
+        //className={design.genresbutton}
+        className="bg-secondary py-2 px-3 rounded-xl text-sm mr-[10px] mt-[10px] hover:cursor-pointer hover:bg-secondary/70"
     >Zoom In</button>;
 };
 
 export const ZoomOut = () => {
     const { scale, setScale } = useScale();
     return <button onClick={() => setScale(scale / 1.1)}
-        className={design.genresbutton}
+        //className={design.genresbutton}
+        className="bg-secondary py-2 px-3 rounded-xl text-sm mr-[10px] mt-[10px] hover:cursor-pointer hover:bg-secondary/70"
     >Zoom Out</button>;
 };
 
 export const ResetZoom = () => {
     const { setScale } = useScale();
     return <button onClick={() => setScale(1)}
-        className={design.genresbutton}
+        //className={design.genresbutton}
+        className="bg-secondary py-2 px-3 rounded-xl text-sm mr-[10px] mt-[10px] hover:cursor-pointer hover:bg-secondary/70"
     >Reset Zoom</button>;
 };
