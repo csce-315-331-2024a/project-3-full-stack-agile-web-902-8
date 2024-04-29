@@ -3,7 +3,8 @@
 'use client';
 
 import Heading from '@/components/Heading';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { loginLevels } from '@/lib/config';
 
 function openMenuBoardPages() {
     window.open('/menuboards/Burgs', '_blank');
@@ -20,23 +21,125 @@ export default function UserLayout({
     // TODO: In the future, the links presented will be determined by the user's position in Rev's
     // TODO: Manage the user's login status
 
-    const [headingNames, setHeadingNames] = useState<string[]>([
-        'Customer',
-        'Cashier',
-        'Kitchen',
-        'Manager',
-        'Administrator',
-        'Menu Board',
-    ]);
-    const [headingHrefs, setHeadingHrefs] = useState<string[]>([
-        '/user/customer',
-        '/user/cashier',
-        '/user/kitchen',
-        '/user/manager',
-        '/user/administrator',
-        '/user/manager',
-    ]);
+    interface userScope {
+        names: string[];
+        hrefs: string[];
+    }
+
+    const adminScope: userScope = {
+        names: [
+            'Menu',
+            'Administrator',
+            'Manager',
+            'Cashier',
+            'Kitchen',
+            'Menu Board',
+        ],
+        hrefs: [
+            '/user/customer',
+            '/user/administrator',
+            '/user/manager',
+            '/user/cashier',
+            '/user/kitchen',
+            '/user/manager',
+        ]
+    }
+
+    const managerScope: userScope = {
+        names: [
+            'Menu',
+            'Manager',
+            'Cashier',
+            'Kitchen',
+            'Menu Board',
+        ],
+        hrefs: [
+            '/user/customer',
+            '/user/manager',
+            '/user/cashier',
+            '/user/kitchen',
+            '/user/manager',
+        ]
+    }
+
+    const cashierScope: userScope = {
+        names: [
+            'Menu',
+            'Cashier',
+            'Menu Board',
+        ],
+        hrefs: [
+            '/user/customer',
+            '/user/cashier',
+            '/user/manager',
+        ]
+    }
+
+    const cookScope: userScope = {
+        names: [
+            'Menu',
+            'Cook',
+            'Menu Board',
+        ],
+        hrefs: [
+            '/user/customer',
+            '/user/kitchen',
+            '/user/manager',
+        ]
+    }
+
+    const customerScope: userScope = {
+        names: [
+            'Menu',
+        ],
+        hrefs: [
+            '/user/customer',
+        ]
+    }
+
+    const [headingNames, setHeadingNames] = useState<string[]>(customerScope.names);
+    const [headingHrefs, setHeadingHrefs] = useState<string[]>(customerScope.hrefs);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [userRole, changeUserRole] = useState<string>('');
+
+    // get the user login
+    useEffect(() => {
+        async function loginUser() {
+            const response = await fetch('/api/oauthLogin');
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const type = await response.json();
+            changeUserRole(type);
+        }
+        loginUser();
+    }, []);
+
+    useEffect(() => {
+        setIsLoggedIn(userRole != '' &&
+                      userRole != loginLevels.LOGIN_FAILED &&
+                      userRole != loginLevels.LOGIN_CUSTOMER);
+
+        // set the scope the user sees
+        if(userRole == loginLevels.LOGIN_ADMINISTRATOR) {
+            setHeadingNames(adminScope.names);
+            setHeadingHrefs(adminScope.hrefs);
+        } else if (userRole == loginLevels.LOGIN_MANAGER) {
+            setHeadingNames(managerScope.names);
+            setHeadingHrefs(managerScope.hrefs);
+        } else if (userRole == loginLevels.LOGIN_CASHIER) {
+            setHeadingNames(cashierScope.names);
+            setHeadingHrefs(cashierScope.hrefs);
+        } else if (userRole == loginLevels.LOGIN_COOK) {
+            setHeadingNames(cookScope.names);
+            setHeadingHrefs(cookScope.hrefs);
+        } else {
+            setHeadingNames(customerScope.names);
+            setHeadingHrefs(customerScope.hrefs);
+        }
+    }, [userRole])
 
     return (
         <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">

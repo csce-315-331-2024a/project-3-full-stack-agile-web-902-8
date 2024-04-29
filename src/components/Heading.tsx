@@ -9,7 +9,6 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import revsLogo from '../../public/RLogo.ico';
 import LoginButton from './LoginButton';
-import { loginLevels } from '@/lib/config';
 
 
 type HeadingProp = {
@@ -28,24 +27,8 @@ function Heading({
     className,
 }: HeadingProp) {
     const pathName = usePathname();
-    const [userRole, changeUserRole] = useState<string>('');
 
-    // get the user login
-    useEffect(() => {
-        async function loginUser() {
-            const response = await fetch('/api/oauthLogin');
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const type = await response.json();
-            changeUserRole(type);
-        }
-        loginUser();
-    }, []);
-
-    return (
+        return (
         <nav
             className={
                 'w-full z-50 flex flex-row justify-between items-center bg-background shadow-xl ' +
@@ -85,11 +68,7 @@ function Heading({
                 )}
             </ul>
             <LoginButton
-                isLoggedIn={
-                    userRole != '' &&
-                    userRole != loginLevels.LOGIN_FAILED &&
-                    userRole != loginLevels.LOGIN_CUSTOMER
-                }
+                isLoggedIn={isLoggedIn}
             />
         </nav>
     );
