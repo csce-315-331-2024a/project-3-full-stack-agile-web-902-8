@@ -145,25 +145,37 @@ export class InventoryItem {
 }
 
 export class AggregateItem {
-    private id: number;
-    private name: string;
-    private qty: number;
+    id: number;
+    name: string;
+    qty: number;
 
     constructor(id: number, name: string, qty: number) {
         this.id = id;
         this.name = name;
         this.qty = qty;
     }
+}
 
-    public getId(): number {
-        return this.id;
+export class aggregateInventoryItem {
+    id: number;
+    name: string;
+    qty: number;
+
+    constructor(id: number, name: string, qty: number) {
+        this.id = id;
+        this.name = name;
+        this.qty = qty;
     }
+}
 
-    public getName(): string {
-        return this.name;
-    }
+export class frequentlySoldPairs {
+    item1Name: string;
+    item2Name: string;
+    frequency: number;
 
-    public getQty(): number {
-        return this.qty;
+    constructor(item1Name: string, item2Name: string, frequency: number) {
+        this.item1Name = item1Name;
+        this.item2Name = item2Name;
+        this.frequency = frequency;
     }
 }
