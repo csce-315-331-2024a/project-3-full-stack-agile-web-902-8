@@ -143,10 +143,8 @@ function OrderTable({ heading }: TableProp) {
 
             {error && <div>{error}</div>}
             {isLoading ? (
-                <div >
-                    <button  disabled>
-                        Loading...
-                    </button>
+                <div>
+                    <button disabled>Loading...</button>
                 </div>
             ) : (
                 <>
