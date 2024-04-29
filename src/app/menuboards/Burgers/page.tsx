@@ -2,9 +2,9 @@
 
 import MenuBoardTemplate from '@/components/menu-board/MenuBoardTemplate';
 
-export default function MenuBoardMisc() {
-    const title = 'Sides, Beverages, and Desserts';
-    const categories = ['Sides', 'Beverages', 'Shakes & More'];
+export default function MenuBoardSandwiches() {
+    const title = 'Burgers';
+    const categories = ['Burgers'];
 
     return <MenuBoardTemplate title={title} categories={categories} />;
 }

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { loginLevels } from '@/lib/config';
 
 function openMenuBoardPages() {
-    window.open('/menuboards/Burgs', '_blank');
+    window.open('/menuboards/Burgers', '_blank');
     window.open('/menuboards/Meals_Limited', '_blank');
     window.open('/menuboards/Misc', '_blank');
     window.open('/menuboards/Sandwiches_Baskets', '_blank');

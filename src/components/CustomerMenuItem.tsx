@@ -66,10 +66,7 @@ export function CustomerMenuItem({
                 height={200}
             />
             <p className="text-2xl">{item.name}</p>
-            <p className="px-8 text-center">
-                {/* TODO: Description */}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-            </p>
+            <p className="px-8 text-center">{item.description}</p>
             <p className="text-2xl flex justify-center items-center">
                 ${item.price.toLocaleString('en-US', options)}
             </p>
