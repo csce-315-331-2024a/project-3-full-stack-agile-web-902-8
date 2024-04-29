@@ -26,79 +26,10 @@ export default function UserLayout({
         hrefs: string[];
     }
 
-    const adminScope: userScope = {
-        names: [
-            'Menu',
-            'Administrator',
-            'Manager',
-            'Cashier',
-            'Kitchen',
-            'Menu Board',
-        ],
-        hrefs: [
-            '/user/customer',
-            '/user/administrator',
-            '/user/manager',
-            '/user/cashier',
-            '/user/kitchen',
-            '/user/manager',
-        ]
-    }
-
-    const managerScope: userScope = {
-        names: [
-            'Menu',
-            'Manager',
-            'Cashier',
-            'Kitchen',
-            'Menu Board',
-        ],
-        hrefs: [
-            '/user/customer',
-            '/user/manager',
-            '/user/cashier',
-            '/user/kitchen',
-            '/user/manager',
-        ]
-    }
-
-    const cashierScope: userScope = {
-        names: [
-            'Menu',
-            'Cashier',
-            'Menu Board',
-        ],
-        hrefs: [
-            '/user/customer',
-            '/user/cashier',
-            '/user/manager',
-        ]
-    }
-
-    const cookScope: userScope = {
-        names: [
-            'Menu',
-            'Cook',
-            'Menu Board',
-        ],
-        hrefs: [
-            '/user/customer',
-            '/user/kitchen',
-            '/user/manager',
-        ]
-    }
-
-    const customerScope: userScope = {
-        names: [
-            'Menu',
-        ],
-        hrefs: [
-            '/user/customer',
-        ]
-    }
-
-    const [headingNames, setHeadingNames] = useState<string[]>(customerScope.names);
-    const [headingHrefs, setHeadingHrefs] = useState<string[]>(customerScope.hrefs);
+    const [headingNames, setHeadingNames] = useState<string[]>(['Menu']);
+    const [headingHrefs, setHeadingHrefs] = useState<string[]>([
+        '/user/customer',
+    ]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userRole, changeUserRole] = useState<string>('');
 
@@ -118,12 +49,59 @@ export default function UserLayout({
     }, []);
 
     useEffect(() => {
-        setIsLoggedIn(userRole != '' &&
-                      userRole != loginLevels.LOGIN_FAILED &&
-                      userRole != loginLevels.LOGIN_CUSTOMER);
+        const adminScope: userScope = {
+            names: [
+                'Menu',
+                'Administrator',
+                'Manager',
+                'Cashier',
+                'Kitchen',
+                'Menu Board',
+            ],
+            hrefs: [
+                '/user/customer',
+                '/user/administrator',
+                '/user/manager',
+                '/user/cashier',
+                '/user/kitchen',
+                '/user/manager',
+            ],
+        };
+
+        const managerScope: userScope = {
+            names: ['Menu', 'Manager', 'Cashier', 'Kitchen', 'Menu Board'],
+            hrefs: [
+                '/user/customer',
+                '/user/manager',
+                '/user/cashier',
+                '/user/kitchen',
+                '/user/manager',
+            ],
+        };
+
+        const cashierScope: userScope = {
+            names: ['Menu', 'Cashier', 'Menu Board'],
+            hrefs: ['/user/customer', '/user/cashier', '/user/manager'],
+        };
+
+        const cookScope: userScope = {
+            names: ['Menu', 'Cook', 'Menu Board'],
+            hrefs: ['/user/customer', '/user/kitchen', '/user/manager'],
+        };
+
+        const customerScope: userScope = {
+            names: ['Menu'],
+            hrefs: ['/user/customer'],
+        };
+
+        setIsLoggedIn(
+            userRole != '' &&
+                userRole != loginLevels.LOGIN_FAILED &&
+                userRole != loginLevels.LOGIN_CUSTOMER
+        );
 
         // set the scope the user sees
-        if(userRole == loginLevels.LOGIN_ADMINISTRATOR) {
+        if (userRole == loginLevels.LOGIN_ADMINISTRATOR) {
             setHeadingNames(adminScope.names);
             setHeadingHrefs(adminScope.hrefs);
         } else if (userRole == loginLevels.LOGIN_MANAGER) {
@@ -139,7 +117,7 @@ export default function UserLayout({
             setHeadingNames(customerScope.names);
             setHeadingHrefs(customerScope.hrefs);
         }
-    }, [userRole])
+    }, [userRole]);
 
     return (
         <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">

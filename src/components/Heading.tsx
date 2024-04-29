@@ -1,4 +1,3 @@
-
 // DONE
 
 'use client';
@@ -9,7 +8,6 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import revsLogo from '../../public/RLogo.ico';
 import LoginButton from './LoginButton';
-
 
 type HeadingProp = {
     names: string[];
@@ -28,7 +26,7 @@ function Heading({
 }: HeadingProp) {
     const pathName = usePathname();
 
-        return (
+    return (
         <nav
             className={
                 'w-full z-50 flex flex-row justify-between items-center bg-background shadow-xl ' +
@@ -67,9 +65,7 @@ function Heading({
                     )
                 )}
             </ul>
-            <LoginButton
-                isLoggedIn={isLoggedIn}
-            />
+            <LoginButton isLoggedIn={isLoggedIn} />
         </nav>
     );
 }
