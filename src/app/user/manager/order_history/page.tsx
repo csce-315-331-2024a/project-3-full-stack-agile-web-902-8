@@ -227,7 +227,7 @@ const DataPage = () => {
                 id="zoom-controls"
                 style={{
                     position: 'fixed',
-                    top: '40px',
+                    top: '70px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 1001, // Above scaled content
