@@ -14,7 +14,7 @@ const names = [
 ];
 const hrefs = [
     '/user/manager',
-    '/user/manager',
+    '/user/manager/menu',
     '/user/manager/inventory',
     '/user/manager',
     '/user/manager/report_page',

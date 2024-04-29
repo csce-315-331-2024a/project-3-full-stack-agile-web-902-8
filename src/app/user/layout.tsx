@@ -25,6 +25,7 @@ export default function UserLayout({
         'Cashier',
         'Kitchen',
         'Manager',
+        'Administrator',
         'Menu Board',
     ]);
     const [headingHrefs, setHeadingHrefs] = useState<string[]>([
@@ -32,6 +33,7 @@ export default function UserLayout({
         '/user/cashier',
         '/user/kitchen',
         '/user/manager',
+        '/user/administrator',
         '/user/manager',
     ]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
