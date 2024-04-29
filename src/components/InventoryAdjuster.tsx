@@ -183,8 +183,10 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
             getInventoryItem();
             setExists(true);
         }
-
-        setNeedsRefresh(false);
+        if(needsRefresh)
+        {
+            setNeedsRefresh(false);
+        }
     }, [selected, exists, needsRefresh]);
 
     /*useEffect(() => {

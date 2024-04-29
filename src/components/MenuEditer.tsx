@@ -37,6 +37,7 @@ function MenuEditer({ className }: MenuEditerProps) {
     const [addingIngredient, setAddingIngredient] = useState<boolean>(false);
     const [newQuantity, setNewQuantity] = useState<number>(0);
     const [inFlux, setInFlux] = useState<boolean>(false);
+    const [needsRefresh, setNeedsRefresh] = useState<boolean>(false);
 
     /**
      * Fetched the menu item names
@@ -397,7 +398,12 @@ function MenuEditer({ className }: MenuEditerProps) {
             getMenuItem();
             setExists(true);
         }
-    }, [selected, exists]);
+        if(needsRefresh)
+        {
+            setNeedsRefresh(false);
+        }
+        
+    }, [selected, exists, needsRefresh]);
 
     /**
      * Handles a change in selection from teh dropdown
@@ -537,12 +543,21 @@ function MenuEditer({ className }: MenuEditerProps) {
         setSelectedIng('');
     };
 
+    const handleRefresh = () => {
+        setNeedsRefresh(true);
+    }
+
     return (
         <div
             className={
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
+
+            <button type = "button" onClick = {handleRefresh}>
+                Reset Changes
+            </button>
+
             <select
                 className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
                 id="dropdown"
