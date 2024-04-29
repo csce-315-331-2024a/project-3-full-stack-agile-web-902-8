@@ -85,6 +85,30 @@ export async function markOrderAsFilled(
 }
 
 /**
+ * Marks an order as canceled in the database.
+ * @param orderId The id of the order to mark as canceled.
+ * @param tsql
+ * @returns If the order was successfully marked as canceled.
+ */
+export async function markOrderAsCanceled(
+    orderId: number,
+    tsql = psql
+): Promise<boolean> {
+    return transact<boolean, postgres.Error, { orderId: number }>(
+        tsql,
+        new Error('SQL Error in markOrderAsCanceled', undefined, { orderId }),
+        async (isql, _) => {
+            const updateResult = await isql`
+                UPDATE orders 
+                SET status = 'CANCELED' 
+                WHERE id = ${orderId};
+            `;
+            return updateResult.count === 1;
+        }
+    );
+}
+
+/**
  * @param o The order to submit to the database.
  * @return If the order was successfully added to the database.
  */

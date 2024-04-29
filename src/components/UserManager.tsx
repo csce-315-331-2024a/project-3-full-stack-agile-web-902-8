@@ -226,34 +226,50 @@ function UserManager() {
     };
 
     return (
-        <div>
-            <button type="button" onClick={handleRefresh}>
+        <>
+            <button
+                className="bg-secondary duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:hover:cursor-wait p-4 rounded-2xl w-fit"
+                type="button"
+                onClick={handleRefresh}
+            >
                 Refresh
             </button>
 
-            <table>
+            <table className="w-full border-collapse text-sm">
                 <thead>
                     <tr>
-                        <th>Remove</th>
-                        <th>Username</th>
-                        <th>Role</th>
-                        <th>Hourly Salary</th>
-                        <th>Hours</th>
+                        <th className="bg-primary text-background text-left px-4 py-2 rounded-tl-2xl">
+                            Remove
+                        </th>
+                        <th className="bg-primary text-background text-left px-4 py-2">
+                            Username
+                        </th>
+                        <th className="bg-primary text-background text-left px-4 py-2">
+                            Role
+                        </th>
+                        <th className="bg-primary text-background text-right px-4 py-2">
+                            Hourly Salary
+                        </th>
+                        <th className="bg-primary text-background text-right px-4 py-2 rounded-tr-2xl">
+                            Hours
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map((entry, index) => (
-                        <tr key={index}>
-                            <td>
+                        <tr className="hover:bg-secondary/70 group" key={index}>
+                            <td className="px-4 py-2 border-b-text border-b-2">
                                 <button
+                                    className="rounded-2xl bg-text h-6 w-6 text-background duration-200 hover:bg-background hover:text-text"
                                     onClick={() => handleRemoveUser(index)}
                                     type="button"
                                 >
                                     X
                                 </button>
                             </td>
-                            <td>
+                            <td className="px-4 py-2 border-b-text border-b-2">
                                 <input
+                                    className="bg-background text-text group-hover:bg-transparent"
                                     type="text"
                                     value={entry.user.username}
                                     onChange={(e) =>
@@ -264,8 +280,9 @@ function UserManager() {
                                     }
                                 />
                             </td>
-                            <td>
+                            <td className="px-4 py-2 border-b-text border-b-2">
                                 <input
+                                    className="bg-background text-text group-hover:bg-transparent"
                                     type="text"
                                     value={entry.user.role}
                                     onChange={(e) =>
@@ -273,8 +290,9 @@ function UserManager() {
                                     }
                                 />
                             </td>
-                            <td>
+                            <td className="px-4 py-2 border-b-text border-b-2 text-right">
                                 <input
+                                    className="bg-background text-text text-right font-mono group-hover:bg-transparent"
                                     type="number"
                                     value={entry.user.hourlySalary}
                                     onChange={(e) =>
@@ -285,8 +303,9 @@ function UserManager() {
                                     }
                                 />
                             </td>
-                            <td>
+                            <td className="px-4 py-2 border-b-text border-b-2 text-right">
                                 <input
+                                    className="bg-background text-text text-right font-mono group-hover:bg-transparent"
                                     type="number"
                                     value={entry.user.hours}
                                     onChange={(e) =>
@@ -301,16 +320,25 @@ function UserManager() {
                     ))}
                 </tbody>
             </table>
-
-            {inFlux && (
-                <button type="button" onClick={handleSubmit}>
-                    Save Changes
+            <div className="flex flex-row items-center justify-center gap-4">
+                {inFlux && (
+                    <button
+                        className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                        type="button"
+                        onClick={handleSubmit}
+                    >
+                        Save Changes
+                    </button>
+                )}
+                <button
+                    className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                    type="button"
+                    onClick={handleAdd}
+                >
+                    Add a user
                 </button>
-            )}
-            <button type="button" onClick={handleAdd}>
-                Add a user
-            </button>
-        </div>
+            </div>
+        </>
     );
 }
 

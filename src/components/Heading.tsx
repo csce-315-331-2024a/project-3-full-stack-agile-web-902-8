@@ -1,12 +1,12 @@
-// DONE
 'use client';
 
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import revsLogo from '../../public/RLogo.ico';
-import LogoutButton from './LogoutButton';
+import LoginButton from './LoginButton';
+import GoogleTranslate from './GoogleTranslate';
 
 type HeadingProp = {
     names: string[];
@@ -24,6 +24,7 @@ function Heading({
     className,
 }: HeadingProp) {
     const pathName = usePathname();
+
     return (
         <nav
             className={
@@ -53,7 +54,9 @@ function Heading({
                             <Link
                                 className={
                                     'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink' +
-                                    (pathName === hrefs[i] ? ' current' : '')
+                                    (pathName.startsWith(hrefs[i])
+                                        ? ' current'
+                                        : '')
                                 }
                                 href={hrefs[i]}
                             >
@@ -63,7 +66,8 @@ function Heading({
                     )
                 )}
             </ul>
-            <LogoutButton isLoggedIn={isLoggedIn} />
+            <GoogleTranslate></GoogleTranslate>
+            <LoginButton isLoggedIn={isLoggedIn} />
         </nav>
     );
 }
