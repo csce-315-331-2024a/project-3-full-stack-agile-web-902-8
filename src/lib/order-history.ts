@@ -73,11 +73,13 @@ export async function getOrderItemsByOrderId(
                         id: row.item_id,
                         name: itemName,
                         type: '',
+                        description: '',
                         price: 0,
                         netPrice: 0,
                         popularity: 0,
-                        ingredients: [],
+                        ingredients:[],
                         seasonal: null,
+                        weather: ' '
                     })
                 );
             }
