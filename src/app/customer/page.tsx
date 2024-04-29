@@ -101,10 +101,8 @@ export default function Customer() {
                         </Link>
                     </li>
                     <li>
-                    <GoogleTranslate></GoogleTranslate>
+                        <GoogleTranslate></GoogleTranslate>
                     </li>
-
-
                 </ul>
             </header>
 
