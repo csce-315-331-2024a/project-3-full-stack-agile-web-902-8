@@ -183,8 +183,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
             getInventoryItem();
             setExists(true);
         }
-        if(needsRefresh)
-        {
+        if (needsRefresh) {
             setNeedsRefresh(false);
         }
     }, [selected, exists, needsRefresh]);
@@ -286,7 +285,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
 
     const handleRefresh = () => {
         setNeedsRefresh(true);
-    }
+    };
 
     return (
         <div
@@ -294,8 +293,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
-
-            <button type = "button" onClick = {handleRefresh}>
+            <button type="button" onClick={handleRefresh}>
                 Reset Changes
             </button>
 
@@ -391,12 +389,14 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                         />
                     </label>
                     <div className="flex flex-row items-center justify-center gap-4">
-                        {inFlux && (<button
-                            className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
-                            type="submit"
-                        >
-                            {exists ? 'Save Changes' : 'Add Item'}
-                        </button>)}
+                        {inFlux && (
+                            <button
+                                className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                type="submit"
+                            >
+                                {exists ? 'Save Changes' : 'Add Item'}
+                            </button>
+                        )}
                         {exists && (
                             <button
                                 className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"

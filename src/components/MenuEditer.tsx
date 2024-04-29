@@ -398,11 +398,9 @@ function MenuEditer({ className }: MenuEditerProps) {
             getMenuItem();
             setExists(true);
         }
-        if(needsRefresh)
-        {
+        if (needsRefresh) {
             setNeedsRefresh(false);
         }
-        
     }, [selected, exists, needsRefresh]);
 
     /**
@@ -545,7 +543,7 @@ function MenuEditer({ className }: MenuEditerProps) {
 
     const handleRefresh = () => {
         setNeedsRefresh(true);
-    }
+    };
 
     return (
         <div
@@ -553,8 +551,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
-
-            <button type = "button" onClick = {handleRefresh}>
+            <button type="button" onClick={handleRefresh}>
                 Reset Changes
             </button>
 
