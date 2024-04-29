@@ -9,14 +9,14 @@ const names = [
     'Home',
     'Menu Manager',
     'Inventory Manager',
-    'Order History',
+    'Manager Data',
     'Reports',
 ];
 const hrefs = [
     '/user/manager',
     '/user/manager/menu',
     '/user/manager/inventory',
-    '/user/manager',
+    '/user/manager/order_history',
     '/user/manager/report_page',
 ];
 

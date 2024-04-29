@@ -1,6 +1,7 @@
 import psql, { transact } from '@/lib/database';
 import { InventoryItem } from '@/lib/models';
 import Error from '@/lib/error';
+import { aggregateInventoryItem } from '@/lib/models';
 
 /**
  * Details an inventory item and its usage over a time interval.
@@ -122,17 +123,6 @@ WHERE inter.iid=inventory.id;
 /**
  * Details an inventory item's usage over a time period.
  */
-export class AggregateItem {
-    id: number;
-    name: string;
-    qty: number;
-
-    constructor(id: number, name: string, qty: number) {
-        this.id = id;
-        this.name = name;
-        this.qty = qty;
-    }
-}
 
 /**
  * @param begin the start of the interval to check
@@ -143,8 +133,12 @@ export async function aggregateInventory(
     start: number,
     end: number,
     tsql = psql
-): Promise<AggregateItem[]> {
-    return transact<AggregateItem[], any, { start: number; end: number }>(
+): Promise<aggregateInventoryItem[]> {
+    return transact<
+        aggregateInventoryItem[],
+        any,
+        { start: number; end: number }
+    >(
         tsql,
         new Error('SQL Error in aggregateInventory', undefined, {
             start: start,
@@ -184,9 +178,10 @@ export async function aggregateInventory(
                 inventory.id = aggregate_ingredients.inventory_id
             GROUP BY
                 inventory.id;`;
-            let res: AggregateItem[] = [];
+
+            let res: aggregateInventoryItem[] = [];
             for (const { id: id, name: name, qty: qty } of rows) {
-                res.push(new AggregateItem(id, name, qty));
+                res.push(new aggregateInventoryItem(id, name, qty));
             }
             return res;
         }
