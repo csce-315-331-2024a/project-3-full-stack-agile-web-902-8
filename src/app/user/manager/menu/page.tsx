@@ -1,10 +1,4 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import Heading from '@/components/Heading';
-import PageButton from '@/components/PageButton';
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
-import styles from '@/app/page.module.css';
 import MenuEditer from '@/components/MenuEditer';
 import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client';
 export default function Manager() {

@@ -1,8 +1,4 @@
-// DONE
-
-// TODO: responsiveness
 'use client';
-import React, { useEffect, useState } from 'react';
 import InventoryAdjuster from '@/components/InventoryAdjuster';
 import { InventoryItem } from '@/lib/models';
 import { useScale, ScaleProvider, ZoomIn, ZoomOut, ResetZoom } from '@/app/zoom.client';

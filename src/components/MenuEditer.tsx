@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { format, startOfToday } from 'date-fns';
-import styles from './component.module.css';
+import { format } from 'date-fns';
 import { Ingredient, InventoryItem, MenuItem, Seasonal } from '@/lib/models';
-import { updateSeasonalItem } from '@/lib/menu';
-import { start } from 'repl';
-import { fromCamel } from 'postgres';
+
+interface MenuEditerProps {
+    className?: string;
+}
 
 /**
  * Creates the component for editing menu items
  * @return the comopnent for editing menu items
  */
-function MenuEditer() {
+function MenuEditer({ className }: MenuEditerProps) {
     const [itemNames, setItemNames] = useState<string[]>([]);
     const [inventoryNames, setInventoryNames] = useState<string[]>([]);
     const [selected, setSelected] = useState<string>('');
@@ -538,37 +538,76 @@ function MenuEditer() {
     };
 
     return (
-        <div>
-            <select id="dropdown" value={selected} onChange={handleSelect}>
-                <option value="" disabled>
+        <div
+            className={
+                'flex flex-col items-center justify-start gap-4 ' + className
+            }
+        >
+            <select
+                className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
+                id="dropdown"
+                value={selected}
+                onChange={handleSelect}
+            >
+                <option
+                    className="bg-secondary text-text font-sans"
+                    value=""
+                    disabled
+                >
                     Select an option
                 </option>
                 {itemNames.map((option, index) => (
-                    <option key={index} value={option}>
+                    <option
+                        className="bg-secondary text-text font-sans"
+                        key={index}
+                        value={option}
+                    >
                         {option}
                     </option>
                 ))}
-                <option value="new">Add a Menu Item</option>
+                <option
+                    className="bg-secondary text-text font-sans"
+                    value="new"
+                >
+                    Add a Menu Item
+                </option>
             </select>
 
             {visible && (
-                <form onSubmit={handleSubmit}>
-                    <h2>{selected || ''}</h2>
+                <form
+                    className="flex flex-col items-left justify-start gap-4 rounded-2xl border-l-[0.5rem] border-l-accent p-4 bg-secondary/20"
+                    onSubmit={handleSubmit}
+                >
+                    <h2 className="text-[2rem] font-bold">
+                        {selected === 'new' ? 'New Item' : selected}
+                    </h2>
 
-                    <label>Ingredients</label>
-                    <table>
+                    <label className="text-[1.25rem] font-bold">
+                        Ingredients
+                    </label>
+                    <table className="w-full border-collapse text-sm">
                         <thead>
                             <tr>
-                                <th>Remove</th>
-                                <th>Name</th>
-                                <th>Quantity</th>
+                                <th className="bg-accent text-background text-left px-4 py-2 rounded-tl-2xl">
+                                    Remove
+                                </th>
+                                <th className="bg-accent text-background text-left px-4 py-2">
+                                    Name
+                                </th>
+                                <th className="bg-accent text-background text-left px-4 py-2 rounded-tr-2xl">
+                                    Quantity
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {ingredients.map((entry, index) => (
-                                <tr key={index}>
-                                    <td>
+                                <tr
+                                    className="hover:bg-secondary/70"
+                                    key={index}
+                                >
+                                    <td className="px-4 py-2 border-b-text border-b-2">
                                         <button
+                                            className="rounded-2xl bg-text h-6 w-6 text-background duration-200 hover:bg-background hover:text-text"
                                             onClick={() =>
                                                 handleRemoveIngredient(index)
                                             }
@@ -577,9 +616,12 @@ function MenuEditer() {
                                             X
                                         </button>
                                     </td>
-                                    <td>{entry.inventoryItem.name}</td>
-                                    <td>
+                                    <td className="px-4 py-2 border-b-text border-b-2">
+                                        {entry.inventoryItem.name}
+                                    </td>
+                                    <td className="px-4 py-2 border-b-text border-b-2">
                                         <input
+                                            className="rounded-2xl p-2 pl-3 bg-text text-right text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1"
                                             type="number"
                                             value={entry.amount}
                                             onChange={(e) =>
@@ -592,58 +634,88 @@ function MenuEditer() {
                                     </td>
                                 </tr>
                             ))}
+                            {ingredients.length === 0 && (
+                                <tr className="hover:bg-secondary/70">
+                                    <td className="px-4 py-2 border-b-text border-b-2">
+                                        No ingredients
+                                    </td>
+                                    <td className="px-4 py-2 border-b-text border-b-2"></td>
+                                    <td className="px-4 py-2 border-b-text border-b-2"></td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
-                    <button type="button" onClick={handleAddIngredient}>
+                    <button
+                        className="text-background bg-accent rounded-2xl p-4 w-fit mx-auto duration-200 hover:text-text hover:bg-accent/70"
+                        type="button"
+                        onClick={handleAddIngredient}
+                    >
                         Add an ingredient
                     </button>
 
                     {addingIngredient && (
-                        <div>
-                            <select
-                                id="dropdown"
-                                value={selectedIng}
-                                onChange={handleSelectIng}
-                            >
-                                <option value="" disabled>
-                                    Select an option
-                                </option>
-                                {inventoryNames.map((option, index) => (
-                                    <option key={index} value={option}>
-                                        {option}
+                        <div className="flex flex-col items-left justify-start gap-4 rounded-2xl border-l-[0.5rem] border-l-accent p-4 bg-secondary/20">
+                            <label className="flex flex-row items-center justify-between gap-4">
+                                New Ingredient:
+                                <select
+                                    className="bg-text text-background duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
+                                    id="dropdown"
+                                    value={selectedIng}
+                                    onChange={handleSelectIng}
+                                >
+                                    <option
+                                        className="bg-text text-background font-sans"
+                                        value=""
+                                        disabled
+                                    >
+                                        Select an option
                                     </option>
-                                ))}
-                            </select>
+                                    {inventoryNames.map((option, index) => (
+                                        <option
+                                            className="bg-text text-background font-sans"
+                                            key={index}
+                                            value={option}
+                                        >
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
 
-                            <label>
+                            <label className="flex flex-row items-center justify-between gap-4">
                                 New Ingredient Quantity:
                                 <input
+                                    className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                                     type="number"
                                     name="newQuantity"
                                     value={newQuantity}
                                     onChange={handleChangeNewQuantity}
                                 />
                             </label>
-
-                            <button
-                                type="button"
-                                onClick={handleConfirmIngredient}
-                            >
-                                Confirm
-                            </button>
-                            <button
-                                type="button"
-                                onClick={handleCancelIngredient}
-                            >
-                                Cancel
-                            </button>
+                            <div className="flex flex-row items-center justify-center gap-4 w-full">
+                                <button
+                                    className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                    type="button"
+                                    onClick={handleConfirmIngredient}
+                                >
+                                    Confirm
+                                </button>
+                                <button
+                                    className="text-text bg-secondary rounded-2xl p-4 duration-200 hover:text-text hover:bg-secondary/30"
+                                    type="button"
+                                    onClick={handleCancelIngredient}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     )}
 
                     {!exists && (
-                        <label>
+                        <label className="flex flex-row items-center justify-between gap-4">
                             Name:
                             <input
+                                className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                                 type="text"
                                 name="name"
                                 value={form.name}
@@ -651,63 +723,70 @@ function MenuEditer() {
                             />
                         </label>
                     )}
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Type:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="text"
                             name="type"
                             value={form.type}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Weather:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="text"
                             name="weather"
                             value={form.weather}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Description:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="text"
                             name="description"
                             value={form.description}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Price:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="price"
                             value={form.price}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Net Price:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="netPrice"
                             value={form.netPrice || 0}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Popularity:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="number"
                             name="popularity"
                             value={form.popularity}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="flex flex-row items-center justify-between gap-4">
                         Seasonal:
                         <input
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                             type="checkbox"
                             id="seasonal"
                             checked={form.seasonal}
@@ -716,30 +795,31 @@ function MenuEditer() {
                     </label>
 
                     {form.seasonal && (
-                        <div>
-                            <label htmlFor="startDate">
-                                Select a starting date:{' '}
+                        <div className="flex flex-col items-left justify-start gap-4 rounded-2xl border-l-[0.5rem] border-l-accent p-4 bg-secondary/20">
+                            <label className="flex flex-row items-center justify-between gap-4">
+                                Select a starting date:
+                                <input
+                                    className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
+                                    type="datetime-local"
+                                    id="startDate"
+                                    value={startDate}
+                                    onChange={handleChangeStart}
+                                />
                             </label>
-                            <input
-                                type="datetime-local"
-                                id="startDate"
-                                value={startDate}
-                                onChange={handleChangeStart}
-                            />
-
-                            <label htmlFor="endDate">
-                                Select a starting date:{' '}
+                            <label className="flex flex-row items-center justify-between gap-4">
+                                Select a starting date:
+                                <input
+                                    className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
+                                    type="datetime-local"
+                                    id="endDate"
+                                    value={endDate}
+                                    onChange={handleChangeEnd}
+                                />
                             </label>
-                            <input
-                                type="datetime-local"
-                                id="endDate"
-                                value={endDate}
-                                onChange={handleChangeEnd}
-                            />
-
-                            <label>
+                            <label className="flex flex-row items-center justify-between gap-4">
                                 Recurring:
                                 <input
+                                    className="rounded-2xl p-4 bg-text text-background font-mono duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                                     type="checkbox"
                                     id="recurring"
                                     checked={recurring}
@@ -749,14 +829,22 @@ function MenuEditer() {
                         </div>
                     )}
 
-                    <div>
+                    <div className="flex flex-row items-center justify-center gap-4">
                         {inFlux && (
-                            <button type="submit">
+                            <button
+                                className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                type="submit"
+                            >
                                 {exists ? 'Save Changes' : 'Add Item'}
                             </button>
                         )}
                         {exists && (
-                            <button onClick={handleRemove}>Delete Item</button>
+                            <button
+                                className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                onClick={handleRemove}
+                            >
+                                Delete Item
+                            </button>
                         )}
                     </div>
                 </form>

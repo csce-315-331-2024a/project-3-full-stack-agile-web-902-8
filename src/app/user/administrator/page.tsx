@@ -1,9 +1,4 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import Heading from '@/components/Heading';
-import DoubleText from '@/components/DoubleText';
-import SideBar from '@/components/SideBar';
-import styles from '@/app/page.module.css';
 import UserManager from '@/components/UserManager';
 
 /**
@@ -12,15 +7,11 @@ import UserManager from '@/components/UserManager';
  */
 export default function Administrator() {
     return (
-        <main className={styles.main}>
-            <div className={styles.description}>
-                <div className={styles.body}>
-                    <div>
-                        <h1>Manage Inventory</h1>
-                        <UserManager />
-                    </div>
-                </div>
-            </div>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start">
+            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                User Manager
+            </h1>
+            <UserManager />
         </main>
     );
 }
