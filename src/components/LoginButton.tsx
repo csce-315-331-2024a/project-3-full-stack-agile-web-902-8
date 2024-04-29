@@ -1,7 +1,6 @@
 'use client';
 
 import { signIn, signOut } from 'next-auth/react';
-import styles from './component.module.css';
 
 interface LoginButtonProps {
     isLoggedIn: boolean;
@@ -17,17 +16,12 @@ function LoginButton({ isLoggedIn }: LoginButtonProps) {
     };
 
     return (
-        <>
-            {isLoggedIn ? (
-                <button onClick={handleLogout} className={styles.loginButton}>
-                    Logout
-                </button>
-            ) : (
-                <button onClick={handleLogin} className={styles.loginButton}>
-                    Login
-                </button>
-            )}
-        </>
+        <button 
+            onClick={isLoggedIn ? handleLogout : handleLogin}
+            className="p-3 mx-4 rounded-2xl m-auto bg-secondary duration-200 hover:bg-secondary/50"
+        >
+            {isLoggedIn ? "Logout" : "Login"}
+        </button>
     );
 }
 

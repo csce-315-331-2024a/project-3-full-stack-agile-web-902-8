@@ -1,19 +1,22 @@
+// DONE
+
 'use client';
 
 import React from 'react';
-import componentStyles from './component.module.css';
 
 interface CashierCategoryBarProps {
     isFetchingMenuTypes: boolean;
     categories: string[];
     category: string;
     setCategory: (category: string) => void;
+    className?: string;
 }
 
 interface CashierCategoryButtonProps {
     categoryName: string;
     category: string;
     setCategory: (category: string) => void;
+    className?: string;
 }
 
 function CashierCategoryBar({
@@ -21,22 +24,18 @@ function CashierCategoryBar({
     categories,
     category,
     setCategory,
+    className,
 }: CashierCategoryBarProps) {
     if (isFetchingMenuTypes) {
         return (
             <div
                 className={
-                    componentStyles.categoryBar + ' ' + componentStyles.loading
+                    'bg-text text-background cursor-wait rounded-2xl flex flex-row flex-wrap justify-center items-center w-fit h-fit px-4 ' +
+                    className
                 }
             >
                 <button
-                    className={
-                        componentStyles.categoryButton +
-                        ' ' +
-                        componentStyles.card +
-                        ' ' +
-                        componentStyles.loading
-                    }
+                    className="cursor-wait flex justify-center items-center duration-200 p-4"
                     disabled={true}
                 >
                     Loading Menu Categories...
@@ -45,7 +44,12 @@ function CashierCategoryBar({
         );
     }
     return (
-        <div className={componentStyles.categoryBar}>
+        <div
+            className={
+                'bg-secondary rounded-2xl flex flex-row flex-wrap justify-center items-center w-fit h-fit px-4 ' +
+                className
+            }
+        >
             {categories.map((categoryName) => (
                 <CashierCategoryButton
                     categoryName={categoryName}
@@ -62,18 +66,23 @@ function CashierCategoryButton({
     categoryName,
     category,
     setCategory,
+    className,
 }: CashierCategoryButtonProps) {
     function handleClick() {
         setCategory(categoryName);
     }
 
-    const isActive = categoryName === category;
-    const buttonStyles = isActive
-        ? componentStyles.categoryButton + ' ' + componentStyles.active
-        : componentStyles.categoryButton;
-
     return (
-        <button className={buttonStyles} onClick={handleClick}>
+        <button
+            className={
+                'flex justify-center items-center duration-200 p-4 hover:bg-background/30 ' +
+                (categoryName === category
+                    ? 'bg-background/70 hover:bg-background/70 '
+                    : '') +
+                className
+            }
+            onClick={handleClick}
+        >
             {categoryName}
         </button>
     );

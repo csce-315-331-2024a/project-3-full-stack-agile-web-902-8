@@ -1,13 +1,10 @@
 import React from 'react';
-import Heading from '@/components/Heading';
 import PageButton from '@/components/PageButton';
 import DoubleText from '@/components/DoubleText';
 import SideBar from '@/components/SideBar';
 import styles from '@/app/page.module.css';
 
 export default function MenuBoard() {
-    const items = ['Home', 'Logout'];
-    const links = ['/', '/', '/', '/', '/', '/'];
     const categories = ['Value Meals', 'Sandwiches', 'Burgers', 'Baskets'];
 
     const renderCategory = (category: string) => (
@@ -28,9 +25,6 @@ export default function MenuBoard() {
     return (
         <main className={styles.main}>
             <div className={styles.description}>
-                {/* Render the heading with navigation items */}
-                <Heading names={items} hrefs={links} />
-
                 {/* Render the body of the page */}
                 <div className={styles.body}>
                     <DoubleText

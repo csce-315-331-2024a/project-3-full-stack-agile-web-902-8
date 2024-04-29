@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import componentStyles from '@/components/component.module.css';
 import { Order } from '@/lib/models';
 
 interface KitchenGridItemProps {
@@ -67,16 +66,14 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
     return (
         <div
             className={
-                componentStyles.kitchenGridItem +
-                ' ' +
-                componentStyles.card +
-                (hurry ? ' ' + componentStyles.hurry : '')
+                'bg-secondary/50 relative p-4 pb-20 rounded-2xl' +
+                (hurry ? ' !bg-accent/30' : '')
             }
         >
             <p
                 className={
-                    componentStyles.kitchenGridTimer +
-                    (hurry ? ' ' + componentStyles.hurry : '')
+                    'bg-secondary mt-auto w-fit rounded-2xl p-2' +
+                    (hurry ? ' text-background !bg-accent' : '')
                 }
             >
                 {timeString}
@@ -85,11 +82,14 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
             <p>{order.status}</p>
             <ul>
                 {order.items.map((item) => (
-                    <li key={item.item.id}>
-                        <span className={componentStyles.kitchenGridQuantity}>
+                    <li
+                        className="flex justify-between items-center"
+                        key={item.item.id}
+                    >
+                        <span className="w-8 text-right mr-4">
                             {item.quantity}
                         </span>
-                        <span className={componentStyles.kitchenGridItemName}>
+                        <span className="flex-grow text-left">
                             {item.item.name}
                         </span>
                     </li>
@@ -98,10 +98,10 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
             <p>Total: ${order.total}</p>
             <button
                 className={
-                    componentStyles.completeOrder +
-                    ' ' +
-                    componentStyles.card +
-                    (isCompletingOrder ? ' ' + componentStyles.disabled : '')
+                    'text-background bg-primary flex justify-center items-center duration-200 absolute bottom-4 left-1/2 translate-x-[-50%] p-4 rounded-2xl hover:bg-primary/70 hover:text-text' +
+                    (isCompletingOrder
+                        ? ' hover:cursor-wait !bg-primary/30 !text-text'
+                        : '')
                 }
                 onClick={completeOrder}
             >
