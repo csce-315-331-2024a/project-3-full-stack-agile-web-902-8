@@ -4,10 +4,6 @@
     align-items: center;
 }
 
-.main h1 {
-    height: 50px;
-}
-
 .menu-item-grid {
     display: grid;
     height: calc(100vh - 50px);

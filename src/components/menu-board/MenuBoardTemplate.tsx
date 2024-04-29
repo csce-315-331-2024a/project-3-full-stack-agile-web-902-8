@@ -61,19 +61,13 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
 
     return (
         <main className={styles.main}>
-            <h1>{title}</h1>
+            <h1 className={'text-4xl'}>{title}</h1>
 
             <div className={styles['menu-item-grid']}>
                 {isFetchingMenuItems ? (
-                    <div className={componentStyles.itemGrid}>
+                    <div className={'flex flex-row flex-wrap justify-start'}>
                         <button
-                            className={
-                                componentStyles.itemButton +
-                                ' ' +
-                                componentStyles.card +
-                                ' ' +
-                                componentStyles.loading
-                            }
+                            className="text-background bg-text flex justify-center items-center m-4 w-fit h-fit rounded-2xl p-4 cursor-wait"
                             disabled={true}
                         >
                             Loading Menu Items...
