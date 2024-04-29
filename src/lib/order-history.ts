@@ -32,9 +32,7 @@ export async function orderHistory(
                 FROM Orders
                 WHERE timestamp >= ${beginAdjusted}
                   AND timestamp <= ${endAdjusted}
-                ORDER BY timestamp DESC
-                limit 15;
-                ;
+                ORDER BY timestamp DESC;
             `) {
                 if (items && items.length > 0) {
                     res.push(
