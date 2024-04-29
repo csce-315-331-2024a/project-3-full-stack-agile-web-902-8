@@ -61,11 +61,11 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
 
     return (
         <div className={'flex flex-col items-center h-screen'}>
-            <h1 className={'text-4xl'}>{title}</h1>
+            <h1 className={'text-4xl my-2 font-bold'}>{title}</h1>
 
             <div className={'flex-auto grid grid-rows-3 w-4/5 mx-auto'}>
                 {isFetchingMenuItems ? (
-                    <div className={'flex flex-row flex-wrap justify-start'}>
+                    <div className={'flex flex-row flex-wrap justify-center'}>
                         <button
                             className="text-background bg-text flex justify-center items-center m-4 w-fit h-fit rounded-2xl p-4 cursor-wait"
                             disabled={true}
