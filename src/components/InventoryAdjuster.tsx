@@ -1,5 +1,3 @@
-// DONE
-
 import React, { useEffect, useState } from 'react';
 import { InventoryItem } from '@/lib/models';
 
