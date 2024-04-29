@@ -46,6 +46,28 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
         }
     }
 
+    async function cancelOrder() {
+        setIsCompletingOrder(true);
+        try {
+            const response = await fetch('/api/markOrderAsCanceled', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(order.id),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error: ' + response.statusText);
+            }
+
+            console.log('Order canceled:', order.id);
+        } catch (err) {
+            // Only free the button if an error occurs
+            setIsCompletingOrder(false);
+        }
+    }
+
     useEffect(() => {
         const interval = setInterval(() => {
             setTimeElapsed(calculateTimeElapsed());
@@ -96,17 +118,30 @@ export default function KitchenGridItem({ order }: KitchenGridItemProps) {
                 ))}
             </ul>
             <p>Total: ${order.total}</p>
-            <button
-                className={
-                    'text-background bg-primary flex justify-center items-center duration-200 absolute bottom-4 left-1/2 translate-x-[-50%] p-4 rounded-2xl hover:bg-primary/70 hover:text-text' +
-                    (isCompletingOrder
-                        ? ' hover:cursor-wait !bg-primary/30 !text-text'
-                        : '')
-                }
-                onClick={completeOrder}
-            >
-                Complete
-            </button>
+            <div className="absolute bottom-4 left-1/2 translate-x-[-50%] flex flex-row gap-4 justify-center items-center">
+                <button
+                    className={
+                        'text-background bg-primary flex justify-center items-center duration-200 p-4 rounded-2xl hover:bg-primary/70 hover:text-text' +
+                        (isCompletingOrder
+                            ? ' hover:cursor-wait !bg-primary/30 !text-text'
+                            : '')
+                    }
+                    onClick={completeOrder}
+                >
+                    Complete
+                </button>
+                <button
+                    className={
+                        'text-background bg-text flex justify-center items-center duration-200 p-4 rounded-2xl hover:bg-text/50 hover:text-text' +
+                        (isCompletingOrder
+                            ? ' hover:cursor-wait !bg-text/20 !text-text'
+                            : '')
+                    }
+                    onClick={cancelOrder}
+                >
+                    Cancel
+                </button>
+            </div>
         </div>
     );
 }

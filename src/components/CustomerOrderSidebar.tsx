@@ -73,11 +73,7 @@ export function CustomerOrderItem({
             <h3 className="text-center flex justify-center items-center col-[2/span_2]">
                 {item.name}
             </h3>
-            <p className="col-[1/span_3]">
-                {/* TODO: Description*/}
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-            </p>
-
+            <p className="col-[1/span_3]">{item.description}</p>
             <div className="flex justify-row items-center col-[1] ">
                 <button
                     className="w-6 h-6 flex justify-center items-center text-center border-[1pt] border-solid border-text text-2xl m-[0.25rem_0.1rem] "
