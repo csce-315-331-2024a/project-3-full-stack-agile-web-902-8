@@ -10,6 +10,13 @@ import {
 } from '@/components/CustomerOrderSidebar';
 import { MenuItem } from '@/lib/models';
 import { useState, useEffect } from 'react';
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client';
 
 export default function Customer() {
     // set default category
@@ -126,8 +133,18 @@ export default function Customer() {
         const itemsInCategory = items.filter((item) => item.type === category);
         setCategoryItems(itemsInCategory);
     }, [category, items]);
-
+    const { scale, setScale } = useScale();
     return (
+        <ScaleProvider initialScale={1}>
+            {/* Scaled content */}
+            <div
+                id="scaled-content"
+                style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'center center',
+                    overflow: 'auto',
+                }}
+            ></div>
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
             <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
                 <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
@@ -175,5 +192,23 @@ export default function Customer() {
                 ))}
             </CustomerOrderSidebar>
         </main>
+    {/* Fixed-position zoom controls */}
+     <div
+                id="zoom-controls"
+                style={{
+                    position: 'fixed',
+                    top: '10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 1001, // Above scaled content
+                    textAlign: 'center',
+                }}
+            >
+                <ZoomIn />
+                <ZoomOut />
+                <ResetZoom />
+            </div>
+        </ScaleProvider>
     );
 }
+
