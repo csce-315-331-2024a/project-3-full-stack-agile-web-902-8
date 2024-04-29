@@ -795,7 +795,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                             type="number"
                             name="popularity"
                             value={form.popularity}
-                            onChange={handleChange}
+                            //onChange={handleChange}
                         />
                     </label>
                     <label className="flex flex-row items-center justify-between gap-4">
