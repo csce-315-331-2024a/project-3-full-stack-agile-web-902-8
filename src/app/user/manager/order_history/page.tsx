@@ -127,11 +127,11 @@ const DataPage = () => {
             {/* Scaled content */}
 
             <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4">
-                <h1 className='text-[4rem] font-bold relative mainHeader w-fit'>Manager Data</h1>
-                <div
-                    className='w-full max-w-[1200px] mx-auto relative pt-4 flex flex-col gap-4 justify-start'
-                >
-                    <div className='relative'>
+                <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                    Manager Data
+                </h1>
+                <div className="w-full max-w-[1200px] mx-auto relative pt-4 flex flex-col gap-4 justify-start">
+                    <div className="relative">
                         <DateRangePicker
                             startDate={startDate}
                             endDate={endDate}

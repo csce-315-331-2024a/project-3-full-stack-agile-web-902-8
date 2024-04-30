@@ -16,9 +16,9 @@ const ScrollableBarGraph = ({
     onRefresh,
 }: ScrollableBarGraphProps) => {
     // Style object for the graph container
-    
+
     return (
-        <div className='bg-secondary/50 overflow-x-auto p-4 rounded-2xl h-[500px]'>
+        <div className="bg-secondary/50 overflow-x-auto p-4 rounded-2xl h-[500px]">
             <BarGraph data={data} title={title} />
         </div>
     );
