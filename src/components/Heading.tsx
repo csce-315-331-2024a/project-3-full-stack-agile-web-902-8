@@ -66,7 +66,7 @@ function Heading({
                     )
                 )}
             </ul>
-            <GoogleTranslate/>
+            <GoogleTranslate />
             <LoginButton isLoggedIn={isLoggedIn} />
         </nav>
     );

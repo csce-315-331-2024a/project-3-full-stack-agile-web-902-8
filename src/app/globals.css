@@ -23,8 +23,8 @@ li {
 
 @layer components {
     /* Hide google translate top bar */
-    iframe.skiptranslate { 
-        visibility: hidden !important; 
+    iframe.skiptranslate {
+        visibility: hidden !important;
     }
 
     /* Navbar */
