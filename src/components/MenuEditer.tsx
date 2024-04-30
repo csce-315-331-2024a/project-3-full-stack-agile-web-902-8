@@ -788,10 +788,11 @@ function MenuEditer({ className }: MenuEditerProps) {
                     <label className="flex flex-row items-center justify-between gap-4">
                         Popularity:
                         <input
-                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2 hover:cursor-not-allowed"
                             type="number"
                             name="popularity"
                             value={form.popularity}
+                            disabled={true}
                             //onChange={handleChange}
                         />
                     </label>
