@@ -56,9 +56,7 @@ jobs:
     - name: Seed Database
       shell: bash
       run: >
-        cd init-db && \
-        ./setup.sh && \
-        ./reseed.sh
+        cd init-db && pwd && ./setup.sh && ./reseed.sh
     - name: Run Playwright tests
       env:
         CI: yes
