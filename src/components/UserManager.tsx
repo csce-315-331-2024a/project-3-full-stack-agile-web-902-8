@@ -334,7 +334,11 @@ function UserManager() {
                                     onChange={(e) =>
                                         handleChangeHourlySalary(
                                             index,
-                                            parseFloat((parseFloat(e.target.value)).toFixed(2))
+                                            parseFloat(
+                                                parseFloat(
+                                                    e.target.value
+                                                ).toFixed(2)
+                                            )
                                         )
                                     }
                                 />
