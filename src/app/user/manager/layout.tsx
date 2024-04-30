@@ -1,12 +1,10 @@
-// DONE
-
 'use client';
 
 import SideBar from '@/components/SideBar';
 import React from 'react';
 
 const names = [
-    'Home',
+    'Order History',
     'Menu Manager',
     'Inventory Manager',
     'Manager Data',
