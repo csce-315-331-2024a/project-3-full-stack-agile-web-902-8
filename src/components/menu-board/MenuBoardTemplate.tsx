@@ -60,10 +60,21 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
     }, [items, indexShown]);
 
     return (
+        // <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start">
         <div className={'flex flex-col items-center h-screen'}>
-            <h1 className={'text-4xl my-2 font-bold'}>{title}</h1>
+            <h1
+                className={
+                    'text-[4rem] my-2 font-bold relative mainHeader w-fit'
+                }
+            >
+                {title}
+            </h1>
 
-            <div className={'flex-auto grid grid-rows-3 w-4/5 mx-auto'}>
+            <div
+                className={
+                    'flex-auto grid grid-rows-3 w-4/5 mx-auto gap-4 mb-4'
+                }
+            >
                 {isFetchingMenuItems ? (
                     <div className={'flex flex-row flex-wrap justify-center'}>
                         <button
