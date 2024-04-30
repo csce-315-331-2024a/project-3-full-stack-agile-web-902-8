@@ -3,89 +3,107 @@ import { Order, OrderItem } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
 
+/**
+ * Retrieves order history from the database within a specified time range and with optional status filters.
+ *
+ * @param begin - The start timestamp of the time range.
+ * @param end - The end timestamp of the time range (default is current timestamp).
+ * @param statusFilled - Flag to filter orders with status 'FILLED' (default is true).
+ * @param statusCancelled - Flag to filter orders with status 'CANCELED' (default is true).
+ * @param statusPending - Flag to filter orders with status 'PENDING' (default is true).
+ * @param tsql - The object representing an existing database connection or transaction.
+ * @returns A Promise resolving to an order if found, or null if not.
+ */
 export async function orderHistory(
     begin: number,
     end: number = Date.now(),
+    statusFilled: boolean = true,
+    statusCancelled: boolean = true,
+    statusPending: boolean = true,
+
     tsql = psql
 ): Promise<Order[]> {
-    // Subtract 5 hours (in milliseconds) from begin and end timestamps
-    const beginAdjusted = begin - 5 * 60 * 60 * 1000;
-    const endAdjusted = end - 5 * 60 * 60 * 1000;
-
     return transact<Order[], postgres.Error, any>(
         tsql,
         new Error('SQL Error in Order Report', undefined, {
             begin: begin,
             end: end,
+            statusFilled: statusFilled,
+            statusCancelled: statusCancelled,
+            statusPending: statusPending,
         }),
         async (isql, _) => {
             let res: Order[] = [];
-            for (const {
-                id,
-                timestamp,
-                discount,
-                total,
-                items = await getOrderItemsByOrderId(id, isql),
-                status,
-            } of await isql`
-                SELECT *
-                FROM Orders
-                WHERE timestamp >= ${beginAdjusted}
-                  AND timestamp <= ${endAdjusted}
-                ORDER BY timestamp DESC;
-            `) {
-                if (items && items.length > 0) {
-                    res.push(
-                        new Order(id, timestamp, discount, total, items, status)
+            const query = await isql`
+            SELECT
+            o.id AS order_id,
+            o.timestamp,
+            o.discount,
+            o.total,
+            o.status,
+            oi.item_id,
+            oi.qty AS quantity,
+            mi.name AS item_name,
+            mi.type AS item_type,
+            mi.description,
+            mi.price,
+            mi.net_price
+        FROM
+            orders o
+        JOIN
+            order_items oi ON o.id = oi.order_id
+        JOIN
+            menu_items mi ON oi.item_id = mi.id
+        WHERE
+            o.timestamp >= ${begin} 
+            AND o.timestamp < ${end}
+            AND (
+                ${statusFilled} = TRUE AND o.status = 'FILLED'
+                OR ${statusCancelled} = TRUE AND o.status = 'CANCELED'
+                OR ${statusPending} = TRUE AND o.status = 'PENDING'
+            )
+        ORDER BY
+            o.timestamp DESC;
+        
+      `;
+
+            let currentOrder: Order | null = null;
+            for (const row of query) {
+                if (currentOrder === null || currentOrder.id !== row.order_id) {
+                    if (currentOrder !== null) {
+                        res.push(currentOrder);
+                    }
+                    currentOrder = new Order(
+                        row.order_id,
+                        new Date(row.timestamp - 5 * 60 * 60 * 1000),
+                        row.discount,
+                        row.total,
+                        [],
+                        row.status
                     );
                 }
-            }
-            return res;
-        }
-    );
-}
 
-export async function getOrderItemsByOrderId(
-    orderId: number,
-    tsql = psql
-): Promise<OrderItem[]> {
-    return transact<OrderItem[], postgres.Error, any>(
-        tsql,
-        new Error('SQL Error in Order Items Query', undefined, {
-            orderId: orderId,
-        }),
-        async (isql, _) => {
-            const result = await isql`
-            SELECT 
-              menu_items.name,
-              order_items.qty
-            FROM
-              menu_items
-            JOIN
-              order_items ON menu_items.id = order_items.item_id
-            WHERE
-              order_id=${orderId};
-        `;
-
-            const orderItems: OrderItem[] = [];
-            for (const row of result) {
-                orderItems.push(
-                    new OrderItem(row.qty, {
+                currentOrder.items.push(
+                    new OrderItem(row.quantity, {
                         id: row.item_id,
-                        name: row.name,
-                        type: '',
-                        description: '',
-                        price: 0,
-                        netPrice: 0,
+                        name: row.item_name,
+                        type: row.item_type,
+                        description: row.description,
+                        price: row.price,
+                        netPrice: row.net_price,
                         popularity: 0,
                         ingredients: [],
                         seasonal: null,
-                        weather: ' ',
+                        weather: '',
                     })
                 );
             }
 
-            return orderItems;
+            if (currentOrder !== null) {
+                res.push(currentOrder);
+            }
+
+            return res;
         }
     );
 }
