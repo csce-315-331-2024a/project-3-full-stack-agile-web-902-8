@@ -1,17 +1,20 @@
 'use client';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format, startOfToday } from 'date-fns';
-import { Order, OrderItem } from '@/lib/models';
+import { Order } from '@/lib/models';
 
 type TableProp = {
     heading: string[];
 };
 
+/**
+ * Functional component representing an order table.
+ *
+ * @param props - The props object containing the table headings.
+ * @returns The TSX element representing the order history table.
+ */
 function OrderTable({ heading }: TableProp) {
     const [orderHistory, setOrderHistory] = useState<Order[]>([]);
-    const [isOrderHistoryGenerated, setIsOrderHistoryGenerated] =
-        useState(false);
-    const [generateClicked, setGenerateClicked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [beginTimeString, setBeginTimeString] = useState<string>(
         format(startOfToday(), "yyyy-MM-dd'T'00:00")
@@ -19,88 +22,124 @@ function OrderTable({ heading }: TableProp) {
     const [endTimeString, setEndTimeString] = useState<string>(
         format(new Date(), "yyyy-MM-dd'T'HH:mm")
     );
-    const [, setBeginTime] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(0);
+    const [statusFilled, setStatusFilled] = useState(true);
+    const [statusPending, setStatusPending] = useState(true);
+    const [statusCancelled, setStatusCancelled] = useState(true);
+    const [selectedStatus, setSelectedStatus] = useState('All');
 
-    const indexOfLastRow = currentPage * rowsPerPage;
-    const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-    const currentRows =
-        rowsPerPage === 0
-            ? orderHistory
-            : orderHistory.slice(indexOfFirstRow, indexOfLastRow);
-    const totalPages = Math.ceil(orderHistory.length / rowsPerPage) || 1;
-
+    /**
+     * Event handler for changing the start time input.
+     * @param {React.ChangeEvent<HTMLInputElement>} event - The change event object.
+     */
     const handleBeginTimeChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setBeginTimeString(event.target.value);
+        const newBeginTimeString = event.target.value;
+        setBeginTimeString(newBeginTimeString);
     };
 
+    /**
+     * Event handler for changing the end time input.
+     * @param {React.ChangeEvent<HTMLInputElement>} event - The change event object.
+     */
     const handleEndTimeChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setEndTimeString(event.target.value);
+        const newEndTimeString = event.target.value;
+        setEndTimeString(newEndTimeString);
     };
 
-    const handleGenerateOrderHistory = useCallback(async () => {
-        setGenerateClicked(true);
-        setIsLoading(true);
-        const selectedBeginDate = new Date(beginTimeString);
-        const selectedEndDate = new Date(endTimeString);
-        const beginTimeNumber = selectedBeginDate.getTime();
-        const endTimeNumber = selectedEndDate.getTime();
-
-        const response = await fetch(
-            `/api/getOrderHistory?beginTime=${beginTimeNumber}&endTime=${endTimeNumber}`
-        );
-        if (!response.ok) {
-            const errorData = await response.json();
-            setError(errorData.error);
-            setOrderHistory([]);
-            setIsOrderHistoryGenerated(false);
-            setIsLoading(false);
-            return;
-        }
-        const res = await response.json();
-        setOrderHistory(res);
-        setBeginTime(beginTimeNumber);
-        setError(null);
-        setIsOrderHistoryGenerated(true);
-        setGenerateClicked(false);
-        setIsLoading(false);
-        setCurrentPage(1); // Reset to first page
-        setRowsPerPage(res.length); // Set rows per page to all rows by default
-    }, [beginTimeString, endTimeString]);
-
-    const handleReset = () => {
-        setBeginTimeString(format(startOfToday(), "yyyy-MM-dd'T'00:00"));
-        setEndTimeString(format(new Date(), "yyyy-MM-dd'T'HH:mm"));
-        setBeginTime(0);
-        setIsOrderHistoryGenerated(false);
-        setOrderHistory([]);
-        setError(null);
-        setCurrentPage(1); // Reset to first page
-        setRowsPerPage(0); // Reset rows per page to 0 (display all rows)
-    };
-
-    useEffect(() => {
-        handleGenerateOrderHistory();
-    }, [handleGenerateOrderHistory]);
-
-    const handlePageChange = (pageNumber: number) => {
-        setCurrentPage(pageNumber);
-    };
-
-    const handleRowsPerPageChange = (
+    /**
+     * Event handler for changing the status filter.
+     * @param {React.ChangeEvent<HTMLSelectElement>} event - The change event object.
+     */
+    const handleStatusChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        const newRowsPerPage = parseInt(event.target.value, 10);
-        setRowsPerPage(newRowsPerPage);
-        setCurrentPage(1); // Reset to first page when changing rows per page
+        const value = event.target.value;
+        setSelectedStatus(value);
+
+        switch (value) {
+            case 'All':
+                setStatusFilled(true);
+                setStatusPending(true);
+                setStatusCancelled(true);
+                break;
+            case 'Filled':
+                setStatusFilled(true);
+                setStatusPending(false);
+                setStatusCancelled(false);
+                break;
+            case 'Pending':
+                setStatusFilled(false);
+                setStatusPending(true);
+                setStatusCancelled(false);
+                break;
+            case 'Cancelled':
+                setStatusFilled(false);
+                setStatusPending(false);
+                setStatusCancelled(true);
+                break;
+            default:
+                break;
+        }
     };
 
+    /**
+     * Effect hook for fetching order history based on filters.
+     */
+    useEffect(() => {
+        const handleGenerateOrderHistory = async () => {
+            setIsLoading(true);
+            const selectedBeginDate = new Date(beginTimeString);
+            const selectedEndDate = new Date(endTimeString);
+            const beginTimeNumber = selectedBeginDate.getTime();
+            const endTimeNumber = selectedEndDate.getTime();
+
+            const response = await fetch(
+                `/api/getOrderHistory?beginTime=${beginTimeNumber}&endTime=${endTimeNumber}&statusFilled=${statusFilled}&statusPending=${statusPending}&statusCancelled=${statusCancelled}`
+            );
+            if (!response.ok) {
+                const errorData = await response.json();
+                setError(errorData.error);
+                setOrderHistory([]);
+                setIsLoading(false);
+                return;
+            }
+            const res = await response.json();
+            setOrderHistory(res);
+            setError(null);
+            setIsLoading(false);
+        };
+
+        handleGenerateOrderHistory();
+    }, [
+        statusFilled,
+        statusPending,
+        statusCancelled,
+        beginTimeString,
+        endTimeString,
+    ]);
+
+    /**
+     * Event handler for resetting filters.
+     */
+    const handleReset = () => {
+        setStatusFilled(true);
+        setStatusPending(true);
+        setStatusCancelled(true);
+        setSelectedStatus('All');
+        setError(null);
+        const resetBeginTime = format(startOfToday(), "yyyy-MM-dd'T'00:00");
+        const resetEndTime = format(new Date(), "yyyy-MM-dd'T'HH:mm");
+        setBeginTimeString(resetBeginTime);
+        setEndTimeString(resetEndTime);
+    };
+
+    /**
+     * Renders the component.
+     */
     return (
         <div>
             <div style={{ marginBottom: '10px' }}>
@@ -126,25 +165,29 @@ function OrderTable({ heading }: TableProp) {
                     />
                 </div>
                 <div>
-                    <button
-                        onClick={handleGenerateOrderHistory}
+                    Filter by order status:
+                    <select
+                        value={selectedStatus}
+                        onChange={handleStatusChange}
                         className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                     >
-                        Generate Order History
-                    </button>
+                        <option value="All">All</option>
+                        <option value="Filled">Filled</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
                     <button
                         onClick={handleReset}
                         className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
                     >
-                        Reset
+                        Revert to default settings
                     </button>
                 </div>
             </div>
-
             {error && <div>{error}</div>}
             {isLoading ? (
                 <div>
-                    <button disabled>Loading...</button>
+                    <button disabled>Generating Order History...</button>
                 </div>
             ) : (
                 <>
@@ -170,8 +213,8 @@ function OrderTable({ heading }: TableProp) {
                             </tr>
                         </thead>
                         <tbody>
-                            {currentRows && currentRows.length > 0 ? (
-                                currentRows.map((order, index) => (
+                            {orderHistory.length > 0 ? (
+                                orderHistory.map((order, index) => (
                                     <tr
                                         className="hover:bg-secondary/70"
                                         key={index}
@@ -209,7 +252,12 @@ function OrderTable({ heading }: TableProp) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={6}>No Order History found</td>
+                                    <td
+                                        colSpan={6}
+                                        className="px-4 py-2 border-b-text border-b-2"
+                                    >
+                                        No Order History Found
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
@@ -221,122 +269,3 @@ function OrderTable({ heading }: TableProp) {
 }
 
 export default OrderTable;
-
-{
-    /* <div className={design.tableControls}>
-                        Rows per page:
-                        <select
-                            id="rowsPerPage"
-                            value={rowsPerPage}
-                            onChange={handleRowsPerPageChange}
-                            className={design.dropdown}
-                        >
-                            <option value={10}>10</option>
-                            <option value={20}>20</option>
-                            <option value={50}>50</option>
-                            <option value={100}>100</option>
-                            <option value={orderHistory.length}>All</option>
-                        </select>
-                    </div>
-
-                    <div className={design.paginationControls}>
-                        {totalPages > 1 && (
-                            <>
-                                {currentPage > 1 && (
-                                    <button
-                                        onClick={() =>
-                                            handlePageChange(currentPage - 1)
-                                        }
-                                        className={`${design.navbarbutton} ${design.prevButton}`}
-                                    >
-                                        Previous
-                                    </button>
-                                )}
-
-                                {currentPage === 1 ? (
-                                    <>
-                                        <button
-                                            onClick={() => handlePageChange(1)}
-                                            disabled={true}
-                                            className={`${design.navbarbutton} ${design.currentButton}`}
-                                        >
-                                            1
-                                        </button>
-                                        {totalPages > 2 && (
-                                            <span className={design.ellipsis}>
-                                                ...
-                                            </span>
-                                        )}
-                                        <button
-                                            onClick={() =>
-                                                handlePageChange(totalPages)
-                                            }
-                                            className={design.navbarbutton}
-                                        >
-                                            {totalPages}
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <button
-                                            onClick={() => handlePageChange(1)}
-                                            className={design.navbarbutton}
-                                        >
-                                            1
-                                        </button>
-                                        {currentPage > 2 && (
-                                            <span className={design.ellipsis}>
-                                                ...
-                                            </span>
-                                        )}
-                                        <button
-                                            onClick={() =>
-                                                handlePageChange(currentPage)
-                                            }
-                                            disabled={true}
-                                            className={`${design.navbarbutton} ${design.currentButton}`}
-                                        >
-                                            {currentPage}
-                                        </button>
-                                        {currentPage < totalPages && (
-                                            <>
-                                                {currentPage <
-                                                    totalPages - 1 && (
-                                                    <span
-                                                        className={
-                                                            design.ellipsis
-                                                        }
-                                                    >
-                                                        ...
-                                                    </span>
-                                                )}
-                                                <button
-                                                    onClick={() =>
-                                                        handlePageChange(
-                                                            totalPages
-                                                        )
-                                                    }
-                                                    className={
-                                                        design.navbarbutton
-                                                    }
-                                                >
-                                                    {totalPages}
-                                                </button>
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                                {currentPage < totalPages && (
-                                    <button
-                                        onClick={() =>
-                                            handlePageChange(currentPage + 1)
-                                        }
-                                        className={`${design.navbarbutton} ${design.nextButton}`}
-                                    >
-                                        Next
-                                    </button>
-                                )}
-                            </>
-                        )}
-                    </div> */
-}

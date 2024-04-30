@@ -57,3 +57,11 @@ First Daily meeting 4/7/24 6:00-6:20pm Via Discord call Attendees: Jose Ortiz, A
 Second Daily meeting 4/10/24 10:00-10:20am Via In person Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran, Marvin Fung
 
 Third Daily meeting 4/14/24 8:15-8:40pm Via Discord call live share Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran, Marvin Fung
+
+### Meeting Minutes THIRD SPRINT:
+
+First Daily meeting 4/19/24 10:00-10:20am Via Discord call live share Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran, Marvin Fung
+
+Second Daily meeting 4/23/24 9:30-9:45am Via Discord call live share Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran, Marvin Fung
+
+Third Daily meeting 4/28/24 10:15-10:30am Via Discord call live share Attendees: Jose Ortiz, Alex Beamer, Kyle Palermo, Sandeep Mishra, Nathan Tran, Marvin Fung
