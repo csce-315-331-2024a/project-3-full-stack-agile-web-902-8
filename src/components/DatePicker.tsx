@@ -30,22 +30,25 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
 
     return (
         <div>
+            <label>Start date:
             <input
                 type="datetime-local"
                 value={toDateTimeLocal(startDate)}
                 onChange={handleDateChange(setStartDate)}
                 step="1" // Allows for second precision
                 //className={design.dateInput}
-                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-            />
+                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl ml-2 mr-4 hover:bg-secondary/70"
+            /></label>
+            <label>End date: 
             <input
                 type="datetime-local"
                 value={toDateTimeLocal(endDate)}
                 onChange={handleDateChange(setEndDate)}
                 step="1" // Allows for second precision
                 //className={design.dateInput}
-                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl ml-2 hover:bg-secondary/70"
             />
+            </label>
         </div>
     );
 };
