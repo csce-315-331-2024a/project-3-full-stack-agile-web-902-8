@@ -21,7 +21,7 @@ const ScaleContext = createContext<ScaleContextType>({
 export const useScale = () => useContext(ScaleContext);
 
 interface ScaleProviderProps {
-    children: ReactNode;
+    children: React.ReactNode;
     initialScale?: number;
 }
 
@@ -29,20 +29,28 @@ export const ScaleProvider = ({
     children,
     initialScale = 1,
 }: ScaleProviderProps) => {
-    const [scale, setScale] = useState<number>(initialScale);
+    const [scale, setScale] = useState<number>(() => {
+        if (typeof window !== 'undefined') {
+            return parseFloat(
+                localStorage.getItem('scale') || `${initialScale}`
+            );
+        }
+        return initialScale;
+    });
 
     useEffect(() => {
-        // Calculate the scaled dimensions.
-        const scaledWidth = `${document.documentElement.clientWidth / scale}px`;
-        const scaledHeight = `${document.documentElement.clientHeight / scale}px`;
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('scale', scale.toString());
+        }
+    }, [scale]);
 
-        // Apply the transformation.
-        document.body.style.transform = `scale(${scale})`;
-        document.body.style.transformOrigin = 'top left';
-        document.body.style.width = scaledWidth;
-        document.body.style.height = scaledHeight;
-        document.body.style.overflowX = 'auto'; // Allow horizontal scrolling.
-        document.body.style.overflowY = 'auto'; // Allow vertical scrolling if needed.
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            document.body.style.transform = `scale(${scale})`;
+            document.body.style.transformOrigin = 'top left';
+            document.body.style.overflowX = 'auto';
+            document.body.style.overflowY = 'auto';
+        }
     }, [scale]);
 
     return (
