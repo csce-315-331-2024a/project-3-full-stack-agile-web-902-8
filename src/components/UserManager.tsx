@@ -290,7 +290,7 @@ function UserManager() {
                             </td>
                             <td className="px-4 py-2 border-b-text border-b-2">
                                 <select
-                                    className='bg-background text-text group-hover:bg-transparent'
+                                    className="bg-background text-text group-hover:bg-transparent"
                                     value={
                                         entry.user.role != ''
                                             ? entry.user.role
@@ -300,12 +300,30 @@ function UserManager() {
                                         handleSelectRole(index, e.target.value)
                                     }
                                 >
-                                    <option className='bg-background text-text' value="ADMINISTRATOR">
+                                    <option
+                                        className="bg-background text-text"
+                                        value="ADMINISTRATOR"
+                                    >
                                         ADMINISTRATOR
                                     </option>
-                                    <option className='bg-background text-text' value="MANAGER">MANAGER</option>
-                                    <option className='bg-background text-text' value="CASHIER">CASHIER</option>
-                                    <option className='bg-background text-text' value="COOK">COOK</option>
+                                    <option
+                                        className="bg-background text-text"
+                                        value="MANAGER"
+                                    >
+                                        MANAGER
+                                    </option>
+                                    <option
+                                        className="bg-background text-text"
+                                        value="CASHIER"
+                                    >
+                                        CASHIER
+                                    </option>
+                                    <option
+                                        className="bg-background text-text"
+                                        value="COOK"
+                                    >
+                                        COOK
+                                    </option>
                                 </select>
                             </td>
                             <td className="px-4 py-2 border-b-text border-b-2 text-right">
