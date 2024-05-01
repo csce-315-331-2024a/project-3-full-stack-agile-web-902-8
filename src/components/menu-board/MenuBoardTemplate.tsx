@@ -36,7 +36,7 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
                 setItems(itemsInCategory);
                 console.log('Fetching should be done now.');
             } catch {
-                console.log("Error trying to get menu items for menu board");
+                console.log('Error trying to get menu items for menu board');
             }
         }
         fetchAllMenuItems();
