@@ -28,7 +28,7 @@ function Heading({
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
-        <header className={'xl:flex xl:justify-between ' + className}>
+        <header className={'xl:flex xl:justify-between py-2 ' + className}>
             <div className="w-auto z-50 flex flex-row justify-between items-center bg-background shadow-xl">
                 <Image
                     className="h-12 w-auto mx-4"
@@ -50,12 +50,12 @@ function Heading({
                         >
                             {isOpen ? (
                                 <path
-                                    fill-rule="evenodd"
+                                    fillRule="evenodd"
                                     d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
                                 />
                             ) : (
                                 <path
-                                    fill-rule="evenodd"
+                                    fillRule="evenodd"
                                     d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
                                 />
                             )}
@@ -69,7 +69,7 @@ function Heading({
                     (isOpen ? 'flex' : 'hidden')
                 }
             >
-                <ul className="flex flex-wrap w-full xl:w-auto">
+                <ul className="flex flex-wrap h-full w-full xl:w-auto">
                     {names.map((link, i) =>
                         link === 'Menu Board' ? (
                             <li
