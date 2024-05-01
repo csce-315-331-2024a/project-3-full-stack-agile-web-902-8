@@ -19,6 +19,11 @@ interface CashierCategoryButtonProps {
     className?: string;
 }
 
+/**
+ * A functional component that renders a navigational bar for selecting menu categories. It displays a loading state or a collection of category buttons.
+ * @param props - Properties passed to the component as specified in CashierCategoryBarProps.
+ * @return A React element representing either a loading state or a navigational bar of menu categories.
+ */
 function CashierCategoryBar({
     isFetchingMenuTypes,
     categories,
@@ -62,6 +67,11 @@ function CashierCategoryBar({
     );
 }
 
+/**
+ * A button component that allows the user to select a specific category. Highlights if it's the selected category.
+ * @param props - Properties passed to the component as specified in CashierCategoryButtonProps.
+ * @return A React button element that updates the category selection on click.
+ */
 function CashierCategoryButton({
     categoryName,
     category,

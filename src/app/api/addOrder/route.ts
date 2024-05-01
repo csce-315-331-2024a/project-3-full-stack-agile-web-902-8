@@ -3,6 +3,15 @@ import { Order } from '@/lib/models';
 import { NextRequest, NextResponse } from 'next/server';
 import Error from '@/lib/error';
 
+/**
+ * POST API to add a new order.
+ * This endpoint accepts an order object in the request body and adds it to the system.
+ * Validates that the order includes at least one item and rounds the total to two decimal places before saving.
+ *
+ * @param {NextRequest} request - The request object containing the order data as JSON.
+ * @returns Returns a 201 response with a success message if the order is added successfully,
+ * or 400 with an error message if the order does not meet validation criteria, or 500 with an error message if an error occurs during processing.
+ */
 export async function POST(request: NextRequest) {
     console.log('POST /api/addOrder');
     try {
