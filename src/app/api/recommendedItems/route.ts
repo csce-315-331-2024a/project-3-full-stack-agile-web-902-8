@@ -4,6 +4,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
+
+/**
+ * Gets recommended items from the database
+ *
+ * @param req The the condition to fetch recommended items for
+ * @returns A Promise resolving to an array of ids of recommended items from the database
+ */
 export async function GET(request: NextRequest) {
     console.log('GET /api/recommendedItems');
     try {

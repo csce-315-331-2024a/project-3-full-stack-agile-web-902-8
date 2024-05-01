@@ -283,6 +283,9 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
         fetchInventoryItems();
     };
 
+    /**
+     * Handles refreshing the values
+     */
     const handleRefresh = () => {
         setNeedsRefresh(true);
     };

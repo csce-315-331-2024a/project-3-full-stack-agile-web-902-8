@@ -225,6 +225,11 @@ function UserManager() {
         fetchUsers();
     };
 
+    /**
+     * Handles selecting a role from the dropdown
+     * @param i The index of the changed entry
+     * @param newRole The newrole to be assigned to the entry
+     */
     const handleSelectRole = (i: number, newRole: string) => {
         setInFlux(true);
         const changed = [...users];
