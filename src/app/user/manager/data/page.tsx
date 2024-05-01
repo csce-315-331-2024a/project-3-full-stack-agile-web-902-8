@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Heading from '@/components/Heading';
 import ScrollableList from '@/components/ScrollableList';
 import ScrollableBarGraph from '@/components/ScrollableBarGraph';
 import DateRangePicker from '@/components/DatePicker';
@@ -118,59 +117,53 @@ const DataPage = () => {
         setError('');
     };
 
-    const resetButtonStyle: React.CSSProperties = {
-        fontSize: '16px',
-        fontWeight: 'bold',
-        position: 'absolute',
-        right: '10px',
-        margin: '10px',
-        padding: '10px',
-        cursor: 'pointer',
-    };
-
     const sortedMenuData = menuData.sort((a, b) => b.qty - a.qty);
     const sortedInventoryData = inventoryData.sort((a, b) => b.qty - a.qty);
 
     return (
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4">
-            <div className="max-w-[1200px] m-auto">
-                <DateRangePicker
-                    startDate={startDate}
-                    endDate={endDate}
-                    setStartDate={setStartDate}
-                    setEndDate={setEndDate}
-                />
+            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                Manager Data
+            </h1>
+            <div className="w-full max-w-[1200px] mx-auto relative pt-4 flex flex-col gap-4 justify-start">
+                <div className="relative">
+                    <DateRangePicker
+                        startDate={startDate}
+                        endDate={endDate}
+                        setStartDate={setStartDate}
+                        setEndDate={setEndDate}
+                    />
 
-                <button
-                    onClick={handleGenerateSalesReport}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Generate Sales Report
-                </button>
-                <button
-                    onClick={handleGenerateProductUsageReport}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Generate Product Usage Report
-                </button>
-                <button
-                    onClick={handleGenerateWhatSellsTogetherReport}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Generate What Sells Together Report
-                </button>
+                    <button
+                        onClick={handleGenerateSalesReport}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-4 mt-4 hover:bg-secondary/70"
+                    >
+                        Generate Sales Report
+                    </button>
+                    <button
+                        onClick={handleGenerateProductUsageReport}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-4 mt-4 hover:bg-secondary/70"
+                    >
+                        Generate Product Usage Report
+                    </button>
+                    <button
+                        onClick={handleGenerateWhatSellsTogetherReport}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-4 mt-4 hover:bg-secondary/70"
+                    >
+                        Generate What Sells Together Report
+                    </button>
 
-                <button
-                    style={resetButtonStyle}
-                    onClick={handleReset}
-                    //className={design.genresbutton}
-                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-                >
-                    Reset
-                </button>
+                    <button
+                        onClick={handleReset}
+                        //className={design.genresbutton}
+                        className="bg-secondary py-2 px-4 text-center font-bold inline-block rounded-xl hover:bg-secondary/70 absolute right-0 bottom-0"
+                    >
+                        Reset
+                    </button>
+                </div>
 
                 {isLoading && <p>Loading...</p>}
                 {error && <p>{error}</p>}
@@ -181,7 +174,7 @@ const DataPage = () => {
                                 data={sortedMenuData.map((item) => ({
                                     label: item.name,
                                     value: item.qty,
-                                    color: 'rgba(205, 50, 75, 1)',
+                                    color: '#f8c10d',
                                 }))}
                                 title="Sales Report"
                             />
@@ -192,7 +185,7 @@ const DataPage = () => {
                                 data={sortedInventoryData.map((item) => ({
                                     label: item.name,
                                     value: item.qty,
-                                    color: 'rgba(205, 50, 75, 1)',
+                                    color: '#ff8427',
                                 }))}
                                 title="Product Usage"
                             />

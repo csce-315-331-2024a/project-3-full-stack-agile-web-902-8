@@ -23,6 +23,8 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
     const [adjustedRequest, setAdjustedRequest] = useState<number>(0);
     const [exists, setExists] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
+    const [needsRefresh, setNeedsRefresh] = useState<boolean>(false);
+    const [inFlux, setInFlux] = useState<boolean>(false);
 
     /**
      * Fetches the list of inventory items from the api route
@@ -50,6 +52,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
             ...form,
             [name]: value,
         }));
+        setInFlux(true);
     };
 
     /**
@@ -119,6 +122,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                 console.log(item);
                 updateInventoryItem();
             }
+            setInFlux(false);
         }
         fetchInventoryItems();
     };
@@ -179,7 +183,10 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
             getInventoryItem();
             setExists(true);
         }
-    }, [selected, exists]);
+        if (needsRefresh) {
+            setNeedsRefresh(false);
+        }
+    }, [selected, exists, needsRefresh]);
 
     /*useEffect(() => {
         existsInInventory();
@@ -276,12 +283,20 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
         fetchInventoryItems();
     };
 
+    const handleRefresh = () => {
+        setNeedsRefresh(true);
+    };
+
     return (
         <div
             className={
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
+            <button type="button" onClick={handleRefresh}>
+                Reset Changes
+            </button>
+
             {/*TODO: figure out select hover effect.*/}
             <select
                 className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
@@ -374,12 +389,14 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                         />
                     </label>
                     <div className="flex flex-row items-center justify-center gap-4">
-                        <button
-                            className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
-                            type="submit"
-                        >
-                            {exists ? 'Save Changes' : 'Add Item'}
-                        </button>
+                        {inFlux && (
+                            <button
+                                className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
+                                type="submit"
+                            >
+                                {exists ? 'Save Changes' : 'Add Item'}
+                            </button>
+                        )}
                         {exists && (
                             <button
                                 className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
@@ -388,7 +405,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                                 Delete Item
                             </button>
                         )}
-                        {exists && (
+                        {exists && !inFlux && (
                             <button
                                 className="text-background bg-primary rounded-2xl p-4 duration-200 hover:text-text hover:bg-primary/70"
                                 onClick={handleReqClick}
@@ -400,7 +417,7 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                 </form>
             )}
 
-            {requesting && (
+            {requesting && !inFlux && (
                 <div className="flex flex-col items-left justify-start gap-4 rounded-2xl border-l-[0.5rem] border-l-accent p-4 bg-secondary/20">
                     <label className="flex flex-row items-center justify-between gap-4">
                         Quantity to Request:

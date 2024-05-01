@@ -45,7 +45,7 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
                     size: 24,
                     weight: 'bold' as const, // 'as const' narrows the string type to the literal 'bold'
                 },
-                color: '#333', // Define the color for the title
+                color: '#f7e7ed', // Define the color for the title
             },
             legend: {
                 display: false, // Since you don't need a legend
@@ -64,10 +64,10 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
                         size: 18,
                         weight: 'bold' as const, // 'as const' narrows the string type to the literal 'bold'
                     },
-                    color: '#333', // Define the color for the axis title
+                    color: '#f7e7ed', // Define the color for the axis title
                 },
                 ticks: {
-                    color: '#333', // Darker axis labels
+                    color: '#f7e7ed', // Darker axis labels
                 },
             },
             y: {
@@ -78,10 +78,10 @@ const BarGraph = ({ data, title }: BarGraphProps) => {
                         size: 18,
                         weight: 'bold' as const, // 'as const' narrows the string type to the literal 'bold'
                     },
-                    color: '#333', // Define the color for the axis title
+                    color: '#f7e7ed', // Define the color for the axis title
                 },
                 ticks: {
-                    color: '#333', // Darker axis labels
+                    color: '#f7e7ed', // Darker axis labels
                 },
             },
         },

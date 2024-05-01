@@ -37,6 +37,7 @@ function MenuEditer({ className }: MenuEditerProps) {
     const [addingIngredient, setAddingIngredient] = useState<boolean>(false);
     const [newQuantity, setNewQuantity] = useState<number>(0);
     const [inFlux, setInFlux] = useState<boolean>(false);
+    const [needsRefresh, setNeedsRefresh] = useState<boolean>(false);
 
     /**
      * Fetched the menu item names
@@ -397,7 +398,10 @@ function MenuEditer({ className }: MenuEditerProps) {
             getMenuItem();
             setExists(true);
         }
-    }, [selected, exists]);
+        if (needsRefresh) {
+            setNeedsRefresh(false);
+        }
+    }, [selected, exists, needsRefresh]);
 
     /**
      * Handles a change in selection from teh dropdown
@@ -537,41 +541,55 @@ function MenuEditer({ className }: MenuEditerProps) {
         setSelectedIng('');
     };
 
+    const handleRefresh = () => {
+        setNeedsRefresh(true);
+    };
+
     return (
         <div
             className={
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
-            <select
-                className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
-                id="dropdown"
-                value={selected}
-                onChange={handleSelect}
-            >
-                <option
-                    className="bg-secondary text-text font-sans"
-                    value=""
-                    disabled
+            <div className="flex flex-row-reverse items-center justify-center gap-4">
+                <button
+                    className="bg-secondary duration-200 p-4 rounded-2xl hover:bg-secondary/50"
+                    type="button"
+                    onClick={handleRefresh}
                 >
-                    Select an option
-                </option>
-                {itemNames.map((option, index) => (
+                    Reset Changes
+                </button>
+
+                <select
+                    className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
+                    id="dropdown"
+                    value={selected}
+                    onChange={handleSelect}
+                >
                     <option
                         className="bg-secondary text-text font-sans"
-                        key={index}
-                        value={option}
+                        value=""
+                        disabled
                     >
-                        {option}
+                        Select an option
                     </option>
-                ))}
-                <option
-                    className="bg-secondary text-text font-sans"
-                    value="new"
-                >
-                    Add a Menu Item
-                </option>
-            </select>
+                    {itemNames.map((option, index) => (
+                        <option
+                            className="bg-secondary text-text font-sans"
+                            key={index}
+                            value={option}
+                        >
+                            {option}
+                        </option>
+                    ))}
+                    <option
+                        className="bg-secondary text-text font-sans"
+                        value="new"
+                    >
+                        Add a Menu Item
+                    </option>
+                </select>
+            </div>
 
             {visible && (
                 <form
@@ -776,11 +794,12 @@ function MenuEditer({ className }: MenuEditerProps) {
                     <label className="flex flex-row items-center justify-between gap-4">
                         Popularity:
                         <input
-                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2 hover:cursor-not-allowed"
                             type="number"
                             name="popularity"
                             value={form.popularity}
-                            onChange={handleChange}
+                            disabled={true}
+                            //onChange={handleChange}
                         />
                     </label>
                     <label className="flex flex-row items-center justify-between gap-4">
