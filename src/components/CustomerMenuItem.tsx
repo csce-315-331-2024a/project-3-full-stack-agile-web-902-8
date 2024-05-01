@@ -59,7 +59,7 @@ export function CustomerMenuItem({
             onClick={() => addToOrder(item)}
         >
             <Image
-                className="max-w-64 mx-auto"
+                className="w-64 aspect-square mx-auto"
                 src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
@@ -114,13 +114,15 @@ export function CustomerRecommendedItem({
             className="h-fit bg-transparent text-center p-4 inline-block active:bg-background/50"
             onClick={() => addToOrder(item)}
         >
-            <Image
-                className="max-w-32 max-h-32"
-                src={`/api/menuImages/${item.id}`}
-                alt={item.name}
-                width={150}
-                height={150}
-            />
+            <div className="flex justify-center">
+                <Image
+                    className="w-32 aspect-square"
+                    src={`/api/menuImages/${item.id}`}
+                    alt={item.name}
+                    width={150}
+                    height={150}
+                />
+            </div>
             <p>{item.name}</p>
         </button>
     );
