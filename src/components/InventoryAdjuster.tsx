@@ -293,40 +293,46 @@ function InventoryAdjuster({ className }: InventoryAdjusterProps) {
                 'flex flex-col items-center justify-start gap-4 ' + className
             }
         >
-            <button type="button" onClick={handleRefresh}>
-                Reset Changes
-            </button>
-
-            {/*TODO: figure out select hover effect.*/}
-            <select
-                className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
-                id="dropdown"
-                value={selected}
-                onChange={handleSelect}
-            >
-                <option
-                    className="bg-secondary text-text font-sans"
-                    value=""
-                    disabled
+            <div className="flex flex-row-reverse items-center justify-center gap-4">
+                <button
+                    className="bg-secondary duration-200 p-4 rounded-2xl hover:bg-secondary/50"
+                    type="button"
+                    onClick={handleRefresh}
                 >
-                    Select an option
-                </option>
-                {itemNames.map((option, index) => (
+                    Reset Changes
+                </button>
+
+                {/*TODO: figure out select hover effect.*/}
+                <select
+                    className="bg-secondary duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
+                    id="dropdown"
+                    value={selected}
+                    onChange={handleSelect}
+                >
                     <option
                         className="bg-secondary text-text font-sans"
-                        key={index}
-                        value={option}
+                        value=""
+                        disabled
                     >
-                        {option}
+                        Select an option
                     </option>
-                ))}
-                <option
-                    className="bg-secondary text-text font-sans"
-                    value="new"
-                >
-                    Add an Inventory Item
-                </option>
-            </select>
+                    {itemNames.map((option, index) => (
+                        <option
+                            className="bg-secondary text-text font-sans"
+                            key={index}
+                            value={option}
+                        >
+                            {option}
+                        </option>
+                    ))}
+                    <option
+                        className="bg-secondary text-text font-sans"
+                        value="new"
+                    >
+                        Add an Inventory Item
+                    </option>
+                </select>
+            </div>
 
             {visible && (
                 <form
