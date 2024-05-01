@@ -32,6 +32,7 @@ jobs:
 
       - name: Build Doc
         shell: bash
+        run: npm ci
         run: npx typedoc
 
       - name: Publish
