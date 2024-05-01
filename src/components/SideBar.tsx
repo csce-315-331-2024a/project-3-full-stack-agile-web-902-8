@@ -10,6 +10,11 @@ type SideProp = {
     className?: string;
 };
 
+/**
+ * Generates the sidebar for the pages
+ * @param param0 The props for the sidebar
+ * @returns The sidebar for the pages
+ */
 function SideBar({ names, hrefs, className }: SideProp) {
     const pathName = usePathname();
     return (

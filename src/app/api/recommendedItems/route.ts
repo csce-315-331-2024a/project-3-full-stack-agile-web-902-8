@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-
 /**
  * Gets recommended items from the database
  *

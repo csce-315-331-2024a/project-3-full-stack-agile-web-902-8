@@ -7,6 +7,10 @@ import {
     ZoomOut,
     ResetZoom,
 } from '@/app/zoom.client';
+/**
+ * Generates the page for manage menu
+ * @returns The page for manage menu
+ */
 export default function Manager() {
     const { scale, setScale } = useScale();
     return (
