@@ -32,11 +32,9 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Install Dependencies
-      - run: npm ci
-
       - name: Build Doc
         shell: bash
+        run: npm ci
         run: npx typedoc
       
 
