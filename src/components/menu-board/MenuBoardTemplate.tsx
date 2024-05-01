@@ -61,7 +61,7 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
         <div className={'flex flex-col items-center h-screen'}>
             <h1
                 className={
-                    'text-[4rem] my-2 font-bold relative mainHeader w-fit'
+                    'text-[2rem] sm:text-[3rem] lg:text-[4rem] my-2 font-bold relative mainHeader w-fit'
                 }
             >
                 {title}

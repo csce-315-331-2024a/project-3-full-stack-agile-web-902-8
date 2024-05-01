@@ -14,7 +14,7 @@ export function MenuBoardItem({ item }: MenuItemProp) {
     };
 
     return (
-        <div className={'grid w-full grid-cols-4 gap-2'}>
+        <div className={'grid w-full grid-cols-4 gap-2 items-center'}>
             <div className={'flex justify-center items-center'}>
                 <Image
                     src={`/api/menuImages/${item.id}`}
@@ -25,10 +25,18 @@ export function MenuBoardItem({ item }: MenuItemProp) {
                 />
             </div>
             <div className={'col-span-2'}>
-                <h3 className={'text-[3rem] font-semibold'}>{item.name}</h3>
-                <p className={'text-[2rem]'}>{item.description}</p>
+                <h3 className={'sm:text-[2rem] lg:text-[3rem] font-semibold'}>
+                    {item.name}
+                </h3>
+                <p className={'sm:text-[1.5rem] lg:text-[2rem]'}>
+                    {item.description}
+                </p>
             </div>
-            <div className={'flex justify-center items-center text-[3rem]'}>
+            <div
+                className={
+                    'flex justify-center items-center sm:text-[2rem] lg:text-[3rem]'
+                }
+            >
                 <p>${item.price.toLocaleString('en-US', options)}</p>
             </div>
         </div>
