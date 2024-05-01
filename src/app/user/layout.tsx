@@ -13,7 +13,6 @@ import {
     ResetZoom,
 } from '@/app/zoom.client';
 
-
 function openMenuBoardPages() {
     window.open('/menuboards/Burgers', '_blank');
     window.open('/menuboards/Meals_Limited', '_blank');

@@ -132,83 +132,80 @@ const DataPage = () => {
     const sortedInventoryData = inventoryData.sort((a, b) => b.qty - a.qty);
 
     return (
-        <main
-            className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4"
-        >
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4">
             <div className="max-w-[1200px] m-auto">
+                <DateRangePicker
+                    startDate={startDate}
+                    endDate={endDate}
+                    setStartDate={setStartDate}
+                    setEndDate={setEndDate}
+                />
 
-            <DateRangePicker
-                startDate={startDate}
-                endDate={endDate}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-            />
+                <button
+                    onClick={handleGenerateSalesReport}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                >
+                    Generate Sales Report
+                </button>
+                <button
+                    onClick={handleGenerateProductUsageReport}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                >
+                    Generate Product Usage Report
+                </button>
+                <button
+                    onClick={handleGenerateWhatSellsTogetherReport}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                >
+                    Generate What Sells Together Report
+                </button>
 
-            <button
-                onClick={handleGenerateSalesReport}
-                //className={design.genresbutton}
-                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-            >
-                Generate Sales Report
-            </button>
-            <button
-                onClick={handleGenerateProductUsageReport}
-                //className={design.genresbutton}
-                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-            >
-                Generate Product Usage Report
-            </button>
-            <button
-                onClick={handleGenerateWhatSellsTogetherReport}
-                //className={design.genresbutton}
-                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-            >
-                Generate What Sells Together Report
-            </button>
+                <button
+                    style={resetButtonStyle}
+                    onClick={handleReset}
+                    //className={design.genresbutton}
+                    className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                >
+                    Reset
+                </button>
 
-            <button
-                style={resetButtonStyle}
-                onClick={handleReset}
-                //className={design.genresbutton}
-                className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
-            >
-                Reset
-            </button>
+                {isLoading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
+                {!isLoading && !error && (
+                    <>
+                        <div className="report-section">
+                            <ScrollableBarGraph
+                                data={sortedMenuData.map((item) => ({
+                                    label: item.name,
+                                    value: item.qty,
+                                    color: 'rgba(205, 50, 75, 1)',
+                                }))}
+                                title="Sales Report"
+                            />
+                        </div>
 
-            {isLoading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {!isLoading && !error && (
-                <>
-                    <div className="report-section">
-                        <ScrollableBarGraph
-                            data={sortedMenuData.map((item) => ({
-                                label: item.name,
-                                value: item.qty,
-                                color: 'rgba(205, 50, 75, 1)',
-                            }))}
-                            title="Sales Report"
-                        />
-                    </div>
+                        <div className="report-section">
+                            <ScrollableBarGraph
+                                data={sortedInventoryData.map((item) => ({
+                                    label: item.name,
+                                    value: item.qty,
+                                    color: 'rgba(205, 50, 75, 1)',
+                                }))}
+                                title="Product Usage"
+                            />
+                        </div>
 
-                    <div className="report-section">
-                        <ScrollableBarGraph
-                            data={sortedInventoryData.map((item) => ({
-                                label: item.name,
-                                value: item.qty,
-                                color: 'rgba(205, 50, 75, 1)',
-                            }))}
-                            title="Product Usage"
-                        />
-                    </div>
-
-                    <div className="report-section">
-                        <ScrollableList
-                            items={frequentlySoldPairsData}
-                            title="What Sells Together"
-                        />
-                    </div>
-                </>
-            )}
+                        <div className="report-section">
+                            <ScrollableList
+                                items={frequentlySoldPairsData}
+                                title="What Sells Together"
+                            />
+                        </div>
+                    </>
+                )}
             </div>
         </main>
     );
