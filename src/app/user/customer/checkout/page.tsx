@@ -106,8 +106,8 @@ export default function CustomerCheckout() {
     }
 
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row">
-            <div className="w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll">
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row gap-8 p-4">
+            <div className="w-[20rem] max-md:w-40 border-[1px] border-solid border-text overflow-y-scroll">
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem
                         key={item.id}
@@ -118,18 +118,18 @@ export default function CustomerCheckout() {
                     />
                 ))}
             </div>
-            <div className="w-[70%] m-12">
-                <div className="h-[75%] overflow-y-scroll">
-                    <table className="w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg">
-                        <thead className="h-16 top-0 sticky z-1">
+            <div className="w-[calc(100%-20rem)] max-md:w-[calc(100%-10rem)]">
+                <div className="h-[70%] overflow-y-scroll">
+                    <table className="w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg max-md:text-sm max-sm:text-xs">
+                        <thead className="h-16 top-0 sticky z-1 max-sm:h-8">
                             <tr>
-                                <th className="text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <th className="text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     Item
                                 </th>
-                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     Quantity
                                 </th>
-                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     Price
                                 </th>
                             </tr>
@@ -137,13 +137,13 @@ export default function CustomerCheckout() {
                         <tbody>
                             {currentOrder.map(({ item, qty }) => (
                                 <tr key={item.id}>
-                                    <td className="text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    <td className="text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                         {item.name}
                                     </td>
-                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                         x{qty}
                                     </td>
-                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                         ${(item.price * qty).toFixed(2)}
                                     </td>
                                 </tr>
@@ -151,38 +151,38 @@ export default function CustomerCheckout() {
                         </tbody>
                         <tfoot className="bg-background bottom-0 sticky z-1">
                             <tr>
-                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1"></td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     Subtotal
                                 </td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     ${subTotal.toFixed(2)}
                                 </td>
                             </tr>
                             <tr>
-                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1"></td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     Tax
                                 </td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     ${tax.toFixed(2)}
                                 </td>
                             </tr>
                             <tr>
-                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1"></td>
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     Total
                                 </td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text max-md:p-1">
                                     ${total.toFixed(2)}
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
-                <section className="w-full h-fit flex flex-col">
-                    <div className="w-full flex flex-row justify-between items-center p-4">
-                        <h2 className="text-2xl font-bold w-fit h-fit">
+                <section className="w-full h-[30%] flex flex-col">
+                    <div className="w-full flex flex-row justify-between items-center py-4">
+                        <h2 className="text-2xl font-bold w-fit h-fit max-lg:text-lg">
                             Payment Method
                         </h2>
                         <Link
@@ -195,7 +195,7 @@ export default function CustomerCheckout() {
                     <ul className="grid grid-cols-[repeat(4,1fr)]">
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem_0_0_1rem] border-background border-r-2"
+                                className="bg-secondary w-full h-full py-8 text-2xl max-xl:text-lg max-lg:text-base duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem_0_0_1rem] border-background border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -207,7 +207,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
+                                className="bg-secondary w-full h-full py-8 text-2xl max-xl:text-lg max-lg:text-base duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -219,7 +219,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
+                                className="bg-secondary w-full h-full py-8 text-2xl max-xl:text-lg max-lg:text-base duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
@@ -231,7 +231,7 @@ export default function CustomerCheckout() {
                         </li>
                         <li className="h-full">
                             <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[0_1rem_1rem_0] border-background border-l-2"
+                                className="bg-secondary w-full h-full py-8 text-2xl max-xl:text-lg max-lg:text-base duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[0_1rem_1rem_0] border-background border-l-2"
                                 onClick={placeOrder}
                                 disabled={
                                     isPlacingOrder || currentOrder.length === 0
