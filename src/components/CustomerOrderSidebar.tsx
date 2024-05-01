@@ -62,19 +62,19 @@ export function CustomerOrderItem({
     };
 
     return (
-        <div className="h-fit p-[0.75rem_0.75rem_1.50rem_0.75rem] border-2 border-solid border-text grid grid-cols-[repeat(3,1fr)] gap-1">
+        <div className="h-fit p-[0.75rem_0.75rem_1.50rem_0.75rem] border-2 border-solid border-text grid grid-cols-[repeat(3,1fr)] gap-1 max-md:p-2">
             <Image
-                className="w-24 h-24"
+                className="w-24 h-24 max-md:col-[1/span_3] m-auto"
                 src={`/api/menuImages/${item.id}`}
                 alt={item.name}
                 width={200}
                 height={200}
             />
-            <h3 className="text-center flex justify-center items-center col-[2/span_2]">
+            <h3 className="text-center flex justify-center items-center col-[2/span_2] max-md:col-[1/span_3] max-md:text-sm">
                 {item.name}
             </h3>
-            <p className="col-[1/span_3]">{item.description}</p>
-            <div className="flex justify-row items-center col-[1] ">
+            <p className="col-[1/span_3] max-md:text-xs">{item.description}</p>
+            <div className="flex justify-row items-center col-[1] max-md:col-[1/span_3] m-auto">
                 <button
                     className="w-6 h-6 flex justify-center items-center text-center border-[1pt] border-solid border-text text-2xl m-[0.25rem_0.1rem] "
                     onClick={() => changeQty(qty - 1)}
@@ -92,7 +92,7 @@ export function CustomerOrderItem({
                     )}
                 </button>
                 {/* TODO: Add method for onChange */}
-                <p className="w-6 h-6 flex justify-center items-center text-center p-4">
+                <p className="w-6 h-6 flex justify-center items-center text-center p-4 max-md:p-0">
                     {qty}
                 </p>
                 <button
@@ -102,7 +102,7 @@ export function CustomerOrderItem({
                     +
                 </button>
             </div>
-            <p className="text-2xl flex justify-center items-center col-[3]">
+            <p className="text-2xl flex justify-center items-center col-[3] max-md:text-lg">
                 ${(item.price * qty).toLocaleString('en-US', options)}
             </p>
         </div>
@@ -115,14 +115,14 @@ export function CustomerOrderSidebar({
     checkoutPage,
 }: OrderSidebarProp) {
     return (
-        <div className="border-l-2 border-solid border-l-text h-full w-80">
+        <div className="border-l-2 border-solid border-l-text h-full w-80 max-md:w-40">
             <div className="h-4/5 overflow-y-scroll overflow-x-hidden">
                 {children}
             </div>
             <Link href={checkoutPage}>
                 <button
                     className={
-                        'w-full h-1/5 bg-secondary border-2 border-solid border-text text-4xl' +
+                        'w-full h-1/5 bg-secondary border-2 border-solid border-text text-4xl max-md:text-2xl' +
                         (currentOrder.length === 0 ? ' hidden' : '')
                     }
                     disabled={currentOrder.length === 0}

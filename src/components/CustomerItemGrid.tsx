@@ -33,7 +33,7 @@ function CustomerItemGrid({
     }
 
     return (
-        <div className="grid w-full h-fit grid-cols-[repeat(4,1fr)] gap-2">
+        <div className="grid w-full h-fit grid-cols-[repeat(4,1fr)] max-xl:grid-cols-[repeat(3,1fr)] max-lg:grid-cols-[repeat(2,1fr)] gap-2">
             {categoryItems.map((menuitem: MenuItem) => (
                 <CustomerMenuItem
                     key={menuitem.id}

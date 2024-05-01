@@ -146,13 +146,13 @@ export default function Customer() {
                 }}
             ></div>
             <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
-                <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
+                <div className="w-[calc(100%_-_20rem)] max-md:w-[calc(100%_-_10rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
                     <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
                         Menu
                     </h1>
                     <div>
-                        <h2 className="text-2xl font-bold">Recommendations</h2>
-                        <p>Based on the current weather</p>
+                        <h2 className="text-2xl font-bold max-sm:text-lg">Recommendations</h2>
+                        <p className='max-sm:text-sm'>Based on the current weather</p>
                         <CustomerRecommendedBar
                             isFetchingMenuItems={isFetchingRecommendations}
                             menuItems={recommendedItems}
@@ -161,7 +161,7 @@ export default function Customer() {
                         />
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold">Categories</h2>
+                        <h2 className="text-2xl font-bold max-sm:text-lg">Categories</h2>
                         <CustomerCategoryBar
                             isFetchingMenuTypes={isFetchingMenuTypes}
                             categories={categories}
@@ -197,7 +197,7 @@ export default function Customer() {
                 id="zoom-controls"
                 style={{
                     position: 'fixed',
-                    top: '70px',
+                    bottom: '1rem',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     zIndex: 1001, // Above scaled content

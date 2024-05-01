@@ -31,7 +31,7 @@ function CustomerRecommendedBar({
     }
 
     return (
-        <ul className="bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl px-4 grid h-fit grid-cols-[repeat(6,1fr)] gap-2">
+        <ul className="bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl px-4 grid h-fit grid-cols-[repeat(6,1fr)] max-xl:grid-cols-[repeat(5,1fr)] max-lg:grid-cols-[repeat(3,1fr)] max-lg:overflow-y-scroll max-lg:h-80 max-md:grid-cols-[repeat(2,1fr)] gap-2">
             {menuItems.map((menuItem: MenuItem) => (
                 <li
                     className="w-full h-fit flex justify-center items-center"

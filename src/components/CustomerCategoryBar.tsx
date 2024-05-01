@@ -37,7 +37,7 @@ function CustomerCategoryBar({
     }
 
     return (
-        <ul className="bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl p-4 flex justify-stretch items-stretch">
+        <ul className="bg-secondary w-full min-h-24 border-text border-solid border-2 rounded-2xl px-4 flex justify-stretch items-stretch flex-wrap">
             {categories.map((categoryName) => (
                 <li key={categoryName}>
                     <CustomerCategoryButton
@@ -63,8 +63,8 @@ function CustomerCategoryButton({
     return (
         <button
             className={
-                'w-full bg-secondary h-full flex justify-center items-center duration-200 p-4 active:bg-background/50' +
-                (categoryName === category ? ' active:bg-background/50' : '')
+                'w-full bg-secondary h-full flex text-left justify-center items-center duration-200 p-4 active:bg-background/70 max-sm:text-xs max-sm:p-1' +
+                (categoryName === category ? ' bg-background/30' : '')
             }
             onClick={handleClick}
         >
