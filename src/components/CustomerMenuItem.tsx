@@ -115,7 +115,7 @@ export function CustomerRecommendedItem({
 
     return (
         <button
-            className="h-fit bg-transparent text-center p-4 inline-block active:bg-background/50 max-md:p-2 max-md:text-sm"
+            className="h-fit bg-transparent text-center p-4 inline-block active:bg-background/50 max-md:p-2 max-md:text-sm max-sm:text-xs"
             onClick={() => addToOrder(item)}
         >
             <div className="flex justify-center">
