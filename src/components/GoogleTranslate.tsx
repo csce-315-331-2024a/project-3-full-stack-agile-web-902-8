@@ -37,7 +37,7 @@ const GoogleTranslate: React.FC = () => {
     }, []);
 
     return (
-        <div id="google_translate_element"></div> // Render an empty div with the specified ID where the Google Translate widget will be injected
+        <div className='h-6 w-[9rem] flex-shrink-0 flex-grow-0 overflow-y-hidden' id="google_translate_element"></div> // Render an empty div with the specified ID where the Google Translate widget will be injected
     );
 };
 

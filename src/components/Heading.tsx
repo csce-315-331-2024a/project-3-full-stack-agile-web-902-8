@@ -28,7 +28,7 @@ function Heading({
     return (
         <nav
             className={
-                'w-full z-50 flex flex-row justify-between items-center bg-background shadow-xl ' +
+                'w-full h-min z-50 flex flex-row items-center bg-background shadow-xl ' +
                 className
             }
         >
@@ -37,7 +37,7 @@ function Heading({
                 src={revsLogo}
                 alt="Rev's American Grill"
             />
-            <ul className="flex flex-row flex-wrap items-center justify-start w-full h-full">
+            <ul className="flex flex-row flex-wrap items-center justify-start w-full">
                 {names.map((link, i) =>
                     link === 'Menu Board' ? (
                         <li
@@ -45,7 +45,7 @@ function Heading({
                             key={link}
                             onClick={openMenuBoardPages}
                         >
-                            <a className="px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink">
+                            <a className="px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden max-xl:px-4 max-lg:px-2 max-sm:text-xs sm:navLink max-sm:py-1">
                                 {link}
                             </a>
                         </li>
@@ -53,7 +53,7 @@ function Heading({
                         <li key={link} className="flex h-full">
                             <Link
                                 className={
-                                    'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden navLink' +
+                                    'px-8 py-4 flex items-center justify-center text-center relative h-full cursor-pointer overflow-hidden max-xl:px-4 max-lg:px-2 max-sm:text-xs sm:navLink max-sm:py-1 ' +
                                     (pathName.startsWith(hrefs[i])
                                         ? ' current'
                                         : '')
