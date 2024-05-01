@@ -31,16 +31,16 @@ jobs:
           node-version: 16
           cache: "npm"
 
-      - name: Build Doc
-        shell: bash
-        run: npx typedoc
-      
-      # - name: TSDoc Action
-      #   uses: erikyo/tsdoc-action@v1
-      #   with:
-      #     source_dir: ./src/*
-      #     output_dir: ./docs
-      #     front_page: README.md
+      # - name: Build Doc
+      #   shell: bash
+      #   run: npx typedoc
+      #
+      - name: TSDoc Action
+        uses: erikyo/tsdoc-action@v1
+        with:
+          source_dir: ./src/*
+          output_dir: ./docs
+          front_page: README.md
 
       - name: Publish
         uses: peaceiris/actions-gh-pages@v3
