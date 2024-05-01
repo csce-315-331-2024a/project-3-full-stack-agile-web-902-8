@@ -4,7 +4,7 @@ name: TSDoc Actions
 on:
   push:
     branches:
-      dev-tsdoc
+      main
 
 jobs:
   build:
