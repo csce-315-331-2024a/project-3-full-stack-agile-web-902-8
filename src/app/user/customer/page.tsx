@@ -151,8 +151,12 @@ export default function Customer() {
                         Menu
                     </h1>
                     <div>
-                        <h2 className="text-2xl font-bold max-sm:text-lg">Recommendations</h2>
-                        <p className='max-sm:text-sm'>Based on the current weather</p>
+                        <h2 className="text-2xl font-bold max-sm:text-lg">
+                            Recommendations
+                        </h2>
+                        <p className="max-sm:text-sm">
+                            Based on the current weather
+                        </p>
                         <CustomerRecommendedBar
                             isFetchingMenuItems={isFetchingRecommendations}
                             menuItems={recommendedItems}
@@ -161,7 +165,9 @@ export default function Customer() {
                         />
                     </div>
                     <div>
-                        <h2 className="text-2xl font-bold max-sm:text-lg">Categories</h2>
+                        <h2 className="text-2xl font-bold max-sm:text-lg">
+                            Categories
+                        </h2>
                         <CustomerCategoryBar
                             isFetchingMenuTypes={isFetchingMenuTypes}
                             categories={categories}

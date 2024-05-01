@@ -65,8 +65,12 @@ export function CustomerMenuItem({
                 width={200}
                 height={200}
             />
-            <p className="text-2xl max-lg:text-lg max-md:text-sm">{item.name}</p>
-            <p className="px-8 text-left max-lg:text-sm max-lg:px-0 max-md:text-xs">{item.description}</p>
+            <p className="text-2xl max-lg:text-lg max-md:text-sm">
+                {item.name}
+            </p>
+            <p className="px-8 text-left max-lg:text-sm max-lg:px-0 max-md:text-xs">
+                {item.description}
+            </p>
             <p className="text-2xl max-lg:text-lg max-md:text-sm flex justify-center items-center">
                 ${item.price.toLocaleString('en-US', options)}
             </p>
