@@ -27,6 +27,21 @@ li {
         visibility: hidden !important;
     }
 
+    #google_translate_element .skiptranslate {
+        font-size: 0; /* Remove the powered by text */
+    }
+
+    #google_translate_element .skiptranslate a
+    {
+        @apply text-text; /* Color the translate text */
+    }
+
+    #google_translate_element > .skiptranslate .goog-te-combo {
+        color: initial; /* Color the text in the dropdown back to original black */
+    }
+
+
+
     /* Navbar */
     .navLink::before {
         content: '';
