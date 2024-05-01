@@ -2,6 +2,11 @@ import { markOrderAsCanceled } from '@/lib/orders';
 import { NextRequest, NextResponse } from 'next/server';
 import Error from '@/lib/error';
 
+/**
+ * POST API to mark an order as canceled.
+ * @param {NextRequest} request - The request containing the order ID.
+ * Returns a 201 response on success, or 500 if an error occurs.
+ */
 export async function POST(request: NextRequest) {
     console.log('POST /api/markOrderAsCanceled');
     try {

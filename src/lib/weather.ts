@@ -11,6 +11,11 @@ export type WeatherCondition = {
     situation: Situation;
 };
 
+/**
+ * Gets the weather data based of latitude and longitude
+ * @param param0 The latitude and longitude
+ * @returns The weather condition as that latitude and longitude
+ */
 export async function getWeatherData(
     [lat, lon]: [number, number] = [30.612408154672494, -96.34166678693717]
 ): Promise<WeatherCondition> {

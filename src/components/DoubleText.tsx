@@ -6,6 +6,11 @@ type TextProp = {
     block2: ReactNode;
 };
 
+/**
+ * Generates a compnent for formatting elements side by side
+ * @param param0 The props for the component
+ * @returns The component for formatting elements side by side
+ */
 function DoubleText({ block1, block2 }: TextProp) {
     return (
         <div style={{ display: 'flex' }}>

@@ -541,6 +541,9 @@ function MenuEditer({ className }: MenuEditerProps) {
         setSelectedIng('');
     };
 
+    /**
+     * Handles refreshing the values
+     */
     const handleRefresh = () => {
         setNeedsRefresh(true);
     };

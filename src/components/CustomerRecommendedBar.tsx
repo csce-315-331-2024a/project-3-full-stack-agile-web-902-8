@@ -11,6 +11,11 @@ interface RecommendedBarProp {
     setCurrentOrder: (currentOrder: OrderEntry[]) => void;
 }
 
+/**
+ * Generates the recommendation bar for customer
+ * @param param0 The props for the recommendation bar
+ * @returns The recommendation bar for customer
+ */
 function CustomerRecommendedBar({
     isFetchingMenuItems,
     menuItems,

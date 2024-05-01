@@ -2,6 +2,10 @@
 
 import React, { useEffect } from 'react';
 
+/**
+ * Creates the component for google translate
+ * @returns The component for google translate
+ */
 const GoogleTranslate: React.FC = () => {
     useEffect(() => {
         // This function initializes the Google Translate widget
