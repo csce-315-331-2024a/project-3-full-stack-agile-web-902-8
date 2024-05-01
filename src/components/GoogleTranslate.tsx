@@ -11,7 +11,8 @@ const GoogleTranslate: React.FC = () => {
             new (window as any).google.translate.TranslateElement(
                 {
                     pageLanguage: 'en', // Set the page language to English
-                    layout: (window as any).google.translate.TranslateElement.InlineLayout.HORIZONTAL
+                    layout: (window as any).google.translate.TranslateElement
+                        .InlineLayout.HORIZONTAL,
                 },
                 'google_translate_element' // Specify the HTML element where the widget should be rendered
             );
