@@ -19,11 +19,8 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
     const [itemsShown, setItemsShown] = useState<MenuItem[]>([]);
     const [indexShown, setIndexShown] = useState<number>(0);
 
-    const [isFetchingMenuItems, setIsFetchingMenuItems] = useState(false);
-
     useEffect(() => {
         async function fetchAllMenuItems() {
-            setIsFetchingMenuItems(true);
             try {
                 console.log(
                     "Fetching menu items may take a while sometimes, especially if you're running locally."
@@ -38,8 +35,8 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
                 );
                 setItems(itemsInCategory);
                 console.log('Fetching should be done now.');
-            } finally {
-                setIsFetchingMenuItems(false);
+            } catch {
+                console.log("Error trying to get menu items for menu board");
             }
         }
         fetchAllMenuItems();
@@ -75,7 +72,7 @@ function MenuBoardTemplate({ title, categories }: MenuBoardProps) {
                     'flex-auto grid grid-rows-3 w-4/5 mx-auto gap-4 mb-4'
                 }
             >
-                {isFetchingMenuItems ? (
+                {itemsShown.length == 0 ? (
                     <div className={'flex flex-row flex-wrap justify-center'}>
                         <button
                             className="text-background bg-text flex justify-center items-center m-4 w-fit h-fit rounded-2xl p-4 cursor-wait"

@@ -14,7 +14,7 @@ export function MenuBoardItem({ item }: MenuItemProp) {
     };
 
     return (
-        <div className={'grid w-full grid-cols-4 gap-2 border-2'}>
+        <div className={'grid w-full grid-cols-4 gap-2'}>
             <div className={'flex justify-center items-center'}>
                 <Image
                     src={`/api/menuImages/${item.id}`}
