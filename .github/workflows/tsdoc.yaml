@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Doc
         shell: bash
-        run: npx typedoc --entryPoints src --entryPointStrategy expand --out docs
+        run: npx typedoc
 
       - name: Publish
         uses: peaceiris/actions-gh-pages@v3
