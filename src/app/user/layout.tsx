@@ -131,7 +131,7 @@ export default function UserLayout({
         if (!authRoute) {
             push('/user/customer');
         }
-    }, [userRole, pathname, headingHrefs, push]);
+    }, [userRole, pathname]);
 
     return (
         <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">
