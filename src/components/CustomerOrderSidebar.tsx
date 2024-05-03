@@ -127,7 +127,7 @@ export function CustomerOrderSidebar({
                     }
                     disabled={currentOrder.length === 0}
                 >
-                    Checkout
+                    Checkout Order
                 </button>
             </Link>
         </div>
