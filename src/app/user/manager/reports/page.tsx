@@ -111,7 +111,7 @@ export default function ReportPage() {
     };
 
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[3fr_1fr] grid-rows-[min-content_1fr] p-4 gap-4">
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[3fr_1fr] grid-rows-[min-content_1fr] p-4 gap-4  pb-[70px]">
             <h1 className="col-[1/3] row-[1/2] text-[4rem] font-bold relative mainHeader w-fit h-fit">
                 Reports
             </h1>

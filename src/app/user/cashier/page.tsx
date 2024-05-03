@@ -163,7 +163,7 @@ export default function Cashier() {
     }
 
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4">
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden grid grid-cols-[1fr_2fr] gap-4 p-4  pb-[70px]">
             <div className="col-start-1 col-end-2 row-start-1 row-end-2 flex flex-col justify-start items-center gap-4 mb-auto">
                 <h1 className="text-[4rem] font-bold relative mainHeader">
                     Cashier
