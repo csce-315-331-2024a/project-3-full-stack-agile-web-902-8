@@ -33,6 +33,20 @@ export default function CustomerCheckout() {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [paymentMethod, setPaymentMethod] = useState<string>('Credit Card');
 
+    const [cardNumber, setCardNumber] = useState<string>('');
+
+    const formatCardNumber = (value: string) => {
+        const numericValue = value.replace(/\D/g, '');
+        const formattedValue = numericValue.replace(/(\d{4})/g, '$1 ').trim();
+        return formattedValue;
+    }
+
+    const handleCardNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        const formattedValue = formatCardNumber(value);
+        setCardNumber(formattedValue);
+    }
+
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
         localStorage.setItem('customer-order', JSON.stringify(currentOrder));
@@ -306,6 +320,8 @@ export default function CustomerCheckout() {
                                             className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
                                             type="text"
                                             inputMode="numeric"
+                                            value={cardNumber}
+                                            onChange={handleCardNumberChange}
                                             pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}"
                                             minLength={19}
                                             maxLength={19}
