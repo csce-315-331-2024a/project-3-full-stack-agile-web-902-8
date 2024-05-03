@@ -147,105 +147,107 @@ export default function CustomerCheckout() {
     }
 
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row pb-[70px]">
-            <div className="w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll">
-                {currentOrder.map(({ item, qty }) => (
-                    <CustomerOrderItem
-                        key={item.id}
-                        item={item}
-                        qty={qty}
-                        currentOrder={currentOrder}
-                        setCurrentOrder={setCurrentOrder}
-                    />
-                ))}
-            </div>
-            <div className="w-[70%] m-12">
-                <div className="h-[75%] overflow-y-scroll">
-                    <table className="w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg">
-                        <thead className="h-16 top-0 sticky z-1">
-                            <tr>
-                                <th className="text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    Item
-                                </th>
-                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    Quantity
-                                </th>
-                                <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    Price
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentOrder.map(({ item, qty }) => (
-                                <tr key={item.id}>
-                                    <td className="text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                        {item.name}
+        <>
+            <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row pb-[70px]">
+                <div className="w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll">
+                    {currentOrder.map(({ item, qty }) => (
+                        <CustomerOrderItem
+                            key={item.id}
+                            item={item}
+                            qty={qty}
+                            currentOrder={currentOrder}
+                            setCurrentOrder={setCurrentOrder}
+                        />
+                    ))}
+                </div>
+                <div className="w-[70%] m-12">
+                    <div className="h-[75%] overflow-y-scroll">
+                        <table className="w-full border-collapse border-b-[1px] border-b-solid border-b-text text-lg">
+                            <thead className="h-16 top-0 sticky z-1">
+                                <tr>
+                                    <th className="text-left w-[70%] py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        Item
+                                    </th>
+                                    <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        Quantity
+                                    </th>
+                                    <th className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {currentOrder.map(({ item, qty }) => (
+                                    <tr key={item.id}>
+                                        <td className="text-left py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                            {item.name}
+                                        </td>
+                                        <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                            x{qty}
+                                        </td>
+                                        <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                            ${(item.price * qty).toFixed(2)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot className="bg-background bottom-0 sticky z-1">
+                                <tr>
+                                    <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        Subtotal
                                     </td>
                                     <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                        x{qty}
-                                    </td>
-                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                        ${(item.price * qty).toFixed(2)}
+                                        ${subTotal.toFixed(2)}
                                     </td>
                                 </tr>
-                            ))}
-                        </tbody>
-                        <tfoot className="bg-background bottom-0 sticky z-1">
-                            <tr>
-                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    Subtotal
-                                </td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    ${subTotal.toFixed(2)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    Tax
-                                </td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    ${tax.toFixed(2)}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    Total
-                                </td>
-                                <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
-                                    ${total.toFixed(2)}
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                <tr>
+                                    <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        Tax
+                                    </td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        ${tax.toFixed(2)}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="py-1 px-3 border-b-[1px] border-b-solid border-b-text"></td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        Total
+                                    </td>
+                                    <td className="text-right py-1 px-3 border-b-[1px] border-b-solid border-b-text">
+                                        ${total.toFixed(2)}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <section className="w-full h-fit flex flex-col">
+                        <div className="w-full flex flex-row justify-between items-center p-4">
+                            <h2 className="text-2xl font-bold w-fit h-fit">
+                                Payment
+                            </h2>
+                            <Link
+                                className="bg-secondary duration-200 hover:bg-secondary/70 w-fit p-4 rounded-2xl"
+                                href="/user/customer/"
+                            >
+                                Back to menu
+                            </Link>
+                        </div>
+                        <div className="flex flex-end">
+                            <button
+                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem] border-background border-r-2"
+                                onClick={() => setShowPopup(true)}
+                                disabled={
+                                    isPlacingOrder || currentOrder.length === 0
+                                }
+                            >
+                                Go to Payment
+                            </button>
+                        </div>
+                    </section>
                 </div>
-                <section className="w-full h-fit flex flex-col">
-                    <div className="w-full flex flex-row justify-between items-center p-4">
-                        <h2 className="text-2xl font-bold w-fit h-fit">
-                            Payment
-                        </h2>
-                        <Link
-                            className="bg-secondary duration-200 hover:bg-secondary/70 w-fit p-4 rounded-2xl"
-                            href="/user/customer/"
-                        >
-                            Back to menu
-                        </Link>
-                    </div>
-                    <div className="flex flex-end">
-                        <button
-                            className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem] border-background border-r-2"
-                            onClick={() => setShowPopup(true)}
-                            disabled={
-                                isPlacingOrder || currentOrder.length === 0
-                            }
-                        >
-                            Go to Payment
-                        </button>
-                    </div>
-                </section>
-            </div>
+            </main>
             <Popup showPopup={showPopup} setShowPopup={setShowPopup}>
                 <div className="flex flex-col w-full mx-auto min-h-[600px]">
                     <div className="mb-10">
@@ -565,6 +567,6 @@ export default function CustomerCheckout() {
                     )}
                 </div>
             </Popup>
-        </main>
+        </>
     );
 }
