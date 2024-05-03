@@ -548,6 +548,18 @@ function MenuEditer({ className }: MenuEditerProps) {
         setNeedsRefresh(true);
     };
 
+    /**
+     * Handles changes to the select elements specifically for weather
+     */
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setInFlux(true);
+        const { name, value } = e.target;
+        setForm((form) => ({
+            ...form,
+            [name]: value,
+        }));
+    };
+
     return (
         <div
             className={
@@ -679,7 +691,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                             <label className="flex flex-row items-center justify-between gap-4">
                                 New Ingredient:
                                 <select
-                                    className="bg-text text-background duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4"
+                                    className="bg-text text-background duration-200 hover:cursor-pointer rounded-2xl flex justify-center items-center w-fit h-fit p-4 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
                                     id="dropdown"
                                     value={selectedIng}
                                     onChange={handleSelectIng}
@@ -756,13 +768,20 @@ function MenuEditer({ className }: MenuEditerProps) {
                     </label>
                     <label className="flex flex-row items-center justify-between gap-4">
                         Weather:
-                        <input
-                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
-                            type="text"
+                        <select
                             name="weather"
                             value={form.weather}
-                            onChange={handleChange}
-                        />
+                            onChange={handleSelectChange}
+                            className="rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-2"
+                        >
+                            <option value="" disabled>
+                                Select Weather Condition
+                            </option>
+                            <option value="hot">Hot</option>
+                            <option value="cold">Cold</option>
+                            <option value="wet">Wet</option>
+                            <option value="normal">Normal</option>
+                        </select>
                     </label>
                     <label className="flex flex-row items-center justify-between gap-4">
                         Description:
