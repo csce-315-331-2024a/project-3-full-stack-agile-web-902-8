@@ -1,17 +1,8 @@
 'use client';
 import React from 'react';
 import OrderTable from '@/components/OrderTable';
-import {
-    useScale,
-    ScaleProvider,
-    ZoomIn,
-    ZoomOut,
-    ResetZoom,
-} from '@/app/zoom.client'; // Ensure the path is correct
 
 export default function Manager() {
-    const { scale, setScale } = useScale(); // use the scale from context
-
     const tableHead = [
         'Order ID',
         'Timestamp',
@@ -26,39 +17,11 @@ export default function Manager() {
     ];
 
     return (
-        <ScaleProvider initialScale={1}>
-            {/* Scaled content */}
-            <div
-                id="scaled-content"
-                style={{
-                    transform: `scale(${scale})`,
-                    transformOrigin: 'center center',
-                    overflow: 'auto',
-                }}
-            >
-                <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start">
-                    <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
-                        Order History
-                    </h1>
-                    <OrderTable heading={tableHead} />
-                </main>
-            </div>
-            {/* Fixed-position zoom controls */}
-            <div
-                id="zoom-controls"
-                style={{
-                    position: 'fixed',
-                    top: '70px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    zIndex: 1001, // Above scaled content
-                    textAlign: 'center',
-                }}
-            >
-                <ZoomIn />
-                <ZoomOut />
-                <ResetZoom />
-            </div>
-        </ScaleProvider>
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4 justify-start pb-[70px]">
+            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                Order History
+            </h1>
+            <OrderTable heading={tableHead} />
+        </main>
     );
 }

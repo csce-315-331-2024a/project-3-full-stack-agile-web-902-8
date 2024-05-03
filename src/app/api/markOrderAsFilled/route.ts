@@ -2,6 +2,12 @@ import { markOrderAsFilled } from '@/lib/orders';
 import { NextRequest, NextResponse } from 'next/server';
 import Error from '@/lib/error';
 
+/**
+ * POST API to mark an order as filled.
+ * @param {NextRequest} request - The request containing the order ID.
+ * @returns Returns a 201 response on success, or 500 if an error occurs.
+ */
+
 export async function POST(request: NextRequest) {
     console.log('POST /api/markOrderAsFilled');
     try {

@@ -5,7 +5,18 @@
 import Heading from '@/components/Heading';
 import React, { useState, useEffect } from 'react';
 import { loginLevels } from '@/lib/config';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client';
 
+/**
+ * Opens the menu board
+ */
 function openMenuBoardPages() {
     window.open('/menuboards/Burgers', '_blank');
     window.open('/menuboards/Meals_Limited', '_blank');
@@ -13,13 +24,20 @@ function openMenuBoardPages() {
     window.open('/menuboards/Sandwiches_Baskets', '_blank');
 }
 
+/**
+ * Creates the layout for user
+ * @param param0 The children of the layout
+ * @returns The layout for the user
+ */
 export default function UserLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
     // TODO: In the future, the links presented will be determined by the user's position in Rev's
-    // TODO: Manage the user's login status
+
+    const { push } = useRouter();
+    const pathname = usePathname();
 
     interface userScope {
         names: string[];
@@ -32,6 +50,8 @@ export default function UserLayout({
     ]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userRole, changeUserRole] = useState<string>('');
+
+    const { scale, setScale } = useScale();
 
     // get the user login
     useEffect(() => {
@@ -119,6 +139,19 @@ export default function UserLayout({
         }
     }, [userRole]);
 
+    useEffect(() => {
+        let authRoute = false;
+        for (let path of headingHrefs) {
+            if (pathname.startsWith(path)) {
+                authRoute = true;
+                break;
+            }
+        }
+        if (!authRoute) {
+            push('/user/customer');
+        }
+    }, [headingHrefs, pathname, push]);
+
     return (
         <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">
             <Heading
@@ -128,7 +161,25 @@ export default function UserLayout({
                 openMenuBoardPages={openMenuBoardPages}
                 className="col-span-2 row-span-1"
             />
-            {children}
+            <ScaleProvider initialScale={1}>
+                {children}
+                {/* Fixed-position zoom control */}
+                <div
+                    id="zoom-controls"
+                    style={{
+                        position: 'fixed',
+                        bottom: '30px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1001,
+                        textAlign: 'center',
+                    }}
+                >
+                    <ZoomIn />
+                    <ZoomOut />
+                    <ResetZoom />
+                </div>
+            </ScaleProvider>
         </div>
     );
 }

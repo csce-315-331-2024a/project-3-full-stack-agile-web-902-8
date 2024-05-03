@@ -13,6 +13,15 @@ interface CustomerItemGridProps {
     setCurrentOrder: (order: OrderEntry[]) => void;
 }
 
+/**
+ * A functional component that renders a grid of menu items. If the items are being fetched, it displays a loading indicator.
+ * This component is ideal for displaying items from a specific category and includes functionality for adding items to an order.
+ * @param isFetchingMenuItems - Indicates if the menu items are currently being fetched.
+ * @param categoryItems - The list of menu items to display.
+ * @param currentOrder - The current list of order entries.
+ * @param setCurrentOrder - Function to update the current order based on user interactions.
+ * @return A React element representing either a loading state or a grid of menu items.
+ */
 function CustomerItemGrid({
     isFetchingMenuItems,
     categoryItems,

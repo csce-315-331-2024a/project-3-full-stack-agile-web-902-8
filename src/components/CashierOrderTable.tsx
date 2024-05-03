@@ -24,6 +24,11 @@ interface CashierOrderItemProps {
     className?: string;
 }
 
+/**
+ * A functional component that renders a table displaying the details of the current order, including discounts, taxes, and total amount.
+ * @param props - Properties passed to the component as specified in CashierOrderTableProps.
+ * @return A React element representing the current order in a table format with conditional rendering based on whether items are present.
+ */
 function CashierOrderTable({
     isDiscounted,
     isTaxed,
@@ -104,6 +109,11 @@ function CashierOrderTable({
     );
 }
 
+/**
+ * A component that displays an individual item within the order table, allowing adjustment of item quantity.
+ * @param props - Properties passed to the component as specified in CashierOrderItemProps.
+ * @return A React element representing a row in the order table for a single order entry.
+ */
 function CashierOrderItem({
     orderEntry,
     currentOrder,
