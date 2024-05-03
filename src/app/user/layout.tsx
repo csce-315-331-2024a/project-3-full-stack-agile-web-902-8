@@ -5,7 +5,6 @@
 import Heading from '@/components/Heading';
 import React, { useState, useEffect } from 'react';
 import { loginLevels } from '@/lib/config';
-import { usePathname, useRouter } from 'next/navigation';
 
 function openMenuBoardPages() {
     window.open('/menuboards/Burgers', '_blank');
@@ -20,9 +19,7 @@ export default function UserLayout({
     children: React.ReactNode;
 }) {
     // TODO: In the future, the links presented will be determined by the user's position in Rev's
-
-    const { push } = useRouter();
-    const pathname = usePathname();
+    // TODO: Manage the user's login status
 
     interface userScope {
         names: string[];
@@ -120,17 +117,7 @@ export default function UserLayout({
             setHeadingNames(customerScope.names);
             setHeadingHrefs(customerScope.hrefs);
         }
-
-        let authRoute = false;
-        for (let path of headingHrefs) {
-            if (pathname.startsWith(path)) {
-                authRoute = true;
-            }
-        }
-        if (!authRoute) {
-            push('/user/customer');
-        }
-    }, [userRole, pathname]);
+    }, [userRole]);
 
     return (
         <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">
