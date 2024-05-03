@@ -362,16 +362,16 @@ export default function CustomerCheckout() {
                                     </div>
                                     <div className="px-2 w-1/2">
                                         <select className="form-select w-full rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors cursor-pointer">
-                                            <option value="2020">2020</option>
-                                            <option value="2021">2021</option>
-                                            <option value="2022">2022</option>
-                                            <option value="2023">2023</option>
                                             <option value="2024">2024</option>
                                             <option value="2025">2025</option>
                                             <option value="2026">2026</option>
                                             <option value="2027">2027</option>
                                             <option value="2028">2028</option>
                                             <option value="2029">2029</option>
+                                            <option value="2030">2030</option>
+                                            <option value="2031">2031</option>
+                                            <option value="2032">2032</option>
+                                            <option value="2033">2033</option>
                                         </select>
                                     </div>
                                 </div>
