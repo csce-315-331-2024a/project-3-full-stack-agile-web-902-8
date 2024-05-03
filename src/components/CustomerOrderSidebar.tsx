@@ -134,16 +134,14 @@ export function CustomerOrderSidebar({
             <div className="h-4/5 overflow-y-scroll overflow-x-hidden">
                 {children}
             </div>
-            <Link href={checkoutPage}>
-                <button
-                    className={
-                        'w-full h-1/5 bg-secondary border-2 border-solid border-text text-4xl' +
-                        (currentOrder.length === 0 ? ' hidden' : '')
-                    }
-                    disabled={currentOrder.length === 0}
-                >
-                    Checkout Order
-                </button>
+            <Link
+                className={
+                    'flex justify-center items-center w-full h-1/5 bg-secondary border-2 border-solid border-text text-4xl' +
+                    (currentOrder.length === 0 ? ' hidden' : '')
+                }
+                href={currentOrder.length === 0 ? './' : checkoutPage}
+            >
+                Checkout Order
             </Link>
         </div>
     );
