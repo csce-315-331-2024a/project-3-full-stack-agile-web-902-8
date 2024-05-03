@@ -125,7 +125,6 @@ export default function UserLayout({
         for (let path of headingHrefs) {
             if (pathname.startsWith(path)) {
                 authRoute = true;
-                break;
             }
         }
         if (!authRoute) {
