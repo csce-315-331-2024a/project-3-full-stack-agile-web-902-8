@@ -18,6 +18,11 @@ const hrefs = [
     '/user/manager/reports',
 ];
 
+/**
+ * Generates the layout for the manager pages
+ * @param param0 the children of the page
+ * @returns The layout for the manager pages
+ */
 export default function ManagerLayout({
     children,
 }: {

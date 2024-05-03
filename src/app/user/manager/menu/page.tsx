@@ -1,6 +1,10 @@
 'use client';
 import MenuEditer from '@/components/MenuEditer';
 
+/**
+ * Generates the page for manage menu
+ * @returns The page for manage menu
+ */
 export default function Manager() {
     return (
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full grid grid-cols-[auto_auto] grid-rows-[auto_1fr] gap-4 p-4">

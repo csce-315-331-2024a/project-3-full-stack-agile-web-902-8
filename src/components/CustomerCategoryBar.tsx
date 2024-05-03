@@ -17,6 +17,14 @@ interface CustomerCategoryButtonProps {
     setCategory: (category: string) => void;
 }
 
+/**
+ * A functional component that renders a navigational bar for selecting menu categories. It displays a loading state or a list of category buttons.
+ * @param isFetchingMenuTypes - Indicates if the menu categories are currently being fetched.
+ * @param categories - The list of category names to display.
+ * @param category - The currently selected category.
+ * @param setCategory - Function to update the selected category.
+ * @return A React element representing either a loading state or a navigational bar of menu categories.
+ */
 function CustomerCategoryBar({
     isFetchingMenuTypes,
     categories,
@@ -51,6 +59,13 @@ function CustomerCategoryBar({
     );
 }
 
+/**
+ * A button component that allows the user to select a specific category. Highlights if it's the selected category.
+ * @param categoryName - The name of the category this button represents.
+ * @param category - The currently selected category.
+ * @param setCategory - Function to set the currently selected category.
+ * @return A React button element that updates the category selection on click.
+ */
 function CustomerCategoryButton({
     categoryName,
     category,

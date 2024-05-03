@@ -3,6 +3,12 @@ import { InventoryItem } from '@/lib/models';
 import Error from '@/lib/error';
 import postgres from 'postgres';
 
+/**
+ * Removes an inventory item by its name from the database.
+ * @param name - The name of the inventory item to be removed.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to true if the item was successfully removed, false otherwise.
+ */
 export async function removeInventoryItem(
     name: string,
     tsql = psql
@@ -18,6 +24,12 @@ export async function removeInventoryItem(
     );
 }
 
+/**
+ * Checks if an item exists in the inventory by its name.
+ * @param name - The name of the item to check in the inventory.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to true if the item exists, false otherwise.
+ */
 export async function existsInInventory(
     name: string,
     tsql = psql
@@ -33,6 +45,11 @@ export async function existsInInventory(
     );
 }
 
+/**
+ * Retrieves all inventory item names from the database.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to an array of inventory item names.
+ */
 export async function getAllInventoryItemNames(tsql = psql): Promise<string[]> {
     return transact<string[], postgres.Error, any>(
         tsql,
@@ -48,6 +65,12 @@ export async function getAllInventoryItemNames(tsql = psql): Promise<string[]> {
     );
 }
 
+/**
+ * Retrieves a detailed inventory item by its name.
+ * @param name - The name of the inventory item to retrieve.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to an InventoryItem object if found, null otherwise.
+ */
 export async function getInventoryItemByName(
     name: string,
     tsql = psql
@@ -75,6 +98,12 @@ export async function getInventoryItemByName(
     );
 }
 
+/**
+ * Adds a new inventory item or updates an existing one in the database.
+ * @param item - The inventory item to add or update.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to true if the item was successfully added or updated, false otherwise.
+ */
 export async function addOrUpdateInventoryItem(
     item: InventoryItem,
     tsql = psql
@@ -98,6 +127,13 @@ export async function addOrUpdateInventoryItem(
     );
 }
 
+/**
+ * Removes or decrements the amount of an ingredient from a menu item in the inventory database.
+ * @param menuItemName - The name of the menu item.
+ * @param inventoryName - The name of the inventory item.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to true if the ingredient was successfully removed or decremented, false otherwise.
+ */
 export async function removeIngredient(
     menuItemName: string,
     inventoryName: string,
@@ -148,6 +184,13 @@ export async function removeIngredient(
     );
 }
 
+/**
+ * Requests an increase in the quantity of an inventory item, ensuring it does not exceed the maximum allowed quantity.
+ * @param inventoryName - The name of the inventory item for which the quantity is to be increased.
+ * @param amount - The amount by which to increase the inventory quantity.
+ * @param tsql - The object representing an existing database connection or transaction, defaulting to psql.
+ * @return A promise that resolves to true if the quantity was successfully increased without exceeding the maximum, false otherwise.
+ */
 export async function request(
     inventoryName: string,
     amount: number,

@@ -9,13 +9,7 @@ import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 import { format, startOfToday } from 'date-fns';
-import {
-    useScale,
-    ScaleProvider,
-    ZoomIn,
-    ZoomOut,
-    ResetZoom,
-} from '@/app/zoom.client';
+
 const DataPage = () => {
     const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
@@ -41,6 +35,11 @@ const DataPage = () => {
         frequency: number;
     };
 
+    /**
+     * Fetches the data for the report
+     * @param url the url for the api
+     * @returns the response from the fetch
+     */
     const fetchReportData = async (url: string) => {
         try {
             const response = await fetch(url);
@@ -57,6 +56,9 @@ const DataPage = () => {
         }
     };
 
+    /**
+     * Handles generating the sales report
+     */
     const handleGenerateSalesReport = async () => {
         setIsLoading(true);
         const fetchedData = await fetchReportData(
@@ -74,6 +76,9 @@ const DataPage = () => {
         setIsLoading(false);
     };
 
+    /**
+     * Handles generating the product usage report
+     */
     const handleGenerateProductUsageReport = async () => {
         setIsLoading(true);
         const fetchedData = await fetchReportData(
@@ -91,6 +96,9 @@ const DataPage = () => {
         setIsLoading(false);
     };
 
+    /**
+     * Handles generating the report for what sells together
+     */
     const handleGenerateWhatSellsTogetherReport = async () => {
         setIsLoading(true);
         const fetchedData = await fetchReportData(
@@ -108,6 +116,9 @@ const DataPage = () => {
         setIsLoading(false);
     };
 
+    /**
+     * Handles resetting the reports and graphs
+     */
     const handleReset = () => {
         setStartDate(startOfToday());
         setEndDate(new Date());

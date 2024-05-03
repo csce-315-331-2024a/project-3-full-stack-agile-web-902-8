@@ -4,6 +4,10 @@ import { InventoryItem } from '@/lib/models';
 import { ExcessItem } from '@/lib/inventory-report';
 import { format, startOfToday } from 'date-fns';
 
+/**
+ * Generates the report page
+ * @returns The report page
+ */
 export default function ReportPage() {
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [excessItems, setExcessItems] = useState<ExcessItem[]>([]);
@@ -22,6 +26,9 @@ export default function ReportPage() {
     const [isRestockReportLoading, setIsRestockReportLoading] = useState(false);
 
     useEffect(() => {
+        /**
+         * Fetches the restock report
+         */
         const fetchRestockReport = async () => {
             setIsRestockReportLoading(true);
             try {
@@ -40,18 +47,29 @@ export default function ReportPage() {
         fetchRestockReport();
     }, []);
 
+    /**
+     * Handles a change in the begin time
+     * @param event The input element that was changed
+     */
     const handleBeginTimeChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setBeginTimeString(event.target.value);
     };
 
+    /**
+     * Handles a change in the end time
+     * @param event The input element that was changed
+     */
     const handleEndTimeChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setEndTimeString(event.target.value);
     };
 
+    /**
+     * Handles generating the excess report
+     */
     const handleGenerateExcessReport = async () => {
         setGenerateClicked(true);
         setIsLoading(true);
@@ -80,6 +98,9 @@ export default function ReportPage() {
         setIsLoading(false);
     };
 
+    /**
+     * Handles resetting the page
+     */
     const handleReset = () => {
         setBeginTimeString(format(startOfToday(), "yyyy-MM-dd'T'00:00"));
         setEndTimeString(format(new Date(), "yyyy-MM-dd'T'HH:mm"));

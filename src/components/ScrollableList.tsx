@@ -6,6 +6,11 @@ type ScrollableListProps = {
     title: string;
 };
 
+/**
+ * Creates a scrollable list
+ * @param param0 The props for the scrollable list
+ * @returns The scrollable list
+ */
 const ScrollableList = ({ items, title }: ScrollableListProps) => {
     return (
         <div className="overflow-y-scroll max-h-[400px] bg-secondary/50 p-4 rounded-2xl">

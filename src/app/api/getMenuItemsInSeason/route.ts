@@ -2,6 +2,12 @@ import Error from '@/lib/error';
 import { getMenuItemsInSeason } from '@/lib/menu';
 import { NextResponse } from 'next/server';
 
+/**
+ * GET API to fetch menu items that are currently in season.
+ * Retrieves and returns all menu items that are marked as being in season.
+ *
+ * Returns a 200 response with the in-season menu items on success, or 500 with an error message if an error occurs.
+ */
 export async function GET() {
     console.log('GET /api/getMenuItemsInSeason');
     try {

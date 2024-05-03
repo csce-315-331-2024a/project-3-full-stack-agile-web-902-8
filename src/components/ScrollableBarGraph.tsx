@@ -9,6 +9,11 @@ type ScrollableBarGraphProps = {
     onRefresh?: () => void; // Optional handler for refreshing data
 };
 
+/**
+ * Generates a scrollable bar graph
+ * @param param0 The props for the scrollable bar graph
+ * @returns The scrollable bar graph
+ */
 const ScrollableBarGraph = ({
     data,
     title,

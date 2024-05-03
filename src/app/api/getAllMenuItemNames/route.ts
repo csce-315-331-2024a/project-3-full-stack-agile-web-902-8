@@ -2,6 +2,13 @@ import Error from '@/lib/error';
 import { getAllMenuItemNames } from '@/lib/menu';
 import { NextResponse } from 'next/server';
 
+/**
+ * GET API to fetch all menu item names.
+ * Retrieves and returns a list of all menu item names from the system.
+ *
+ * @returns Returns a 200 response with the list of menu item names on success,
+ * or 500 with an error message if an error occurs.
+ */
 export async function GET() {
     console.log('GET /api/getAllMenuItemNames');
     try {

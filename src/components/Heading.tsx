@@ -16,6 +16,11 @@ type HeadingProp = {
     className?: string;
 };
 
+/**
+ * Generates the header for the pages
+ * @param param0 The props for the header
+ * @returns The header for the pages
+ */
 function Heading({
     names,
     hrefs,

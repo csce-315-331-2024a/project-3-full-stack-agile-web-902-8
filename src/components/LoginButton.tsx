@@ -6,6 +6,11 @@ interface LoginButtonProps {
     isLoggedIn: boolean;
 }
 
+/**
+ * Generates the login button
+ * @param param0 The props for the login button
+ * @returns The login button
+ */
 function LoginButton({ isLoggedIn }: LoginButtonProps) {
     const handleLogin = () => {
         signIn('google');
