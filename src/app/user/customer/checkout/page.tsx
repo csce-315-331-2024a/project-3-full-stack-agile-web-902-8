@@ -14,8 +14,9 @@ import {
 } from '@/lib/models';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import Link from 'next/link';
+import Popup from '@/components/Popup';
 
 import GlobalConfig from '@/lib/config';
 
@@ -29,6 +30,44 @@ export default function CustomerCheckout() {
     const [total, setTotal] = useState<number>(0);
 
     const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [paymentMethod, setPaymentMethod] = useState<string>('Credit Card');
+
+    const [cardNumber, setCardNumber] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+    const formatCardNumber = (value: string) => {
+        const numericValue = value.replace(/\D/g, '');
+        const formattedValue = numericValue.replace(/(\d{4})/g, '$1 ').trim();
+        return formattedValue;
+    };
+
+    const handleCardNumberChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { value } = event.target;
+        const formattedValue = formatCardNumber(value);
+        setCardNumber(formattedValue);
+    };
+
+    const formatPhoneNumber = (value: string) => {
+        const numericValue = value.replace(/\D/g, '');
+        if (numericValue.length <= 3) {
+            return `${numericValue}`;
+        }
+        if (numericValue.length <= 6) {
+            return `(${numericValue.slice(0, 3)}) ${numericValue.slice(3)}`;
+        }
+        return `(${numericValue.slice(0, 3)}) ${numericValue.slice(3, 6)}-${numericValue.slice(6, 10)}`;
+    };
+
+    const handlePhoneNumberChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { value } = event.target;
+        const formattedValue = formatPhoneNumber(value);
+        setPhoneNumber(formattedValue);
+    };
 
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
@@ -64,7 +103,9 @@ export default function CustomerCheckout() {
         setTotal(total);
     }, [currentOrder]);
 
-    async function placeOrder() {
+    async function placeOrder(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
         if (currentOrder.length === 0) {
             console.log('No items in order');
             return;
@@ -183,7 +224,7 @@ export default function CustomerCheckout() {
                 <section className="w-full h-fit flex flex-col">
                     <div className="w-full flex flex-row justify-between items-center p-4">
                         <h2 className="text-2xl font-bold w-fit h-fit">
-                            Payment Method
+                            Payment
                         </h2>
                         <Link
                             className="bg-secondary duration-200 hover:bg-secondary/70 w-fit p-4 rounded-2xl"
@@ -192,58 +233,338 @@ export default function CustomerCheckout() {
                             Back to menu
                         </Link>
                     </div>
-                    <ul className="grid grid-cols-[repeat(4,1fr)]">
-                        <li className="h-full">
-                            <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem_0_0_1rem] border-background border-r-2"
-                                onClick={placeOrder}
-                                disabled={
-                                    isPlacingOrder || currentOrder.length === 0
-                                }
-                            >
-                                {' '}
-                                Dining Dollars{' '}
-                            </button>
-                        </li>
-                        <li className="h-full">
-                            <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
-                                onClick={placeOrder}
-                                disabled={
-                                    isPlacingOrder || currentOrder.length === 0
-                                }
-                            >
-                                {' '}
-                                Credit Card{' '}
-                            </button>
-                        </li>
-                        <li className="h-full">
-                            <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed border-background border-l-2 border-r-2"
-                                onClick={placeOrder}
-                                disabled={
-                                    isPlacingOrder || currentOrder.length === 0
-                                }
-                            >
-                                {' '}
-                                Debit Card{' '}
-                            </button>
-                        </li>
-                        <li className="h-full">
-                            <button
-                                className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[0_1rem_1rem_0] border-background border-l-2"
-                                onClick={placeOrder}
-                                disabled={
-                                    isPlacingOrder || currentOrder.length === 0
-                                }
-                            >
-                                {' '}
-                                Cash{' '}
-                            </button>
-                        </li>
-                    </ul>
+                    <div className="flex flex-end">
+                        <button
+                            className="bg-secondary w-full py-8 text-2xl duration-200 hover:bg-secondary/70 disabled:bg-secondary/30 disabled:cursor-not-allowed rounded-[1rem] border-background border-r-2"
+                            onClick={() => setShowPopup(true)}
+                            disabled={
+                                isPlacingOrder || currentOrder.length === 0
+                            }
+                        >
+                            Go to Payment
+                        </button>
+                    </div>
                 </section>
             </div>
+            <Popup showPopup={showPopup} setShowPopup={setShowPopup}>
+                <div className="flex flex-col w-full mx-auto min-h-[600px]">
+                    <div className="mb-10">
+                        <h2 className="text-center font-bold text-xl uppercase">
+                            Secure payment info
+                        </h2>
+                    </div>
+                    <div className="mb-3 flex mx-2">
+                        <div className="px-2">
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="radio"
+                                    onClick={() =>
+                                        setPaymentMethod('Credit Card')
+                                    }
+                                    className="form-radio h-5 w-5 "
+                                    name="type"
+                                    id="type1"
+                                    checked={paymentMethod === 'Credit Card'}
+                                />
+                                <p className="text-lg px-2">Credit Card</p>
+                            </label>
+                        </div>
+                        <div className="px-2">
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="radio"
+                                    onClick={() =>
+                                        setPaymentMethod('Debit Card')
+                                    }
+                                    className="form-radio h-5 w-5 "
+                                    name="type"
+                                    id="type1"
+                                    checked={paymentMethod === 'Debit Card'}
+                                />
+                                <p className="text-lg px-2">Debit Card</p>
+                            </label>
+                        </div>
+                        <div className="px-2">
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="radio"
+                                    onClick={() =>
+                                        setPaymentMethod('Dining Dollars')
+                                    }
+                                    className="form-radio h-5 w-5 "
+                                    name="type"
+                                    id="type1"
+                                    checked={paymentMethod === 'Dining Dollars'}
+                                />
+                                <p className="text-lg px-2">Dining Dollars</p>
+                            </label>
+                        </div>
+                        <div className="px-2">
+                            <label className="flex items-center cursor-pointer">
+                                <input
+                                    type="radio"
+                                    onClick={() => setPaymentMethod('Cash')}
+                                    className="form-radio h-5 w-5 "
+                                    name="type"
+                                    id="type1"
+                                    checked={paymentMethod === 'Cash'}
+                                />
+                                <p className="text-lg px-2">Cash</p>
+                            </label>
+                        </div>
+                    </div>
+                    {paymentMethod === 'Credit Card' ||
+                    paymentMethod === 'Debit Card' ? (
+                        <form
+                            className="flex flex-col justify-between grow"
+                            onSubmit={placeOrder}
+                        >
+                            <div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Name on card
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            placeholder="John Smith"
+                                            type="text"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Card number
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            type="text"
+                                            inputMode="numeric"
+                                            value={cardNumber}
+                                            onChange={handleCardNumberChange}
+                                            pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}"
+                                            minLength={19}
+                                            maxLength={19}
+                                            placeholder="xxxx xxxx xxxx xxxx"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 -mx-2 flex items-end">
+                                    <div className="px-2 w-1/2">
+                                        <label className="font-bold text-sm mb-2 ml-1">
+                                            Expiration date
+                                        </label>
+                                        <div>
+                                            <select className="form-select w-full rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors cursor-pointer">
+                                                <option value="01">
+                                                    01 - January
+                                                </option>
+                                                <option value="02">
+                                                    02 - February
+                                                </option>
+                                                <option value="03">
+                                                    03 - March
+                                                </option>
+                                                <option value="04">
+                                                    04 - April
+                                                </option>
+                                                <option value="05">
+                                                    05 - May
+                                                </option>
+                                                <option value="06">
+                                                    06 - June
+                                                </option>
+                                                <option value="07">
+                                                    07 - July
+                                                </option>
+                                                <option value="08">
+                                                    08 - August
+                                                </option>
+                                                <option value="09">
+                                                    09 - September
+                                                </option>
+                                                <option value="10">
+                                                    10 - October
+                                                </option>
+                                                <option value="11">
+                                                    11 - November
+                                                </option>
+                                                <option value="12">
+                                                    12 - December
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="px-2 w-1/2">
+                                        <select className="form-select w-full rounded-2xl p-4 bg-text text-background duration-200 focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors cursor-pointer">
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                            <option value="2030">2030</option>
+                                            <option value="2031">2031</option>
+                                            <option value="2032">2032</option>
+                                            <option value="2033">2033</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="mb-10">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Security code
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-32 focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]{3}"
+                                            minLength={3}
+                                            maxLength={3}
+                                            placeholder="xxx"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button
+                                    className="block w-full max-w-xs mx-auto bg-secondary hover:bg-secondary/50 focus:bg-secondary/50 text-white rounded-lg px-3 py-3 font-semibold disabled:bg-secondary/30 disabled:cursor-not-allowed"
+                                    type="submit"
+                                >
+                                    <i className="mdi mdi-lock-outline mr-1"></i>{' '}
+                                    SUBMIT ORDER
+                                </button>
+                            </div>
+                        </form>
+                    ) : paymentMethod === 'Dining Dollars' ? (
+                        <form
+                            className="flex flex-col justify-between grow"
+                            onSubmit={placeOrder}
+                        >
+                            <div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Name
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            placeholder="John Smith"
+                                            type="text"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        UIN
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]{9}"
+                                            minLength={9}
+                                            maxLength={9}
+                                            placeholder="000000000"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <p className="text-lg">
+                                    This will use your dining dollars connected
+                                    to the account with your name and UIN to pay
+                                    for the order.
+                                </p>
+                            </div>
+                            <div>
+                                <button
+                                    className="block w-full max-w-xs mx-auto bg-secondary hover:bg-secondary/50 focus:bg-secondary/50 text-white rounded-lg px-3 py-3 font-semibold disabled:bg-secondary/30 disabled:cursor-not-allowed"
+                                    type="submit"
+                                >
+                                    <i className="mdi mdi-lock-outline mr-1"></i>{' '}
+                                    SUBMIT ORDER
+                                </button>
+                            </div>
+                        </form>
+                    ) : (
+                        <form
+                            className="flex flex-col justify-between grow"
+                            onSubmit={placeOrder}
+                        >
+                            <div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Name
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            placeholder="John Smith"
+                                            type="text"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Email
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            placeholder="name@example.com"
+                                            type="email"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="font-bold text-sm mb-2 ml-1">
+                                        Phone Number
+                                    </label>
+                                    <div>
+                                        <input
+                                            className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
+                                            type="text"
+                                            inputMode="numeric"
+                                            value={phoneNumber}
+                                            onChange={handlePhoneNumberChange}
+                                            pattern="\([0-9]{3}\) [0-9]{3}-[0-9]{4}"
+                                            minLength={14}
+                                            maxLength={14}
+                                            placeholder="(xxx) xxx-xxxx"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <p className="text-lg">
+                                    Pay in cash in store. We will send email and
+                                    text message once your order is done. We
+                                    will ask your name to see if it matches what
+                                    you put in the above box to verify
+                                    you&apos;re the person for the order.
+                                </p>
+                            </div>
+                            <div>
+                                <button
+                                    className="block w-full max-w-xs mx-auto bg-secondary hover:bg-secondary/50 focus:bg-secondary/50 text-white rounded-lg px-3 py-3 font-semibold disabled:bg-secondary/30 disabled:cursor-not-allowed"
+                                    type="submit"
+                                >
+                                    <i className="mdi mdi-lock-outline mr-1"></i>{' '}
+                                    SUBMIT ORDER
+                                </button>
+                            </div>
+                        </form>
+                    )}
+                </div>
+            </Popup>
         </main>
     );
 }
