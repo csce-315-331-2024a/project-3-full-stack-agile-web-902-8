@@ -120,9 +120,7 @@ export default function UserLayout({
             setHeadingNames(customerScope.names);
             setHeadingHrefs(customerScope.hrefs);
         }
-    }, [userRole]);
 
-    useEffect(() => {
         let authRoute = false;
         for (let path of headingHrefs) {
             if (pathname.startsWith(path)) {
@@ -133,7 +131,7 @@ export default function UserLayout({
         if (!authRoute) {
             push('/user/customer');
         }
-    }, [headingHrefs, pathname, push]);
+    }, [userRole, pathname, headingHrefs, push]);
 
     return (
         <div className="w-screen h-screen grid grid-cols-[min-content_1fr] grid-rows-[min-content_1fr]">
