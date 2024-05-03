@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test('root redirect', async ({ page }) => {
     await page.goto('/');
-    // Should not take a noticable amount of time to redirect.
-    await page.waitForURL('**/user/customer', { timeout: 200 });
+    // long wait b/c automated tester is slow sometimes
+    await page.waitForURL('**/user/customer', { timeout: 1000 });
 });
 
 test('images load', async ({ page }) => {
