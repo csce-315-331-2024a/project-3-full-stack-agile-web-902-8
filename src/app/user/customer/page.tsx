@@ -129,7 +129,7 @@ export default function Customer() {
 
     return (
         <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden flex flex-row">
-            <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4">
+            <div className="w-[calc(100%_-_20rem)] p-4 overflow-y-scroll overflow-x-hidden flex flex-col gap-4 pb-[70px]">
                 <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
                     Menu
                 </h1>

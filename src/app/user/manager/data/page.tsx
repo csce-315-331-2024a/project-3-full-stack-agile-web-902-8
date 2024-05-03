@@ -121,7 +121,7 @@ const DataPage = () => {
     const sortedInventoryData = inventoryData.sort((a, b) => b.qty - a.qty);
 
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4">
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4 pb-[70px]">
             <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
                 Manager Data
             </h1>
