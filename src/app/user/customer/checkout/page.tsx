@@ -34,18 +34,40 @@ export default function CustomerCheckout() {
     const [paymentMethod, setPaymentMethod] = useState<string>('Credit Card');
 
     const [cardNumber, setCardNumber] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
 
     const formatCardNumber = (value: string) => {
         const numericValue = value.replace(/\D/g, '');
         const formattedValue = numericValue.replace(/(\d{4})/g, '$1 ').trim();
         return formattedValue;
-    }
+    };
 
-    const handleCardNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCardNumberChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const { value } = event.target;
         const formattedValue = formatCardNumber(value);
         setCardNumber(formattedValue);
-    }
+    };
+
+    const formatPhoneNumber = (value: string) => {
+        const numericValue = value.replace(/\D/g, '');
+        if (numericValue.length <= 3) {
+            return `${numericValue}`;
+        }
+        if (numericValue.length <= 6) {
+            return `(${numericValue.slice(0, 3)}) ${numericValue.slice(3)}`;
+        }
+        return `(${numericValue.slice(0, 3)}) ${numericValue.slice(3, 6)}-${numericValue.slice(6, 10)}`;
+    };
+
+    const handlePhoneNumberChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { value } = event.target;
+        const formattedValue = formatPhoneNumber(value);
+        setPhoneNumber(formattedValue);
+    };
 
     // wrapper around setting the current order
     function setCurrentOrder(currentOrder: OrderEntry[]) {
@@ -512,7 +534,9 @@ export default function CustomerCheckout() {
                                             className="rounded-2xl p-4 bg-text text-background duration-200 w-full focus:outline-none focus:outline-none focus:border-l-[0.5rem] focus:border-l-primary focus:pl-1 transition-colors"
                                             type="text"
                                             inputMode="numeric"
-                                            pattern="([0-9]{3}) [0-9]{3}-[0-9]{4}"
+                                            value={phoneNumber}
+                                            onChange={handlePhoneNumberChange}
+                                            pattern="\([0-9]{3}\) [0-9]{3}-[0-9]{4}"
                                             minLength={14}
                                             maxLength={14}
                                             placeholder="(xxx) xxx-xxxx"
