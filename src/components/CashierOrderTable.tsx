@@ -1,5 +1,3 @@
-// DONE
-
 'use client';
 
 import React from 'react';
@@ -121,7 +119,7 @@ function CashierOrderItem({
     isEven,
     className,
 }: CashierOrderItemProps) {
-    function handleClick() {
+    function handleMinus() {
         const updatedOrder = currentOrder
             .map((entry) => {
                 if (entry.item.id === orderEntry.item.id) {
@@ -139,19 +137,61 @@ function CashierOrderItem({
         setCurrentOrder(updatedOrder);
     }
 
+    function handlePlus() {
+        const updatedOrder = currentOrder
+            .map((entry) => {
+                if (entry.item.id === orderEntry.item.id) {
+                    return {
+                        item: orderEntry.item,
+                        quantity: orderEntry.quantity + 1,
+                    };
+                }
+                return entry;
+            })
+            .filter((entry) => {
+                return entry.quantity > 0;
+            });
+
+        setCurrentOrder(updatedOrder);
+    }
+
+    const handleQuantityChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const newQuantity = parseInt(event.target.value, 10);
+
+        if (newQuantity < 1) {
+            return;
+        }
+
+        const updatedOrder = currentOrder.map((entry) => {
+            if (entry.item.id === orderEntry.item.id) {
+                return { ...entry, quantity: newQuantity };
+            }
+            return entry;
+        });
+        setCurrentOrder(updatedOrder);
+    };
+
     return (
         <tr className={'h-10 ' + className}>
             <td
                 className={
-                    'rounded-[1rem_0_0_1rem]' +
+                    'rounded-[1rem_0_0_1rem] flex flex-row' +
                     (isEven ? ' bg-secondary/50' : '')
                 }
             >
                 <button
-                    className="rounded-2xl bg-text text-background duration-200 w-6 h-6 m-2 hover:bg-background hover:text-text"
-                    onClick={handleClick}
+                    className="rounded-2xl bg-text text-background duration-200 w-6 h-6 m-2 mr-1 hover:bg-background hover:text-text"
+                    onClick={handleMinus}
                 >
-                    X
+                    -
+                </button>
+                <button
+                    className="rounded-2xl bg-text text-background duration-200 w-6 h-6 m-2 ml-1 hover:bg-background hover:text-text"
+                    onClick={handlePlus}
+                >
+                    +
                 </button>
             </td>
             <td className={'text-left ' + (isEven ? ' bg-secondary/50' : '')}>
@@ -174,7 +214,13 @@ function CashierOrderItem({
                     (isEven ? ' bg-secondary/50' : '')
                 }
             >
-                {orderEntry.quantity}
+                <input
+                    className="bg-transparent text-text text-right font-mono"
+                    type="number"
+                    value={orderEntry.quantity}
+                    onChange={handleQuantityChange}
+                    min="1"
+                ></input>
             </td>
         </tr>
     );
