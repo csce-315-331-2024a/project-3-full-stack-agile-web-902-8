@@ -7,7 +7,7 @@ import MenuEditer from '@/components/MenuEditer';
  */
 export default function Manager() {
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full grid grid-cols-[auto_auto] grid-rows-[auto_1fr] gap-4 p-4">
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full grid grid-cols-[auto_auto] grid-rows-[auto_1fr] gap-4 p-4 pb-[70px]">
             <h1 className="col-[1/2] row-[1/2] text-[4rem] font-bold relative mainHeader w-fit">
                 Manage Menu
             </h1>
