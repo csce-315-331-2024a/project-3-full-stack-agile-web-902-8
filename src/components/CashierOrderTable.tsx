@@ -155,6 +155,24 @@ function CashierOrderItem({
         setCurrentOrder(updatedOrder);
     }
 
+    const handleQuantityChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const newQuantity = parseInt(event.target.value, 10);
+
+        if (newQuantity < 1) {
+            return;
+        }
+
+        const updatedOrder = currentOrder.map((entry) => {
+            if (entry.item.id === orderEntry.item.id) {
+                return { ...entry, quantity: newQuantity };
+            }
+            return entry;
+        });
+        setCurrentOrder(updatedOrder);
+    };
+
     return (
         <tr className={'h-10 ' + className}>
             <td
@@ -196,7 +214,13 @@ function CashierOrderItem({
                     (isEven ? ' bg-secondary/50' : '')
                 }
             >
-                {orderEntry.quantity}
+                <input
+                    className="bg-transparent text-text text-right font-mono"
+                    type="number"
+                    value={orderEntry.quantity}
+                    onChange={handleQuantityChange}
+                    min="1"
+                ></input>
             </td>
         </tr>
     );
