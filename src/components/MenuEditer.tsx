@@ -24,7 +24,7 @@ function MenuEditer({ className }: MenuEditerProps) {
         weather: '',
         price: 0,
         netPrice: 0,
-        popularity: 0,
+        popularity: 5,
         seasonal: false,
     });
 
@@ -228,6 +228,7 @@ function MenuEditer({ className }: MenuEditerProps) {
             }
         }
 
+        form.popularity = 5;
         if (Number(form.price) <= 0 || Number(form.popularity) <= 0) {
             alert('Cannot have negative or 0 values for price or popularity');
         } else if (
@@ -813,6 +814,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                             onChange={handleChange}
                         />
                     </label>
+                    { /*
                     <label className="flex flex-row items-center justify-between gap-4">
                         Popularity:
                         <input
@@ -824,6 +826,7 @@ function MenuEditer({ className }: MenuEditerProps) {
                             //onChange={handleChange}
                         />
                     </label>
+                    */ }
                     <label className="flex flex-row items-center justify-between gap-4">
                         Seasonal:
                         <input
