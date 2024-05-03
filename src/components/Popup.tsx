@@ -16,7 +16,7 @@ function Popup({ children, showPopup, setShowPopup }: PopupProps) {
                     <div className="w-1/2 rounded-lg bg-background shadow-xl max-w-[800px] h-fit">
                         <div className="relative bg-secondary/20 w-full p-5 pt-11 h-full">
                             <button
-                                className="absolute top-0 right-0 p-1"
+                                className="absolute top-0 right-0 p-1 hover:text-text/70 focus:text-text/70"
                                 onClick={() => setShowPopup(false)}
                             >
                                 <svg
