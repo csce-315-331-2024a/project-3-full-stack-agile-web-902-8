@@ -76,11 +76,8 @@ function UserManager() {
             'Are you sure you want to remove this user?'
         );
         if (confirm) {
-            const removed = [...users];
-            removed.splice(i, 1);
-            setUsers(removed);
             removeUser(users[i].user.username);
-            handleRefresh();
+            setUsers([...users.slice(0, i), ...users.slice(i + 1)]);
         }
     };
 
@@ -191,7 +188,6 @@ function UserManager() {
                 );
                 updateUser(updatedUser);
                 handleRefresh();
-                handleRefresh();
                 dUser.flux = false;
             }
         }
@@ -202,15 +198,12 @@ function UserManager() {
      */
     const handleAdd = () => {
         setInFlux(true);
-        const add = [...users];
         const newUser: dynamicUser = {
-            user: new User(0, '', '', '', 0, 0),
+            user: new User(0, '', '', 'ADMINISTRATOR', 0, 0),
             flux: true,
         };
         console.log(newUser);
-        add.push(newUser);
-        setUsers(add);
-        console.log(add);
+        setUsers([...users, newUser]);
     };
 
     /**

@@ -111,7 +111,7 @@ export default function CustomerCheckout() {
     }
 
     return (
-        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row">
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden h-full flex flex-row pb-[70px]">
             <div className="w-[500px] border-[1px] border-solid border-text m-12 mr-0 overflow-y-scroll">
                 {currentOrder.map(({ item, qty }) => (
                     <CustomerOrderItem

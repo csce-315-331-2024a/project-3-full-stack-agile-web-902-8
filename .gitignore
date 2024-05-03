@@ -36,3 +36,10 @@ env*.local*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# documentation
+/docs
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

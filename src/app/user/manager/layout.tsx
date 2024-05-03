@@ -14,8 +14,8 @@ const hrefs = [
     '/user/manager',
     '/user/manager/menu',
     '/user/manager/inventory',
-    '/user/manager/order_history',
-    '/user/manager/report_page',
+    '/user/manager/data',
+    '/user/manager/reports',
 ];
 
 /**

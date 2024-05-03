@@ -913,7 +913,7 @@ export async function getAllMenuTypes(tsql = psql): Promise<string[]> {
         new Error('SQL Error in getAllMenuTypes', undefined),
         async (isql, _) => {
             const result = await isql`
-        SELECT DISTINCT type FROM menu_items`;
+        SELECT type FROM menu_items GROUP BY type ORDER BY min(id)`;
             const menuTypes: string[] = [];
 
             //stores the inventory id and amount for each ingredient

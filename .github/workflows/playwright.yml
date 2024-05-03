@@ -1,0 +1,69 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev-tests
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Prepare Env
+      shell: bash
+      env:
+        GOOGLE_CLIENT_ID: ${{ secrets.GoogleClientID }}
+        GOOGLE_CLIENT_SECRET: ${{ secrets.GoogleClientSecret }}
+        NEXTAUTH_SECRET: ${{ secrets.NextauthSecret }}
+        WEATHER_KEY: ${{ secrets.WeatherKey }}
+      run: >
+        ( \
+          printf 'DB_HOST=localhost\n' && \
+          printf 'DB_USERNAME=postgres\n' && \
+          printf 'DB_DATABASE=postgres\n' && \
+          printf 'DB_PASSWORD=postgres\n' && \
+          printf 'NEXTAUTH_URL=https://localhost:3000\n' && \
+          printf "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID\n" && \
+          printf "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET\n" && \
+          printf "NEXTAUTH_SECRET=$NEXTAUTH_SECRET\n" && \
+          printf "WEATHER_KEY=$WEATHER_KEY\n" \
+        ) > .env.local
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Seed Database
+      shell: bash
+      run: >
+        cd init-db && pwd && ./setup.sh && ./reseed.sh
+    - name: Run Playwright tests
+      env:
+        CI: yes
+      run: npx playwright test
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
