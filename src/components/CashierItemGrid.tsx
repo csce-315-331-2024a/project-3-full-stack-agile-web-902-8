@@ -20,6 +20,11 @@ interface CashierItemButtonProps {
     className?: string;
 }
 
+/**
+ * A functional component that renders a grid of menu items. It displays a loading state or a collection of item buttons for adding to the order.
+ * @param props - Properties passed to the component as specified in CashierItemGridProps.
+ * @return A React element representing either a loading state or a grid of menu items.
+ */
 function CashierItemGrid({
     isFetchingMenuItems,
     categoryItems,
@@ -59,6 +64,11 @@ function CashierItemGrid({
     );
 }
 
+/**
+ * A button component that allows the user to add a specific menu item to the order. It increments the item quantity if already in the order.
+ * @param props - Properties passed to the component as specified in CashierItemButtonProps.
+ * @return A React button element that updates the order on click.
+ */
 function CashierItemButton({
     item,
     currentOrder,

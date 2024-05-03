@@ -6,7 +6,12 @@ import { Order } from '@/lib/models';
 interface KitchenGridItemProps {
     order: Order;
 }
-
+/**
+ * A functional component that renders detailed information about an individual order, providing interactive controls to complete or cancel the order.
+ * This component also dynamically tracks and displays the time elapsed since the order was placed, highlighting orders that need urgent attention.
+ * @param order - The Order object to be displayed.
+ * @return A React element that visualizes order details along with controls to manage the order status.
+ */
 export default function KitchenGridItem({ order }: KitchenGridItemProps) {
     const calculateTimeElapsed = useCallback(() => {
         const orderTime = new Date(order.timestamp).getTime();

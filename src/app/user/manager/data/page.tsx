@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Heading from '@/components/Heading';
 import ScrollableList from '@/components/ScrollableList';
 import ScrollableBarGraph from '@/components/ScrollableBarGraph';
 import DateRangePicker from '@/components/DatePicker';
@@ -10,13 +9,7 @@ import { AggregateItem } from '@/lib/models';
 import { aggregateInventoryItem } from '@/lib/models';
 import { frequentlySoldPairs } from '@/lib/models';
 import { format, startOfToday } from 'date-fns';
-import {
-    useScale,
-    ScaleProvider,
-    ZoomIn,
-    ZoomOut,
-    ResetZoom,
-} from '@/app/zoom.client';
+
 const DataPage = () => {
     const [startDate, setStartDate] = useState(startOfToday());
     const [endDate, setEndDate] = useState(new Date());
@@ -42,6 +35,11 @@ const DataPage = () => {
         frequency: number;
     };
 
+    /**
+     * Fetches the data for the report
+     * @param url the url for the api
+     * @returns the response from the fetch
+     */
     const fetchReportData = async (url: string) => {
         try {
             const response = await fetch(url);
@@ -58,6 +56,9 @@ const DataPage = () => {
         }
     };
 
+    /**
+     * Handles generating the sales report
+     */
     const handleGenerateSalesReport = async () => {
         setIsLoading(true);
         const fetchedData = await fetchReportData(
@@ -75,6 +76,9 @@ const DataPage = () => {
         setIsLoading(false);
     };
 
+    /**
+     * Handles generating the product usage report
+     */
     const handleGenerateProductUsageReport = async () => {
         setIsLoading(true);
         const fetchedData = await fetchReportData(
@@ -92,6 +96,9 @@ const DataPage = () => {
         setIsLoading(false);
     };
 
+    /**
+     * Handles generating the report for what sells together
+     */
     const handleGenerateWhatSellsTogetherReport = async () => {
         setIsLoading(true);
         const fetchedData = await fetchReportData(
@@ -109,6 +116,9 @@ const DataPage = () => {
         setIsLoading(false);
     };
 
+    /**
+     * Handles resetting the reports and graphs
+     */
     const handleReset = () => {
         setStartDate(startOfToday());
         setEndDate(new Date());
@@ -118,36 +128,16 @@ const DataPage = () => {
         setError('');
     };
 
-    const resetButtonStyle: React.CSSProperties = {
-        fontSize: '16px',
-        fontWeight: 'bold',
-        position: 'absolute',
-        right: '10px',
-        margin: '10px',
-        padding: '10px',
-        cursor: 'pointer',
-    };
-
     const sortedMenuData = menuData.sort((a, b) => b.qty - a.qty);
     const sortedInventoryData = inventoryData.sort((a, b) => b.qty - a.qty);
 
-    const { scale, setScale } = useScale();
-
     return (
-        <ScaleProvider initialScale={1}>
-            {/* Scaled content */}
-
-            <main>
-                <div
-                    style={{
-                        width: '100%',
-                        maxWidth: '1200px',
-                        margin: 'auto',
-                        padding: '1rem',
-                        position: 'relative',
-                        paddingTop: '60px',
-                    }}
-                >
+        <main className="col-[2/3] row-[2/3] overflow-y-auto overflow-x-hidden w-full h-full p-4 pb-[70px]">
+            <h1 className="text-[4rem] font-bold relative mainHeader w-fit">
+                Manager Data
+            </h1>
+            <div className="w-full max-w-[1200px] mx-auto relative pt-4 flex flex-col gap-4 justify-start">
+                <div className="relative">
                     <DateRangePicker
                         startDate={startDate}
                         endDate={endDate}
@@ -158,87 +148,70 @@ const DataPage = () => {
                     <button
                         onClick={handleGenerateSalesReport}
                         //className={design.genresbutton}
-                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-4 mt-4 hover:bg-secondary/70"
                     >
                         Generate Sales Report
                     </button>
                     <button
                         onClick={handleGenerateProductUsageReport}
                         //className={design.genresbutton}
-                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-4 mt-4 hover:bg-secondary/70"
                     >
                         Generate Product Usage Report
                     </button>
                     <button
                         onClick={handleGenerateWhatSellsTogetherReport}
                         //className={design.genresbutton}
-                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-4 mt-4 hover:bg-secondary/70"
                     >
                         Generate What Sells Together Report
                     </button>
 
                     <button
-                        style={resetButtonStyle}
                         onClick={handleReset}
                         //className={design.genresbutton}
-                        className="bg-secondary py-2 px-4 text-center inline-block text-sm rounded-xl mr-[10px] mt-[10px] hover:bg-secondary/70"
+                        className="bg-secondary py-2 px-4 text-center font-bold inline-block rounded-xl hover:bg-secondary/70 absolute right-0 bottom-0"
                     >
                         Reset
                     </button>
-
-                    {isLoading && <p>Loading...</p>}
-                    {error && <p>{error}</p>}
-                    {!isLoading && !error && (
-                        <>
-                            <div className="report-section">
-                                <ScrollableBarGraph
-                                    data={sortedMenuData.map((item) => ({
-                                        label: item.name,
-                                        value: item.qty,
-                                        color: 'rgba(205, 50, 75, 1)',
-                                    }))}
-                                    title="Sales Report"
-                                />
-                            </div>
-
-                            <div className="report-section">
-                                <ScrollableBarGraph
-                                    data={sortedInventoryData.map((item) => ({
-                                        label: item.name,
-                                        value: item.qty,
-                                        color: 'rgba(205, 50, 75, 1)',
-                                    }))}
-                                    title="Product Usage"
-                                />
-                            </div>
-
-                            <div className="report-section">
-                                <ScrollableList
-                                    items={frequentlySoldPairsData}
-                                    title="What Sells Together"
-                                />
-                            </div>
-                        </>
-                    )}
                 </div>
-            </main>
-            {/* Fixed-position zoom controls */}
-            <div
-                id="zoom-controls"
-                style={{
-                    position: 'fixed',
-                    top: '70px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    zIndex: 1001, // Above scaled content
-                    textAlign: 'center',
-                }}
-            >
-                <ZoomIn />
-                <ZoomOut />
-                <ResetZoom />
+
+                {isLoading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
+                {!isLoading && !error && (
+                    <>
+                        <div className="report-section">
+                            <ScrollableBarGraph
+                                data={sortedMenuData.map((item) => ({
+                                    label: item.name,
+                                    value: item.qty,
+                                    color: '#f8c10d',
+                                }))}
+                                title="Sales Report"
+                            />
+                        </div>
+
+                        <div className="report-section">
+                            <ScrollableBarGraph
+                                data={sortedInventoryData.map((item) => ({
+                                    label: item.name,
+                                    value: item.qty,
+                                    color: '#ff8427',
+                                }))}
+                                title="Product Usage"
+                            />
+                        </div>
+
+                        <div className="report-section">
+                            <ScrollableList
+                                items={frequentlySoldPairsData}
+                                title="What Sells Together"
+                            />
+                        </div>
+                    </>
+                )}
             </div>
-        </ScaleProvider>
+        </main>
     );
 };
 

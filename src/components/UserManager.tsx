@@ -76,11 +76,8 @@ function UserManager() {
             'Are you sure you want to remove this user?'
         );
         if (confirm) {
-            const removed = [...users];
-            removed.splice(i, 1);
-            setUsers(removed);
             removeUser(users[i].user.username);
-            handleRefresh();
+            setUsers([...users.slice(0, i), ...users.slice(i + 1)]);
         }
     };
 
@@ -191,7 +188,6 @@ function UserManager() {
                 );
                 updateUser(updatedUser);
                 handleRefresh();
-                handleRefresh();
                 dUser.flux = false;
             }
         }
@@ -202,15 +198,12 @@ function UserManager() {
      */
     const handleAdd = () => {
         setInFlux(true);
-        const add = [...users];
         const newUser: dynamicUser = {
-            user: new User(0, '', '', '', 0, 0),
+            user: new User(0, '', '', 'ADMINISTRATOR', 0, 0),
             flux: true,
         };
         console.log(newUser);
-        add.push(newUser);
-        setUsers(add);
-        console.log(add);
+        setUsers([...users, newUser]);
     };
 
     /**
@@ -225,6 +218,19 @@ function UserManager() {
         fetchUsers();
     };
 
+    /**
+     * Handles selecting a role from the dropdown
+     * @param i The index of the changed entry
+     * @param newRole The newrole to be assigned to the entry
+     */
+    const handleSelectRole = (i: number, newRole: string) => {
+        setInFlux(true);
+        const changed = [...users];
+        changed[i].user.role = newRole;
+        changed[i].flux = true;
+        setUsers(changed);
+    };
+
     return (
         <>
             <button
@@ -232,7 +238,7 @@ function UserManager() {
                 type="button"
                 onClick={handleRefresh}
             >
-                Refresh
+                Reset Changes
             </button>
 
             <table className="w-full border-collapse text-sm">
@@ -281,14 +287,42 @@ function UserManager() {
                                 />
                             </td>
                             <td className="px-4 py-2 border-b-text border-b-2">
-                                <input
+                                <select
                                     className="bg-background text-text group-hover:bg-transparent"
-                                    type="text"
-                                    value={entry.user.role}
-                                    onChange={(e) =>
-                                        handleChangeRole(index, e.target.value)
+                                    value={
+                                        entry.user.role != ''
+                                            ? entry.user.role
+                                            : 'ADMINISTRATOR'
                                     }
-                                />
+                                    onChange={(e) =>
+                                        handleSelectRole(index, e.target.value)
+                                    }
+                                >
+                                    <option
+                                        className="bg-background text-text"
+                                        value="ADMINISTRATOR"
+                                    >
+                                        ADMINISTRATOR
+                                    </option>
+                                    <option
+                                        className="bg-background text-text"
+                                        value="MANAGER"
+                                    >
+                                        MANAGER
+                                    </option>
+                                    <option
+                                        className="bg-background text-text"
+                                        value="CASHIER"
+                                    >
+                                        CASHIER
+                                    </option>
+                                    <option
+                                        className="bg-background text-text"
+                                        value="COOK"
+                                    >
+                                        COOK
+                                    </option>
+                                </select>
                             </td>
                             <td className="px-4 py-2 border-b-text border-b-2 text-right">
                                 <input
@@ -298,7 +332,11 @@ function UserManager() {
                                     onChange={(e) =>
                                         handleChangeHourlySalary(
                                             index,
-                                            parseInt(e.target.value)
+                                            parseFloat(
+                                                parseFloat(
+                                                    e.target.value
+                                                ).toFixed(2)
+                                            )
                                         )
                                     }
                                 />

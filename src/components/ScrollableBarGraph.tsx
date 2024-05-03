@@ -9,6 +9,11 @@ type ScrollableBarGraphProps = {
     onRefresh?: () => void; // Optional handler for refreshing data
 };
 
+/**
+ * Generates a scrollable bar graph
+ * @param param0 The props for the scrollable bar graph
+ * @returns The scrollable bar graph
+ */
 const ScrollableBarGraph = ({
     data,
     title,
@@ -16,17 +21,9 @@ const ScrollableBarGraph = ({
     onRefresh,
 }: ScrollableBarGraphProps) => {
     // Style object for the graph container
-    const graphStyle: React.CSSProperties = {
-        overflowX: 'auto',
-        padding: '1rem',
-        height: '500px',
-        backgroundColor: 'indianred', // Assuming a white background
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Example shadow, adjust as necessary
-        margin: '0.5rem 0', // Adds margin to the top and bottom
-    };
 
     return (
-        <div style={graphStyle}>
+        <div className="bg-secondary/50 overflow-x-auto p-4 rounded-2xl h-[500px]">
             <BarGraph data={data} title={title} />
         </div>
     );

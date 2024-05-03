@@ -1,12 +1,10 @@
-// DONE
-
 'use client';
 
 import SideBar from '@/components/SideBar';
 import React from 'react';
 
 const names = [
-    'Home',
+    'Order History',
     'Menu Manager',
     'Inventory Manager',
     'Manager Data',
@@ -16,10 +14,15 @@ const hrefs = [
     '/user/manager',
     '/user/manager/menu',
     '/user/manager/inventory',
-    '/user/manager/order_history',
-    '/user/manager/report_page',
+    '/user/manager/data',
+    '/user/manager/reports',
 ];
 
+/**
+ * Generates the layout for the manager pages
+ * @param param0 the children of the page
+ * @returns The layout for the manager pages
+ */
 export default function ManagerLayout({
     children,
 }: {

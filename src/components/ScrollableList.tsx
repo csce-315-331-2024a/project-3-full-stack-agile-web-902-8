@@ -6,48 +6,42 @@ type ScrollableListProps = {
     title: string;
 };
 
+/**
+ * Creates a scrollable list
+ * @param param0 The props for the scrollable list
+ * @returns The scrollable list
+ */
 const ScrollableList = ({ items, title }: ScrollableListProps) => {
-    // Style object for the container
-    const listStyle: React.CSSProperties = {
-        overflowY: 'scroll',
-        maxHeight: '400px',
-        backgroundColor: 'indianred',
-        border: '1px solid #ddd',
-        padding: '1rem',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        margin: '0.5rem 0',
-    };
-
-    // Enhanced styling for headers
-    const headerStyle: React.CSSProperties = {
-        backgroundColor: '#a05a2c', // Assuming this is a valid color string
-        color: 'white', // Also should be a valid color string
-        padding: '10px',
-        textAlign: 'left' as 'left',
-    };
-    const rowStyle = {
-        color: '#333', // dark text color for rows
-        backgroundColor: 'indianred', // light background for rows, for contrast
-        borderBottom: '1px solid #ddd', // if you want borders between rows
-    };
-
     return (
-        <div style={listStyle}>
-            <h2 style={{ color: '#333' }}>{title}</h2> {/* Darker title text */}
-            <table style={{ width: '100%' }}>
+        <div className="overflow-y-scroll max-h-[400px] bg-secondary/50 p-4 rounded-2xl">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>{' '}
+            {/* Darker title text */}
+            <table className="w-full border-collapse text-sm">
                 <thead>
                     <tr>
-                        <th style={headerStyle}>Item 1</th>
-                        <th style={headerStyle}>Item 2</th>
-                        <th style={headerStyle}>Frequency</th>
+                        <th className="bg-primary text-background font-bold text-left py-3 px-4 rounded-tl-2xl">
+                            Item 1
+                        </th>
+                        <th className="bg-primary text-background font-bold text-left py-3 px-4">
+                            Item 2
+                        </th>
+                        <th className="bg-primary text-background font-bold text-right py-3 px-4 rounded-tr-2xl">
+                            Frequency
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {items.map((item, index) => (
-                        <tr key={index} style={rowStyle}>
-                            <td>{item.item1Name}</td>
-                            <td>{item.item2Name}</td>
-                            <td>{item.frequency}</td>
+                        <tr className="hover:bg-secondary/70" key={index}>
+                            <td className="py-1 px-4 border-b-text border-b-[1px]">
+                                {item.item1Name}
+                            </td>
+                            <td className="py-1 px-4 border-b-text border-b-[1px]">
+                                {item.item2Name}
+                            </td>
+                            <td className="text-right font-mono py-1 px-4 border-b-text border-b-[1px]">
+                                {item.frequency}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

@@ -7,6 +7,11 @@ type ButtonProp = {
     children: ReactNode;
 };
 
+/**
+ * Generates a page button
+ * @param param0 The props for the page button
+ * @returns The page button
+ */
 function PageButton({ onClick, children }: ButtonProp) {
     return (
         <div style={{ textAlign: 'left' }}>

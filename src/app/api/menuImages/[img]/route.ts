@@ -2,7 +2,12 @@ import { getMenuItemImage } from '@/lib/menu';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
-
+/**
+ * API route to fetch menu item images by ID.
+ * @param {NextRequest} _ - The request object (unused).
+ * @param {object} context - Contains parameters with the 'img' key representing the menu item's ID.
+ * @returns The image as a response if successful, or an error JSON with the appropriate status code.
+ */
 export async function GET(
     _: NextRequest,
     { params }: { params: { img: number } }

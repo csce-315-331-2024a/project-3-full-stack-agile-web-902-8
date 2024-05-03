@@ -23,6 +23,14 @@ interface OrderSidebarProp {
     checkoutPage: string;
 }
 
+/**
+ * A functional component to manage and display a single item in a customer's order with interactive quantity adjustments.
+ * @param item - The menu item to display.
+ * @param qty - The current quantity of the item.
+ * @param currentOrder - The current list of order entries.
+ * @param setCurrentOrder - Function to update the order state.
+ * @return A React element representing a single order item with interactive elements for quantity adjustment.
+ */
 export function CustomerOrderItem({
     item,
     qty,
@@ -109,6 +117,13 @@ export function CustomerOrderItem({
     );
 }
 
+/**
+ * A sidebar component for displaying the current order items and a checkout button.
+ * @param children - React nodes to be displayed within the sidebar.
+ * @param currentOrder - Array of current order entries.
+ * @param checkoutPage - URL string pointing to the checkout page.
+ * @return A React element representing the sidebar layout for the order, including navigation and checkout functionality.
+ */
 export function CustomerOrderSidebar({
     children,
     currentOrder,
@@ -127,7 +142,7 @@ export function CustomerOrderSidebar({
                     }
                     disabled={currentOrder.length === 0}
                 >
-                    Checkout
+                    Checkout Order
                 </button>
             </Link>
         </div>

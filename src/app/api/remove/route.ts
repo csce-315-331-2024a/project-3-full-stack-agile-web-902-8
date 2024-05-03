@@ -1,6 +1,11 @@
 import { remove } from '@/lib/menu';
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * API route for the remove function
+ * @param {NextRequest} req The request object containing the name of the item to remove
+ * @returns The result of the remove function
+ */
 export async function POST(request: NextRequest) {
     console.log('POST /api/remove');
     try {
