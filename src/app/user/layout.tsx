@@ -6,6 +6,13 @@ import Heading from '@/components/Heading';
 import React, { useState, useEffect } from 'react';
 import { loginLevels } from '@/lib/config';
 import { usePathname, useRouter } from 'next/navigation';
+import {
+    useScale,
+    ScaleProvider,
+    ZoomIn,
+    ZoomOut,
+    ResetZoom,
+} from '@/app/zoom.client';
 
 /**
  * Opens the menu board
@@ -43,6 +50,8 @@ export default function UserLayout({
     ]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userRole, changeUserRole] = useState<string>('');
+
+    const { scale, setScale } = useScale();
 
     // get the user login
     useEffect(() => {
@@ -152,7 +161,25 @@ export default function UserLayout({
                 openMenuBoardPages={openMenuBoardPages}
                 className="col-span-2 row-span-1"
             />
-            {children}
+            <ScaleProvider initialScale={1}>
+                {children}
+                {/* Fixed-position zoom control */}
+                <div
+                    id="zoom-controls"
+                    style={{
+                        position: 'fixed',
+                        bottom: '30px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1001,
+                        textAlign: 'center',
+                    }}
+                >
+                    <ZoomIn />
+                    <ZoomOut />
+                    <ResetZoom />
+                </div>
+            </ScaleProvider>
         </div>
     );
 }
